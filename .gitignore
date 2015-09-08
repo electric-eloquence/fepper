@@ -1,8 +1,9 @@
 .*.swp
 .DS_Store
-.publish
+.publish/
 **/ignore*
 backend/*
 !backend/README
 conf.yml
-node_modules
+node_modules/
+Thumbs.db
