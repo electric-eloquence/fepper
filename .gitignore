@@ -6,6 +6,4 @@ backend/*
 !backend/README
 conf.yml
 node_modules/
-patternlab-node/public/
-patternlab-node/source/
 Thumbs.db
