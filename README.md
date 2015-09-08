@@ -54,6 +54,6 @@ The following are the available Gulp tasks:
 
 The following READMEs are also invaluable for documentation:
 
-* [patternlab-node/README.md](https://github.com/e2tha-e/fepper/blob/master/patternlab-node/README.md)
-* [backend/README](https://github.com/e2tha-e/fepper/blob/master/backend/README)
-* [\_source/html/README](https://github.com/e2tha-e/fepper/blob/master/_source/html/README)
+* [patternlab-node/README.md](https://github.com/electric-eloquence/fepper/blob/master/patternlab-node/README.md)
+* [backend/README](https://github.com/electric-eloquence/fepper/blob/master/backend/README)
+* [\_source/static/README](https://github.com/electric-eloquence/fepper/blob/master/_source/static/README)
