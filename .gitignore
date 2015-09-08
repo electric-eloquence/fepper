@@ -1,0 +1,8 @@
+.*.swp
+.DS_Store
+.publish
+**/ignore*
+backend/*
+!backend/README
+conf.yml
+node_modules

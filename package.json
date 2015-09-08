@@ -1,0 +1,46 @@
+{
+  "name": "Fepper",
+  "description": "A frontend prototyper for streamlining website design and development",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/e2tha-e/fepper.git"
+  },
+  "devDependencies": {
+    "body-parser": "^1.6.3",
+    "cheerio": "^0.17.0",
+    "diveSync": "^0.3.0",
+    "express": "^4.8.3",
+    "fs-extra": "^0.22.1",
+    "glob": "^5.0.5",
+    "gulp": "^3.9.0",
+    "gulp-exec": "^2.1.1",
+    "gulp-express": "^0.3.5",
+    "gulp-gh-pages": "^0.5.2",
+    "gulp-htmlhint": "^0.3.0",
+    "gulp-htmllint": "0.0.5",
+    "gulp-jshint": "^1.11.2",
+    "gulp-jsonlint": "^1.1.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-open": "^1.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-uglify": "^1.2.0",
+    "gulp-wait": "0.0.2",
+    "js-yaml": "^3.2.7",
+    "pagedown": "^1.1.0",
+    "request": "^2.40.0",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.2",
+    "xml2js": "^0.4.8",
+    "xmldom": "^0.1.19",
+    "yargs": "^3.16.1"
+  },
+  "scripts": {
+    "postinstall": "cp default.conf.yml conf.yml && gulp install"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
+}

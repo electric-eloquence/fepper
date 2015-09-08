@@ -1,0 +1,27 @@
+{
+  "name": "patternlab-node",
+  "description": "Pattern Lab is a collection of tools to help you create atomic design systems. This is the node command line interface (CLI).",
+  "version": "0.10.1",
+  "devDependencies": {
+    "mustache": "^1.0.0",
+    "fs-extra": "^0.14.0",
+    "diveSync": "^0.2.1",
+    "html-entities": "^1.1.1",
+    "glob": "^4.3.5"
+  },
+  "keywords": [
+    "Pattern Lab",
+    "Atomic Web Design",
+    "Node",
+    "Javascript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pattern-lab/patternlab-node.git"
+  },
+  "author": "Brian Muenzenmeyer",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.1"
+  }
+}

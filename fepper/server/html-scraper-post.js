@@ -1,0 +1,299 @@
+var cheerio = require('cheerio');
+var fs = require('fs');
+var request = require('request');
+var xml2js = require('xml2js');
+var xmldom = require('xmldom');
+
+var builder = new xml2js.Builder();
+var domParser = new xmldom.DOMParser();
+var htmlObj = require('../lib/html');
+var parseString = xml2js.parseString;
+var xmlSerializer = new xmldom.XMLSerializer();
+
+function redirectWithMsg(res, type, msg, target, url) {
+  'use strict';
+
+  target = typeof target !== 'undefined' ? target : '';
+  url = typeof url !== 'undefined' ? url : '';
+  res.writeHead(303, { Location: 'html-scraper?' + type + '=' +  msg + '&target=' + target + '&url=' + url });
+  res.end();
+}
+
+function recurseJson(jsonObj, dataArr, recursionInc, index, prevIndex) {
+  'use strict';
+
+  var obj;
+  var underscored;
+
+  for (var i in jsonObj) {
+    if (jsonObj.hasOwnProperty(i)) {
+      if (i === '_') {
+        for (var j in jsonObj) {
+          if (jsonObj.hasOwnProperty(j)) {
+            underscored = '';
+            if (jsonObj.hasOwnProperty(j)  &&  j === '$') {
+              for (var k in jsonObj[j]) {
+                if (jsonObj[j].hasOwnProperty(k)) {
+                  if (k === 'class') {
+                    underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
+                    obj = {};
+                    obj[underscored] = jsonObj[i];
+                    dataArr.push(obj);
+                    break;
+                  }
+                  else if (k === 'id') {
+                    underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
+                    obj = {};
+                    obj[underscored] = jsonObj[i];
+                    dataArr.push(obj);
+                    // Don't break because we would prefer to use classes.
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (underscored === '') {
+          if (typeof index !== 'undefined'  &&  typeof prevIndex !== 'undefined') {
+            underscored = prevIndex + '_' + recursionInc;
+            obj = {};
+            obj[underscored] = jsonObj[i];
+            dataArr.push(obj);
+            jsonObj[i] = '{{ ' + underscored + ' }}';
+          }
+        }
+        else {
+          jsonObj[i] = '{{ ' + underscored + ' }}';
+        }
+      }
+      else if (i !== '$'  &&  typeof jsonObj[i] === 'object') {
+        recursionInc++;
+        recurseJson(jsonObj[i], dataArr, recursionInc, i, index);
+      }
+    }
+  }
+  return jsonObj;
+}
+
+module.exports = function (req, res) {
+  'use strict';
+
+  var $;
+  var dataArr1;
+  var dataArr2;
+  var dataStr;
+  var $el;
+  var fileHtml;
+  var fileJson;
+  var fileName;
+  var i;
+  var j;
+  var jsonForData;
+  var jsonForXhtml;
+  var output;
+  var target;
+  var targetBase;
+  var $targetEl;
+  var targetFirst;
+  var targetHtml;
+  var targetIndex;
+  var targetParsed;
+  var targetXhtml;
+  var templateDir;
+  var xhtml;
+
+  // HTML scraper action on submission of URL.
+  if (typeof req.body.url === 'string'  &&  req.body.url !== ''  &&
+      typeof req.body.target === 'string'
+  ) {
+    try {
+      request(req.body.url, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+          $ = cheerio.load(body);
+
+          target = req.body.target.trim();
+          if (!target.match(/^(#|\.)[\w#.\[\]-]+$/)) {
+            redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+            return false;
+          }
+
+          // Remove any array index if submitted.
+          targetBase = target.replace(/\[\d+\]/, '');
+          if (!targetBase.match(/^(#|\.)[\w#.-]+$/)) {
+            redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+            return false;
+          }
+
+          // Validate and save the array index if submitted.
+          targetIndex = '';
+          if (target.indexOf('[') !== -1) {
+            targetIndex = target.replace(/^[^\[]*\[/, '[');
+            if (!targetIndex.match(/\[\d+\]/)) {
+              redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+              return false;
+            }
+            else {
+              targetIndex = targetIndex.replace('[', '');
+              targetIndex = targetIndex.replace(']', '');
+            }
+          }
+
+          targetHtml = '';
+          $targetEl = $(targetBase);
+          if ($targetEl.length) {
+            // Iterate through the collection of selected elements. If an index
+            // is specified, skip until that index is iterated upon.
+            j = 0;
+            $targetEl.each(function (i, el) {
+              if (targetIndex === ''  ||  parseInt(targetIndex) === i) {
+                $el = $(el);
+                // Cheerio hack for getting outerHTML.
+                var innerHtml = $el.html();
+                var outerHtml = $el.html(innerHtml) + '\n';
+                targetHtml += outerHtml;
+                if (j === 0) {
+                  targetFirst = outerHtml;
+                }
+                j++;
+              }
+            });
+
+            // Sanitize scraped HTML.
+            targetHtml = targetHtml.replace(/<script(.*?)>/g, '<code$1>');
+            targetHtml = targetHtml.replace(/<\/script(.*?)>/g, '</code$1>');
+            targetHtml = targetHtml.replace(/<textarea(.*?)>/g, '<figure$1>');
+            targetHtml = targetHtml.replace(/<\/textarea(.*?)>/g, '</figure$1>');
+            targetHtml = '<html>' + targetHtml + '</html>';
+            targetFirst = targetFirst.replace(/<script(.*?)>/g, '<code$1>');
+            targetFirst = targetFirst.replace(/<\/script(.*?)>/g, '</code$1>');
+            targetFirst = targetFirst.replace(/<textarea(.*?)>/g, '<figure$1>');
+            targetFirst = targetFirst.replace(/<\/textarea(.*?)>/g, '</figure$1>');
+            targetFirst = '<html>' + targetFirst + '</html>';
+
+            // Convert HTML to XHTML for conversion to full JSON data object.
+            targetParsed = domParser.parseFromString(targetHtml, 'text/html');
+            targetXhtml = xmlSerializer.serializeToString(targetParsed);
+
+            // Convert to JSON.
+            parseString(targetXhtml, function (er, res) {
+              if (er) {
+                console.error(er);
+              }
+              else {
+                // recurseJson builds dataArr1 object.
+                dataArr1 = [];
+                jsonForXhtml = recurseJson(res, dataArr1, 0);
+              }
+            });
+
+            // Delete html tags.
+            targetHtml = targetHtml.replace('<html>', '').replace('</html>', '');
+
+            // Convert HTML to XHTML for Mustache template.
+            targetParsed = domParser.parseFromString(targetFirst, 'text/html');
+            targetXhtml = xmlSerializer.serializeToString(targetParsed);
+
+            // Convert to JSON.
+            parseString(targetXhtml, function (er, res) {
+              if (er) {
+                console.error(er);
+              }
+              else {
+                // recurseJson builds dataArr2 array. We can't use dataArr1
+                // because we need it untouched so we can build jsonForData.
+                // So we instead, we pass dataArr2.
+                dataArr2 = [];
+                jsonForXhtml = recurseJson(res, dataArr2, 0);
+                // Build XHTML with mustache tags.
+                xhtml = builder.buildObject(jsonForXhtml);
+                // Remove XML declaration.
+                xhtml = xhtml.replace(/<\?xml[^>]*\?>/g, '');
+                // Replace html tags with Mustache tags.
+                xhtml = xhtml.replace('<html>', '{{# html }}').replace('</html>', '{{/ html }}');
+                // Clean up.
+                xhtml = xhtml.replace(/^\s*\n/g, '');
+              }
+            });
+          }
+
+          jsonForData = {html:[{}]};
+          for (i = 0; i < dataArr1.length; i++) {
+            for (j in dataArr1[i]) {
+              if (dataArr1[i].hasOwnProperty(j)) {
+                jsonForData.html[0][j] = dataArr1[i][j];
+              }
+            }
+          }
+          dataStr = JSON.stringify(jsonForData, null, 2);
+
+          output = '';
+          output += htmlObj.head;
+          output += '<section>\n';
+          output += htmlObj.scraperTitle;
+          output += htmlObj.reviewerPrefix;
+          // HTML entities.
+          output += $('<div/>').text(targetHtml).html().replace(/\n/g, '<br>');
+          output += htmlObj.reviewerSuffix;
+          output += htmlObj.importerPrefix;
+          output += xhtml;
+          output += htmlObj.json;
+          output += dataStr;
+          output += htmlObj.importerSuffix;
+          output += htmlObj.landingBody;
+          output += '</section>';
+          output += htmlObj.foot;
+          output = output.replace('{{ title }}', 'Fepper HTML Scraper');
+          output = output.replace('{{ class }}', 'scraper');
+          output = output.replace('{{ url }}', req.body.url);
+          output = output.replace('{{ target }}', req.body.target);
+          res.end(output);
+        }
+        else {
+          redirectWithMsg(res, 'error', 'Not+getting+a+valid+response+from+that+URL.', req.body.target, req.body.url);
+          return false;
+        }
+      });
+    }
+    catch (er) {
+      console.error(er);
+    }
+  }
+
+  // HTML importer action on submission of filename.
+  else if (typeof req.body.filename === 'string'  &&  req.body.filename !== '') {
+    templateDir = 'patternlab-node/source/_patterns/05-scrape';
+    fileHtml = req.body.html.replace(/\r/g, '') + '\n';
+    fileJson = req.body.json.replace(/\r/g, '') + '\n';
+
+     // Limit filenames to sane characters
+    fileName = req.body.filename.replace(/[^\w.-]/g, '');
+    // Don't allow periods at beginning of filenames
+    fileName = fileName.replace(/^\.+/g, '');
+    // Don't allow hyphens at beginning of filenames
+    fileName = fileName.replace(/^-+/g, '');
+    if (fileName !== '') {
+      try {
+        fs.writeFile(templateDir + '/' + fileName + '.mustache', fileHtml, function () {
+          fs.writeFile(templateDir + '/' + fileName + '.json', fileJson, function () {
+            redirectWithMsg(res, 'success', 'Go+back+to+the+Pattern+Lab+tab+and+refresh+the+browser+to+check+that+your+template+appears+under+the+Scrape+menu.');
+            return false;
+          });
+        });
+      }
+      catch (er) {
+        console.error(er);
+      }
+    }
+  }
+
+  // If no form variables sent, redirect back with GET.
+  else {
+    try {
+      redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+      return false;
+    }
+    catch (er) {
+      console.error(er);
+    }
+  }
+};
