@@ -35,7 +35,7 @@ the whole in turn getting compiled into data.json, the final source of globally
 scoped data. Manual edits to data.json will get overwritten on compilation.
 
 When upgrading Fepper, be sure to back up the patternlab-node/source directory.
-This is where all the custom work will be done.
+This is where all custom work is to be done.
 
 If using Git for version control, directories named "ignore" will be ignored.
 
@@ -57,3 +57,10 @@ The following READMEs are also invaluable for documentation:
 * [patternlab-node/README.md](https://github.com/electric-eloquence/fepper/blob/master/patternlab-node/README.md)
 * [backend/README](https://github.com/electric-eloquence/fepper/blob/master/backend/README)
 * [\_source/static/README](https://github.com/electric-eloquence/fepper/blob/master/_source/static/README)
+
+###Contributing###
+
+Contributions and bug fixes are greatly appreciated!
+
+* Please pull request against the [dev branch](https://github.com/electric-eloquence/fepper/tree/dev).
+* Please try to be both concise as well as clear on what is trying to be accomplished.
