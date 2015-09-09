@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/e2tha-e/fepper.git"
+    "url": "https://github.com/electric-eloquence/fepper.git"
   },
   "devDependencies": {
     "body-parser": "^1.6.3",
@@ -37,6 +37,7 @@
     "xmldom": "^0.1.19",
     "yargs": "^3.16.1"
   },
+  "license": "MIT",
   "scripts": {
     "postinstall": "cp default.conf.yml conf.yml && gulp install"
   },
