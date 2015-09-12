@@ -29,9 +29,9 @@ Edit conf.yml for customizing local settings and for general configuration
 information.
 
 After installation, you may edit patternlab-node/source/\_data/\_data.json to
-globally populate Mustache templates with data. The underscore-prefixed .json
-files within source/\_patterns will be concatenated to the output of \_data.json,
-the whole in turn getting compiled into data.json, the final source of globally
+globally populate Mustache templates with data. Underscore-prefixed .json files
+within source/\_patterns will be concatenated to the output of \_data.json, the
+whole in turn getting compiled into data.json, the final source of globally
 scoped data. Manual edits to data.json will get overwritten on compilation.
 
 When upgrading Fepper, be sure to back up the patternlab-node/source directory.
