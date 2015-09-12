@@ -1,10 +1,10 @@
 var conf = JSON.parse(process.env.CONF);
-var ghPages = require('gulp-gh-pages'); // Can't use gulp-load-plugins for some reason.
 var gulp = require('gulp');
+var plugins = require('gulp-load-plugins')();
 
 gulp.task('gh-pages', function () {
   return gulp.src('./' + conf.gh_pages_src + '/**/*')
-    .pipe(ghPages({
+    .pipe(plugins.ghPages({
       cacheDir: './' + conf.gh_pages_dest
     }));
 });

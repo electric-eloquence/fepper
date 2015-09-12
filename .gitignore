@@ -6,4 +6,7 @@ backend/*
 !backend/README
 conf.yml
 node_modules/
+npm-debug.log
+patternlab-node/public/
+patternlab-node/source/
 Thumbs.db
