@@ -1,7 +1,6 @@
 var conf = JSON.parse(process.env.CONF);
 var fs = require('fs-extra');
 var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 
 function patternlab_build(arg, chdir) {
@@ -104,7 +103,6 @@ gulp.task('patternlab:v', function (cb) {
 });
 
 gulp.task('patternlab:watch', function () {
-  plugins.livereload.listen();
   gulp.watch('source/_data/*.json', ['patternlab:build-lr']);
   gulp.watch('source/_data/annotations.js', ['patternlab:copy-lr'])
   gulp.watch('source/_patterns/**/!(_)*.json', ['patternlab:build-lr']);
