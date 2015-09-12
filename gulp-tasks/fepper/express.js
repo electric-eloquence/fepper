@@ -1,8 +1,9 @@
 var conf = JSON.parse(process.env.CONF);
 var gulp = require('gulp');
-var server = require('gulp-express');
+var plugins = require('gulp-load-plugins')();
 
 gulp.task('express', function () {
   process.env.PORT = conf.express_port ? conf.express_port : 9001;
-  server.run(['fepper/server/server.js'], {}, false);
+  var server = plugins.liveServer.new('fepper/server/server.js');
+  server.start();
 });
