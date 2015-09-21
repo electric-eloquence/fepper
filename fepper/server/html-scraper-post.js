@@ -172,7 +172,7 @@
               // Convert to JSON.
               parseString(targetXhtml, function (err, res) {
                 if (err) {
-                  console.error(err);
+                  utils.error(err);
                 }
                 else {
                   // jsonRecurse builds dataArr1 object.
@@ -191,7 +191,7 @@
               // Convert to JSON.
               parseString(targetXhtml, function (err, res) {
                 if (err) {
-                  console.error(err);
+                  utils.error(err);
                 }
                 else {
                   // jsonRecurse builds dataArr2 array. We can't use dataArr1
@@ -250,7 +250,7 @@
         });
       }
       catch (err) {
-        console.error(err);
+        utils.error(err);
       }
     }
 
@@ -276,7 +276,7 @@
           });
         }
         catch (err) {
-          console.error(err);
+          utils.error(err);
         }
       }
     }
@@ -288,7 +288,7 @@
         return false;
       }
       catch (err) {
-        console.error(err);
+        utils.error(err);
       }
     }
   };
