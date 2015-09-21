@@ -8,7 +8,7 @@ public/fonts/*
 public/js/*
 public/images/*
 public/patterns/*
-config.json
+config.ini
 latest-change.txt
 patternlab.json
 .sass-cache/*

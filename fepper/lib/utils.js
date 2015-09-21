@@ -1,32 +1,42 @@
-var fs = require('fs-extra');
-var path = require('path');
-var yaml = require('js-yaml');
+(function () {
+  'use strict';
 
-var enc = 'utf8';
-var rootDir = path.normalize(__dirname + '/../..');
+  var fs = require('fs-extra');
+  var path = require('path');
+  var yaml = require('js-yaml');
 
-module.exports.conf = function () {
-  var conf;
-  var yml;
+  var enc = 'utf8';
 
-  // Try getting conf from global process object.
-  if (typeof process.env.conf === 'string') {
-    try {
-      conf = JSON.parse(process.env.CONF);
+  exports.conf = function () {
+    var conf;
+    var yml;
+
+    // Try getting conf from global process object.
+    if (typeof process.env.conf === 'string') {
+      try {
+        conf = JSON.parse(process.env.CONF);
+      }
+      catch (err) {
+        // Fail gracefully.
+      }
     }
-    catch (er) {
+    if (!conf) {
+      yml = fs.readFileSync(__dirname + '/../../conf.yml', enc);
+      conf = yaml.safeLoad(yml);
     }
-  }
-  if (!conf) {
-    yml = fs.readFileSync(rootDir + '/conf.yml', enc);
-    conf = yaml.safeLoad(yml);
-  }
 
-  return conf;
-};
+    return conf;
+  };
 
-module.exports.data = function (conf) {
-  return fs.readJsonSync(rootDir + '/' + conf.src + '/_data/data.json', {throws: false});
-};
+  exports.data = function (conf) {
+    'use strict';
 
-module.exports.rootDir = rootDir;
+    return fs.readJsonSync(__dirname + '/../../' + conf.src + '/_data/data.json', {throws: false});
+  };
+
+  exports.rootDir = function () {
+    'use strict';
+
+    return path.normalize(__dirname + '/../..');
+  };
+})();

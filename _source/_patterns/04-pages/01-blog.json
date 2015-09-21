@@ -1,6 +1,7 @@
 {
 	"latest-posts" : [
 		{
+			"url": "../04-pages-02-articles-00-article-5/04-pages-02-articles-00-article-5.html",
 			"img": {
 				"square": {
 					"src": "../../images/sample/thumb-square-river.jpg",
@@ -15,6 +16,7 @@
 			}
 		},
 		{
+			"url": "../04-pages-02-articles-00-article-6/04-pages-02-articles-00-article-6.html",
 			"img": {
 				"square": {
 					"src": "../../images/sample/thumb-square-ivy.jpg",
@@ -29,6 +31,7 @@
 			}
 		},
 		{
+			"url": "../04-pages-02-articles-00-article-7/04-pages-02-articles-00-article-7.html",
 			"img": {
 				"square": {
 					"src": "../../images/sample/thumb-square-yosemite.jpg",
@@ -43,6 +46,7 @@
 			}
 		},
 		{
+			"url": "../04-pages-02-articles-00-article-8/04-pages-02-articles-00-article-8.html",
 			"img": {
 				"square": {
 					"src": "../../images/sample/thumb-square-fire.jpg",
@@ -57,6 +61,7 @@
 			}
 		},
 		{
+			"url": "../04-pages-02-articles-00-article-9/04-pages-02-articles-00-article-9.html",
 			"img": {
 				"square": {
 					"src": "../../images/sample/thumb-square-gear.jpg",

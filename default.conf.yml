@@ -53,18 +53,24 @@ backend:
     #   contain the document root and the path from the document root to the
     #   target directory.
     # - Do not include "backend" or a leading slash.
-    # - To view the directories' assets in a browser (or to include them in
-    #   Pattern Lab files), enter the hostname, port and path minus the document
-    #   root.
+    # - To include the directories' assets in your code (or to view them in a
+    # - browser), enter the path without the document root. For example, if the
+    #   setting is docroot/assets, enter /assets without docroot.
     # - A version-controlled instance of these settings can be set in data.json
     #   under backend_webserved_dirs.
     # - The backend_webserved_dirs settings in data.json takes precedence over
     #   these settings in conf.yml.
     # - Assuming a host on the web is serving an instance of the backend, a
     #   GitHub Page of this Fepper instance can access those assets if the
-    #   gh_pages_path_prefix setting is set in data.json and points correctly to 
-    #   that host.
-    # - Do not include a trailing slash in gh_pages_path_prefix.
+    #   gh_pages_prefix setting is set in data.json and points correctly to that
+    #   host.
+    # - Do not include a trailing slash in gh_pages_prefix.
+    # - Do not use names that will collide with what's in Pattern Lab, i.e.
+    #   docroot/images, docroot/css, etc.
+    # - DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER
+    #   PUBLIC HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO
+    #   ANY PUBLISHED SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE
+    #   PUBLIC ANY SENSITIVE INFORMATION CONTAINED WITHIN THE SOURCE CODE!
     #
     # - Examples:
     #- docroot/assets
@@ -75,7 +81,7 @@ backend:
 # value can also be set in data.json and be saved in version control. If both
 # are set, the setting in this file will take priority. Be sure to include the
 # leading slash in this setting or use a fully qualified domain name.
-#gh_pages_path_prefix: /github-repository-name
+#gh_pages_prefix: /github-repository-name
 
 # It isn't a good idea to change the following values.
 enc: utf8

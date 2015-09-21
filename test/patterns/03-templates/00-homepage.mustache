@@ -1,0 +1,35 @@
+<div class="page" id="page">
+	{{> 02-organisms/00-global/00-header.mustache }}
+	<div role="main">
+		{{# emergency? }}
+			{{ alert }}
+		{{/ emergency? }}
+		{{# hero? }}
+			{{ block_hero }}
+		{{/ hero? }}
+
+		<div class="g g-3up">
+			{{# touts }}
+				<div class="gi">
+					{{{ tout }}}
+				</div>
+			{{/ touts }}
+		</div><!--end 3up-->
+
+		<hr />
+
+		<div class="l-main">
+			<section class="section latest-posts">
+				<h2 class="section-title">Latest Posts</h2>
+				<ul class="post-list">
+					{{# latest_posts }}
+						<li>{{{ post }}}</li>
+					{{/ latest_posts }}
+				</ul>
+				<a href="#" class="text-btn">View more posts</a>
+			</section>
+		</div><!--end .l-main-->
+
+	</div><!--End role=main-->
+	{{> 02-organisms/00-global/01-footer }}
+</div>

@@ -99,8 +99,8 @@
 
         // Re-adding click event listener.
         bpBtn = pd.getElementById('sg-size-' + i);
-        bpBtn.addEventListener('click', function (event) {
-          event.preventDefault();
+        bpBtn.addEventListener('click', function (e) {
+          e.preventDefault();
           var sgSize = this.id.replace('sg-size-', '');
           // Iterating again within scope of anonymous function.
           for (var j in bpObj) {
@@ -123,7 +123,7 @@
       this.style.cursor = 'pointer';
     });
     // Send to Fepper's Mustache browser when clicking the viewer's Mustache code.
-    codeFill.addEventListener('click', function (event) {
+    codeFill.addEventListener('click', function () {
       var code = encodeURIComponent(this.innerHTML);
       var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
       window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
