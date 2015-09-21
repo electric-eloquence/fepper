@@ -31,6 +31,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-wait": "0.0.2",
     "js-yaml": "^3.2.7",
+    "mocha": "^2.3.3",
     "pagedown": "^1.1.0",
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
@@ -41,7 +42,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "postinstall": "if [ ! -f conf.yml ]; then cp default.conf.yml conf.yml; fi && gulp install"
+    "postinstall": "if [ ! -f conf.yml ]; then cp default.conf.yml conf.yml; fi && gulp install",
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "engines": {
     "node": ">=0.10"
