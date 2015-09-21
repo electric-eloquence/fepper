@@ -29,14 +29,10 @@
   };
 
   exports.data = function (conf) {
-    'use strict';
-
     return fs.readJsonSync(__dirname + '/../../' + conf.src + '/_data/data.json', {throws: false});
   };
 
   exports.rootDir = function () {
-    'use strict';
-
     return path.normalize(__dirname + '/../..');
   };
 })();
