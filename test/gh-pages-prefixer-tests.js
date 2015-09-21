@@ -22,7 +22,7 @@
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    ghPagesPrefixer.main(true);
+    ghPagesPrefixer.main();
 
     it('should read a valid .gh_pages_src config', function () {
       expect(conf.gh_pages_src).to.be.a('string');
