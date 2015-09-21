@@ -108,7 +108,7 @@
     }
   };
 
-  exports.main = function () {
+  exports.main = function (quiet) {
     var dataJson = utils.data(conf);
     var files;
     var prefix;
@@ -131,7 +131,9 @@
     // Before checking for any gh_pages_prefix to insert, copy over the Pattern
     // Lab public directory to the fepper-gh-pages directory. Clean up any old
     // destination files before copying.
-    console.log('Preparing gh_pages_src...');
+    if (!quiet) {
+      console.log('Preparing gh_pages_src...');
+    }
     fs.removeSync(ghPagesDir);
     // Then, copy.
     fs.copySync(publicDir, ghPagesDir);
@@ -164,15 +166,21 @@
     webservedDirsShort = exports.webservedDirnamesTruncate(webservedDirsFull);
 
     if (webservedDirsShort.length) {
-      console.log('Prepending gh_pages_prefix...');
+      if (!quiet) {
+        console.log('Prepending gh_pages_prefix...');
+      }
       // Recursively glob pattern files, and then iterate through them.
       files = exports.filesGet(ghPagesDir);
       // Read files, token replace path prefix tags, and write output.
       exports.filesProcess(files, conf, webservedDirsShort, prefix);
       // Copy webserved_dirs to gh_pages_src.
-      console.log('Copying webserved_dirs to gh_pages_src...');
+      if (!quiet) {
+        console.log('Copying webserved_dirs to gh_pages_src...');
+      }
       exports.webservedDirsCopy(webservedDirsFull, rootDir, webservedDirsShort, ghPagesDir);
     }
-    console.log('Finished preprocessing GitHub Pages files.');
+    if (!quiet) {
+      console.log('Finished preprocessing GitHub Pages files.');
+    }
   };
 })();

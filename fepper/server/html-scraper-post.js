@@ -14,8 +14,8 @@
   var xmlSerializer = new xmldom.XMLSerializer();
 
   exports.redirectWithMsg = function (res, type, msg, target, url) {
-    target = typeof target !== 'undefined' ? target : '';
-    url = typeof url !== 'undefined' ? url : '';
+    target = typeof target === 'string' ? target : '';
+    url = typeof url === 'string' ? url : '';
     res.writeHead(303, { Location: 'html-scraper?' + type + '=' +  msg + '&target=' + target + '&url=' + url });
     res.end();
   };
