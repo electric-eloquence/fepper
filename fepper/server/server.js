@@ -8,7 +8,7 @@
   var utils = require('../lib/utils');
   var conf = utils.conf();
   var dataJson = utils.data(conf);
-  var rootDir = utils.rootDir;
+  var rootDir = utils.rootDir();
 
   var htmlScraper = require('./html-scraper');
   var htmlScraperPost = require('./html-scraper-post');
@@ -47,24 +47,23 @@
   app.use(bodyParser.urlencoded({ extended: true }));
 
   // HTML scraper form.
-  app.get('/html-scraper', htmlScraper);
+  app.get('/html-scraper', htmlScraper.main);
 
   // HTML scraper AJAX response.
-  app.get('/html-scraper-xhr', htmlScraperXhr);
+  app.get('/html-scraper-xhr', htmlScraperXhr.main);
 
   // Mustache browser.
-  app.get('/mustache-browser', mustacheBrowser);
+  app.get('/mustache-browser', mustacheBrowser.main);
 
   // Success page.
-  app.get('/success', success);
+  app.get('/success', success.main);
 
   // HTML scraper and importer actions.
-  app.post('/html-scraper', htmlScraperPost);
+  app.post('/html-scraper', htmlScraperPost.main);
 
   // For everything else, document root = Pattern Lab.
   app.use(express.static(rootDir + '/patternlab-node/public'));
 
   // Set default port = 9001.
   app.listen(process.env.PORT || 9001);
-
 })();

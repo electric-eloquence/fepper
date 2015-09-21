@@ -1,0 +1,30 @@
+"# emergency\\?": |
+  <?php if ($emergency): ?>
+"alert": |
+  <?php print $alert; ?>
+"/ emergency\\?": |
+  <?php endif; ?>
+"# hero\\?": |
+  <?php if ($hero): ?>
+"block_hero": |
+  <?php print $hero; ?>
+"/ hero\\?": |
+  <?php endif; ?>
+"# touts": |
+  <?php foreach ($touts as $tout): ?>
+"{ tout }": |
+  <?php print $tout; ?>
+"/ touts": |
+  <?php endforeach; ?>
+"# latest_posts": |
+  <?php foreach ($latest_posts as $post): ?>
+"{ post }": |
+  <?php print $post; ?>
+"/ latest-posts": |
+  <?php endforeach; ?>
+"> 02-organisms/00-global/01-footer": |
+  <?php print $page['footer']; ?>
+"> molecules-primary-nav": |
+  <?php print $page['primary_nav']; ?>
+"> molecules-search": |
+  <?php print $page['search']; ?>

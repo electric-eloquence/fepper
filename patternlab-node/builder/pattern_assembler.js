@@ -1,5 +1,5 @@
 /* 
- * patternlab-node - v0.11.0 - 2015 
+ * patternlab-node - v0.12.0 - 2015 
  * 
  * Brian Muenzenmeyer, and the web community.
  * Licensed under the MIT license. 
@@ -148,11 +148,11 @@
       //find pattern lineage
       lineage_hunter.find_lineage(currentPattern, patternlab);
 
-      //look for a pseudo pattern by checking if there is a file containing same name, with ~ in it, ending in .json
-      pseudopattern_hunter.find_pseudopatterns(currentPattern, patternlab);
-
       //add to patternlab object so we can look these up later.
       addPattern(currentPattern, patternlab);
+
+      //look for a pseudo pattern by checking if there is a file containing same name, with ~ in it, ending in .json
+      pseudopattern_hunter.find_pseudopatterns(currentPattern, patternlab);
     }
 
     function getpatternbykey(key, patternlab){
@@ -167,27 +167,39 @@
       throw 'Could not find pattern with key ' + key;
     }
 
-    /*
-    * Recursively merge properties of two objects
-    * http://stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically
-    */
-    var self = this;
-    function mergeData(obj1, obj2) {
-      for (var p in obj2) {
+    /**
+     * Recursively merge properties of two objects.
+     *
+     * @param {Object} obj1 If obj1 has properties obj2 doesn't, add to obj2.
+     * @param {Object} obj2 This object's properties have priority over obj1.
+     * @returns {Object} obj2
+     */
+    function mergeData(obj1, obj2){
+      if(typeof obj2 === 'undefined'){
+        obj2 = {};
+      }
+      for(var p in obj1){
         try {
-          // Property in destination object set; update its value.
-          if ( obj2[p].constructor == Object ) {
-            obj1[p] = self.merge_data(obj1[p], obj2[p]);
-
-          } else {
-            obj1[p] = obj2[p];
+          // Only recurse if obj1[p] is an object.
+          if(obj1[p].constructor === Object){
+            // Requires 2 objects as params; create obj2[p] if undefined.
+            if(typeof obj2[p] === 'undefined'){
+              obj2[p] = {};
+            }
+            obj2[p] = mergeData(obj1[p], obj2[p]);
+            // Pop when recursion meets a non-object. If obj1[p] is a non-object,
+            // only copy to undefined obj2[p]. This way, obj2 maintains priority.
+          } else if(typeof obj2[p] === 'undefined'){
+            obj2[p] = obj1[p];
           }
         } catch(e) {
           // Property in destination object not set; create it and set its value.
-          obj1[p] = obj2[p];
+          if(typeof obj2[p] === 'undefined'){
+            obj2[p] = obj1[p];
+          }
         }
       }
-      return obj1;
+      return obj2;
     }
 
     function buildListItems(patternlab){

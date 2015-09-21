@@ -2,13 +2,6 @@ var conf = JSON.parse(process.env.CONF);
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 
-gulp.task('lint', [
-  'lint:htmlhint',
-  'lint:htmllint',
-  'lint:jshint',
-  'lint:jsonlint'
-]);
-
 gulp.task('lint:htmlhint', function () {
   return gulp.src(conf.pub + '/patterns/**/*.html')
     .pipe(plugins.htmlhint())

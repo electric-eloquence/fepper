@@ -1,26 +1,13 @@
 {
+	"article_title" : "Top 10 mountain ranges for hiking",
 	"author" : {
 		"first-name" : "Julianne",
 		"last-name" : "McCormick"
 	},
 	"img": {
-		"landscape-4x3": {
-			"src": "../../images/sample/landscape-16x9-mountains.jpg",
-			"alt": "Mountains"
-		},
 		"landscape-16x9": {
 			"src": "../../images/sample/landscape-16x9-mountains.jpg",
-			"alt": "Mountains"	
+			"alt": "Mountains"
 		}
-	},
-	"inset-blocks" : [
-		{
-			"headline" : "This is the headline for the inset block"
-		}
-	],
-	"latest-block" : [
-		{
-			"headline" : "This is the headline for the latest block"
-		}
-	]
+	}
 }

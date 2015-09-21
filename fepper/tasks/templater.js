@@ -1,37 +1,30 @@
+/**
+ * Compiles templates in Pattern Lab to templates in backend.
+ *
+ * Converts Mustache tags into whatever type of tokens are used by the backend
+ * webapp based on mappings in a YAML file named similarly to the Mustache
+ * template.
+ */
 (function () {
   'use strict';
 
   var fs = require('fs-extra');
   var glob = require('glob');
+  var path = require('path');
   var yaml = require('js-yaml');
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
-  var rootDir = utils.rootDir;
+  var rootDir = utils.rootDir();
 
-  var code;
-  var dest;
-  var destDir;
-  var files;
   var i;
-  var j;
-  var patternDir = rootDir + '/' + conf.src + '/_patterns/';
-  var re;
-  var srcDir = patternDir + '03-templates';
-  var stats;
-  var templatesDir;
-  var templatesExt;
-  var token;
-  var tokens;
-  var unescaped;
   var yml;
-  var ymlFile;
 
-
-  function recurseMustache(file) {
+  exports.mustacheRecurse = function (file, patternDir) {
     var code1;
     var code2 = '';
     var codeSplit;
+    var fs = require('fs-extra');
     var k;
     var partial;
     var partialCode;
@@ -47,8 +40,8 @@
         // then the outputted file will not contain any partials, which defeats
         // the purpose of recursing templates in the first place.
         if (codeSplit[k].match(/\/[^\/]*\.mustache\s*}}/)) {
-          partial = stripMustache(codeSplit[k]).trim();
-          partialCode = recurseMustache(patternDir + partial);
+          partial = exports.mustacheStrip(codeSplit[k]).trim();
+          partialCode = exports.mustacheRecurse(patternDir + '/' + partial, patternDir);
           code2 += partialCode;
         }
         else {
@@ -58,105 +51,143 @@
 
       return code2;
     }
-    catch (er) {
-      console.error(er);
+    catch (err) {
+      console.error(err);
     }
-  }
+  };
 
-
-  function stripMustache(unstripped) {
+  exports.mustacheStrip = function (unstripped) {
     var stripped = unstripped.replace(/{{+[^\w]?\s*/, '');
     stripped = stripped.replace(/\s*}+}/, '');
     return stripped;
-  }
+  };
 
-
-  function unescapeMustache(escaped) {
+  exports.mustacheUnescape = function (escaped) {
     var unescaped = escaped.replace(/{\s*/, '{\\s');
     unescaped = unescaped.replace(/\s*}/, '\\s}');
     return unescaped;
+  };
+
+  exports.templatesGlob = function (srcDir) {
+    var glob1 = glob.sync(srcDir + '/!(__)*.mustache');
+    var glob2 = glob.sync(srcDir + '/!(_no_sync)/!(__)*.mustache');
+    return glob1.concat(glob2);
   }
 
+  exports.templatesWrite = function (file, srcDir, templatesDir, templatesExt, code) {
+    // Determine destination for token-replaced code.
+    var dest = file.replace(srcDir, '');
+    // Replace underscore prefixes.
+    dest = dest.replace(/\/_([^\/]+)$/, '/$1');
+    dest = templatesDir + dest;
+    dest = dest.replace(/mustache$/, templatesExt);
 
-  try {
-    // Only proceed if templates_dir is set.
-    if (typeof conf.backend.synced_dirs.templates_dir === 'string') {
-      templatesDir = conf.backend.synced_dirs.templates_dir;
+    // Write to file system.
+    fs.mkdirsSync(path.dirname(dest));
+    fs.writeFileSync(dest, code);
+  };
 
-      // Only proceed if templates_ext is set.
-      if (typeof conf.backend.synced_dirs.templates_ext === 'string') {
-        templatesExt = conf.backend.synced_dirs.templates_ext;
+  exports.tokensLoad = function (ymlFile) {
+    yml = fs.readFileSync(ymlFile, conf.enc);
+    return yaml.safeLoad(yml);
+  }
 
-        // Only proceed if templatesExt is set correctly.
-        if (templatesExt.match(/^[\w.\/-]+$/)) {
+  exports.tokensReplace = function (tokens, code) {
+    var re;
+    var token;
+    var unescaped;
 
-          // Only proceed if templatesDir exists.
-          templatesDir = rootDir + '/backend/' + templatesDir;
-          stats = fs.statSync(templatesDir);
-          if (stats.isDirectory()) {
-
-            // Search source directory for Mustache files.
-            // Excluding templates in _nosync directory and those prefixed by __.
-            // Trying to keep the globbing simple and maintainable.
-            files = glob.sync(srcDir + '/!(_no_sync)/!(__)*.mustache');
-            for (i = 0; i < files.length; i++) {
-              // Read YAML file and store keys/values in tokens object.
-              ymlFile = files[i].replace(/\.mustache$/, '.yml');
-              // Make sure the YAML file exists before proceeding.
-              try {
-                stats = fs.statSync(ymlFile);
-              }
-              catch (er) {
-                console.error(er);
-                continue;
-              }
-              if (!stats.isFile()) {
-                continue;
-              }
-
-              // Recurse through Mustache templates (sparingly. See comment above)
-              code = recurseMustache(files[i]);
-
-              yml = fs.readFileSync(ymlFile, conf.enc);
-              tokens = yaml.safeLoad(yml);
-
-              // Iterate through tokens and replace keys for values in the code.
-              for (j in tokens) {
-                if (tokens.hasOwnProperty(j)) {
-                  unescaped = unescapeMustache(j);
-                  re = new RegExp('{{\\s*' + unescaped + '\\s*}}', 'g');
-                  token = tokens[j].replace(/\n$/, '');
-                  code = code.replace(re, token);
-                }
-              }
-
-              // Delete remaining Mustache tags.
-              code = code.replace(/{{[^}]*}+}\s*\n?/g, '');
-              // Replace escaped curly braces.
-              code = code.replace(/\\{/g, '{');
-              code = code.replace(/\\}/g, '}');
-              // Determine destination for token-replaced code.
-              dest = files[i].replace(srcDir, '');
-              // Replace underscore prefixes.
-              dest = dest.replace(/\/_([^\/]+)$/, '/$1');
-              dest = templatesDir + dest;
-              dest = dest.replace(/mustache$/, templatesExt);
-              destDir = dest.replace(/\/[^\/]*$/, '');
-
-              // Write to file system.
-              fs.mkdirsSync(destDir);
-              fs.writeFileSync(dest, code);
-
-              // Log to console.
-              console.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(rootDir, '').replace(/^\//, ''));
-            }
-          }
-        }
+    for (i in tokens) {
+      if (tokens.hasOwnProperty(i)) {
+        unescaped = exports.mustacheUnescape(i);
+        re = new RegExp('{{\\s*' + unescaped + '\\s*}}', 'g');
+        token = tokens[i].replace(/\n$/, '');
+        code = code.replace(re, token);
       }
     }
-  }
-  catch (er) {
-    console.error(er);
+
+    // Delete remaining Mustache tags.
+    code = code.replace(/{{[^}]*}+}\s*\n?/g, '');
+    // Replace escaped curly braces.
+    code = code.replace(/\\{/g, '{');
+    code = code.replace(/\\}/g, '}');
+
+    return code;
   }
 
+  exports.main = function () {
+    var code;
+    var dest;
+    var destDir;
+    var files;
+    var patternDir = rootDir + '/' + conf.src + '/_patterns/';
+    var re;
+    var srcDir = patternDir + '03-templates';
+    var stats;
+    var templatesDir;
+    var templatesExt;
+    var tokens;
+    var ymlFile;
+
+    try {
+      // Only proceed if templates_dir is set.
+      if (typeof conf.backend.synced_dirs.templates_dir !== 'string') {
+        return;
+      }
+
+      // Only proceed if templates_ext is set.
+      if (typeof conf.backend.synced_dirs.templates_ext !== 'string') {
+        return;
+      }
+
+      // Only proceed if templatesExt is set correctly.
+      templatesExt = conf.backend.synced_dirs.templates_ext;
+      if (!templatesExt.match(/^[\w.\/-]+$/)) {
+        return;
+      }
+
+      // Only proceed if templatesDir exists.
+      templatesDir = conf.backend.synced_dirs.templates_dir;
+      templatesDir = rootDir + '/backend/' + templatesDir;
+      stats = fs.statSync(templatesDir);
+      if (!stats.isDirectory()) {
+        return;
+      }
+
+      // Search source directory for Mustache files.
+      // Excluding templates in _nosync directory and those prefixed by __.
+      // Trying to keep the globbing simple and maintainable.
+      files = exports.templatesGlob(srcDir);
+      for (i = 0; i < files.length; i++) {
+        // Read YAML file and store keys/values in tokens object.
+        ymlFile = files[i].replace(/\.mustache$/, '.yml');
+        // Make sure the YAML file exists before proceeding.
+        try {
+          stats = fs.statSync(ymlFile);
+        }
+        catch (err) {
+          console.error(err);
+          continue;
+        }
+        if (!stats.isFile()) {
+          continue;
+        }
+
+        // Recurse through Mustache templates (sparingly. See comment above)
+        code = exports.mustacheRecurse(files[i], patternDir);
+        // Load tokens from YAML file.
+        tokens = exports.tokensLoad(ymlFile);
+        // Iterate through tokens and replace keys for values in the code.
+        code = exports.tokensReplace(tokens, code);
+        // Write compiled templates.
+        exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
+
+        // Log to console.
+        console.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(rootDir, '').replace(/^\//, ''));
+      }
+    }
+    catch (err) {
+      console.error(err);
+    }
+  };
 })();
