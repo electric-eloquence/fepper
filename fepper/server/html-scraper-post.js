@@ -14,10 +14,12 @@
   var xmlSerializer = new xmldom.XMLSerializer();
 
   exports.redirectWithMsg = function (res, type, msg, target, url) {
-    target = typeof target === 'string' ? target : '';
-    url = typeof url === 'string' ? url : '';
-    res.writeHead(303, { Location: 'html-scraper?' + type + '=' +  msg + '&target=' + target + '&url=' + url });
-    res.end();
+    if (res) {
+      target = typeof target === 'string' ? target : '';
+      url = typeof url === 'string' ? url : '';
+      res.writeHead(303, { Location: 'html-scraper?' + type + '=' +  msg + '&target=' + target + '&url=' + url });
+      res.end();
+    }
   };
 
   exports.jsonRecurse = function (jsonObj, dataArr, recursionInc, index, prevIndex) {
@@ -86,7 +88,7 @@
     return jsonObj;
   };
 
-  exports.targetValidate(target) {
+  exports.targetValidate = function (target, res, req) {
     // Split at array index, if any.
     var targetSplit = target.split('[', 2);
     targetSplit[1] = targetSplit[1] ? targetSplit[1] : '';
@@ -99,7 +101,7 @@
 
     // Remove closing bracket from targetSplit[1] and validate it is an integer.
     targetSplit[1] = targetSplit[1].substr(0, targetSplit[1].length - 1);
-    if (!targetSplit[1].match(/\d+/)) {
+    if (!targetSplit[1].match(/\d*/)) {
       exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
       return false;
     }
@@ -140,7 +142,7 @@
           if (!error && response.statusCode === 200) {
             $ = cheerio.load(body);
             target = req.body.target.trim();
-            targetSplit = exports.targetValidate(target);
+            targetSplit = exports.targetValidate(target, res, req);
             targetBase = targetSplit[0]
             targetIndex = targetSplit[1]
             targetHtml = '';
