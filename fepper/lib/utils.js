@@ -8,6 +8,7 @@
 
   var enc = 'utf8';
 
+  // Conf and global vars.
   exports.conf = function () {
     var conf;
     var yml;
@@ -33,15 +34,11 @@
     return fs.readJsonSync(__dirname + '/../../' + conf.src + '/_data/data.json', {throws: false});
   };
 
-  exports.error = console.error;
-
-  exports.i = function (obj, showHidden, depth) {
-    depth = depth ? depth : null;
-    return util.inspect(obj, showHidden, depth);
+  exports.rootDir = function () {
+    return path.normalize(__dirname + '/../..');
   };
 
-  exports.info = console.info;
-
+  // Logging.
   exports.isTest = function () {
     var isGulp = false;
     var isTest = false;
@@ -63,11 +60,16 @@
     return isTest;
   };
 
-  exports.log = exports.isTest() ? function () {} : console.log;
-
-  exports.rootDir = function () {
-    return path.normalize(__dirname + '/../..');
+  exports.i = function (obj, showHidden, depth) {
+    depth = depth ? depth : null;
+    return util.inspect(obj, showHidden, depth);
   };
+
+  exports.error = console.error;
+
+  exports.info = console.info;
+
+  exports.log = exports.isTest() ? function () {} : console.log;
 
   exports.warn = console.warn;
 })();
