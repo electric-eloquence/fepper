@@ -25,49 +25,61 @@
     var underscored;
 
     for (var i in jsonObj) {
-      if (jsonObj.hasOwnProperty(i)) {
-        if (i === '_') {
-          for (var j in jsonObj) {
-            if (jsonObj.hasOwnProperty(j)) {
-              underscored = '';
-              if (jsonObj.hasOwnProperty(j)  &&  j === '$') {
-                for (var k in jsonObj[j]) {
-                  if (jsonObj[j].hasOwnProperty(k)) {
-                    if (k === 'class') {
-                      underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
-                      obj = {};
-                      obj[underscored] = jsonObj[i];
-                      dataArr.push(obj);
-                      break;
-                    }
-                    else if (k === 'id') {
-                      underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
-                      obj = {};
-                      obj[underscored] = jsonObj[i];
-                      dataArr.push(obj);
-                      // Don't break because we would prefer to use classes.
-                    }
-                  }
-                }
-              }
-            }
+      if (!jsonObj.hasOwnProperty(i)) {
+        continue;
+      }
+
+      else if (i !== '_' && i !== '$' && typeof jsonObj[i] === 'object') {
+        recursionInc++;
+        exports.jsonRecurse(jsonObj[i], dataArr, recursionInc, i, index);
+      }
+
+      else if (i === '_') {
+        for (var j in jsonObj) {
+          if (!jsonObj.hasOwnProperty(j)) {
+            continue;
           }
-          if (underscored === '') {
-            if (typeof index !== 'undefined'  &&  typeof prevIndex !== 'undefined') {
-              underscored = prevIndex + '_' + recursionInc;
+
+          else if (j !== '$') {
+            continue;
+          }
+
+          underscored = '';
+          for (var k in jsonObj[j]) {
+            if (!jsonObj[j].hasOwnProperty(k)) {
+              continue;
+            }
+
+            else if (k === 'class') {
+              underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
               obj = {};
               obj[underscored] = jsonObj[i];
               dataArr.push(obj);
-              jsonObj[i] = '{{ ' + underscored + ' }}';
+              break;
+            }
+
+            else if (k === 'id') {
+              underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
+              obj = {};
+              obj[underscored] = jsonObj[i];
+              dataArr.push(obj);
+              // Don't break because we would prefer to use classes.
             }
           }
-          else {
+        }
+
+        if (underscored === '') {
+          if (typeof index !== 'undefined' && typeof prevIndex !== 'undefined') {
+            underscored = prevIndex + '_' + recursionInc;
+            obj = {};
+            obj[underscored] = jsonObj[i];
+            dataArr.push(obj);
             jsonObj[i] = '{{ ' + underscored + ' }}';
           }
         }
-        else if (i !== '$'  &&  typeof jsonObj[i] === 'object') {
-          recursionInc++;
-          exports.jsonRecurse(jsonObj[i], dataArr, recursionInc, i, index);
+
+        else {
+          jsonObj[i] = '{{ ' + underscored + ' }}';
         }
       }
     }
