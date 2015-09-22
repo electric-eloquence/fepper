@@ -8,7 +8,9 @@
 
   var enc = 'utf8';
 
+  // ///////////////////////////////////////////////////////////////////////////
   // Conf and global vars.
+  // ///////////////////////////////////////////////////////////////////////////
   exports.conf = function () {
     var conf;
     var yml;
@@ -38,7 +40,11 @@
     return path.normalize(__dirname + '/../..');
   };
 
+  // ///////////////////////////////////////////////////////////////////////////
   // Logging.
+  // ///////////////////////////////////////////////////////////////////////////
+  exports.console = console;
+
   exports.isTest = function () {
     var isGulp = false;
     var isTest = false;
@@ -65,11 +71,11 @@
     return util.inspect(obj, showHidden, depth);
   };
 
-  exports.error = console.error;
+  exports.error = exports.console.error;
 
-  exports.info = console.info;
+  exports.info = exports.console.info;
 
-  exports.log = exports.isTest() ? function () {} : console.log;
+  exports.log = exports.isTest() ? function () {} : exports.console.log;
 
-  exports.warn = console.warn;
+  exports.warn = exports.console.warn;
 })();
