@@ -86,6 +86,27 @@
     return jsonObj;
   };
 
+  exports.targetValidate(target) {
+    // Split at array index, if any.
+    var targetSplit = target.split('[', 2);
+    targetSplit[1] = targetSplit[1] ? targetSplit[1] : '';
+
+    // Validate that targetSplit[0] is a css selector.
+    if (!targetSplit[0].match(/^(#|\.)[\w#\-\.]+$/)) {
+      exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+      return false;
+    }
+
+    // Remove closing bracket from targetSplit[1] and validate it is an integer.
+    targetSplit[1] = targetSplit[1].substr(0, targetSplit[1].length - 1);
+    if (!targetSplit[1].match(/\d+/)) {
+      exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+      return false;
+    }
+
+    return targetSplit;
+  };
+
   exports.main = function (req, res) {
     var $;
     var dataArr1;
@@ -107,6 +128,7 @@
     var targetHtml;
     var targetIndex;
     var targetParsed;
+    var targetSplit;
     var targetXhtml;
     var templateDir;
     var xhtml;
@@ -117,34 +139,10 @@
         request(req.body.url, function (error, response, body) {
           if (!error && response.statusCode === 200) {
             $ = cheerio.load(body);
-
             target = req.body.target.trim();
-            if (!target.match(/^(#|\.)[\w#.\[\]-]+$/)) {
-              exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
-              return false;
-            }
-
-            // Remove any array index if submitted.
-            targetBase = target.replace(/\[\d+\]/, '');
-            if (!targetBase.match(/^(#|\.)[\w#.-]+$/)) {
-              exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
-              return false;
-            }
-
-            // Validate and save the array index if submitted.
-            targetIndex = '';
-            if (target.indexOf('[') !== -1) {
-              targetIndex = target.replace(/^[^\[]*\[/, '[');
-              if (!targetIndex.match(/\[\d+\]/)) {
-                exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
-                return false;
-              }
-              else {
-                targetIndex = targetIndex.replace('[', '');
-                targetIndex = targetIndex.replace(']', '');
-              }
-            }
-
+            targetSplit = exports.targetValidate(target);
+            targetBase = targetSplit[0]
+            targetIndex = targetSplit[1]
             targetHtml = '';
             $targetEl = $(targetBase);
             if ($targetEl.length) {
