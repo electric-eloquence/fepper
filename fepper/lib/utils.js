@@ -37,13 +37,13 @@
     console.error(toOut);
   };
 
-  exports.info = function (toOut) {
-    console.info(toOut);
+  exports.i = function (toOut, showHidden, depth) {
+    depth = depth ? depth : null;
+    return util.inspect(toOut, showHidden, depth);
   };
 
-  exports.inspect = function (toOut, showHidden, depth) {
-    depth = depth ? depth : 2;
-    console.log(util.inspect(toOut, showHidden, depth));
+  exports.info = function (toOut) {
+    console.info(toOut);
   };
 
   exports.isTest = function () {
