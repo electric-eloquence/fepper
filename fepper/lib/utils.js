@@ -33,18 +33,14 @@
     return fs.readJsonSync(__dirname + '/../../' + conf.src + '/_data/data.json', {throws: false});
   };
 
-  exports.error = function (toOut) {
-    console.error(toOut);
-  };
+  exports.error = console.error;
 
-  exports.i = function (toOut, showHidden, depth) {
+  exports.i = function (obj, showHidden, depth) {
     depth = depth ? depth : null;
-    return util.inspect(toOut, showHidden, depth);
+    return util.inspect(obj, showHidden, depth);
   };
 
-  exports.info = function (toOut) {
-    console.info(toOut);
-  };
+  exports.info = console.info;
 
   exports.isTest = function () {
     var isGulp = false;
@@ -67,18 +63,11 @@
     return isTest;
   };
 
-  exports.log = function (toOut) {
-    // Suppress logging when unit testing.
-    if (!exports.isTest()) {
-      console.log(toOut);
-    }
-  };
+  exports.log = exports.isTest() ? function () {} : console.log;
 
   exports.rootDir = function () {
     return path.normalize(__dirname + '/../..');
   };
 
-  exports.warn = function (toOut) {
-    console.warn(toOut);
-  };
+  exports.warn = console.warn;
 })();
