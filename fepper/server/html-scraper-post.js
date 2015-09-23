@@ -13,6 +13,52 @@
   var xmlSerializer = new xmldom.XMLSerializer();
 
   /**
+   * @param {string} str - The text requiring sane newlines.
+   * @return {string} A line feed at the end and stripped of carriage returns.
+   */
+  exports.newlineFormat = function (str) {
+    str = str.replace(/\r/g, '') + '\n';
+
+    return str;
+  };
+
+  /**
+   * @return {string} Sanitized HTML.
+   */
+  exports.dataArrayToJson = function (dataArr) {
+    var jsonForData = {html:[{}]};
+
+    for (var i = 0; i < dataArr.length; i++) {
+      for (var j in dataArr[i]) {
+        if (dataArr[i].hasOwnProperty(j)) {
+          jsonForData.html[0][j] = dataArr[i][j];
+        }
+      }
+    }
+
+    return jsonForData;
+  };
+
+  /**
+   * @param {string} templateDir - Write destination directory.
+   * @param {string} fileName - Filename.
+   * @param {string} fileHtml - Mustache file's content.
+   * @param {string} fileJson - JSON file's content.
+   */
+  exports.filesWrite = function (templateDir, fileName, fileHtml, fileJson, res) {
+    try {
+      fs.writeFileSync(templateDir + '/' + fileName + '.mustache', fileHtml);
+      fs.writeFileSync(templateDir + '/' + fileName + '.json', fileJson);
+
+      exports.redirectWithMsg(res, 'success', 'Go+back+to+the+Pattern+Lab+tab+and+refresh+the+browser+to+check+that+your+template+appears+under+the+Scrape+menu.');
+      return false;
+    }
+    catch (err) {
+      utils.error(err);
+    }
+  };
+
+  /**
    * Sanitize scraped HTML.
    *
    * @return {string} Sanitized HTML.
@@ -36,6 +82,14 @@
     var targetXhtml = xmlSerializer.serializeToString(targetParsed);
 
     return targetXhtml;
+  };
+
+  /**
+   * @param {string} fileName - Filename.
+   * @return {boolean} True or false.
+   */
+  exports.isFilenameValid = function (fileName) {
+    return fileName.match(/^[A-Za-z0-9][\w\-\.]*$/) ? true : false;
   };
 
   exports.jsonRecurse = function (jsonObj, dataArr, recursionInc, index, prevIndex) {
@@ -103,6 +157,22 @@
     }
     return jsonObj;
   };
+
+  /**
+   * @param {Object} jsonForXhtml - JSON for conversion to Mustache syntax.
+   * @return {string} XHTML.
+   */
+  exports.jsonToMustache = function (jsonForXhtml) {
+    var xhtml = builder.buildObject(jsonForXhtml);
+    // Remove XML declaration.
+    xhtml = xhtml.replace(/<\?xml[^>]*\?>/g, '');
+    // Replace html tags with Mustache tags.
+    xhtml = xhtml.replace('<html>', '{{# html }}').replace('</html>', '{{/ html }}');
+    // Clean up.
+    xhtml = xhtml.replace(/^\s*\n/g, '');
+
+    return xhtml;
+  }
 
   exports.redirectWithMsg = function (res, type, msg, target, url) {
     if (res) {
@@ -212,7 +282,7 @@
     var targetSplit;
     var targetXhtml;
     var templateDir;
-    var xhtml;
+    var xhtml = '';
 
     // HTML scraper action on submission of URL.
     if (typeof req.body.url === 'string' && req.body.url !== '' && typeof req.body.target === 'string') {
@@ -259,26 +329,11 @@
 
             // Build XHTML with mustache tags.
             jsonForXhtml = dataObj.json;
-            xhtml = builder.buildObject(jsonForXhtml);
-
-            // Remove XML declaration.
-            xhtml = xhtml.replace(/<\?xml[^>]*\?>/g, '');
-
-            // Replace html tags with Mustache tags.
-            xhtml = xhtml.replace('<html>', '{{# html }}').replace('</html>', '{{/ html }}');
-
-            // Clean up.
-            xhtml = xhtml.replace(/^\s*\n/g, '');
+            xhtml = exports.jsonToMustach(jsonForXhtml);
           }
 
-          jsonForData = {html:[{}]};
-          for (i = 0; i < dataArr1.length; i++) {
-            for (j in dataArr1[i]) {
-              if (dataArr1[i].hasOwnProperty(j)) {
-                jsonForData.html[0][j] = dataArr1[i][j];
-              }
-            }
-          }
+          // Convert dataArr1 to JSON and stringify for output.
+          jsonForData = exports.dataArrayToJson(dataArr1);
           dataStr = JSON.stringify(jsonForData, null, 2);
 
           output = '';
@@ -311,30 +366,19 @@
 
     // HTML importer action on submission of filename.
     else if (typeof req.body.filename === 'string' && req.body.filename !== '') {
-      templateDir = 'patternlab-node/source/_patterns/05-scrape';
-      fileHtml = req.body.html.replace(/\r/g, '') + '\n';
-      fileJson = req.body.json.replace(/\r/g, '') + '\n';
-
-       // Limit filenames to sane characters
-      fileName = req.body.filename.replace(/[^\w.-]/g, '');
-      // Don't allow periods at beginning of filenames
-      fileName = fileName.replace(/^\.+/g, '');
-      // Don't allow hyphens at beginning of filenames
-      fileName = fileName.replace(/^-+/g, '');
-
-      if (fileName !== '') {
-        try {
-          fs.writeFile(templateDir + '/' + fileName + '.mustache', fileHtml, function () {
-            fs.writeFile(templateDir + '/' + fileName + '.json', fileJson, function () {
-              exports.redirectWithMsg(res, 'success', 'Go+back+to+the+Pattern+Lab+tab+and+refresh+the+browser+to+check+that+your+template+appears+under+the+Scrape+menu.');
-              return false;
-            });
-          });
-        }
-        catch (err) {
-          utils.error(err);
-        }
+      // Limit filename characters.
+      if (!exports.isFilenameValid(req.body.filename)) {
+        exports.redirectWithMsg(res, 'error', 'Please+enter+a+valid+filename!.', req.body.target, req.body.url);
+        return false;
       }
+      else {
+        fileName = req.body.filename;
+      }
+
+      templateDir = 'patternlab-node/source/_patterns/05-scrape';
+      fileHtml = exports.newlineFormat(req.body.html);
+      fileJson = exports.newlineFormat(req.body.json);
+      exports.filesWrite(templateDir, fileName, fileHtml, fileJson, res);
     }
 
     // If no form variables sent, redirect back with GET.

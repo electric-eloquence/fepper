@@ -13,6 +13,12 @@
   var $ = cheerio.load(html);
   var htmlScraperPost = require(rootDir + '/fepper/server/html-scraper-post');
   var req = { body: { target: '', url: '' } };
+  var testDir = rootDir + '/test';
+  var scrapeDir = testDir + '/patterns/05-scrape'
+
+  var xhtml = htmlScraperPost.htmlToXhtml(html);
+  var dataObj = htmlScraperPost.xhtmlToJsonAndArray(xhtml);
+  var jsonForData = htmlScraperPost.dataArrayToJson(dataObj.array);
 
   describe('HTML Scraper Post', function () {
     describe('CSS Selector Validator', function () {
@@ -95,9 +101,6 @@
     });
 
     describe('HTML Converter', function () {
-      var xhtml = htmlScraperPost.htmlToXhtml(html);
-      var dataObj = htmlScraperPost.xhtmlToJsonAndArray(xhtml);
-
       it('should return a JSON object', function () {
         expect(dataObj.json).to.be.an('object');
         expect(dataObj.json).to.not.be.empty;
@@ -106,6 +109,63 @@
       it('should return an array', function () {
         expect(dataObj.array).to.be.an('array');
         expect(dataObj.array).to.not.be.empty;
+      });
+    });
+
+    describe('Array to JSON Converter', function () {
+      it('should return a JSON object', function () {
+        expect(jsonForData).to.be.an('object');
+        expect(jsonForData.html[0].one_5).to.equal('Foo');
+        expect(jsonForData.html[0].test_5).to.equal('Foo');
+        expect(jsonForData.html[0].two_6).to.equal('Bar');
+        expect(jsonForData.html[0].test_6).to.equal('Bar');
+      });
+    });
+
+    describe('JSON to Mustache Converter', function () {
+      var xhtml = htmlScraperPost.jsonToMustache(dataObj.json);
+
+      it('should return XHTML with Mustache tags', function () {
+        expect(xhtml).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}');
+      });
+    });
+
+    describe('File Writer', function () {
+      it('should validate user-submitted filename', function () {
+        var isFilenameValid = htmlScraperPost.isFilenameValid;
+        var validFilename = '0-test.1_2';
+        var invalidChar = '0-test.1_2!';
+        var invalidHyphenPrefix = '-0-test.1_2';
+        var invalidPeriodPrefix = '.0-test.1_2';
+        var invalidUnderscorePrefix = '_0-test.1_2';
+
+        expect(isFilenameValid(validFilename)).to.equal(true);
+        expect(isFilenameValid(invalidChar)).to.equal(false);
+        expect(isFilenameValid(invalidHyphenPrefix)).to.equal(false);
+        expect(isFilenameValid(invalidPeriodPrefix)).to.equal(false);
+        expect(isFilenameValid(invalidUnderscorePrefix)).to.equal(false);
+      });
+
+      it('should correctly format newlines in file body', function () {
+        var xhtml = '{{# html }}\r\n  <body>\r\n    <section id="one" class="test">{{ test_5 }}</section>\r\n    <section id="two" class="test">{{ test_6 }}</section>\r\n    <script/>\r\n    <textarea/>\r\n  </body>\r\n{{/ html }}';
+
+        expect(htmlScraperPost.newlineFormat(xhtml)).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n');
+      });
+
+      it('should write file to destination', function () {
+        var fileHtml = '{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n';
+        var fileJson = htmlScraperPost.newlineFormat(JSON.stringify(jsonForData, null, 2));
+        var fileName = '0-test.1_2';
+        var fileFullPath = scrapeDir + '/' + fileName;
+
+        fs.mkdirsSync(scrapeDir);
+        fs.writeFileSync(fileFullPath, '');
+        var fileBefore = fs.readFileSync(fileFullPath);
+        htmlScraperPost.filesWrite(scrapeDir, fileName, fileHtml, fileJson, null);
+        var fileAfter = fs.readFileSync(fileFullPath);
+
+        expect(fileAfter).to.not.equal('');
+        expect(fileAfter).to.not.equal(fileBefore);
       });
     });
   });
