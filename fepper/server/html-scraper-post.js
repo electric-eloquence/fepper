@@ -329,7 +329,7 @@
 
             // Build XHTML with mustache tags.
             jsonForXhtml = dataObj.json;
-            xhtml = exports.jsonToMustach(jsonForXhtml);
+            xhtml = exports.jsonToMustache(jsonForXhtml);
           }
 
           // Convert dataArr1 to JSON and stringify for output.
