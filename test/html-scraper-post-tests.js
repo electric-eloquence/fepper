@@ -6,7 +6,6 @@
   var fs = require('fs-extra');
 
   var utils = require('../fepper/lib/utils');
-  var conf = utils.conf();
   var rootDir = utils.rootDir();
 
   var html = '<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><script></script><textarea></textarea></body></html>';
