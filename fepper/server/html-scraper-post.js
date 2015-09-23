@@ -10,16 +10,32 @@
   var builder = new xml2js.Builder();
   var domParser = new xmldom.DOMParser();
   var htmlObj = require('../lib/html');
-  var parseString = xml2js.parseString;
   var xmlSerializer = new xmldom.XMLSerializer();
 
-  exports.redirectWithMsg = function (res, type, msg, target, url) {
-    if (res) {
-      target = typeof target === 'string' ? target : '';
-      url = typeof url === 'string' ? url : '';
-      res.writeHead(303, { Location: 'html-scraper?' + type + '=' +  msg + '&target=' + target + '&url=' + url });
-      res.end();
-    }
+  /**
+   * Sanitize scraped HTML.
+   *
+   * @return {string} Sanitized HTML.
+   */
+  exports.htmlSanitize = function (html) {
+    html = html.replace(/<script(.*?)>/g, '<code$1>');
+    html = html.replace(/<\/script(.*?)>/g, '</code$1>');
+    html = html.replace(/<textarea(.*?)>/g, '<figure$1>');
+    html = html.replace(/<\/textarea(.*?)>/g, '</figure$1>');
+
+    return html;
+  };
+
+  /**
+   * Convert HTML to XHTML for conversion to full JSON data object.
+   *
+   * @return {string} XHTML.
+   */
+  exports.htmlToXhtml = function (targetHtml) {
+    var targetParsed = domParser.parseFromString(targetHtml, 'text/html');
+    var targetXhtml = xmlSerializer.serializeToString(targetParsed);
+
+    return targetXhtml;
   };
 
   exports.jsonRecurse = function (jsonObj, dataArr, recursionInc, index, prevIndex) {
@@ -88,6 +104,15 @@
     return jsonObj;
   };
 
+  exports.redirectWithMsg = function (res, type, msg, target, url) {
+    if (res) {
+      target = typeof target === 'string' ? target : '';
+      url = typeof url === 'string' ? url : '';
+      res.writeHead(303, { Location: 'html-scraper?' + type + '=' +  msg + '&target=' + target + '&url=' + url });
+      res.end();
+    }
+  };
+
   exports.targetHtmlGet = function ($targetEl, targetIndex, $) {
     // Iterate through the collection of selected elements. If an index
     // is specified, skip until that index is iterated upon.
@@ -136,10 +161,36 @@
     return targetSplit;
   };
 
+  /**
+   * Get JSON and array from XHTML.
+   *
+   * @param {string} targetXhtml - Well formed XHTML.
+   * @return {Object} Prop 1: json, Prop2: array.
+   */
+  exports.xhtmlToJsonAndArray = function (targetXhtml) {
+    var dataArr;
+    var jsonForXhtml;
+
+    // Convert to JSON.
+    xml2js.parseString(targetXhtml, function (err, res) {
+      if (err) {
+        utils.error(err);
+        return false;
+      }
+
+      // jsonRecurse builds dataArr.
+      dataArr = [];
+      jsonForXhtml = exports.jsonRecurse(res, dataArr, 0);
+    });
+
+    return { json: jsonForXhtml, array: dataArr };
+  };
+
   exports.main = function (req, res) {
     var $;
     var dataArr1;
     var dataArr2;
+    var dataObj;
     var dataStr;
     var $el;
     var fileHtml;
@@ -184,63 +235,40 @@
             targetHtmlObj = exports.targetHtmlGet($targetEl, targetIndex, $);
 
             // Sanitize scraped HTML.
-            targetHtml = targetHtmlObj.all;
-            targetHtml = targetHtml.replace(/<script(.*?)>/g, '<code$1>');
-            targetHtml = targetHtml.replace(/<\/script(.*?)>/g, '</code$1>');
-            targetHtml = targetHtml.replace(/<textarea(.*?)>/g, '<figure$1>');
-            targetHtml = targetHtml.replace(/<\/textarea(.*?)>/g, '</figure$1>');
-            targetHtml = '<html>' + targetHtml + '</html>';
-            targetFirst = targetHtmlObj.first
-            targetFirst = targetFirst.replace(/<script(.*?)>/g, '<code$1>');
-            targetFirst = targetFirst.replace(/<\/script(.*?)>/g, '</code$1>');
-            targetFirst = targetFirst.replace(/<textarea(.*?)>/g, '<figure$1>');
-            targetFirst = targetFirst.replace(/<\/textarea(.*?)>/g, '</figure$1>');
-            targetFirst = '<html>' + targetFirst + '</html>';
+            targetHtml = '<html>' + exports.htmlSanitize(targetHtmlObj.all) + '</html>';
+            targetFirst = '<html>' + exports.htmlSanitize(targetHtmlObj.first) + '</html>';
 
             // Convert HTML to XHTML for conversion to full JSON data object.
-            targetParsed = domParser.parseFromString(targetHtml, 'text/html');
-            targetXhtml = xmlSerializer.serializeToString(targetParsed);
+            targetXhtml = exports.htmlToXhtml(targetHtml);
 
-            // Convert to JSON.
-            parseString(targetXhtml, function (err, res) {
-              if (err) {
-                utils.error(err);
-                return false;
-              }
-
-              // jsonRecurse builds dataArr1 object.
-              dataArr1 = [];
-              jsonForXhtml = exports.jsonRecurse(res, dataArr1, 0);
-            });
+            // Get array from XHTML.
+            dataArr1 = exports.xhtmlToJsonAndArray(targetXhtml).array;
 
             // Delete html tags.
             targetHtml = targetHtml.replace('<html>', '').replace('</html>', '');
 
             // Convert HTML to XHTML for Mustache template.
-            targetParsed = domParser.parseFromString(targetFirst, 'text/html');
-            targetXhtml = xmlSerializer.serializeToString(targetParsed);
+            targetXhtml = exports.htmlToXhtml(targetFirst);
 
-            // Convert to JSON.
-            parseString(targetXhtml, function (err, res) {
-              if (err) {
-                utils.error(err);
-                return false;
-              }
+            // Get JSON and array from XHTML.
+            dataObj = exports.xhtmlToJsonAndArray(targetXhtml);
 
-              // jsonRecurse builds dataArr2 array. We can't use dataArr1
-              // because we need it untouched so we can build jsonForData.
-              // So we instead, we pass dataArr2.
-              dataArr2 = [];
-              jsonForXhtml = exports.jsonRecurse(res, dataArr2, 0);
-              // Build XHTML with mustache tags.
-              xhtml = builder.buildObject(jsonForXhtml);
-              // Remove XML declaration.
-              xhtml = xhtml.replace(/<\?xml[^>]*\?>/g, '');
-              // Replace html tags with Mustache tags.
-              xhtml = xhtml.replace('<html>', '{{# html }}').replace('</html>', '{{/ html }}');
-              // Clean up.
-              xhtml = xhtml.replace(/^\s*\n/g, '');
-            });
+            // Get dataArr2 array. We can't use dataArr1 because we need it
+            // untouched so we can build jsonForData.
+            dataArr1 = dataObj.array;
+
+            // Build XHTML with mustache tags.
+            jsonForXhtml = dataObj.json;
+            xhtml = builder.buildObject(jsonForXhtml);
+
+            // Remove XML declaration.
+            xhtml = xhtml.replace(/<\?xml[^>]*\?>/g, '');
+
+            // Replace html tags with Mustache tags.
+            xhtml = xhtml.replace('<html>', '{{# html }}').replace('</html>', '{{/ html }}');
+
+            // Clean up.
+            xhtml = xhtml.replace(/^\s*\n/g, '');
           }
 
           jsonForData = {html:[{}]};

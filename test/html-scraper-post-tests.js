@@ -9,7 +9,8 @@
   var conf = utils.conf();
   var rootDir = utils.rootDir();
 
-  var $ = cheerio.load('<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section></body></html>');
+  var html = '<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><script></script><textarea></textarea></body></html>';
+  var $ = cheerio.load(html);
   var htmlScraperPost = require(rootDir + '/fepper/server/html-scraper-post');
   var req = { body: { target: '', url: '' } };
 
@@ -63,6 +64,48 @@
 
         expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
         expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
+      });
+
+      it('should get one selector of a given id', function () {
+        var $targetEl = $('#one');
+        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+
+        expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n');
+        expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
+      });
+    });
+
+    describe('HTML Sanitizer', function () {
+      var htmlSan = htmlScraperPost.htmlSanitize(html);
+
+      it('should replace script tags with code tags', function () {
+        expect(htmlSan).to.equal('<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><code></code><figure></figure></body></html>');
+        expect(html).to.contain('script');
+        expect(html).to.not.contain('code');
+        expect(htmlSan).to.not.contain('script');
+        expect(htmlSan).to.contain('code');
+      });
+
+      it('should replace textarea tags with figure tags', function () {
+        expect(html).to.contain('textarea');
+        expect(html).to.not.contain('figure');
+        expect(htmlSan).to.not.contain('textarea');
+        expect(htmlSan).to.contain('figure');
+      });
+    });
+
+    describe('HTML Converter', function () {
+      var xhtml = htmlScraperPost.htmlToXhtml(html);
+      var dataObj = htmlScraperPost.xhtmlToJsonAndArray(xhtml);
+
+      it('should return a JSON object', function () {
+        expect(dataObj.json).to.be.an('object');
+        expect(dataObj.json).to.not.be.empty;
+      });
+
+      it('should return an array', function () {
+        expect(dataObj.array).to.be.an('array');
+        expect(dataObj.array).to.not.be.empty;
       });
     });
   });
