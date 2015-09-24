@@ -96,7 +96,7 @@ gulp.task('patternlab:watch', function () {
   gulp.watch('public/!(css|patterns|styleguide)/**', ['livereload:assets'])
   gulp.watch('public/**/*.css', ['livereload:inject']);
   gulp.watch('public/index.html', ['livereload:index']);
-  gulp.watch('source/_data/*.json', ['patternlab:build']);
+  gulp.watch('source/_data/!(_)*.json', ['patternlab:build']);
   gulp.watch('source/_data/annotations.js', ['patternlab:copy'])
   gulp.watch('source/_patterns/**/!(_)*.json', ['patternlab:build']);
   gulp.watch('source/_patterns/**/*.mustache', ['patternlab:clean', 'patternlab:build']);
