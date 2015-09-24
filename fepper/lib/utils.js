@@ -29,6 +29,7 @@
       if (!conf) {
         yml = fs.readFileSync(__dirname + '/../../conf.yml', enc);
         conf = yaml.safeLoad(yml);
+        process.env.CONF = JSON.stringify(conf);
       }
 
       global.conf = conf;

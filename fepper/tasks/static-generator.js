@@ -5,8 +5,8 @@
   var glob = require('glob');
   var path = require('path');
 
+  var conf = global.conf;
   var utils = require('../lib/utils');
-  var conf = utils.conf();
   var rootDir = utils.rootDir();
 
   var pubDir = rootDir + '/' + conf.pub;

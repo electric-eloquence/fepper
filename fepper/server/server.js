@@ -7,6 +7,7 @@
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
+
   var dataJson = utils.data(conf);
   var rootDir = utils.rootDir();
 

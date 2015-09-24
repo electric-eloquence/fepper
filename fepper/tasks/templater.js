@@ -13,8 +13,8 @@
   var path = require('path');
   var yaml = require('js-yaml');
 
+  var conf = global.conf;
   var utils = require('../lib/utils');
-  var conf = utils.conf();
   var rootDir = utils.rootDir();
 
   var i;
