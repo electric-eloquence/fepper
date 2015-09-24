@@ -35,7 +35,7 @@
       global.conf = conf;
     }
 
-    return global.conf || conf;
+    return global.conf;
   };
 
   exports.data = function (conf) {

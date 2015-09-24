@@ -12,8 +12,8 @@
   var fs = require('fs-extra');
   var glob = require('glob');
 
-  var conf = global.conf;
   var utils = require('../lib/utils');
+  var conf = utils.conf();
 
   /**
    * Recursively glob pattern files, and then iterate through them.

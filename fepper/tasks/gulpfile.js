@@ -7,7 +7,8 @@
 
   var requireDir = require('require-dir');
 
-  var conf = require('../lib/utils').conf();
+  var utils = require('../lib/utils');
+  var conf = utils.conf();
 
   // Load tasks in tasks directory.
   requireDir('../../gulp', {recurse: true});

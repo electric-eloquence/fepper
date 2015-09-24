@@ -7,8 +7,8 @@ var gulp = require('gulp');
 var requireDir = require('require-dir');
 var runSequence = require('run-sequence');
 
-var conf = require('./fepper/lib/utils').conf();
-var util = require('util');
+var utils = require('./fepper/lib/utils');
+var conf = utils.conf();
 
 // Load tasks in tasks directory.
 requireDir('gulp', {recurse: true});

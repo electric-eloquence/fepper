@@ -4,7 +4,8 @@
   var fs = require('fs');
   var pagedown = require('pagedown');
 
-  var conf = global.conf;
+  var utils = require('../lib/utils');
+  var conf = utils.conf();
 
   var htmlObj = require('../lib/html');
 
