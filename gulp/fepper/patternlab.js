@@ -1,6 +1,7 @@
 var conf = global.conf;
 var fs = require('fs-extra');
 var gulp = require('gulp');
+var plugins = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 
 function patternlab_build(arg, chdir) {
@@ -45,14 +46,6 @@ gulp.task('patternlab:build', function (cb) {
   cb();
 });
 
-gulp.task('patternlab:build-lr', function (cb) {
-  runSequence(
-    ['patternlab:build'],
-    ['livereload']
-  );
-  cb();
-});
-
 gulp.task('patternlab:cd-in', function (cb) {
   process.chdir(conf.pln);
   cb();
@@ -70,14 +63,6 @@ gulp.task('patternlab:clean', function (cb) {
 
 gulp.task('patternlab:copy', function (cb) {
   patternlab_copy();
-  cb();
-});
-
-gulp.task('patternlab:copy-lr', function (cb) {
-  runSequence(
-    ['patternlab:copy'],
-    ['livereload']
-  );
   cb();
 });
 
@@ -103,14 +88,18 @@ gulp.task('patternlab:v', function (cb) {
 });
 
 gulp.task('patternlab:watch', function () {
-  gulp.watch('source/_data/*.json', ['patternlab:build-lr']);
-  gulp.watch('source/_data/annotations.js', ['patternlab:copy-lr'])
-  gulp.watch('source/_patterns/**/!(_)*.json', ['patternlab:build-lr']);
-  gulp.watch('source/_patterns/**/*.mustache', ['patternlab:clean', 'patternlab:build-lr']);
-  gulp.watch('source/_patternlab-files/**/*.mustache', ['patternlab:build-lr']);
-  gulp.watch('source/css/**/*', ['patternlab:copy-lr']);
-  gulp.watch('source/fonts/**/*', ['patternlab:copy-lr']);
-  gulp.watch('source/images/**/*', ['patternlab:copy-lr']);
-  gulp.watch('source/js/**/*', ['patternlab:copy-lr']);
-  gulp.watch('source/static/**/*', ['patternlab:copy-lr']);
+  plugins.livereload.listen();
+  gulp.watch('public/!(css|patterns|styleguide)/**', ['livereload:assets'])
+  gulp.watch('public/**/*.css', ['livereload:inject']);
+  gulp.watch('public/index.html', ['livereload:index']);
+  gulp.watch('source/_data/*.json', ['patternlab:build']);
+  gulp.watch('source/_data/annotations.js', ['patternlab:copy'])
+  gulp.watch('source/_patterns/**/!(_)*.json', ['patternlab:build']);
+  gulp.watch('source/_patterns/**/*.mustache', ['patternlab:clean', 'patternlab:build']);
+  gulp.watch('source/_patternlab-files/**/*.mustache', ['patternlab:build']);
+  gulp.watch('source/css/**/*', ['patternlab:copy']);
+  gulp.watch('source/fonts/**/*', ['patternlab:copy']);
+  gulp.watch('source/images/**/*', ['patternlab:copy']);
+  gulp.watch('source/js/**/*', ['patternlab:copy']);
+  gulp.watch('source/static/**/*', ['patternlab:copy']);
 });
