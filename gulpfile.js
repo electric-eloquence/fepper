@@ -19,7 +19,7 @@ process.env.CONF = JSON.stringify(conf);
 process.env.ENC = enc;
 
 // Load tasks in tasks directory.
-requireDir('gulp-tasks', {recurse: true});
+requireDir('gulp', {recurse: true});
 
 gulp.task('default', function () {
   runSequence(
