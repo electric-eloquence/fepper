@@ -17,7 +17,7 @@ A frontend prototyper for streamlining website design and development
 * Install Node.js and NPM (Node Package Manager).
   * Requires Node.js v4.0.0 at the very least.
   * On Mac: `brew install node`
-  * If already installed, be sure the version is up to date: `brew upgrade node`
+  * If already installed, be sure the version is up to date: `brew update && brew upgrade node`
   * If not on a Mac, and not using Homebrew:
 [https://github.com/joyent/node/wiki/installing-node.js-via-package-manager](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager)
 * `npm install -g gulp`

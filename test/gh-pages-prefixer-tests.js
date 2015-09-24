@@ -19,6 +19,7 @@
   describe('GitHub Pages Prefixer', function () {
     // Get array of truncated dirnames.
     var webservedDirs = ghPagesPrefixer.webservedDirnamesTruncate(conf.backend.webserved_dirs);
+
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
@@ -31,11 +32,13 @@
 
     it('should glob the specified patterns directory', function () {
       var files = ghPagesPrefixer.filesGet(testDir + '/patterns');
+
       expect(files).to.not.be.empty;
     });
 
     it('should write to the gh_pages_src directory', function () {
       var files = glob.sync(ghPagesDir + '/*');
+
       expect(files).to.not.be.empty;
     });
 
@@ -43,9 +46,11 @@
       var fileBeforePath = testDir + '/patterns/00-logo.html';
       var fileBefore = fs.readFileSync(fileBeforePath);
       var fileAfterPath = ghPagesDir + '/00-logo.html';
+
       fs.copySync(fileBeforePath, fileAfterPath);
       ghPagesPrefixer.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix);
       var fileAfter = fs.readFileSync(fileAfterPath);
+
       expect(fileAfter).to.not.equal('');
       expect(fileAfter).to.not.equal(fileBefore);
     });
@@ -53,6 +58,7 @@
     it('should copy webserved_dirs to gh_pages_src', function () {
       var pass = true;
       var stats;
+
       ghPagesPrefixer.webservedDirsCopy(conf.backend.webserved_dirs, testDir, webservedDirs, ghPagesDir);
       for (var i = 0; i < webservedDirs.length; i++) {
         stats = fs.statSync(ghPagesDir + '/' + webservedDirs[i]);
@@ -61,6 +67,7 @@
           break;
         }
       }
+
       expect(pass).to.equal(true);
     });
   });

@@ -1,7 +1,6 @@
 /**
  * Use any CSS pre- or post-processor you wish. Or use none.
  */
-var conf = JSON.parse(process.env.CONF);
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 

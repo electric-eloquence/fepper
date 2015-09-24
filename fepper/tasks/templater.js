@@ -52,7 +52,7 @@
       return code2;
     }
     catch (err) {
-      console.error(err);
+      utils.error(err);
     }
   };
 
@@ -166,7 +166,7 @@
           stats = fs.statSync(ymlFile);
         }
         catch (err) {
-          console.error(err);
+          utils.error(err);
           continue;
         }
         if (!stats.isFile()) {
@@ -183,11 +183,11 @@
         exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
 
         // Log to console.
-        console.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(rootDir, '').replace(/^\//, ''));
+        utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(rootDir, '').replace(/^\//, ''));
       }
     }
     catch (err) {
-      console.error(err);
+      utils.error(err);
     }
   };
 })();

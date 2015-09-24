@@ -8,20 +8,26 @@
   var rootDir = utils.rootDir();
 
   var htmlObj = require('../lib/html');
-  var patternDir = rootDir + '/' + conf.src + '/_patterns/';
+  var patternDir = rootDir + '/' + conf.src + '/_patterns';
 
-  exports.mustacheLink = function (unlinked) {
-    var linked = unlinked.replace(/</g, '&lt;');
-    linked = linked.replace(/>/g, '&gt;');
-    linked = linked.replace(/{{&gt;[^{]*}}/g, '<a href="?partial=$&">$&</a>');
-    linked = linked.replace(/\n/g, '<br>');
-    return linked;
+  exports.toHtmlEntitiesAndLinks = function (data) {
+    data = data.replace(/</g, '&lt;');
+    data = data.replace(/>/g, '&gt;');
+    data = data.replace(/{{&gt;[^}]*}}/g, '<a href="?partial=$&">$&</a>');
+    data = data.replace(/\n/g, '<br>');
+
+    return data;
   };
 
-  exports.mustacheStrip = function (unstripped) {
-    var stripped = unstripped.replace(/{{+[^\w]?\s*/, '');
-    stripped = stripped.replace(/\s*}+}/, '');
-    return stripped;
+  exports.partialTagToPath = function (partial) {
+    partial = partial.replace(/{{+[^\w]?\s*/, '');
+    partial = partial.replace(/\s*}+}/, '');
+    partial = partial.replace(/\(.*\)/, '');
+    if (partial.indexOf('.mustache') !== partial.length - 9) {
+      partial = partial + '.mustache';
+    }
+
+    return partial;
   };
 
   exports.noResult = function (res, err) {
@@ -46,7 +52,7 @@
     if (typeof req.query.code === 'string') {
       try {
         code += req.query.code;
-        code = exports.mustacheLink(code);
+        code = exports.toHtmlEntitiesAndLinks(code);
         if (typeof req.query.title === 'string') {
           code = '<h1>' + req.query.title + '</h1>\n' + code;
         }
@@ -64,22 +70,19 @@
     else if (typeof req.query.partial === 'string') {
       try {
         // Requires verbosely pathed Mustache partial syntax.
-        partial = exports.mustacheStrip(req.query.partial);
-        partial = partial.replace(/\(.*\)/, '');
-        partial = partial.replace(/\.mustache$/, ''); // In case the .mustache ext was included.
-        partial = partial + '.mustache';
+        partial = exports.partialTagToPath(req.query.partial);
 
         // Check if query string correlates to actual Mustache file.
-        var stats = fs.statSync(patternDir + partial);
+        var stats = fs.statSync(patternDir + '/' + partial);
         if (stats.isFile()) {
-          fs.readFile(patternDir + partial, conf.enc, function (err, dat) {
+          fs.readFile(patternDir + '/' + partial, conf.enc, function (err, data) {
             // Render the Mustache code if it does.
             // First, link the Mustache tags.
-            dat = exports.mustacheLink(dat);
+            data = exports.toHtmlEntitiesAndLinks(data);
             // Render the output with HTML head and foot.
             output += htmlObj.headNoStyles;
             output += '<h1>' + partial + '</h1>';
-            output += dat;
+            output += data;
             output += htmlObj.foot;
             output = output.replace('{{ title }}', 'Fepper Mustache Browser' );
             res.end(output);

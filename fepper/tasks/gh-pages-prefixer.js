@@ -124,14 +124,14 @@
     }
     else {
       // Quit if gh_pages_src not set.
-      console.error('gh_pages_src not set.');
+      utils.error('gh_pages_src not set.');
       return;
     }
 
     // Before checking for any gh_pages_prefix to insert, copy over the Pattern
     // Lab public directory to the fepper-gh-pages directory. Clean up any old
     // destination files before copying.
-    console.log('Preparing gh_pages_src...');
+    utils.log('Preparing gh_pages_src...');
     fs.removeSync(ghPagesDir);
     // Then, copy.
     fs.copySync(publicDir, ghPagesDir);
@@ -164,15 +164,15 @@
     webservedDirsShort = exports.webservedDirnamesTruncate(webservedDirsFull);
 
     if (webservedDirsShort.length) {
-      console.log('Prepending gh_pages_prefix...');
+      utils.log('Prepending gh_pages_prefix...');
       // Recursively glob pattern files, and then iterate through them.
       files = exports.filesGet(ghPagesDir);
       // Read files, token replace path prefix tags, and write output.
       exports.filesProcess(files, conf, webservedDirsShort, prefix);
       // Copy webserved_dirs to gh_pages_src.
-      console.log('Copying webserved_dirs to gh_pages_src...');
+      utils.log('Copying webserved_dirs to gh_pages_src...');
       exports.webservedDirsCopy(webservedDirsFull, rootDir, webservedDirsShort, ghPagesDir);
     }
-    console.log('Finished preprocessing GitHub Pages files.');
+    utils.log('Finished preprocessing GitHub Pages files.');
   };
 })();
