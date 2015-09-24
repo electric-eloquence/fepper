@@ -1,4 +1,4 @@
-var conf = JSON.parse(process.env.CONF);
+var conf = global.conf;
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var port = conf.express_port ? conf.express_port : 9001;

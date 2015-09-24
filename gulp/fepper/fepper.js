@@ -1,4 +1,4 @@
-var conf = JSON.parse(process.env.CONF);
+var conf = global.conf;
 var exec = require('child_process').exec;
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();

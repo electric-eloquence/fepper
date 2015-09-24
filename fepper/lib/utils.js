@@ -15,21 +15,26 @@
     var conf;
     var yml;
 
-    // Try getting conf from global process object.
-    if (typeof process.env.conf === 'string') {
-      try {
-        conf = JSON.parse(process.env.CONF);
+    if (!global.conf) {
+      // Try getting conf from global process object.
+      if (typeof process.env.CONF === 'string') {
+        try {
+          conf = JSON.parse(process.env.CONF);
+        }
+        catch (err) {
+          // Fail gracefully.
+        }
       }
-      catch (err) {
-        // Fail gracefully.
+
+      if (!conf) {
+        yml = fs.readFileSync(__dirname + '/../../conf.yml', enc);
+        conf = yaml.safeLoad(yml);
       }
-    }
-    if (!conf) {
-      yml = fs.readFileSync(__dirname + '/../../conf.yml', enc);
-      conf = yaml.safeLoad(yml);
+
+      global.conf = conf;
     }
 
-    return conf;
+    return global.conf || conf;
   };
 
   exports.data = function (conf) {

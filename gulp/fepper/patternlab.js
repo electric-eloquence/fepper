@@ -1,4 +1,4 @@
-var conf = JSON.parse(process.env.CONF);
+var conf = global.conf;
 var fs = require('fs-extra');
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
