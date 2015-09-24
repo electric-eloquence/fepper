@@ -51,7 +51,7 @@ The following are the available Gulp tasks:
 * `gulp once` to clean the public folder and do a one-off Fepper build.
 * `gulp publish` to publish the public folder to GitHub Pages.
 * `gulp static` to generate a static site from the 04-pages directory.
-* `gulp syncback` to lint, uglify and, copy Fepper frontend files to the backend.
+* `gulp syncback` to lint, uglify and copy Fepper frontend files to the backend.
 
 ###Documentation###
 
