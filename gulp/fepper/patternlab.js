@@ -40,7 +40,6 @@ function patternlab_copy() {
     .pipe(gulp.dest('./public/static/'));
 }
 
-
 gulp.task('patternlab:build', function (cb) {
   patternlab_build();
   cb();
@@ -64,6 +63,11 @@ gulp.task('patternlab:clean', function (cb) {
 gulp.task('patternlab:copy', function (cb) {
   patternlab_copy();
   cb();
+});
+
+gulp.task('patternlab:copy-css', function () {
+  return gulp.src('./source/css/**/*')
+    .pipe(gulp.dest('./public/css/'));
 });
 
 gulp.task('patternlab:help', function (cb) {
@@ -97,7 +101,7 @@ gulp.task('patternlab:watch', function () {
   gulp.watch('source/_patterns/**/!(_)*.json', ['patternlab:build']);
   gulp.watch('source/_patterns/**/*.mustache', ['patternlab:clean', 'patternlab:build']);
   gulp.watch('source/_patternlab-files/**/*.mustache', ['patternlab:build']);
-  gulp.watch('source/css/**/*', ['patternlab:copy']);
+  gulp.watch('source/css/**/*', ['patternlab:copy-css']);
   gulp.watch('source/fonts/**/*', ['patternlab:copy']);
   gulp.watch('source/images/**/*', ['patternlab:copy']);
   gulp.watch('source/js/**/*', ['patternlab:copy']);
