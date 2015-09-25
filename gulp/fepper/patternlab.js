@@ -28,20 +28,29 @@ function patternlab_build(arg, chdir) {
 function patternlab_copy() {
   gulp.src('./source/_data/annotations.js')
     .pipe(gulp.dest('./public/data/'));
-  gulp.src('./source/css/**/*')
+  gulp.src('./source/css/**')
     .pipe(gulp.dest('./public/css/'));
-  gulp.src('./source/fonts/**/*')
+  gulp.src('./source/fonts/**')
     .pipe(gulp.dest('./public/fonts/'));
-  gulp.src('./source/images/**/*')
+  gulp.src('./source/images/**')
     .pipe(gulp.dest('./public/images/'));
-  gulp.src('./source/js/**/*')
+  gulp.src('./source/js/*/**')
     .pipe(gulp.dest('./public/js/'));
-  gulp.src('./source/static/**/*')
+  gulp.src('./source/static/**')
     .pipe(gulp.dest('./public/static/'));
 }
 
 gulp.task('patternlab:build', function (cb) {
   patternlab_build();
+  cb();
+});
+
+gulp.task('patternlab:build-cd', function (cb) {
+  runSequence(
+    ['patternlab:cd-in'],
+    ['patternlab:build'],
+    ['patternlab:cd-out']
+  );
   cb();
 });
 
@@ -75,9 +84,18 @@ gulp.task('patternlab:copy', function (cb) {
   cb();
 });
 
+gulp.task('patternlab:copy-cd', function (cb) {
+  runSequence(
+    ['patternlab:cd-in'],
+    ['patternlab:copy'],
+    ['patternlab:cd-out']
+  );
+  cb();
+});
+
 gulp.task('patternlab:copy-css', function () {
-  return gulp.src('./source/css/**/*')
-    .pipe(gulp.dest('./public/css/'));
+  return gulp.src(conf.src + '/css/**')
+    .pipe(gulp.dest(conf.pub + '/css/'));
 });
 
 gulp.task('patternlab:data', function () {
@@ -112,18 +130,18 @@ gulp.task('patternlab:v', function (cb) {
 
 gulp.task('patternlab:watch', function () {
   plugins.livereload.listen();
-  gulp.watch('public/!(css|patterns|styleguide)/**', ['livereload:assets'])
-  gulp.watch('public/**/*.css', ['livereload:inject']);
-  gulp.watch('public/index.html', ['livereload:index']);
-  gulp.watch('source/_data/!(_)*.json', ['patternlab:build']);
-  gulp.watch('source/_data/annotations.js', ['patternlab:copy'])
-  gulp.watch('source/_patternlab-files/**/*.mustache', ['patternlab:build']);
-  gulp.watch('source/_patterns/**/!(_)*.json', ['patternlab:build']);
-  gulp.watch('source/_patterns/**/*.mustache', ['patternlab:clean', 'patternlab:build']);
-  gulp.watch('source/_patterns/**/_*.json', ['patternlab:data']);
-  gulp.watch('source/css/**/*', ['patternlab:copy-css']);
-  gulp.watch('source/fonts/**/*', ['patternlab:copy']);
-  gulp.watch('source/images/**/*', ['patternlab:copy']);
-  gulp.watch('source/js/**/*', ['patternlab:copy']);
-  gulp.watch('source/static/**/*', ['patternlab:copy']);
+  gulp.watch(conf.pub + '/!(css|patterns|styleguide)/**', ['livereload:assets'])
+  gulp.watch(conf.pub + '/**/*.css', ['livereload:inject']);
+  gulp.watch(conf.pub + '/index.html', ['livereload:index']);
+  gulp.watch(conf.src + '/_data/!(_)*.json', ['patternlab:build-cd']);
+  gulp.watch(conf.src + '/_data/annotations.js', ['patternlab:copy-cd'])
+  gulp.watch(conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build-cd']);
+  gulp.watch(conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build-cd']);
+  gulp.watch(conf.src + '/_patterns/**/*.mustache', ['patternlab:build-cd']);
+  gulp.watch(conf.src + '/_patterns/**/_*.json', ['patternlab:data-cd']);
+  gulp.watch(conf.src + '/css/style.css', ['patternlab:copy-css']);
+  gulp.watch(conf.src + '/fonts/**', ['patternlab:copy-cd']);
+  gulp.watch(conf.src + '/images/**', ['patternlab:copy-cd']);
+  gulp.watch(conf.src + '/js/*/**', ['patternlab:copy-cd']);
+  gulp.watch(conf.src + '/static/**', ['patternlab:copy-cd']);
 });
