@@ -16,50 +16,90 @@ A frontend prototyper for streamlining website design and development
   * Sorry, but Fepper is not supported on non-Unix-like OSs.
 * Install Node.js and NPM (Node Package Manager).
   * Requires Node.js v4.0.0 at the very least.
-  * On Mac: `brew install node`
-  * If already installed, be sure the version is up to date: `brew update && brew upgrade node`
+  * On a Mac: `brew install node`
+  * If already installed, be sure the version is up to date: `node -v`
+  * Update if necessary: `brew update && brew upgrade node`
   * If not on a Mac, and not using Homebrew:
 [https://github.com/joyent/node/wiki/installing-node.js-via-package-manager](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager)
-* `npm install -g gulp`
-* `npm install`
-* Open http://localhost:9001 in a browser if it doesn't open automatically.
+* On Mac OS X:
+  * Double-click fepper.command
+* On other OSs (or if you prefer the command line):
+  * `npm install`
+* Open [http://localhost:3000](http://localhost:3000) in a browser if it doesn't open automatically.
 
 ###Configuration###
 
-Edit conf.yml for customizing local settings and for general configuration
-information.
+Edit conf.yml for customizing local settings and for general configuration 
+information. If you wish to use the `syncback` or `frontend-copy` tasks, you 
+must supply values for the `backend.synced\_dirs` configs in order for those 
+directories to get processed and copied to the backend.
 
-After installation, you may edit patternlab-node/source/\_data/\_data.json to
-globally populate Mustache templates with data. Underscore-prefixed .json files
-within source/\_patterns will be concatenated to the output of \_data.json, the
-whole in turn getting compiled into data.json, the final source of globally
-scoped data. Manual edits to data.json will get overwritten on compilation.
+You may edit `patternlab-node/source/\_data/\_data.json` to globally populate 
+Mustache templates with data. Underscore-prefixed .json files within 
+`source/\_patterns` will be concatenated to the output of \_data.json, the whole 
+in turn getting compiled into data.json, the final source of globally scoped 
+data. Manual edits to data.json will get overwritten on compilation.
 
-When upgrading Fepper, be sure to back up the patternlab-node/source directory.
+When upgrading Fepper, be sure to back up the patternlab-node/source directory. 
 This is where all custom work is to be done.
 
 If using Git for version control, directories named "ignore" will be ignored.
 
 ###Utilization###
 
-The following are the available Gulp tasks:
+* To launch from Mac OS X Finder:
+  * Double-click fepper.command
+* To launch from the command line:
+  * `node .`
+* These other utility tasks are runnable on the command line:
+  * `node . data` to force compile data.json.
+  * `node . frontend-copy` to copy css, fonts, images, js, and templates to backend.
+  * `node . lint` to lint JavaScripts, JSON, and HTML.
+  * `node . minify` to minify JavaScripts.
+  * `node . once` to clean the public folder and do a one-off Fepper build.
+  * `node . publish` to publish the public folder to GitHub Pages.
+  * `node . static` to generate a static site from the 04-pages directory.
+  * `node . syncback` to lint, minify and copy Fepper frontend files to the backend.
 
-* `gulp` to run the automated building, watching, and serving tasks.
-* `gulp data` to force compile \_data.json.
-* `gulp frontend-copy` to copy css, fonts, images, js, and templates to backend.
-* `gulp lint` to lint JavaScripts, JSON, and HTML.
-* `gulp once` to clean the public folder and do a one-off Fepper build.
-* `gulp publish` to publish the public folder to GitHub Pages.
-* `gulp static` to generate a static site from the 04-pages directory.
-* `gulp syncback` to lint, uglify and, copy Fepper frontend files to the backend.
+###Static Site Generation###
+Running `node . static` will generate a complete static site based on the files 
+in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
+[http://localhost:3000/static/](http://localhost:3000/static/). An `index.html` 
+will be generated based on the `00-homepage.mustache` file. If the links are 
+relative and they work correctly in the Pattern Lab UI, they will work correctly 
+in the static site even if the `static` directory is moved and renamed. The only 
+caveat is that links to other pages in the `patterns` directory must start with 
+`../04-pages-` and not `../../patterns/04-pages-`.
 
-###Documentation###
+###The Backend###
+Fepper can just as easily work with a CMS backend such as WordPress or Drupal, 
+while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
+even just a symbolic link to the codebase into the `backend` directory. Then, 
+enter the relative paths to the appropriate backend directories into conf.yml. 
+(Do not include `backend` or a leading slash.) You will then be able to run 
+`node . frontend-copy` or `node . syncback` to export your frontend data into 
+your backend web application.
 
-The following READMEs are also invaluable for documentation:
+###Webserved Directories###
+When using a CMS backend, assets generally needed to be shared with the Fepper 
+frontend. The `frontend-copy` and `syncback` tasks copy files from Fepper to the 
+backend, but not the other way. Instead of providing a copy task in the reverse 
+direction, Fepper can serve backend files if their directories are entered into 
+the `webserved_dirs` block in conf.yml.
 
-* [patternlab-node/README.md](https://github.com/electric-eloquence/fepper/blob/master/patternlab-node/README.md)
-* [backend/README](https://github.com/electric-eloquence/fepper/blob/master/backend/README)
-* [\_source/static/README](https://github.com/electric-eloquence/fepper/blob/master/_source/static/README)
+    DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 
+    HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO ANY PUBLISHED 
+    SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE 
+    INFORMATION CONTAINED WITHIN THE SOURCE CODE!
+
+###GitHub Pages###
+If you have checked Fepper into a repository in your GitHub account, you may run `node . publish` to publish `patternlab-node/public` to GitHub pages. The Pattern Lab UI and Fepper static files will then be viewable from the Web at `http://user.github.io/repo/`. Normally, this is all that is needed. However, if you are using `webserved_dirs`, you will need to supply a `gh_pages_prefix` config in `conf.yml` or `patternlab-node/source/_data/_data.json`. This config needs to be set to the name of your GitHub repository name and must contain a leading slash. Setting `gh_pages_prefix` in `_data.json` will save that value in version control. If `gh_pages_prefix` is set in both `conf.yml` and `_data.json`, the value in `conf.yml` will take priority.
+
+###More Documentation###
+
+* [default.conf.yml](https://github.com/electric-eloquence/fepper/blob/master/default.conf.yml)
+* [Pattern Lab](http://patternlab.io/docs/index.html)
+* [Mustache](https://mustache.github.io/mustache.5.html)
 
 ###Contributing###
 

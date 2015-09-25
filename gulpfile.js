@@ -71,6 +71,10 @@ gulp.task('lint', [
   'lint:jsonlint'
 ]);
 
+gulp.task('minify', [
+  'uglify'
+]);
+
 gulp.task('once', function () {
   runSequence(
     ['patternlab:cd-in'],
@@ -104,7 +108,3 @@ gulp.task('syncback', function () {
     ['frontend-copy']
   );
 });
-
-gulp.task('test', [
-  'mocha'
-]);

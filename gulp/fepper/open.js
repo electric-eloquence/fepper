@@ -1,7 +1,7 @@
 var conf = global.conf;
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
-var port = conf.express_port ? conf.express_port : 9001;
+var port = conf.express_port ? conf.express_port : 3000;
 var host = 'http://localhost:' + port;
 
 function open(time, path) {

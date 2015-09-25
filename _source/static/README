@@ -1,4 +1,0 @@
-Place static files here either to serve outside of the Pattern Lab framework, or
-as the output for a static website. Files in this directory can be browsed at
-http://localhost:9001/static/filename.html. Create a subdirectory named "ignore"
-if you wish the have its contents ignored by Git.

@@ -22,7 +22,7 @@
       output += htmlObj.foot;
       output = output.replace('{{ title }}', 'Installation successful!');
       output = output.replace('{{ class }}', 'success');
-      output = output.replace(/localhost:9001/g, req.headers.host);
+      output = output.replace(/localhost:3000/g, req.headers.host);
       res.end(output);
     });
   };
