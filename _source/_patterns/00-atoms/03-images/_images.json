@@ -20,5 +20,8 @@
 			"src": "http://placeimg.com/400/300/tech",
 			"alt": "Rectangle"
 		}
+	},
+	"logo": {
+		"url": "../04-pages-00-homepage/04-pages-00-homepage.html"
 	}
 }
