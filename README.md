@@ -31,12 +31,12 @@ A frontend prototyper for streamlining website design and development
 
 Edit conf.yml for customizing local settings and for general configuration 
 information. If you wish to use the `syncback` or `frontend-copy` tasks, you 
-must supply values for the `backend.synced\_dirs` configs in order for those 
+must supply values for the `backend.synced_dirs` configs in order for those 
 directories to get processed and copied to the backend.
 
-You may edit `patternlab-node/source/\_data/\_data.json` to globally populate 
+You may edit `patternlab-node/source/_data/_data.json` to globally populate 
 Mustache templates with data. Underscore-prefixed .json files within 
-`source/\_patterns` will be concatenated to the output of \_data.json, the whole 
+`source/_patterns` will be concatenated to the output of \_data.json, the whole 
 in turn getting compiled into data.json, the final source of globally scoped 
 data. Manual edits to data.json will get overwritten on compilation.
 
