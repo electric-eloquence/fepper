@@ -40,8 +40,7 @@ gulp.task('frontend-copy', [
   'fepper:copy-css',
   'fepper:copy-fonts',
   'fepper:copy-images',
-  'fepper:copy-js',
-  'fepper:copy-templates'
+  'fepper:copy-js'
 ]);
 
 gulp.task('install', function () {
@@ -105,6 +104,19 @@ gulp.task('syncback', function () {
   runSequence(
     ['lint'],
     ['uglify'],
-    ['frontend-copy']
+    ['frontend-copy'],
+    ['templater']
   );
 });
+
+gulp.task('templater', function () {
+  runSequence(
+    ['fepper:cd-in'],
+    ['fepper:template'],
+    ['fepper:cd-out']
+  );
+});
+
+gulp.task('test', [
+  'mocha'
+]);
