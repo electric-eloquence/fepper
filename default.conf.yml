@@ -1,7 +1,7 @@
 ---
 # Copy this file to conf.yml. This is absolutely necessary for installation.
 
-express_port: 9001
+express_port: 3000
 livereload_port: 35729
 node_kill: true # Kill lingering Node.js processes at startup.
 

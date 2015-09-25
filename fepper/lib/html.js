@@ -105,7 +105,7 @@
 
   exports.success = `
       <h1 style="color: green;">Installation successful!</h1>
-      <p>To start Fepping, just click here: <a href="http://localhost:9001" target="_blank">http://localhost:9001</a></p>
+      <p>To start Fepping, just click here: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></p>
       <p>To halt Fepper, go back to the command line and press Ctrl+c.</p>
       <p>The following documentation is also available in README.md on the command line:</p>`;
 

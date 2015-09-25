@@ -20,8 +20,11 @@ A frontend prototyper for streamlining website design and development
   * If already installed, be sure the version is up to date: `brew update && brew upgrade node`
   * If not on a Mac, and not using Homebrew:
 [https://github.com/joyent/node/wiki/installing-node.js-via-package-manager](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager)
-* `npm install`
-* Open http://localhost:9001 in a browser if it doesn't open automatically.
+* On Mac OS X:
+  * Double-click fepper.command
+* On other OSs (or if you prefer the command line):
+  * `npm install`
+* Open http://localhost:3000 in a browser if it doesn't open automatically.
 
 ###Configuration###
 
@@ -41,16 +44,16 @@ If using Git for version control, directories named "ignore" will be ignored.
 
 ###Utilization###
 
-The following are the available Gulp tasks:
+The following are the terminal commands for Fepper:
 
-* `gulp` to run the automated building, watching, and serving tasks.
-* `gulp data` to force compile \_data.json.
-* `gulp frontend-copy` to copy css, fonts, images, js, and templates to backend.
-* `gulp lint` to lint JavaScripts, JSON, and HTML.
-* `gulp once` to clean the public folder and do a one-off Fepper build.
-* `gulp publish` to publish the public folder to GitHub Pages.
-* `gulp static` to generate a static site from the 04-pages directory.
-* `gulp syncback` to lint, uglify and copy Fepper frontend files to the backend.
+* `node .` to launch Fepper from the command line.
+* `node . data` to force compile \_data.json.
+* `node . frontend-copy` to copy css, fonts, images, js, and templates to backend.
+* `node . lint` to lint JavaScripts, JSON, and HTML.
+* `node . once` to clean the public folder and do a one-off Fepper build.
+* `node . publish` to publish the public folder to GitHub Pages.
+* `node . static` to generate a static site from the 04-pages directory.
+* `node . syncback` to lint, uglify and copy Fepper frontend files to the backend.
 
 ###Documentation###
 
