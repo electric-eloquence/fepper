@@ -50,17 +50,6 @@ gulp.task('fepper:copy-js', function () {
   }
 });
 
-gulp.task('fepper:copy-templates', function (cb) {
-  if (typeof conf.backend.synced_dirs.templates_dir === 'string' && conf.backend.synced_dirs.templates_dir.match(/^[\w.\/-]+$/)) {
-    runSequence(
-      ['fepper:cd-in'],
-      ['fepper:template'],
-      ['fepper:cd-out']
-    );
-  }
-  cb();
-});
-
 gulp.task('fepper:gh-pages', function (cb) {
   fepper.ghPagesPrefix();
   cb();
@@ -82,6 +71,9 @@ gulp.task('fepper:static-generate', function (cb) {
 });
 
 gulp.task('fepper:template', function (cb) {
-  fepper.template();
+  if (typeof conf.backend.synced_dirs.templates_dir === 'string' && conf.backend.synced_dirs.templates_dir.match(/^[\w.\/-]+$/)) {
+    fepper.template();
+    cb();
+  }
   cb();
 });

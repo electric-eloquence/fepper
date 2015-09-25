@@ -30,9 +30,9 @@ A frontend prototyper for streamlining website design and development
 ###Configuration###
 
 Edit conf.yml for customizing local settings and for general configuration 
-information. If you wish to use the `syncback` or `frontend-copy` tasks, you 
-must supply values for the `backend.synced_dirs` configs in order for those 
-directories to get processed and copied to the backend.
+information. If you wish to use the `syncback`, `frontend-copy`, or `templater` 
+tasks, you must supply values for the `backend.synced_dirs` configs in order for 
+those directories to get processed and copied to the backend.
 
 You may edit `patternlab-node/source/_data/_data.json` to globally populate 
 Mustache templates with data. Underscore-prefixed .json files within 
@@ -53,13 +53,14 @@ If using Git for version control, directories named "ignore" will be ignored.
   * `node .`
 * These other utility tasks are runnable on the command line:
   * `node . data` to force compile data.json.
-  * `node . frontend-copy` to copy css, fonts, images, js, and templates to backend.
+  * `node . frontend-copy` to copy css, fonts, images, and js to backend.
   * `node . lint` to lint JavaScripts, JSON, and HTML.
   * `node . minify` to minify JavaScripts.
   * `node . once` to clean the public folder and do a one-off Fepper build.
   * `node . publish` to publish the public folder to GitHub Pages.
   * `node . static` to generate a static site from the 04-pages directory.
-  * `node . syncback` to lint, minify and copy Fepper frontend files to the backend.
+  * `node . syncback` combines lint, minify, frontend-copy, and templater.
+  * `node . templater` translates templates for backend and copies them there.
 
 ###Static Site Generation###
 Running `node . static` will generate a complete static site based on the files 
@@ -77,23 +78,45 @@ while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or
 even just a symbolic link to the codebase into the `backend` directory. Then, 
 enter the relative paths to the appropriate backend directories into conf.yml. 
 (Do not include `backend` or a leading slash.) You will then be able to run 
-`node . frontend-copy` or `node . syncback` to export your frontend data into 
-your backend web application.
+`node . syncback`, `node . frontend-copy`, or `node . templater` to export your 
+frontend data into your backend web application.
 
 ###Webserved Directories###
 When using a CMS backend, assets generally needed to be shared with the Fepper 
-frontend. The `frontend-copy` and `syncback` tasks copy files from Fepper to the 
+frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a copy task in the reverse 
 direction, Fepper can serve backend files if their directories are entered into 
 the `webserved_dirs` block in conf.yml.
 
-    DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 
-    HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO ANY PUBLISHED 
-    SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE 
-    INFORMATION CONTAINED WITHIN THE SOURCE CODE!
+```
+DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 
+HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO ANY PUBLISHED 
+SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE 
+INFORMATION CONTAINED WITHIN THE SOURCE CODE!
+```
 
 ###GitHub Pages###
-If you have checked Fepper into a repository in your GitHub account, you may run `node . publish` to publish `patternlab-node/public` to GitHub pages. The Pattern Lab UI and Fepper static files will then be viewable from the Web at `http://user.github.io/repo/`. Normally, this is all that is needed. However, if you are using `webserved_dirs`, you will need to supply a `gh_pages_prefix` config in `conf.yml` or `patternlab-node/source/_data/_data.json`. This config needs to be set to the name of your GitHub repository name and must contain a leading slash. Setting `gh_pages_prefix` in `_data.json` will save that value in version control. If `gh_pages_prefix` is set in both `conf.yml` and `_data.json`, the value in `conf.yml` will take priority.
+If you have checked Fepper into a repository in your GitHub account, you may run 
+`node . publish` to publish `patternlab-node/public` to GitHub pages. The 
+Pattern Lab UI and Fepper static files will then be viewable from the Web at 
+`http://user.github.io/repo/`. Normally, this is all that is needed. However, if 
+you are using `webserved_dirs`, you will need to supply a `gh_pages_prefix` 
+config in `conf.yml` or `patternlab-node/source/_data/_data.json`. This config 
+needs to be set to the name of your GitHub repository and must contain a leading 
+slash. Setting `gh_pages_prefix` in `_data.json` will save that value in version 
+control. If `gh_pages_prefix` is set in both `conf.yml` and `_data.json`, the 
+value in `conf.yml` will take priority.
+
+###Templater###
+Pattern Lab's Mustache templates can be translated into templates compatible 
+with your backend CMS. Mustache tags just need to be replaced with tags the CMS 
+can use. Put these translations into YAML files named similarly to the Mustache 
+files in `patternlab-node/source/_patterns/03-templates`. Follow the example in 
+`test/patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
+Templates prefixed by "__" will be ignored by the templater as will files in the 
+`_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
+`backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `node . syncback` 
+or `node . templater` to execute the templater task.
 
 ###More Documentation###
 
