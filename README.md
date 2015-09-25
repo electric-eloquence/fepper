@@ -30,7 +30,7 @@ A frontend prototyper for streamlining website design and development
 ###Configuration###
 
 Edit conf.yml for customizing local settings and for general configuration 
-information. If you wish to use the `syncback`, `frontend-copy`, or `templater` 
+information. If you wish to use the `syncback`, `frontend-copy`, or `template` 
 tasks, you must supply values for the `backend.synced_dirs` configs in order for 
 those directories to get processed and copied to the backend.
 
@@ -59,8 +59,8 @@ If using Git for version control, directories named "ignore" will be ignored.
   * `node . once` to clean the public folder and do a one-off Fepper build.
   * `node . publish` to publish the public folder to GitHub Pages.
   * `node . static` to generate a static site from the 04-pages directory.
-  * `node . syncback` combines lint, minify, frontend-copy, and templater.
-  * `node . templater` translates templates for backend and copies them there.
+  * `node . syncback` combines lint, minify, frontend-copy, and template.
+  * `node . template` translates templates for backend and copies them there.
 
 ###Static Site Generation###
 Running `node . static` will generate a complete static site based on the files 
@@ -78,7 +78,7 @@ while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or
 even just a symbolic link to the codebase into the `backend` directory. Then, 
 enter the relative paths to the appropriate backend directories into conf.yml. 
 (Do not include `backend` or a leading slash.) You will then be able to run 
-`node . syncback`, `node . frontend-copy`, or `node . templater` to export your 
+`node . syncback`, `node . frontend-copy`, or `node . template` to export your 
 frontend data into your backend web application.
 
 ###Webserved Directories###
@@ -116,7 +116,7 @@ files in `patternlab-node/source/_patterns/03-templates`. Follow the example in
 Templates prefixed by "__" will be ignored by the templater as will files in the 
 `_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
 `backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `node . syncback` 
-or `node . templater` to execute the templater task.
+or `node . template` to execute the templater.
 
 ###More Documentation###
 
