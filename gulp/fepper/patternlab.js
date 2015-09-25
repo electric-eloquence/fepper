@@ -50,8 +50,18 @@ gulp.task('patternlab:cd-in', function (cb) {
   cb();
 });
 
+gulp.task('patternlab:cd-in-to-fepper', function (cb) {
+  process.chdir('../fepper/tasks/');
+  cb();
+});
+
 gulp.task('patternlab:cd-out', function (cb) {
   process.chdir('..');
+  cb();
+});
+
+gulp.task('patternlab:cd-out-of-fepper', function (cb) {
+  process.chdir('../../' + conf.pln);
   cb();
 });
 
@@ -68,6 +78,15 @@ gulp.task('patternlab:copy', function (cb) {
 gulp.task('patternlab:copy-css', function () {
   return gulp.src('./source/css/**/*')
     .pipe(gulp.dest('./public/css/'));
+});
+
+gulp.task('patternlab:data', function () {
+  runSequence(
+    ['patternlab:cd-in-to-fepper'],
+    ['fepper:appendix'],
+    ['fepper:json-compile'],
+    ['patternlab:cd-out-of-fepper']
+  );
 });
 
 gulp.task('patternlab:help', function (cb) {
@@ -98,9 +117,10 @@ gulp.task('patternlab:watch', function () {
   gulp.watch('public/index.html', ['livereload:index']);
   gulp.watch('source/_data/!(_)*.json', ['patternlab:build']);
   gulp.watch('source/_data/annotations.js', ['patternlab:copy'])
+  gulp.watch('source/_patternlab-files/**/*.mustache', ['patternlab:build']);
   gulp.watch('source/_patterns/**/!(_)*.json', ['patternlab:build']);
   gulp.watch('source/_patterns/**/*.mustache', ['patternlab:clean', 'patternlab:build']);
-  gulp.watch('source/_patternlab-files/**/*.mustache', ['patternlab:build']);
+  gulp.watch('source/_patterns/**/_*.json', ['patternlab:data']);
   gulp.watch('source/css/**/*', ['patternlab:copy-css']);
   gulp.watch('source/fonts/**/*', ['patternlab:copy']);
   gulp.watch('source/images/**/*', ['patternlab:copy']);
