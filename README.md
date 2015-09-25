@@ -22,14 +22,14 @@ A frontend prototyper for streamlining website design and development
   * If not on a Mac, and not using Homebrew:
 [https://github.com/joyent/node/wiki/installing-node.js-via-package-manager](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager)
 * On Mac OS X:
-  * Double-click fepper.command
+  * Double-click `fepper.command`
 * On other OSs (or if you prefer the command line):
   * `npm install`
 * Open [http://localhost:3000](http://localhost:3000) in a browser if it doesn't open automatically.
 
 ###Configuration###
 
-Edit conf.yml for customizing local settings and for general configuration 
+Edit `conf.yml` for customizing local settings and for general configuration 
 information. If you wish to use the `syncback`, `frontend-copy`, or `template` 
 tasks, you must supply values for the `backend.synced_dirs` configs in order for 
 those directories to get processed and copied to the backend.
@@ -48,7 +48,7 @@ If using Git for version control, directories named "ignore" will be ignored.
 ###Utilization###
 
 * To launch from Mac OS X Finder:
-  * Double-click fepper.command
+  * Double-click `fepper.command`
 * To launch from the command line:
   * `node .`
 * These other utility tasks are runnable on the command line:
@@ -76,17 +76,17 @@ caveat is that links to other pages in the `patterns` directory must start with
 Fepper can just as easily work with a CMS backend such as WordPress or Drupal, 
 while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
 even just a symbolic link to the codebase into the `backend` directory. Then, 
-enter the relative paths to the appropriate backend directories into conf.yml. 
-(Do not include `backend` or a leading slash.) You will then be able to run 
+enter the relative paths to the appropriate backend directories into `conf.yml`. 
+(Do not include "backend" or a leading slash.) You will then be able to run 
 `node . syncback`, `node . frontend-copy`, or `node . template` to export your 
 frontend data into your backend web application.
 
 ###Webserved Directories###
-When using a CMS backend, assets generally needed to be shared with the Fepper 
+When using a CMS backend, assets generally need to be shared with the Fepper 
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
-backend, but not the other way. Instead of providing a copy task in the reverse 
-direction, Fepper can serve backend files if their directories are entered into 
-the `webserved_dirs` block in conf.yml.
+backend, but not the other way. Instead of providing a task to copy in the 
+reverse direction, Fepper serves backend files if their directories are entered 
+into the `webserved_dirs` block in conf.yml.
 
 ```
 DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 
