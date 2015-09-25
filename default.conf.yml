@@ -80,7 +80,7 @@ backend:
 # must be prefixed to the src of images and other assets in webserved_dirs. This
 # value can also be set in data.json and be saved in version control. If both
 # are set, the setting in this file will take priority. Be sure to include the
-# leading slash in this setting or use a fully qualified domain name.
+# leading slash in this setting.
 #gh_pages_prefix: /github-repository-name
 
 # It isn't a good idea to change the following values.

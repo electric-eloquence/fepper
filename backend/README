@@ -1,5 +1,0 @@
-Put the actual backend codebase or even just a symbolic link to the codebase
-into this directory. Then, enter the relative paths to the appropriate backend
-directories into the conf.yml file at the root directory of Fepper. You will
-then be able to run `gulp syncback` to export your frontend data into your
-backend web application.
