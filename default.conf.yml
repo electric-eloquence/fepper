@@ -3,7 +3,6 @@
 
 express_port: 3000
 livereload_port: 35729
-node_kill: true # Kill lingering Node.js processes at startup.
 
 # timeout_main sets the number of milliseconds to wait for asynchronous tasks to
 # complete, particularly the wait before Fepper opens in a browser.

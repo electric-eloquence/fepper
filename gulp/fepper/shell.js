@@ -11,12 +11,3 @@ gulp.task('shell:install-npm', function () {
     .pipe(plugins.exec('npm install'))
     .pipe(plugins.exec.reporter());
 });
-
-gulp.task('shell:node-kill', function (cb) {
-  if (conf.node_kill) {
-    // Do not log output.
-    exec('killall node');
-    exec('taskkill /im node.exe');
-  }
-  cb();
-});

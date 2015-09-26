@@ -73,7 +73,6 @@ gulp.task('fepper:static-generate', function (cb) {
 gulp.task('fepper:template', function (cb) {
   if (typeof conf.backend.synced_dirs.templates_dir === 'string' && conf.backend.synced_dirs.templates_dir.match(/^[\w.\/-]+$/)) {
     fepper.template();
-    cb();
   }
   cb();
 });

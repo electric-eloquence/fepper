@@ -15,15 +15,13 @@ requireDir('gulp', {recurse: true});
 
 gulp.task('default', function () {
   runSequence(
-    ['shell:node-kill'],
     ['once'],
     ['data'],
     ['fepper:cd-in'],
     ['fepper:pattern-override'],
     ['fepper:cd-out'],
     ['express'],
-    ['patternlab:cd-in'],
-    ['patternlab:watch', 'contrib', 'custom', 'open']
+    ['contrib:watch', 'custom:watch', 'open', 'patternlab:watch']
   );
 });
 
@@ -32,7 +30,8 @@ gulp.task('data', function () {
     ['fepper:cd-in'],
     ['fepper:appendix'],
     ['fepper:json-compile'],
-    ['fepper:cd-out']
+    ['fepper:cd-out'],
+    ['contrib:data', 'custom:data']
   );
 });
 
@@ -40,12 +39,13 @@ gulp.task('frontend-copy', [
   'fepper:copy-css',
   'fepper:copy-fonts',
   'fepper:copy-images',
-  'fepper:copy-js'
+  'fepper:copy-js',
+  'contrib:frontend-copy',
+  'custom:frontend-copy'
 ]);
 
 gulp.task('install', function () {
   runSequence(
-    ['shell:node-kill'],
     ['install:copy'],
     ['install:config'],
     ['data'],
@@ -58,8 +58,7 @@ gulp.task('install', function () {
     ['fepper:pattern-override'],
     ['fepper:cd-out'],
     ['express'],
-    ['patternlab:cd-in'],
-    ['patternlab:watch', 'contrib', 'custom', 'open:install']
+    ['contrib:watch', 'custom:watch', 'open:install', 'patternlab:watch']
   );
 });
 
@@ -67,19 +66,24 @@ gulp.task('lint', [
   'lint:htmlhint',
   'lint:htmllint',
   'lint:jshint',
-  'lint:jsonlint'
+  'lint:jsonlint',
+  'contrib:lint',
+  'custom:lint'
 ]);
 
 gulp.task('minify', [
-  'uglify'
+  'uglify',
+  'contrib:minify',
+  'custom:minify'
 ]);
 
 gulp.task('once', function () {
   runSequence(
     ['patternlab:cd-in'],
     ['patternlab:clean'],
-    ['patternlab:build', 'patternlab:copy', 'css-process'],
-    ['patternlab:cd-out']
+    ['patternlab:build', 'patternlab:copy'],
+    ['patternlab:cd-out'],
+    ['contrib:once', 'custom:once']
   );
 });
 
@@ -88,7 +92,8 @@ gulp.task('publish', function () {
     ['fepper:cd-in'],
     ['fepper:gh-pages'],
     ['fepper:cd-out'],
-    ['gh-pages']
+    ['gh-pages'],
+    ['contrib:publish', 'custom:publish']
   );
 });
 
@@ -96,7 +101,8 @@ gulp.task('static', function () {
   runSequence(
     ['fepper:cd-in'],
     ['fepper:static-generate'],
-    ['fepper:cd-out']
+    ['fepper:cd-out'],
+    ['contrib:static', 'custom:static']
   );
 });
 
@@ -105,15 +111,17 @@ gulp.task('syncback', function () {
     ['lint'],
     ['uglify'],
     ['frontend-copy'],
-    ['templater']
+    ['templater'],
+    ['contrib:syncback', 'custom:syncback']
   );
 });
 
-gulp.task('templater', function () {
+gulp.task('template', function () {
   runSequence(
     ['fepper:cd-in'],
     ['fepper:template'],
-    ['fepper:cd-out']
+    ['fepper:cd-out'],
+    ['contrib:template', 'custom:template']
   );
 });
 
