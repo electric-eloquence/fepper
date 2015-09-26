@@ -296,7 +296,6 @@ button, input, select, textarea {
 }
 
 input, textarea {
-  width: 100%;
   border: 1px solid gray;
   padding: 0.5rem 0.65rem;
 }
@@ -309,6 +308,7 @@ button, input[type="submit"] {
   padding: 0.5rem;
   background: #333333;
   border: 1px solid gray;
+  color: white;
   cursor: pointer;
 }
 
