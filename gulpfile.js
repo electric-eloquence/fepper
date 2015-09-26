@@ -15,7 +15,6 @@ requireDir('gulp', {recurse: true});
 
 gulp.task('default', function () {
   runSequence(
-    ['shell:node-kill'],
     ['once'],
     ['data'],
     ['fepper:cd-in'],

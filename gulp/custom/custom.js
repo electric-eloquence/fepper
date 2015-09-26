@@ -4,31 +4,31 @@
  */
 var gulp = require('gulp');
 
-gulp.task('contrib:data', [
+gulp.task('custom:data', [
 ]);
 
-gulp.task('contrib:frontend-copy', [
+gulp.task('custom:frontend-copy', [
 ]);
 
-gulp.task('contrib:lint', [
+gulp.task('custom:lint', [
 ]);
 
-gulp.task('contrib:minify', [
+gulp.task('custom:minify', [
 ]);
 
-gulp.task('contrib:once', [
+gulp.task('custom:once', [
 ]);
 
-gulp.task('contrib:publish', [
+gulp.task('custom:publish', [
 ]);
 
-gulp.task('contrib:static', [
+gulp.task('custom:static', [
 ]);
 
-gulp.task('contrib:syncback', [
+gulp.task('custom:syncback', [
 ]);
 
-gulp.task('contrib:template', [
+gulp.task('custom:template', [
 ]);
 
 gulp.task('custom:watch', [
