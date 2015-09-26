@@ -13,10 +13,11 @@ gulp.task('lint:htmllint', function () {
     .pipe(plugins.htmllint());
 });
 
-gulp.task('lint:jshint', function () {
+gulp.task('lint:eslint', function () {
   return gulp.src(conf.src + '/js/src/**/*.js')
-    .pipe(plugins.jshint())
-    .pipe(plugins.jshint.reporter('default'));
+    .pipe(plugins.eslint())
+    .pipe(plugins.eslint.format())
+    .pipe(plugins.eslint.failAfterError());
 });
 
 gulp.task('lint:jsonlint', function () {

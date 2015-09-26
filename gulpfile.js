@@ -66,7 +66,7 @@ gulp.task('install', function () {
 gulp.task('lint', [
   'lint:htmlhint',
   'lint:htmllint',
-  'lint:jshint',
+  'lint:eslint',
   'lint:jsonlint',
   'contrib:lint',
   'custom:lint'
@@ -127,5 +127,9 @@ gulp.task('template', function () {
 });
 
 gulp.task('test', [
-  'mocha'
+  'test:eslint-fepper',
+  'test:eslint-gulp',
+  'test:eslint-root',
+  'test:eslint-test',
+  'test:mocha'
 ]);
