@@ -8,6 +8,7 @@ var requireDir = require('require-dir');
 var runSequence = require('run-sequence');
 
 var utils = require('./fepper/lib/utils');
+// Set global.conf and process.env.CONF.
 var conf = utils.conf();
 
 // Load tasks in tasks directory.

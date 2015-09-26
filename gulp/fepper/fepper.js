@@ -5,7 +5,6 @@ var plugins = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 
 var fepper = require('../../fepper/tasks/tasks.js');
-var utils = require('../lib/utils');
 
 gulp.task('fepper:appendix', function (cb) {
   fepper.appendix();
