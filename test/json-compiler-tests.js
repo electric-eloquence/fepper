@@ -42,7 +42,7 @@
       expect(dataBefore).to.equal('');
       expect(dataAfter).to.not.equal(dataBefore);
     });
- 
+
     it('should compile valid JSON to data.json', function () {
       expect(dataJson).to.be.an('object');
     });
@@ -54,7 +54,7 @@
 
     it('should compile _patterns partials to data.json', function () {
       var partial;
-      var partials = glob.sync(rootDir + '/' +  conf.src + '/_patterns/**/_*.json');
+      var partials = glob.sync(rootDir + '/' + conf.src + '/_patterns/**/_*.json');
       for (var i = 0; i < partials.length; i++) {
         partial = stripBraces(fs.readFileSync(partials[i], conf.enc));
         expect(dataAfter).to.contain(partial);

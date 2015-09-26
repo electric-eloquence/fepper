@@ -4,9 +4,6 @@
   var htmlObj = require('../lib/html');
 
   exports.main = function (req, res) {
-    var i;
-    var msg = '';
-    var msgType;
     var output = '';
     var target = '';
     var url = '';

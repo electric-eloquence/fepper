@@ -2,13 +2,6 @@
   'use strict';
 
   var expect = require('chai').expect;
-/*
-  var fs = require('fs-extra');
-
-
-  var appendixer = require(rootDir + '/fepper/tasks/appendixer');
-  var appendixFile = rootDir + '/' + conf.src + '/_data/_appendix.json';
-*/
   var utils = require('../fepper/lib/utils');
   var rootDir = utils.rootDir();
 

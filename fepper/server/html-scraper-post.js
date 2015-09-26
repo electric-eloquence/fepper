@@ -10,6 +10,7 @@
   var builder = new xml2js.Builder();
   var domParser = new xmldom.DOMParser();
   var htmlObj = require('../lib/html');
+  var utils = require('../lib/utils');
   var xmlSerializer = new xmldom.XMLSerializer();
 
   /**
@@ -26,7 +27,7 @@
    * @return {string} Sanitized HTML.
    */
   exports.dataArrayToJson = function (dataArr) {
-    var jsonForData = {html:[{}]};
+    var jsonForData = {html: [{}]};
 
     for (var i = 0; i < dataArr.length; i++) {
       for (var j in dataArr[i]) {
@@ -172,13 +173,13 @@
     xhtml = xhtml.replace(/^\s*\n/g, '');
 
     return xhtml;
-  }
+  };
 
   exports.redirectWithMsg = function (res, type, msg, target, url) {
     if (res) {
       target = typeof target === 'string' ? target : '';
       url = typeof url === 'string' ? url : '';
-      res.writeHead(303, { Location: 'html-scraper?' + type + '=' +  msg + '&target=' + target + '&url=' + url });
+      res.writeHead(303, {Location: 'html-scraper?' + type + '=' + msg + '&target=' + target + '&url=' + url});
       res.end();
     }
   };
@@ -253,21 +254,17 @@
       jsonForXhtml = exports.jsonRecurse(res, dataArr, 0);
     });
 
-    return { json: jsonForXhtml, array: dataArr };
+    return {json: jsonForXhtml, array: dataArr};
   };
 
   exports.main = function (req, res) {
     var $;
     var dataArr1;
-    var dataArr2;
     var dataObj;
     var dataStr;
-    var $el;
     var fileHtml;
     var fileJson;
     var fileName;
-    var i;
-    var j;
     var jsonForData;
     var jsonForXhtml;
     var output;
@@ -278,7 +275,6 @@
     var targetHtml;
     var targetHtmlObj;
     var targetIndex;
-    var targetParsed;
     var targetSplit;
     var targetXhtml;
     var templateDir;
@@ -296,8 +292,8 @@
           $ = cheerio.load(body);
           target = req.body.target.trim();
           targetSplit = exports.targetValidate(target, res, req);
-          targetBase = targetSplit[0]
-          targetIndex = targetSplit[1]
+          targetBase = targetSplit[0];
+          targetIndex = targetSplit[1];
           targetHtml = '';
           $targetEl = $(targetBase);
 

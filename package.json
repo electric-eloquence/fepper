@@ -43,7 +43,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "if [ ! -f conf.yml ]; then cp default.conf.yml conf.yml; fi && gulp install",
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "gulp test"
   },
   "engines": {
     "node": ">=0.10"

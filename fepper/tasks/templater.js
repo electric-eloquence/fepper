@@ -72,7 +72,7 @@
     var glob1 = glob.sync(srcDir + '/!(__)*.mustache');
     var glob2 = glob.sync(srcDir + '/!(_no_sync)/!(__)*.mustache');
     return glob1.concat(glob2);
-  }
+  };
 
   exports.templatesWrite = function (file, srcDir, templatesDir, templatesExt, code) {
     // Determine destination for token-replaced code.
@@ -90,7 +90,7 @@
   exports.tokensLoad = function (ymlFile) {
     yml = fs.readFileSync(ymlFile, conf.enc);
     return yaml.safeLoad(yml);
-  }
+  };
 
   exports.tokensReplace = function (tokens, code) {
     var re;
@@ -113,15 +113,13 @@
     code = code.replace(/\\}/g, '}');
 
     return code;
-  }
+  };
 
   exports.main = function () {
     var code;
     var dest;
-    var destDir;
     var files;
     var patternDir = rootDir + '/' + conf.src + '/_patterns/';
-    var re;
     var srcDir = patternDir + '03-templates';
     var stats;
     var templatesDir;

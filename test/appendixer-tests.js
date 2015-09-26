@@ -27,13 +27,14 @@
       appendixJson = JSON.parse(appendixAfter);
     }
     catch (er) {
+      // Fail gracefully.
     }
-   
+
     it('should overwrite _appendix.json', function () {
       expect(appendixBefore).to.equal('');
       expect(appendixAfter).to.not.equal(appendixBefore);
     });
-   
+
     it('should compile variables.styl to _appendix.json as valid JSON', function () {
       expect(appendixJson).to.be.an('object');
     });

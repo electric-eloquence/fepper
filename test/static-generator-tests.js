@@ -3,13 +3,12 @@
 
   var expect = require('chai').expect;
   var fs = require('fs-extra');
-  var path = require('path');
 
   var utils = require('../fepper/lib/utils');
   var conf = utils.conf();
   var rootDir = utils.rootDir();
 
-  var staticDir = rootDir + '/' + conf.src+ '/static';
+  var staticDir = rootDir + '/' + conf.src + '/static';
   var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
 
   describe('Static Generator', function () {
@@ -103,7 +102,7 @@
 
     it('should overwrite static/index.html', function () {
       var indexFile = staticDir + '/index.html';
-  
+
       // Clear out static/index.html.
       fs.writeFileSync(indexFile, '');
       // Get empty string for comparison.

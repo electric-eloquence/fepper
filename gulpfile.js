@@ -3,133 +3,139 @@
  *
  * The tasks listed here are for general use by developers and non-developers.
  */
-var gulp = require('gulp');
-var requireDir = require('require-dir');
-var runSequence = require('run-sequence');
+(function () {
+  'use strict';
 
-var utils = require('./fepper/lib/utils');
-// Set global.conf and process.env.CONF.
-var conf = utils.conf();
+  var gulp = require('gulp');
+  var requireDir = require('require-dir');
+  var runSequence = require('run-sequence');
 
-// Load tasks in tasks directory.
-requireDir('gulp', {recurse: true});
+  var utils = require('./fepper/lib/utils');
+  // Set global.conf and process.env.CONF.
+  utils.conf();
 
-gulp.task('default', function () {
-  runSequence(
-    ['once'],
-    ['data'],
-    ['fepper:cd-in'],
-    ['fepper:pattern-override'],
-    ['fepper:cd-out'],
-    ['express'],
-    ['contrib:watch', 'custom:watch', 'open', 'patternlab:watch']
-  );
-});
+  // Load tasks in tasks directory.
+  requireDir('gulp', {recurse: true});
 
-gulp.task('data', function () {
-  runSequence(
-    ['fepper:cd-in'],
-    ['fepper:appendix'],
-    ['fepper:json-compile'],
-    ['fepper:cd-out'],
-    ['contrib:data', 'custom:data']
-  );
-});
+  gulp.task('default', function () {
+    runSequence(
+      ['once'],
+      ['data'],
+      ['fepper:cd-in'],
+      ['fepper:pattern-override'],
+      ['fepper:cd-out'],
+      ['express'],
+      ['contrib:watch', 'custom:watch', 'open', 'patternlab:watch']
+    );
+  });
 
-gulp.task('frontend-copy', [
-  'fepper:copy-css',
-  'fepper:copy-fonts',
-  'fepper:copy-images',
-  'fepper:copy-js',
-  'contrib:frontend-copy',
-  'custom:frontend-copy'
-]);
+  gulp.task('data', function () {
+    runSequence(
+      ['fepper:cd-in'],
+      ['fepper:appendix'],
+      ['fepper:json-compile'],
+      ['fepper:cd-out'],
+      ['contrib:data', 'custom:data']
+    );
+  });
 
-gulp.task('install', function () {
-  runSequence(
-    ['install:copy'],
-    ['install:config'],
-    ['data'],
-    ['patternlab:cd-in'],
-    ['shell:install-npm'],
-    ['patternlab:cd-out'],
-    ['once'],
-    ['data'],
-    ['fepper:cd-in'],
-    ['fepper:pattern-override'],
-    ['fepper:cd-out'],
-    ['express'],
-    ['contrib:watch', 'custom:watch', 'open:install', 'patternlab:watch']
-  );
-});
+  gulp.task('frontend-copy', [
+    'fepper:copy-css',
+    'fepper:copy-fonts',
+    'fepper:copy-images',
+    'fepper:copy-js',
+    'contrib:frontend-copy',
+    'custom:frontend-copy'
+  ]);
 
-gulp.task('lint', [
-  'lint:htmlhint',
-  'lint:htmllint',
-  'lint:eslint',
-  'lint:jsonlint',
-  'contrib:lint',
-  'custom:lint'
-]);
+  gulp.task('install', function () {
+    runSequence(
+      ['install:copy'],
+      ['install:config'],
+      ['data'],
+      ['patternlab:cd-in'],
+      ['shell:install-npm'],
+      ['patternlab:cd-out'],
+      ['once'],
+      ['data'],
+      ['fepper:cd-in'],
+      ['fepper:pattern-override'],
+      ['fepper:cd-out'],
+      ['express'],
+      ['contrib:watch', 'custom:watch', 'open:install', 'patternlab:watch']
+    );
+  });
 
-gulp.task('minify', [
-  'uglify',
-  'contrib:minify',
-  'custom:minify'
-]);
+  gulp.task('lint', [
+    'lint:htmlhint',
+    'lint:htmllint',
+    'lint:eslint',
+    'lint:jsonlint',
+    'contrib:lint',
+    'custom:lint'
+  ]);
 
-gulp.task('once', function () {
-  runSequence(
-    ['patternlab:cd-in'],
-    ['patternlab:clean'],
-    ['patternlab:build', 'patternlab:copy'],
-    ['patternlab:cd-out'],
-    ['contrib:once', 'custom:once']
-  );
-});
+  gulp.task('minify', [
+    'uglify',
+    'contrib:minify',
+    'custom:minify'
+  ]);
 
-gulp.task('publish', function () {
-  runSequence(
-    ['fepper:cd-in'],
-    ['fepper:gh-pages'],
-    ['fepper:cd-out'],
-    ['gh-pages'],
-    ['contrib:publish', 'custom:publish']
-  );
-});
+  gulp.task('once', function () {
+    runSequence(
+      ['patternlab:cd-in'],
+      ['patternlab:clean'],
+      ['patternlab:build', 'patternlab:copy'],
+      ['patternlab:cd-out'],
+      ['contrib:once', 'custom:once']
+    );
+  });
 
-gulp.task('static', function () {
-  runSequence(
-    ['fepper:cd-in'],
-    ['fepper:static-generate'],
-    ['fepper:cd-out'],
-    ['contrib:static', 'custom:static']
-  );
-});
+  gulp.task('publish', function () {
+    runSequence(
+      ['fepper:cd-in'],
+      ['fepper:gh-pages'],
+      ['fepper:cd-out'],
+      ['gh-pages'],
+      ['contrib:publish', 'custom:publish']
+    );
+  });
 
-gulp.task('syncback', function () {
-  runSequence(
-    ['lint'],
-    ['uglify'],
-    ['frontend-copy'],
-    ['templater'],
-    ['contrib:syncback', 'custom:syncback']
-  );
-});
+  gulp.task('static', function () {
+    runSequence(
+      ['fepper:cd-in'],
+      ['fepper:static-generate'],
+      ['fepper:cd-out'],
+      ['contrib:static', 'custom:static']
+    );
+  });
 
-gulp.task('template', function () {
-  runSequence(
-    ['fepper:cd-in'],
-    ['fepper:template'],
-    ['fepper:cd-out'],
-    ['contrib:template', 'custom:template']
-  );
-});
+  gulp.task('syncback', function () {
+    runSequence(
+      ['lint'],
+      ['uglify'],
+      ['frontend-copy'],
+      ['templater'],
+      ['contrib:syncback', 'custom:syncback']
+    );
+  });
 
-gulp.task('test', [
-  'test:eslint-fepper',
-  'test:eslint-gulp',
-  'test:eslint-root',
-  'test:eslint-test',
-  'test:mocha'
-]);
+  gulp.task('template', function () {
+    runSequence(
+      ['fepper:cd-in'],
+      ['fepper:template'],
+      ['fepper:cd-out'],
+      ['contrib:template', 'custom:template']
+    );
+  });
+
+  gulp.task('test', function () {
+    runSequence(
+      ['test:eslint-fepper'],
+      ['test:eslint-gulp'],
+      ['test:eslint-root'],
+      ['test:eslint-test'],
+      ['test:mocha']
+    );
+  });
+})();

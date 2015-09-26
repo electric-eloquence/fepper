@@ -6,7 +6,7 @@
   exports.handleError = function (err) {
     utilsFepper.log(err.toString());
     this.emit('end');
-  }
+  };
 
   exports.log = function (err, stdout, stderr) {
     stdout = stdout.trim();
