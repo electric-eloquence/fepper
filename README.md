@@ -25,6 +25,9 @@ A frontend prototyper for streamlining website design and development
   * Double-click `fepper.command`
 * On other OSs (or if you prefer the command line):
   * `npm install`
+* After successful installation:
+  * Double-click `fepper.command` again
+  * Or enter `node .` on the command line.
 * Open [http://localhost:3000](http://localhost:3000) in a browser if it doesn't open automatically.
 
 ###Configuration###

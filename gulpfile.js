@@ -55,14 +55,7 @@
       ['data'],
       ['patternlab:cd-in'],
       ['shell:install-npm'],
-      ['patternlab:cd-out'],
-      ['once'],
-      ['data'],
-      ['fepper:cd-in'],
-      ['fepper:pattern-override'],
-      ['fepper:cd-out'],
-      ['express'],
-      ['contrib:watch', 'custom:watch', 'open:install', 'patternlab:watch']
+      ['patternlab:cd-out']
     );
   });
 
