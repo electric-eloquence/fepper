@@ -51,7 +51,7 @@
     jsonStr += '\n';
 
     // Delete (optional) opening and closing curly brace from json partials.
-    partials = glob.sync(rootDir + '/' +  conf.src + '/_patterns/**/_*.json');
+    partials = glob.sync(rootDir + '/' + conf.src + '/_patterns/**/_*.json');
     for (i = 0; i < partials.length; i++) {
       tmp = fs.readFileSync(partials[i], conf.enc);
       // Delete curly brace and any whitespace at beginning of file.

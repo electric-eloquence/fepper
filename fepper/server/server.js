@@ -1,9 +1,8 @@
 (function () {
   'use strict';
 
-  var bodyParser  = require('body-parser');
+  var bodyParser = require('body-parser');
   var express = require('express');
-  var fs = require('fs-extra');
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
@@ -45,7 +44,7 @@
   }
 
   // So variables sent via form submission can be parsed.
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.urlencoded({extended: true}));
 
   // HTML scraper form.
   app.get('/html-scraper', htmlScraper.main);

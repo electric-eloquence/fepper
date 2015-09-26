@@ -1,13 +1,15 @@
-var conf = global.conf;
-var exec = require('child_process').exec;
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
+(function () {
+  'use strict';
 
-// Use gulp-exec for operations that must occur synchronously within a task, or
-// for tasks that must respect the global process object.
+  var gulp = require('gulp');
+  var plugins = require('gulp-load-plugins')();
 
-gulp.task('shell:install-npm', function () {
-  return gulp.src('', {read: false})
-    .pipe(plugins.exec('npm install'))
-    .pipe(plugins.exec.reporter());
-});
+  // Use gulp-exec for operations that must occur synchronously within a task, or
+  // for tasks that must respect the global process object.
+
+  gulp.task('shell:install-npm', function () {
+    return gulp.src('', {read: false})
+      .pipe(plugins.exec('npm install'))
+      .pipe(plugins.exec.reporter());
+  });
+})();

@@ -33,8 +33,6 @@
   exports.filesProcess = function (files, confParam, webservedDirsShort, prefix) {
     var code;
     var codeSplit;
-    var dest;
-    var destDir;
     var file;
     var i;
     var j;
@@ -114,7 +112,6 @@
     var prefix;
     var ghPagesDir;
     var rootDir = utils.rootDir();
-    var patternDir = rootDir + '/' + conf.pub + '/patterns';
     var publicDir = rootDir + '/' + conf.pub;
     var webservedDirsShort;
     var webservedDirsFull;

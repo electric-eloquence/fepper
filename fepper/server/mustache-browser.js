@@ -40,7 +40,7 @@
       output += 'There is no Mustache template there by that name. Perhaps you need to use <a href="http://patternlab.io/docs/pattern-including.html" target="_blank">the more verbosely pathed syntax.</a>';
     }
     output += htmlObj.foot;
-    output = output.replace('{{ title }}', 'Fepper Mustache Browser' );
+    output = output.replace('{{ title }}', 'Fepper Mustache Browser');
     res.end(output);
   };
 
@@ -60,7 +60,7 @@
         output += htmlObj.headNoStyles;
         output += code;
         output += htmlObj.foot;
-        output = output.replace('{{ title }}', 'Fepper Mustache Browser' );
+        output = output.replace('{{ title }}', 'Fepper Mustache Browser');
         res.end(output);
       }
       catch (err) {
@@ -84,7 +84,7 @@
             output += '<h1>' + partial + '</h1>';
             output += data;
             output += htmlObj.foot;
-            output = output.replace('{{ title }}', 'Fepper Mustache Browser' );
+            output = output.replace('{{ title }}', 'Fepper Mustache Browser');
             res.end(output);
           });
         }

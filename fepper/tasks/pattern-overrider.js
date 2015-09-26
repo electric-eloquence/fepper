@@ -10,7 +10,6 @@
 
   var fs = require('fs-extra');
   var path = require('path');
-  var yaml = require('js-yaml');
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
@@ -28,7 +27,7 @@
 
     if (typeof dataJson.homepage === 'string') {
       output = 'if (window.location.pathname.indexOf(\'/styleguide/html/styleguide.html\') > -1 && window.location.search === \'\') {\n';
-      output += '  window.location = \'../../patterns/' + dataJson.homepage  + '/' + dataJson.homepage + '.html\';\n';
+      output += '  window.location = \'../../patterns/' + dataJson.homepage + '/' + dataJson.homepage + '.html\';\n';
       output += '}\n';
     }
 
@@ -36,7 +35,7 @@
     fs.appendFileSync(dest, output);
 
     // Check if LiveReload port set in conf.yml. If not, use default.
-    if (typeof conf.livereload_port !== 'number'  &&  typeof conf.livereload_port !== 'string') {
+    if (typeof conf.livereload_port !== 'number' && typeof conf.livereload_port !== 'string') {
       conf.livereload_port = defaultPort;
     }
     output = 'if (window.location.port === \'' + conf.express_port + '\') {\n';

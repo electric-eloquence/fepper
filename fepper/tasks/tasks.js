@@ -25,5 +25,5 @@
     static template() {
       require('./templater.js').main();
     }
-  }
+  };
 })();
