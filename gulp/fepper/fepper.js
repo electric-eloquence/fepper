@@ -9,7 +9,7 @@
   var rootDir = utils.rootDir();
 
   gulp.task('fepper:appendix', function (cb) {
-    fepper.appendix(conf.src);
+    fepper.appendix(rootDir + '/' + conf.src);
     cb();
   });
 
