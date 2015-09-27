@@ -16,11 +16,11 @@
   var conf = utils.conf();
   var rootDir = utils.rootDir();
 
-  exports.main = function () {
-    var appendix = rootDir + '/' + conf.src + '/_data/_appendix.json';
+  exports.main = function (srcDir) {
+    var appendix = srcDir + '/_data/_appendix.json';
     var i;
     var jsonStr = '{\n';
-    var varFile = rootDir + '/' + conf.src + '/js/src/variables.styl';
+    var varFile = srcDir + '/js/src/variables.styl';
     var varLine;
     var vars = fs.readFileSync(varFile, conf.enc);
     var varsSplit = vars.split('\n');

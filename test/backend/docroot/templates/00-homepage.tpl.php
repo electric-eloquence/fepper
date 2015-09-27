@@ -1,8 +1,8 @@
 <div class="page" id="page">
 <!-- Begin .header -->
 <header class="header cf" role="banner">
-<a href="/"><img src="../../images/logo.png" class="logo" alt="Logo Alt Text" /></a>
-	<a href="#" class="nav-toggle nav-toggle-search icon-search"><span class="is-vishidden">Search</span></a>
+<a href=""><img src="../../images/logo.png" class="logo" alt="Logo Alt Text" /></a>
+<a href="#" class="nav-toggle nav-toggle-search icon-search"><span class="is-vishidden">Search</span></a>
 	<a href="#" class="nav-toggle nav-toggle-menu icon-menu"><span class="is-vishidden">Menu</span></a>
 	<?php print $page['primary_nav']; ?>
 	<?php print $page['search']; ?>

@@ -15,11 +15,10 @@
   var conf = utils.conf();
   var rootDir = utils.rootDir();
 
-  exports.main = function () {
+  exports.main = function (dest) {
     var dataJson = utils.data(conf);
     var defaultPort = 35729;
-    var dest = rootDir + '/' + conf.pub + '/js/pattern-overrider.js';
-    var output;
+    var output = '';
 
     // Initialize destination file.
     fs.mkdirsSync(path.dirname(dest));

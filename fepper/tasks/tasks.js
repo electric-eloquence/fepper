@@ -1,9 +1,13 @@
 (function () {
   'use strict';
 
+  var utils = require('../lib/utils');
+  var conf = utils.conf();
+  var rootDir = utils.rootDir();
+
   module.exports = class {
     static appendix() {
-      require('./appendixer.js').main();
+      require('./appendixer.js').main(conf.src);
     }
 
     static ghPagesPrefix() {
@@ -11,11 +15,11 @@
     }
 
     static jsonCompile() {
-      require('./json-compiler.js').main();
+      require('./json-compiler.js').main(conf.src);
     }
 
     static patternOverride() {
-      require('./pattern-overrider.js').main();
+      require('./pattern-overrider.js').main(rootDir + '/' + conf.pub + '/js/pattern-overrider.js');
     }
 
     static staticGenerate() {
