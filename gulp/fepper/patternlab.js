@@ -37,7 +37,7 @@
       .pipe(gulp.dest('./public/fonts/'));
     gulp.src('./source/images/**')
       .pipe(gulp.dest('./public/images/'));
-    gulp.src('./source/js/*/**')
+    gulp.src('./source/js/**')
       .pipe(gulp.dest('./public/js/'));
     gulp.src('./source/static/**')
       .pipe(gulp.dest('./public/static/'));
@@ -112,12 +112,6 @@
 
   gulp.task('patternlab:help', function (cb) {
     patternlab_build('help', conf.pln);
-    cb();
-  });
-
-  gulp.task('patternlab:install', function (cb) {
-    patternlab_build();
-    patternlab_copy();
     cb();
   });
 

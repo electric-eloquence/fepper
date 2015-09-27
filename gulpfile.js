@@ -55,7 +55,6 @@
       ['data'],
       ['patternlab:cd-in'],
       ['shell:install-npm'],
-      ['patternlab:install'],
       ['patternlab:cd-out']
     );
   });
