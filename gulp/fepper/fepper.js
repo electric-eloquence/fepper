@@ -5,9 +5,11 @@
   var gulp = require('gulp');
 
   var fepper = require('../../fepper/tasks/tasks.js');
+  var utils = require('../lib/utils');
+  var rootDir = utils.rootDir();
 
   gulp.task('fepper:appendix', function (cb) {
-    fepper.appendix();
+    fepper.appendix(conf.src);
     cb();
   });
 
@@ -55,12 +57,12 @@
   });
 
   gulp.task('fepper:json-compile', function (cb) {
-    fepper.jsonCompile();
+    fepper.jsonCompile(conf.src);
     cb();
   });
 
   gulp.task('fepper:pattern-override', function (cb) {
-    fepper.patternOverride();
+    fepper.patternOverride(rootDir + '/' + conf.pub + '/js/pattern-overrider.js');
     cb();
   });
 
