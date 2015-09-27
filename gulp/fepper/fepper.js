@@ -5,7 +5,7 @@
   var gulp = require('gulp');
 
   var fepper = require('../../fepper/tasks/tasks.js');
-  var utils = require('../lib/utils');
+  var utils = require('../../lib/utils');
   var rootDir = utils.rootDir();
 
   gulp.task('fepper:appendix', function (cb) {
