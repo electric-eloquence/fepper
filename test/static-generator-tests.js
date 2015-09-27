@@ -109,7 +109,7 @@
       fs.writeFileSync(testFile, '');
       // Get empty string for comparison.
       var indexBefore = fs.readFileSync(testFile, conf.enc);
-      // Compile pages dir. 
+      // Compile pages dir.
       staticGenerator.pagesDirCompile(testDir + '/patterns', staticDir);
       // Check test file.
       var indexAfter = fs.readFileSync(testFile, conf.enc);
@@ -125,7 +125,7 @@
       fs.writeFileSync(testFile, '');
       // Get empty string for comparison.
       var indexBefore = fs.readFileSync(testFile, conf.enc);
-      // Compile pages dir. 
+      // Compile pages dir.
       staticGenerator.pagesDirCompile(testDir + '/patterns', staticDir);
       // Check test file.
       var indexAfter = fs.readFileSync(testFile, conf.enc);

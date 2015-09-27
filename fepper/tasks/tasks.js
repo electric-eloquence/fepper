@@ -1,10 +1,6 @@
 (function () {
   'use strict';
 
-  var utils = require('../lib/utils');
-  var conf = utils.conf();
-  var rootDir = utils.rootDir();
-
   module.exports = class {
     static appendix(srcDir) {
       require('./appendixer.js').main(srcDir);

@@ -14,7 +14,6 @@
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
-  var rootDir = utils.rootDir();
 
   exports.main = function (srcDir) {
     var appendix = srcDir + '/_data/_appendix.json';

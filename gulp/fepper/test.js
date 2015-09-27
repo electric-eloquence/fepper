@@ -26,7 +26,7 @@
   });
 
   gulp.task('test:eslint-test', function () {
-    return gulp.src('./test/**/*.js')
+    return gulp.src('./test/*.js')
       .pipe(plugins.eslint())
       .pipe(plugins.eslint.format())
       .pipe(plugins.eslint.failAfterError());
