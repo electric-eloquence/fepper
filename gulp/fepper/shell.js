@@ -9,7 +9,7 @@
 
   gulp.task('shell:install-npm', function () {
     return gulp.src('', {read: false})
-      .pipe(plugins.exec('npm install'))
+      .pipe(plugins.exec('npm install > npm-install.log'))
       .pipe(plugins.exec.reporter());
   });
 })();
