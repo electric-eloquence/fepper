@@ -7,9 +7,10 @@
   var utils = require('../fepper/lib/utils');
   var conf = utils.conf();
   var rootDir = utils.rootDir();
+  var testDir = rootDir + '/test';
 
   var appendixer = require(rootDir + '/fepper/tasks/appendixer');
-  var appendixFile = rootDir + '/' + conf.src + '/_data/_appendix.json';
+  var appendixFile = testDir + '/_data/_appendix.json';
 
   describe('Appendixer', function () {
     // Clear out _appendix.json.
@@ -17,7 +18,7 @@
     // Get empty string for comparison.
     var appendixBefore = fs.readFileSync(appendixFile, conf.enc);
     // Run appendixer.js.
-    appendixer.main();
+    appendixer.main(testDir);
     // Get appendixer.js output.
     var appendixAfter = fs.readFileSync(appendixFile, conf.enc);
 

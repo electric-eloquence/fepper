@@ -10,7 +10,7 @@
   var rootDir = utils.rootDir();
 
   var patternOverrider = require(rootDir + '/fepper/tasks/pattern-overrider');
-  var poFile = rootDir + '/' + conf.pub + '/js/pattern-overrider.js';
+  var poFile = rootDir + '/test/js/pattern-overrider.js';
 
   describe('Pattern Overrider', function () {
     // Clear out pattern-overrider.js.
@@ -19,7 +19,7 @@
     // Get empty string for comparison.
     var poBefore = fs.readFileSync(poFile, conf.enc);
     // Run pattern-overrider.js.
-    patternOverrider.main();
+    patternOverrider.main(poFile);
     // Get pattern-overrider.js output.
     var poAfter = fs.readFileSync(poFile, conf.enc);
 

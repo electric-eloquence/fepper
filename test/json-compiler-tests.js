@@ -8,9 +8,10 @@
   var utils = require('../fepper/lib/utils');
   var conf = utils.conf();
   var rootDir = utils.rootDir();
+  var testDir = rootDir + '/test';
 
-  var appendixFile = rootDir + '/' + conf.src + '/_data/_appendix.json';
-  var dataFile = rootDir + '/' + conf.src + '/_data/data.json';
+  var appendixFile = testDir + '/_data/_appendix.json';
+  var dataFile = testDir + '/_data/data.json';
   var jsonCompiler = require(rootDir + '/fepper/tasks/json-compiler');
 
   describe('JSON Compiler', function () {
@@ -19,7 +20,7 @@
     // Get empty string for comparison.
     var dataBefore = fs.readFileSync(dataFile, conf.enc);
     // Run json-compiler.js.
-    jsonCompiler.main();
+    jsonCompiler.main(testDir);
     // Get json-compiler.js output.
     var dataAfter = fs.readFileSync(dataFile, conf.enc);
 
@@ -48,13 +49,13 @@
     });
 
     it('should compile _data.json to data.json', function () {
-      var _data = stripBraces(fs.readFileSync(rootDir + '/' + conf.src + '/_data/_data.json', conf.enc));
+      var _data = stripBraces(fs.readFileSync(testDir + '/_data/_data.json', conf.enc));
       expect(dataAfter).to.contain(_data);
     });
 
     it('should compile _patterns partials to data.json', function () {
       var partial;
-      var partials = glob.sync(rootDir + '/' + conf.src + '/_patterns/**/_*.json');
+      var partials = glob.sync(testDir + '/_patterns/**/_*.json');
       for (var i = 0; i < partials.length; i++) {
         partial = stripBraces(fs.readFileSync(partials[i], conf.enc));
         expect(dataAfter).to.contain(partial);

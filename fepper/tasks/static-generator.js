@@ -9,32 +9,28 @@
   var conf = utils.conf();
   var rootDir = utils.rootDir();
 
-  var pubDir = rootDir + '/' + conf.pub;
-  var staticDir = rootDir + '/' + conf.src + '/static';
-
-  exports.cssDirCopy = function () {
+  exports.cssDirCopy = function (pubDir, staticDir) {
     fs.copySync(pubDir + '/css', staticDir + '/css');
   };
 
-  exports.fontsDirCopy = function () {
+  exports.fontsDirCopy = function (pubDir, staticDir) {
     fs.copySync(pubDir + '/fonts', staticDir + '/fonts');
   };
 
-  exports.imagesDirCopy = function () {
+  exports.imagesDirCopy = function (pubDir, staticDir) {
     fs.copySync(pubDir + '/images', staticDir + '/images');
   };
 
-  exports.jsDirCopy = function () {
+  exports.jsDirCopy = function (pubDir, staticDir) {
     fs.copySync(pubDir + '/js', staticDir + '/js');
   };
 
-  exports.pagesDirCompile = function () {
+  exports.pagesDirCompile = function (patternDir, staticDir) {
     var dirs = [];
     var f;
     var files = [];
     var i;
     var j;
-    var patternDir = pubDir + '/patterns';
     var tmpArr = [];
     var tmpStr = '';
 
@@ -66,13 +62,16 @@
   };
 
   exports.main = function () {
+    var pubDir = rootDir + '/' + conf.pub;
+    var staticDir = rootDir + '/' + conf.src + '/static';
+
     // Copy asset directories.
-    exports.cssDirCopy();
-    exports.fontsDirCopy();
-    exports.imagesDirCopy();
-    exports.jsDirCopy();
+    exports.cssDirCopy(pubDir, staticDir);
+    exports.fontsDirCopy(pubDir, staticDir);
+    exports.imagesDirCopy(pubDir, staticDir);
+    exports.jsDirCopy(pubDir, staticDir);
 
     // Copy pages directory.
-    exports.pagesDirCompile();
+    exports.pagesDirCompile(pubDir + '/patterns', staticDir);
   };
 })();

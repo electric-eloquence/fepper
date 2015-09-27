@@ -2,20 +2,20 @@
   'use strict';
 
   module.exports = class {
-    static appendix() {
-      require('./appendixer.js').main();
+    static appendix(srcDir) {
+      require('./appendixer.js').main(srcDir);
     }
 
     static ghPagesPrefix() {
       require('./gh-pages-prefixer.js').main();
     }
 
-    static jsonCompile() {
-      require('./json-compiler.js').main();
+    static jsonCompile(srcDir) {
+      require('./json-compiler.js').main(srcDir);
     }
 
-    static patternOverride() {
-      require('./pattern-overrider.js').main();
+    static patternOverride(dest) {
+      require('./pattern-overrider.js').main(dest);
     }
 
     static staticGenerate() {

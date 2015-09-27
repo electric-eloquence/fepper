@@ -8,7 +8,8 @@
   var conf = utils.conf();
   var rootDir = utils.rootDir();
 
-  var staticDir = rootDir + '/' + conf.src + '/static';
+  var testDir = rootDir + '/test';
+  var staticDir = testDir + '/static';
   var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
 
   describe('Static Generator', function () {
@@ -25,8 +26,8 @@
       catch (err) {
         // Fail gracefully.
       }
-      // Run pattern-overrider.js.
-      staticGenerator.cssDirCopy();
+      // Copy css dir.
+      staticGenerator.cssDirCopy(testDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(cssDir).isDirectory();
 
@@ -47,8 +48,8 @@
       catch (err) {
         // Fail gracefully.
       }
-      // Run pattern-overrider.js.
-      staticGenerator.fontsDirCopy();
+      // Copy fonts dir.
+      staticGenerator.fontsDirCopy(testDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(fontsDir).isDirectory();
 
@@ -69,8 +70,9 @@
       catch (err) {
         // Fail gracefully.
       }
+      // Copy images dir.
       // Run pattern-overrider.js.
-      staticGenerator.imagesDirCopy();
+      staticGenerator.imagesDirCopy(testDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(imagesDir).isDirectory();
 
@@ -91,8 +93,8 @@
       catch (err) {
         // Fail gracefully.
       }
-      // Run pattern-overrider.js.
-      staticGenerator.jsDirCopy();
+      // Copy js dir.
+      staticGenerator.jsDirCopy(testDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(jsDir).isDirectory();
 
@@ -100,17 +102,33 @@
       expect(dirExistsAfter).to.not.equal(dirExistsBefore);
     });
 
-    it('should overwrite static/index.html', function () {
-      var indexFile = staticDir + '/index.html';
+    it('should write static/index.html', function () {
+      var testFile = staticDir + '/index.html';
 
       // Clear out static/index.html.
-      fs.writeFileSync(indexFile, '');
+      fs.writeFileSync(testFile, '');
       // Get empty string for comparison.
-      var indexBefore = fs.readFileSync(indexFile, conf.enc);
-      // Run pattern-overrider.js.
-      staticGenerator.pagesDirCompile();
-      // Get pattern-overrider.js output.
-      var indexAfter = fs.readFileSync(indexFile, conf.enc);
+      var indexBefore = fs.readFileSync(testFile, conf.enc);
+      // Compile pages dir.
+      staticGenerator.pagesDirCompile(testDir + '/patterns', staticDir);
+      // Check test file.
+      var indexAfter = fs.readFileSync(testFile, conf.enc);
+
+      expect(indexBefore).to.equal('');
+      expect(indexAfter).to.not.equal(indexBefore);
+    });
+
+    it('should write static/01-blog.html', function () {
+      var testFile = staticDir + '/01-blog.html';
+
+      // Clear out static/index.html.
+      fs.writeFileSync(testFile, '');
+      // Get empty string for comparison.
+      var indexBefore = fs.readFileSync(testFile, conf.enc);
+      // Compile pages dir.
+      staticGenerator.pagesDirCompile(testDir + '/patterns', staticDir);
+      // Check test file.
+      var indexAfter = fs.readFileSync(testFile, conf.enc);
 
       expect(indexBefore).to.equal('');
       expect(indexAfter).to.not.equal(indexBefore);

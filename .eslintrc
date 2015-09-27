@@ -7,19 +7,9 @@
   },
   "globals": {
     "describe": true,
-    "Drupal": true,
-    "drupalSettings": true,
-    "drupalTranslations": true,
-    "domready": true,
-    "empty": true,
     "expect": true,
     "it": true,
-    "jQuery": true,
-    "_": true,
-    "matchMedia": true,
-    "Backbone": true,
-    "Modernizr": true,
-    "CKEDITOR": true
+    "jQuery": true
   },
   "rules": {
     // Errors.

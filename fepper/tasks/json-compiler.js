@@ -14,13 +14,12 @@
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
-  var rootDir = utils.rootDir();
 
-  exports.main = function () {
-    var appendix = rootDir + '/' + conf.src + '/_data/_appendix.json';
+  exports.main = function (srcDir) {
+    var appendix = srcDir + '/_data/_appendix.json';
     var appendixTest = {};
-    var dest = rootDir + '/' + conf.src + '/_data/data.json';
-    var globals = rootDir + '/' + conf.src + '/_data/_data.json';
+    var dest = srcDir + '/_data/data.json';
+    var globals = srcDir + '/_data/_data.json';
     var globalsTest = {};
     var i;
     var j;
@@ -51,7 +50,7 @@
     jsonStr += '\n';
 
     // Delete (optional) opening and closing curly brace from json partials.
-    partials = glob.sync(rootDir + '/' + conf.src + '/_patterns/**/_*.json');
+    partials = glob.sync(srcDir + '/_patterns/**/_*.json');
     for (i = 0; i < partials.length; i++) {
       tmp = fs.readFileSync(partials[i], conf.enc);
       // Delete curly brace and any whitespace at beginning of file.

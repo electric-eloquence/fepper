@@ -43,9 +43,9 @@
     });
 
     it('should prefix webserved_dirs with gh_pages_prefix', function () {
-      var fileBeforePath = testDir + '/patterns/00-logo.html';
+      var fileBeforePath = testDir + '/patterns/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
       var fileBefore = fs.readFileSync(fileBeforePath);
-      var fileAfterPath = ghPagesDir + '/00-logo.html';
+      var fileAfterPath = ghPagesDir + '/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
 
       fs.copySync(fileBeforePath, fileAfterPath);
       ghPagesPrefixer.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix);
