@@ -6,20 +6,20 @@
   var rootDir = utils.rootDir();
 
   module.exports = class {
-    static appendix() {
-      require('./appendixer.js').main(conf.src);
+    static appendix(srcDir) {
+      require('./appendixer.js').main(srcDir);
     }
 
     static ghPagesPrefix() {
       require('./gh-pages-prefixer.js').main();
     }
 
-    static jsonCompile() {
-      require('./json-compiler.js').main(conf.src);
+    static jsonCompile(srcDir) {
+      require('./json-compiler.js').main(srcDir);
     }
 
-    static patternOverride() {
-      require('./pattern-overrider.js').main(rootDir + '/' + conf.pub + '/js/pattern-overrider.js');
+    static patternOverride(dest) {
+      require('./pattern-overrider.js').main(dest);
     }
 
     static staticGenerate() {
