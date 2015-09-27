@@ -22,7 +22,7 @@
 
   gulp.task('install:copy', function () {
     try {
-      fs.statSync(conf.pln + '/config.json');
+      fs.statSync(conf.src);
     }
     catch (err) {
       // Only copy _source if config.json doesn't exist.
