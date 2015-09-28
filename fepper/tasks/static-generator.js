@@ -7,6 +7,7 @@
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
+  var dataJson = utils.data(conf);
   var rootDir = utils.rootDir();
 
   exports.cssDirCopy = function (pubDir, staticDir) {
@@ -54,7 +55,7 @@
         tmpStr = tmpStr.replace(/(href\s*=\s*)("|').*(\/|&#x2F;)[\d-]*pages-/g, '$1$2');
         fs.writeFileSync(staticDir + '/' + f.replace(/^.*\/[\d-]*pages-/, ''), tmpStr);
         // Copy homepage to index.html.
-        if (f.indexOf('homepage.html') === f.length - 13) {
+        if (dataJson.homepage && f.indexOf(dataJson.homepage + '.html') !== -1) {
           fs.writeFileSync(staticDir + '/index.html', tmpStr);
         }
       }
