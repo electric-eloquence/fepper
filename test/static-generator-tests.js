@@ -3,12 +3,15 @@
 
   var expect = require('chai').expect;
   var fs = require('fs-extra');
+  var yaml = require('js-yaml');
 
   var utils = require('../fepper/lib/utils');
-  var conf = utils.conf();
+  var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
   var testDir = rootDir + '/test';
+  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
   var staticDir = testDir + '/static';
   var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
 
@@ -132,6 +135,24 @@
 
       expect(indexBefore).to.equal('');
       expect(indexAfter).to.not.equal(indexBefore);
+    });
+
+    it('should copy webserved_dirs to the static dir', function () {
+      var pass = true;
+      var stats;
+      // Get array of truncated dirnames.
+      var webservedDirs = utils.webservedDirnamesTruncate(conf.backend.webserved_dirs);
+
+      utils.webservedDirsCopy(conf.backend.webserved_dirs, testDir, webservedDirs, staticDir);
+      for (var i = 0; i < webservedDirs.length; i++) {
+        stats = fs.statSync(staticDir + '/' + webservedDirs[i]);
+        if (!stats.isDirectory()) {
+          pass = false;
+          break;
+        }
+      }
+
+      expect(pass).to.equal(true);
     });
   });
 })();

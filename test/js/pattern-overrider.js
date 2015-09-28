@@ -21,7 +21,7 @@ if (window.location.pathname.indexOf('/styleguide/html/styleguide.html') > -1 &&
 }
 
 // LiveReload.
-if (window.location.port === '9001') {
+if (window.location.port === '3000') {
   //<![CDATA[
     document.write('<script type="text/javascript" src="http://HOST:35729/livereload.js"><\/script>'.replace('HOST', location.hostname));
   //]]>

@@ -84,4 +84,38 @@
   exports.log = exports.isTest() ? function () {} : exports.console.log;
 
   exports.warn = exports.console.warn;
+
+  // ///////////////////////////////////////////////////////////////////////////
+  // Webserved directories.
+  // ///////////////////////////////////////////////////////////////////////////
+  /**
+   * Remove first path element from webservedDirsFull and save to array.
+   *
+   * @param The {array} webservedDirsFull The array of webserved directories.
+   * @return {array} The webserved directories stripped of configuration prefix.
+   */
+  exports.webservedDirnamesTruncate = function (webservedDirsFull) {
+    var i;
+    var webservedDirSplit;
+    var webservedDirsShort = [];
+
+    for (i = 0; i < webservedDirsFull.length; i++) {
+      webservedDirSplit = webservedDirsFull[i].split('/');
+      webservedDirSplit.shift();
+      webservedDirsShort.push(webservedDirSplit.join('/'));
+    }
+
+    return webservedDirsShort;
+  };
+
+  /**
+   * Copy webserved_dirs to gh_pages_src.
+   */
+  exports.webservedDirsCopy = function (webservedDirsFull, rootDir, webservedDirsShort, ghPagesDir) {
+    var i;
+
+    for (i = 0; i < webservedDirsFull.length; i++) {
+      fs.copySync(rootDir + '/backend/' + webservedDirsFull[i], ghPagesDir + '/' + webservedDirsShort[i]);
+    }
+  };
 })();

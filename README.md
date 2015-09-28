@@ -89,7 +89,11 @@ When using a CMS backend, assets generally need to be shared with the Fepper
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a task to copy in the 
 reverse direction, Fepper serves backend files if their directories are entered 
-into the `webserved_dirs` block in conf.yml.
+into the `webserved_dirs` block in `conf.yml` or `patternlab-node/source/_data/_data.json`. 
+Setting `webserved_dirs` in `_data.json` will save that value in version 
+control. If `webserved_dirs` is set in both `conf.yml` and `_data.json`, the 
+value in `conf.yml` will take priority. Be sure these values are formatted as  
+YAML or JSON array elements.
 
 ```
 DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 

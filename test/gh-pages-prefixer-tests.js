@@ -18,7 +18,7 @@
 
   describe('GitHub Pages Prefixer', function () {
     // Get array of truncated dirnames.
-    var webservedDirs = ghPagesPrefixer.webservedDirnamesTruncate(conf.backend.webserved_dirs);
+    var webservedDirs = utils.webservedDirnamesTruncate(conf.backend.webserved_dirs);
 
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
@@ -59,7 +59,7 @@
       var pass = true;
       var stats;
 
-      ghPagesPrefixer.webservedDirsCopy(conf.backend.webserved_dirs, testDir, webservedDirs, ghPagesDir);
+      utils.webservedDirsCopy(conf.backend.webserved_dirs, testDir, webservedDirs, ghPagesDir);
       for (var i = 0; i < webservedDirs.length; i++) {
         stats = fs.statSync(ghPagesDir + '/' + webservedDirs[i]);
         if (!stats.isDirectory()) {
