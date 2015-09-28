@@ -1,6 +1,4 @@
 ---
-# Copy this file to conf.yml. This is absolutely necessary for installation.
-
 express_port: 3000
 livereload_port: 35729
 

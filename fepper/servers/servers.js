@@ -64,6 +64,6 @@
   // For everything else, document root = Pattern Lab.
   app.use(express.static(rootDir + '/patternlab-node/public'));
 
-  // Set default port = 3000.
-  app.listen(process.env.PORT || 3000);
+  // Launch Express.
+  app.listen(process.env.PORT);
 })();
