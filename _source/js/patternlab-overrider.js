@@ -113,23 +113,4 @@
       }
     }
   }
-
-  //////////////////////////////////////////////////////////////////////////////
-  /// MUSTACHE CODE BROWSER
-  //////////////////////////////////////////////////////////////////////////////
-  var codeFill = d.getElementById('sg-code-fill');
-  if (codeFill) {
-    // Give the PL Mustache code viewer the appearance of being linked.
-    codeFill.addEventListener('mouseover', function () {
-      this.style.cursor = 'pointer';
-    });
-    // Send to Fepper's Mustache browser when clicking the viewer's Mustache code.
-    codeFill.addEventListener('click', function () {
-      var code = encodeURIComponent(this.innerHTML);
-      var title = d.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
-      window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
-      return false;
-    });
-  }
-
 })();

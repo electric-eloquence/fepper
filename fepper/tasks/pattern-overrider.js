@@ -17,11 +17,31 @@
   exports.main = function (dest) {
     var dataJson = utils.data(conf);
     var defaultPort = 35729;
-    var output = '';
+    var output = `
+////////////////////////////////////////////////////////////////////////////////
+/// MUSTACHE CODE BROWSER
+////////////////////////////////////////////////////////////////////////////////
+var pd = parent.document;
+var codeFill = pd.getElementById('sg-code-fill');
+if (codeFill) {
+  // Give the PL Mustache code viewer the appearance of being linked.
+  codeFill.addEventListener('mouseover', function () {
+    this.style.cursor = 'pointer';
+  });
+  // Send to Fepper's Mustache browser when clicking the viewer's Mustache code.
+  codeFill.addEventListener('click', function () {
+    var code = encodeURIComponent(this.innerHTML);
+    var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
+    window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
+    return false;
+  });
+}
+
+`;
 
     // Initialize destination file.
     fs.mkdirsSync(path.dirname(dest));
-    fs.writeFileSync(dest, '');
+    fs.writeFileSync(dest, output);
 
     if (typeof dataJson.homepage === 'string') {
       output = 'if (window.location.pathname.indexOf(\'/styleguide/html/styleguide.html\') > -1 && window.location.search === \'\') {\n';
