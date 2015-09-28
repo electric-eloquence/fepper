@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  var fs = require('fs-extra');
+
   var conf = global.conf;
   var gulp = require('gulp');
   var plugins = require('gulp-load-plugins')();
@@ -32,10 +34,21 @@
   });
 
   gulp.task('open', function () {
-    return open(conf.timeout_main);
-  });
+    var log = conf.pln + '/npm-install.log';
+    var stats;
 
-  gulp.task('open:install', function () {
-    return open(conf.timeout_main * 2, '/success');
+    try {
+      stats = fs.statSync(log);
+    }
+    catch (err) {
+      // Fail gracefully.
+    }
+    if (stats && stats.isFile()) {
+      fs.unlink(log);
+      return open(conf.timeout_main * 2, '/success');
+    }
+    else {
+      return open(conf.timeout_main);
+    }
   });
 })();

@@ -3,12 +3,9 @@
 
   var i;
   var FEPPER = window.FEPPER;
-  var pd = parent.document;
+  var d = document;
   var $ = jQuery; // Needed for DataSaver. Try to avoid jQuery in custom code.
 
-  //////////////////////////////////////////////////////////////////////////////
-  /// VIEWPORT RESIZER
-  //////////////////////////////////////////////////////////////////////////////
   function sizeiframe(size) {
     var maxViewportWidth = 2600; // Defined in patternlab-node/public/js/styleguide.js
     var minViewportWidth = 240; // Defined in patternlab-node/public/js/styleguide.js
@@ -28,15 +25,15 @@
     }
 
     // Resize viewport wrapper to desired size + size of drag resize handler.
-    pd.getElementById('sg-gen-container').className = 'vp-animate';
-    pd.getElementById('sg-gen-container').style.width = theSize + viewportResizeHandleWidth + 'px';
+    d.getElementById('sg-gen-container').className = 'vp-animate';
+    d.getElementById('sg-gen-container').style.width = theSize + viewportResizeHandleWidth + 'px';
     // Resize viewport to desired size.
-    pd.getElementById('sg-viewport').className = 'vp-animate';
-    pd.getElementById('sg-viewport').style.width = theSize + 'px';
+    d.getElementById('sg-viewport').className = 'vp-animate';
+    d.getElementById('sg-viewport').style.width = theSize + 'px';
    
     var targetOrigin = (window.location.protocol === 'file:') ? '*' : window.location.protocol+'//'+window.location.host;
     var obj = JSON.stringify({'resize': 'true'});
-    pd.getElementById('sg-viewport').contentWindow.postMessage(obj,targetOrigin);
+    d.getElementById('sg-viewport').contentWindow.postMessage(obj,targetOrigin);
 
     // Update values in toolbar
     updateSizeReading(theSize);
@@ -46,8 +43,8 @@
 
   function updateSizeReading(size) {
     var bodyFontSize;
-    if (pd.getElementsByTagName('body')[0].style.fontSize.indexOf('px') !== -1) {
-      bodyFontSize = parseInt(pd.getElementsByTagName('body')[0].style.fontSize.replace('px', ''), 10);
+    if (d.getElementsByTagName('body')[0].style.fontSize.indexOf('px') !== -1) {
+      bodyFontSize = parseInt(d.getElementsByTagName('body')[0].style.fontSize.replace('px', ''), 10);
     }
     else {
       bodyFontSize = 16;
@@ -56,9 +53,9 @@
     var pxSize = size;
     var emSize = size / bodyFontSize;
     //Px size input element in toolbar
-    var sizePx = pd.getElementsByClassName('sg-size-px')[0];
+    var sizePx = d.getElementsByClassName('sg-size-px')[0];
     //Em size input element in toolbar
-    var sizeEms = pd.getElementsByClassName('sg-size-em')[0];
+    var sizeEms = d.getElementsByClassName('sg-size-em')[0];
     sizeEms.value = emSize.toFixed(2);
     sizePx.value = pxSize;
   }
@@ -79,10 +76,9 @@
   var median;
 
   // Feel free to create more breakpoints, but Fepper only has resize buttons for
-  // the lg, md, and sm breakpoints. Also, converting rem to px, since Pattern
-  // Lab's resizer only works with px and em.
-  var minWidthL = bps.lg.minWidth * 10;
-  var minWidthM = bps.md.minWidth * 10;
+  // the lg, md, and sm breakpoints.
+  var minWidthL = bps.lg.minWidth;
+  var minWidthM = bps.md.minWidth;
   median = (minWidthL - minWidthM) / 2;
   bpObj.l = minWidthL + median;
   bpObj.m = minWidthM + median;
@@ -92,13 +88,14 @@
   for (i in bpObj) {
     if (bpObj.hasOwnProperty(i)) {
       // Stripping breakpoint buttons of original event listeners.
-      bpBtn = pd.getElementById('sg-size-' + i);
+      bpBtn = d.getElementById('sg-size-' + i);
       if (bpBtn) {
         bpBtnClone = bpBtn.cloneNode(true);
         bpBtn.parentNode.replaceChild(bpBtnClone, bpBtn);
 
         // Re-adding click event listener.
-        bpBtn = pd.getElementById('sg-size-' + i);
+        bpBtn = d.getElementById('sg-size-' + i);
+
         bpBtn.addEventListener('click', function (e) {
           e.preventDefault();
           var sgSize = this.id.replace('sg-size-', '');
@@ -109,26 +106,8 @@
             }
           }
         });
+
       }
     }
   }
-
-  //////////////////////////////////////////////////////////////////////////////
-  /// MUSTACHE CODE BROWSER
-  //////////////////////////////////////////////////////////////////////////////
-  var codeFill = pd.getElementById('sg-code-fill');
-  if (codeFill) {
-    // Give the PL Mustache code viewer the appearance of being linked.
-    codeFill.addEventListener('mouseover', function () {
-      this.style.cursor = 'pointer';
-    });
-    // Send to Fepper's Mustache browser when clicking the viewer's Mustache code.
-    codeFill.addEventListener('click', function () {
-      var code = encodeURIComponent(this.innerHTML);
-      var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
-      window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
-      return false;
-    });
-  }
-
 })();
