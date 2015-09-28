@@ -6,9 +6,6 @@
   var d = document;
   var $ = jQuery; // Needed for DataSaver. Try to avoid jQuery in custom code.
 
-  //////////////////////////////////////////////////////////////////////////////
-  /// VIEWPORT RESIZER
-  //////////////////////////////////////////////////////////////////////////////
   function sizeiframe(size) {
     var maxViewportWidth = 2600; // Defined in patternlab-node/public/js/styleguide.js
     var minViewportWidth = 240; // Defined in patternlab-node/public/js/styleguide.js

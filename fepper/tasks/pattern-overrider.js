@@ -17,10 +17,9 @@
   exports.main = function (dest) {
     var dataJson = utils.data(conf);
     var defaultPort = 35729;
-    var output = `
-////////////////////////////////////////////////////////////////////////////////
-/// MUSTACHE CODE BROWSER
-////////////////////////////////////////////////////////////////////////////////
+
+    // Backticked multi-line string.
+    var output = `// Mustache code browser.
 var pd = parent.document;
 var codeFill = pd.getElementById('sg-code-fill');
 if (codeFill) {
@@ -44,9 +43,13 @@ if (codeFill) {
     fs.writeFileSync(dest, output);
 
     if (typeof dataJson.homepage === 'string') {
-      output = 'if (window.location.pathname.indexOf(\'/styleguide/html/styleguide.html\') > -1 && window.location.search === \'\') {\n';
-      output += '  window.location = \'../../patterns/' + dataJson.homepage + '/' + dataJson.homepage + '.html\';\n';
-      output += '}\n';
+      // Backticked multi-line string.
+      output = `// Redirect away from all-patterns page on launch.
+if (window.location.pathname.indexOf('/styleguide/html/styleguide.html') > -1 && window.location.search === '') {
+  window.location = '../../patterns/${dataJson.homepage}/${dataJson.homepage}.html';
+}
+
+`;
     }
 
     // Write out the homepage redirector.
@@ -56,11 +59,14 @@ if (codeFill) {
     if (typeof conf.livereload_port !== 'number' && typeof conf.livereload_port !== 'string') {
       conf.livereload_port = defaultPort;
     }
-    output = 'if (window.location.port === \'' + conf.express_port + '\') {\n';
-    output += '  //<![CDATA[\n';
-    output += '    document.write(\'<script type="text/javascript" src="http://HOST:' + conf.livereload_port + '/livereload.js"><\\/script>\'.replace(\'HOST\', location.hostname));\n';
-    output += '  //]]>\n';
-    output += '}\n';
+    // Backticked multi-line string.
+    output = `// LiveReload.
+if (window.location.port === '${conf.express_port}') {
+  //<![CDATA[
+    document.write('<script type="text/javascript" src="http://HOST:${conf.livereload_port}/livereload.js"><\\/script>'.replace('HOST', location.hostname));
+  //]]>
+}
+`;
 
     // Write out the LiveReloader.
     fs.appendFileSync(dest, output);
