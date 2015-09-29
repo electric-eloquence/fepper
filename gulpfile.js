@@ -96,6 +96,8 @@
 
   gulp.task('static', function () {
     runSequence(
+      ['lint'],
+      ['minify'],
       ['fepper:cd-in'],
       ['fepper:static-generate'],
       ['fepper:cd-out'],
@@ -106,7 +108,7 @@
   gulp.task('syncback', function () {
     runSequence(
       ['lint'],
-      ['uglify'],
+      ['minify'],
       ['frontend-copy'],
       ['templater'],
       ['contrib:syncback', 'custom:syncback']

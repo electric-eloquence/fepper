@@ -57,7 +57,7 @@ If using Git for version control, directories named "ignore" will be ignored.
 * These other utility tasks are runnable on the command line:
   * `node . data` to force compile data.json.
   * `node . frontend-copy` to copy css, fonts, images, and js to backend.
-  * `node . lint` to lint JavaScripts, JSON, and HTML.
+  * `node . lint` to lint HTML, JavaScripts, and JSON.
   * `node . minify` to minify JavaScripts.
   * `node . once` to clean the public folder and do a one-off Fepper build.
   * `node . publish` to publish the public folder to GitHub Pages.
@@ -69,11 +69,12 @@ If using Git for version control, directories named "ignore" will be ignored.
 Running `node . static` will generate a complete static site based on the files 
 in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
 [http://localhost:3000/static/](http://localhost:3000/static/). An `index.html` 
-will be generated based on the `00-homepage.mustache` file. If the links are 
-relative and they work correctly in the Pattern Lab UI, they will work correctly 
-in the static site even if the `static` directory is moved and renamed. The only 
-caveat is that links to other pages in the `patterns` directory must start with 
-`../04-pages-` and not `../../patterns/04-pages-`.
+will be generated based on `04-pages-00-homepage` or whatever is defined as the 
+homepage in `_data.json`. If the links are relative and they work correctly in 
+the Pattern Lab UI, they will work correctly in the static site even if the 
+`static` directory is moved and renamed. The only caveat is that links to other 
+pages in the `patterns` directory must start with `../04-pages-` and not 
+`../../patterns/04-pages-`.
 
 ###The Backend###
 Fepper can almost as easily work with a CMS backend such as WordPress or Drupal, 
@@ -120,10 +121,69 @@ with your backend CMS. Mustache tags just need to be replaced with tags the CMS
 can use. Put these translations into YAML files named similarly to the Mustache 
 files in `patternlab-node/source/_patterns/03-templates`. Follow the example in 
 `test/patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
-Templates prefixed by "__" will be ignored by the templater as will files in the 
+Templates prefixed by "__" will be ignored by the Templater as will files in the 
 `_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
 `backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `node . syncback` 
-or `node . template` to execute the templater.
+or `node . template` to execute the Templater. The Templater will recurse through 
+nested Mustache templates if the tags are written in the verbose syntax and 
+include the `.mustache` extension, i.e., `{{> 02-organisms/00-global/00-header.mustache }}`
+
+###Mustache Browser###
+Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
+in the upper right, then clicking Code, and then clicking the Mustache tab in 
+the bottom pane. The Mustache tags are hot-linked, and if they are written in 
+the verbose syntax, clicking on them will open that Mustache file and display 
+its code in the Pattern Lab UI, with its Mustache tags hot-linked as well. The 
+Mustache tags must be coded in this manner: `{{> 02-organisms/00-global/00-header }}`
+
+The path must be correct; however, the `.mustache` extension is optional. The 
+default homepage is a working example.
+
+###HTML Scraper###
+Fepper can scrape and import Mustache templates and JSON data files from actual 
+web pages, preferably the actual backend CMS that Fepper is prototyping for. To 
+open the Scraper, click Scrape in the Pattern Lab UI, and then click HTML 
+Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
+selector you wish to target (prepended with "#" for IDs and "." for classes). 
+Classnames and tagnames may be appended with array index notation ([n]). 
+Otherwise, the Scraper will scrape all elements of that class or tag 
+sequentially. Such a loosely targeted scrape will save many of the targeted 
+fields to the JSON file, but will only save the first instance of the target to 
+a Mustache template.
+
+Upon submit, you should be able to review the scraped output on the subsequent 
+page. If the output looks correct, enter a filename and submit again. The 
+Scraper will save Mustache and JSON files by that name in the 05-scrape 
+directory, also viewable under the Scrape menu of the toolbar. The Scraper will 
+correctly indent the Mustache code. However, the JSON parsing requires a 
+conversion from HTML to XHTML, so don't expect an exact copy of the HTML 
+structure of the source HTML.
+
+###variables.styl###
+`patternlab-node/source/js/src/variables.styl` is a file containing variables 
+that can be shared across the Stylus CSS-preprocessor, browser JavaScripts, and 
+PHP backends (and possibly other language backends as well). It ships with these 
+values:
+
+```
+bp_lg_max = -1
+bp_lg_min = 1024
+bp_md_min = 768
+bp_sm_min = 480
+bp_xs_min = 0
+```
+
+It cannot contain comments, semi-colons, curly braces, etc. It is 
+straightforward to import and use these variables in Stylus and JavaScript. PHP 
+must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS 
+processors and tries to keep the amount of NPMs to download to a minimum, so it 
+does not ship with Stylus (or Sass, Rework, etc) configured. However, since 
+Stylus allows for this easy sharing of variables, Fepper does ship with a 
+`patternlab-node/source/css-processors/stylus` directory which can be compiled 
+into the stock Pattern Lab CSS by configuring `gulp/custom/css-process.js`. The 
+Stylus files are written in the terse, Python-like, indentation-based syntax; 
+however, the more verbose, CSS-like syntax (with curly braces, colons, and 
+semi-colons) is perfectly valid as well.
 
 ###More Documentation###
 
