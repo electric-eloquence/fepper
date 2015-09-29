@@ -161,7 +161,7 @@ structure of the source HTML.
 
 ###variables.styl###
 `patternlab-node/source/js/src/variables.styl` is a file containing variables 
-that can be shared across the Stylus CSS-preprocessor, browser JavaScripts, and 
+that can be shared across the Stylus CSS preprocessor, browser JavaScripts, and 
 PHP backends (and possibly other language backends as well). It ships with these 
 values:
 
