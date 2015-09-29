@@ -10,4 +10,8 @@
     var express = plugins.liveServer('fepper/servers/servers.js', null, false);
     express.start();
   });
+
+  gulp.task('livereload', function () {
+    plugins.livereload.listen();
+  });
 })();

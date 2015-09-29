@@ -2,34 +2,38 @@
  * Put Gulp tasks contributed by the community in this directory and add them to
  * the more general tasks listed below.
  */
-var gulp = require('gulp');
+(function () {
+  'use strict';
 
-gulp.task('contrib:data', [
-]);
+  var gulp = require('gulp');
 
-gulp.task('contrib:frontend-copy', [
-]);
+  gulp.task('contrib:data', [
+  ]);
 
-gulp.task('contrib:lint', [
-]);
+  gulp.task('contrib:frontend-copy', [
+  ]);
 
-gulp.task('contrib:minify', [
-]);
+  gulp.task('contrib:lint', [
+  ]);
 
-gulp.task('contrib:once', [
-]);
+  gulp.task('contrib:minify', [
+  ]);
 
-gulp.task('contrib:publish', [
-]);
+  gulp.task('contrib:once', [
+  ]);
 
-gulp.task('contrib:static', [
-]);
+  gulp.task('contrib:publish', [
+  ]);
 
-gulp.task('contrib:syncback', [
-]);
+  gulp.task('contrib:static', [
+  ]);
 
-gulp.task('contrib:template', [
-]);
+  gulp.task('contrib:syncback', [
+  ]);
 
-gulp.task('contrib:watch', [
-]);
+  gulp.task('contrib:template', [
+  ]);
+
+  gulp.task('contrib:watch', [
+  ]);
+})();

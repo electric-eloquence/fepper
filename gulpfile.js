@@ -17,25 +17,27 @@
   // Load tasks in tasks directory.
   requireDir('gulp', {recurse: true});
 
-  gulp.task('default', function () {
+  gulp.task('default', function (cb) {
     runSequence(
-      ['once'],
-      ['data'],
-      ['fepper:cd-in'],
-      ['fepper:pattern-override'],
-      ['fepper:cd-out'],
-      ['express'],
-      ['contrib:watch', 'custom:watch', 'open', 'patternlab:watch']
+      'once',
+      'data',
+      'fepper:cd-in',
+      'fepper:pattern-override',
+      'fepper:cd-out',
+      ['express', 'livereload'],
+      ['contrib:watch', 'custom:watch', 'open', 'patternlab:watch'],
+      cb
     );
   });
 
-  gulp.task('data', function () {
+  gulp.task('data', function (cb) {
     runSequence(
-      ['fepper:cd-in'],
-      ['fepper:appendix'],
-      ['fepper:json-compile'],
-      ['fepper:cd-out'],
-      ['contrib:data', 'custom:data']
+      'fepper:cd-in',
+      'fepper:appendix',
+      'fepper:json-compile',
+      'fepper:cd-out',
+      ['contrib:data', 'custom:data'],
+      cb
     );
   });
 
@@ -48,14 +50,15 @@
     'custom:frontend-copy'
   ]);
 
-  gulp.task('install', function () {
+  gulp.task('install', function (cb) {
     runSequence(
-      ['install:copy'],
-      ['install:config'],
-      ['data'],
-      ['patternlab:cd-in'],
-      ['shell:install-npm'],
-      ['patternlab:cd-out']
+      'install:copy',
+      'install:config',
+      'data',
+      'patternlab:cd-in',
+      'shell:install-npm',
+      'patternlab:cd-out',
+      cb
     );
   });
 
@@ -74,63 +77,69 @@
     'custom:minify'
   ]);
 
-  gulp.task('once', function () {
+  gulp.task('once', function (cb) {
     runSequence(
-      ['patternlab:cd-in'],
-      ['patternlab:clean'],
+      'patternlab:cd-in',
+      'patternlab:clean',
       ['patternlab:build', 'patternlab:copy'],
-      ['patternlab:cd-out'],
-      ['contrib:once', 'custom:once']
+      'patternlab:cd-out',
+      ['contrib:once', 'custom:once'],
+      cb
     );
   });
 
-  gulp.task('publish', function () {
+  gulp.task('publish', function (cb) {
     runSequence(
-      ['fepper:cd-in'],
-      ['fepper:gh-pages'],
-      ['fepper:cd-out'],
-      ['gh-pages'],
-      ['contrib:publish', 'custom:publish']
+      'fepper:cd-in',
+      'fepper:gh-pages',
+      'fepper:cd-out',
+      'gh-pages',
+      ['contrib:publish', 'custom:publish'],
+      cb
     );
   });
 
-  gulp.task('static', function () {
+  gulp.task('static', function (cb) {
     runSequence(
-      ['lint'],
-      ['minify'],
-      ['fepper:cd-in'],
-      ['fepper:static-generate'],
-      ['fepper:cd-out'],
-      ['contrib:static', 'custom:static']
+      'lint',
+      'minify',
+      'fepper:cd-in',
+      'fepper:static-generate',
+      'fepper:cd-out',
+      ['contrib:static', 'custom:static'],
+      cb
     );
   });
 
-  gulp.task('syncback', function () {
+  gulp.task('syncback', function (cb) {
     runSequence(
-      ['lint'],
-      ['minify'],
-      ['frontend-copy'],
-      ['templater'],
-      ['contrib:syncback', 'custom:syncback']
+      'lint',
+      'minify',
+      'frontend-copy',
+      'templater',
+      ['contrib:syncback', 'custom:syncback'],
+      cb
     );
   });
 
-  gulp.task('template', function () {
+  gulp.task('template', function (cb) {
     runSequence(
-      ['fepper:cd-in'],
-      ['fepper:template'],
-      ['fepper:cd-out'],
-      ['contrib:template', 'custom:template']
+      'fepper:cd-in',
+      'fepper:template',
+      'fepper:cd-out',
+      ['contrib:template', 'custom:template'],
+      cb
     );
   });
 
-  gulp.task('test', function () {
+  gulp.task('test', function (cb) {
     runSequence(
-      ['test:eslint-fepper'],
-      ['test:eslint-gulp'],
-      ['test:eslint-root'],
-      ['test:eslint-test'],
-      ['test:mocha']
+      'test:eslint-fepper',
+      'test:eslint-gulp',
+      'test:eslint-root',
+      'test:eslint-test',
+      'test:mocha',
+      cb
     );
   });
 })();
