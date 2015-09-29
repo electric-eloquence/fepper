@@ -4,17 +4,16 @@
   var bodyParser = require('body-parser');
   var express = require('express');
 
-  var utils = require('../lib/utils');
-  var conf = utils.conf();
-
-  var dataJson = utils.data(conf);
-  var rootDir = utils.rootDir();
-
   var htmlScraper = require('./html-scraper');
   var htmlScraperPost = require('./html-scraper-post');
   var htmlScraperXhr = require('./html-scraper-xhr');
   var mustacheBrowser = require('./mustache-browser');
   var success = require('./success');
+
+  var utils = require('../lib/utils');
+  var conf = utils.conf();
+  var dataJson = utils.data(conf);
+  var rootDir = utils.rootDir();
 
   var app = express();
   var i;
@@ -22,8 +21,8 @@
   var webservedDirSplit;
 
   // Serve the backend's static files where the document root and top-level
-  // directory are set in backend.webserved_dirs in conf.yml or
-  // backend_webserved_dirs in data.json.
+  // directory are set in backend.webserved_dirs in conf.yml or backend_webserved_dirs
+  // in data.json.
 
   // First check if backend.webserved_dirs is set in conf.yml. This takes
   // priority over backend_webserved_dirs in data.json. The data.json setting
