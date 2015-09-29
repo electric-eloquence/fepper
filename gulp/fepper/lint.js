@@ -12,7 +12,7 @@
   });
 
   gulp.task('lint:htmllint', function () {
-    return gulp.src(conf.pub + '/patterns/**/*.html')
+    return gulp.src(conf.pub + '/patterns/*/!(index|*escaped).html')
       .pipe(plugins.htmllint());
   });
 
