@@ -43,7 +43,7 @@ Mustache templates with data. Underscore-prefixed .json files within
 in turn getting compiled into data.json, the final source of globally scoped 
 data. Manual edits to data.json will get overwritten on compilation.
 
-When upgrading Fepper, be sure to back up the patternlab-node/source directory. 
+When upgrading Fepper, be sure to back up the `patternlab-node/source` directory. 
 This is where all custom work is to be done.
 
 If using Git for version control, directories named "ignore" will be ignored.
