@@ -94,6 +94,22 @@
         expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n');
         expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
       });
+
+      it('should get all selectors of a given tagname if given no index', function () {
+        var $targetEl = $('section');
+        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+
+        expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n<section id="two" class="test">Bar</section>\n');
+        expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
+      });
+
+      it('should get one selector of a given tagname if given an index', function () {
+        var $targetEl = $('section');
+        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, 1, $);
+
+        expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
+        expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
+      });
     });
 
     describe('HTML Sanitizer', function () {

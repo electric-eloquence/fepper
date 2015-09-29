@@ -2,35 +2,47 @@
  * Put custom Gulp tasks in this directory and add them to the more general
  * tasks listed below.
  */
-var gulp = require('gulp');
+(function () {
+  'use strict';
 
-gulp.task('custom:data', [
-]);
+  var gulp = require('gulp');
+//  var runSequence = require('run-sequence');
 
-gulp.task('custom:frontend-copy', [
-]);
+  gulp.task('custom:data', [
+  ]);
 
-gulp.task('custom:lint', [
-]);
+  gulp.task('custom:frontend-copy', [
+  ]);
 
-gulp.task('custom:minify', [
-]);
+  gulp.task('custom:lint', [
+  ]);
 
-gulp.task('custom:once', [
-]);
+  gulp.task('custom:minify', [
+  ]);
 
-gulp.task('custom:publish', [
-]);
+  gulp.task('custom:once', [
+  ]);
 
-gulp.task('custom:static', [
-]);
+  gulp.task('custom:publish', [
+  ]);
 
-gulp.task('custom:syncback', [
-]);
+  gulp.task('custom:static', [
+  ]);
 
-gulp.task('custom:template', [
-]);
+  gulp.task('custom:syncback', function (cb) {
+// Uncomment if you wish to enable this.
+//    runSequence(
+//      'custom:css-process:compile-no-comments',
+//      'patternlab:copy-css',
+//      cb
+//    );
+  });
 
-gulp.task('custom:watch', [
-  'css-process:watch'
-]);
+  gulp.task('custom:template', [
+  ]);
+
+  gulp.task('custom:watch', [
+// Uncomment if you wish to enable this.
+//    'custom:css-process:watch'
+  ]);
+})();

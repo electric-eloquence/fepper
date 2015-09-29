@@ -4,7 +4,6 @@
   var conf = global.conf;
   var fs = require('fs-extra');
   var gulp = require('gulp');
-  var plugins = require('gulp-load-plugins')();
   var runSequence = require('run-sequence');
 
   function patternlab_build(arg, chdir) {
@@ -50,11 +49,11 @@
 
   gulp.task('patternlab:build-cd', function (cb) {
     runSequence(
-      ['patternlab:cd-in'],
-      ['patternlab:build'],
-      ['patternlab:cd-out']
+      'patternlab:cd-in',
+      'patternlab:build',
+      'patternlab:cd-out',
+      cb
     );
-    cb();
   });
 
   gulp.task('patternlab:cd-in', function (cb) {
@@ -89,11 +88,11 @@
 
   gulp.task('patternlab:copy-cd', function (cb) {
     runSequence(
-      ['patternlab:cd-in'],
-      ['patternlab:copy'],
-      ['patternlab:cd-out']
+      'patternlab:cd-in',
+      'patternlab:copy',
+      'patternlab:cd-out',
+      cb
     );
-    cb();
   });
 
   gulp.task('patternlab:copy-css', function () {
@@ -101,12 +100,13 @@
       .pipe(gulp.dest(conf.pub + '/css/'));
   });
 
-  gulp.task('patternlab:data', function () {
+  gulp.task('patternlab:data', function (cb) {
     runSequence(
-      ['patternlab:cd-in-to-fepper'],
-      ['fepper:appendix'],
-      ['fepper:json-compile'],
-      ['patternlab:cd-out-of-fepper']
+      'patternlab:cd-in-to-fepper',
+      'fepper:appendix',
+      'fepper:json-compile',
+      'patternlab:cd-out-of-fepper',
+      cb
     );
   });
 
@@ -126,7 +126,6 @@
   });
 
   gulp.task('patternlab:watch', function () {
-    plugins.livereload.listen();
     gulp.watch(conf.pub + '/!(css|patterns|styleguide)/**', ['livereload:assets']);
     gulp.watch(conf.pub + '/**/*.css', ['livereload:inject']);
     gulp.watch(conf.pub + '/index.html', ['livereload:index']);
