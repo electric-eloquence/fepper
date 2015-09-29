@@ -17,35 +17,22 @@
     script2insert.src = baseUrl + '/js/html-scraper-dhtml.js';
     var node4insert = document.getElementById('help-text');
     node4insert.parentNode.insertBefore(script2insert, node4insert);
- 
+
     // Parse query string.
     var i;
     var key;
     var msg = '';
     var msgType;
-    var output = '';
     var param;
     var queries = window.location.search.substring(1).split('&');
-    var target = '';
-    var url = '';
     var value;
 
     for (i = 0; i < queries.length; i++) {
       param = queries[i].split('=');
       key = decodeURIComponent(param[0].replace(/\+/g, ' '));
       value = decodeURIComponent(param[1].replace(/\+/g, ' '));
-
-      switch (key) {
-        case 'target':
-          target = value;
-          break;
-        case 'url':
-          url = value;
-          break;
-        default:
-          msgType = key[0].toUpperCase() + key.substring(1);
-          msg += msgType + '!: ' + value + '\\n';
-      }
+      msgType = key[0].toUpperCase() + key.substring(1);
+      msg += msgType + '!: ' + value + '\\n';
     }
 
     if (msg !== '') {
@@ -55,7 +42,7 @@
       script2insert.innerHTML = 'alert("' + msg + '");';
       node4insert.parentNode.insertBefore(script2insert, node4insert);
     }
-  }
+  };
   xhr.send();
 
 })();
