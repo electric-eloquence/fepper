@@ -6,13 +6,13 @@
   var plugins = require('gulp-load-plugins')();
 
   gulp.task('lint:htmlhint', function () {
-    return gulp.src(conf.pub + '/patterns/**/*.html')
-      .pipe(plugins.htmlhint())
+    return gulp.src(conf.pub + '/patterns/*/!(index|*escaped).html')
+      .pipe(plugins.htmlhint('.htmlhintrc'))
       .pipe(plugins.htmlhint.reporter());
   });
 
   gulp.task('lint:htmllint', function () {
-    return gulp.src(conf.pub + '/patterns/**/*.html')
+    return gulp.src(conf.pub + '/patterns/*/!(index|*escaped).html')
       .pipe(plugins.htmllint());
   });
 

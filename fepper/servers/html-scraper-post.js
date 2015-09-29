@@ -217,7 +217,7 @@
     targetSplit[1] = targetSplit[1] ? targetSplit[1] : '';
 
     // Validate that targetSplit[0] is a css selector.
-    if (!targetSplit[0].match(/^(#|\.)[\w#\-\.]+$/)) {
+    if (!targetSplit[0].match(/^(#|\.)?[a-z][\w#\-\.]*$/i)) {
       exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
       return false;
     }

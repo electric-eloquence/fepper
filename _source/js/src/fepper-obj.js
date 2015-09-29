@@ -8,23 +8,27 @@
  * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript}
  * {@link https://github.com/felixge/node-style-guide}
  */
-var FEPPER = FEPPER || {};
-FEPPER.breakpoints = {
-  lg: {
-    maxWidth: window.bp_lg_max,
-    minWidth: window.bp_lg_min
-  },
-  md: {
-    maxWidth: window.bp_md_max,
-    minWidth: window.bp_md_min
-  },
-  sm: {
-    maxWidth: window.bp_sm_max,
-    minWidth: window.bp_sm_min
-  },
-  xs: {
-    maxWidth: window.bp_xs_max,
-    minWidth: window.bp_xs_min
-  }
-};
-window.FEPPER = FEPPER;
+(function () {
+  'use strict';
+
+  var FEPPER = FEPPER || {};
+  FEPPER.breakpoints = {
+    lg: {
+      maxWidth: window.bp_lg_max,
+      minWidth: window.bp_lg_min
+    },
+    md: {
+      maxWidth: window.bp_md_max,
+      minWidth: window.bp_md_min
+    },
+    sm: {
+      maxWidth: window.bp_sm_max,
+      minWidth: window.bp_sm_min
+    },
+    xs: {
+      maxWidth: window.bp_xs_max,
+      minWidth: window.bp_xs_min
+    }
+  };
+  window.FEPPER = FEPPER;
+})();

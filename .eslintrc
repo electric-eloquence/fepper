@@ -9,7 +9,8 @@
     "describe": true,
     "expect": true,
     "it": true,
-    "jQuery": true
+    "jQuery": true,
+    "Modernizr": true
   },
   "rules": {
     // Errors.

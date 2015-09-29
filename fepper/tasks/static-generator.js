@@ -7,6 +7,7 @@
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
+  var dataJson = utils.data(conf);
   var rootDir = utils.rootDir();
 
   exports.cssDirCopy = function (pubDir, staticDir) {
@@ -54,7 +55,7 @@
         tmpStr = tmpStr.replace(/(href\s*=\s*)("|').*(\/|&#x2F;)[\d-]*pages-/g, '$1$2');
         fs.writeFileSync(staticDir + '/' + f.replace(/^.*\/[\d-]*pages-/, ''), tmpStr);
         // Copy homepage to index.html.
-        if (f.indexOf('homepage.html') === f.length - 13) {
+        if (dataJson.homepage && f.indexOf(dataJson.homepage + '.html') !== -1) {
           fs.writeFileSync(staticDir + '/index.html', tmpStr);
         }
       }
@@ -64,6 +65,8 @@
   exports.main = function () {
     var pubDir = rootDir + '/' + conf.pub;
     var staticDir = rootDir + '/' + conf.src + '/static';
+    var webservedDirsFull;
+    var webservedDirsShort;
 
     // Copy asset directories.
     exports.cssDirCopy(pubDir, staticDir);
@@ -73,5 +76,18 @@
 
     // Copy pages directory.
     exports.pagesDirCompile(pubDir + '/patterns', staticDir);
+
+    // Copy webserved directories.
+    // conf.yml takes priority over data.json.
+    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs) {
+      webservedDirsFull = conf.backend.webserved_dirs;
+    }
+    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs) {
+      webservedDirsFull = dataJson.backend_webserved_dirs;
+    }
+    if (webservedDirsFull) {
+      webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
+      utils.webservedDirsCopy(webservedDirsFull, rootDir, webservedDirsShort, staticDir);
+    }
   };
 })();

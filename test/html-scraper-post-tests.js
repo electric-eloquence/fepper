@@ -10,7 +10,7 @@
 
   var html = '<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><script></script><textarea></textarea></body></html>';
   var $ = cheerio.load(html);
-  var htmlScraperPost = require(rootDir + '/fepper/server/html-scraper-post');
+  var htmlScraperPost = require(rootDir + '/fepper/servers/html-scraper-post');
   var req = {body: {target: '', url: ''}};
   var testDir = rootDir + '/test';
   var scrapeDir = testDir + '/_patterns/05-scrape';
@@ -46,11 +46,27 @@
       });
 
       it('should identify the CSS id and index', function () {
-        var selector = '#id_test-0[0]';
+        var selector = '#id_test-0[1]';
         var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
         expect(selectorSplit[0]).to.equal('#id_test-0');
-        expect(selectorSplit[1]).to.equal('0');
+        expect(selectorSplit[1]).to.equal('1');
+      });
+
+      it('should identify the HTML tag with no index', function () {
+        var selector = 'h1';
+        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
+
+        expect(selectorSplit[0]).to.equal('h1');
+        expect(selectorSplit[1]).to.equal('');
+      });
+
+      it('should identify the CSS id and index', function () {
+        var selector = 'h1[2]';
+        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
+
+        expect(selectorSplit[0]).to.equal('h1');
+        expect(selectorSplit[1]).to.equal('2');
       });
     });
 

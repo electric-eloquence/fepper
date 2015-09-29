@@ -136,10 +136,10 @@
     gulp.watch(conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build-cd']);
     gulp.watch(conf.src + '/_patterns/**/*.mustache', ['patternlab:build-cd']);
     gulp.watch(conf.src + '/_patterns/**/_*.json', ['patternlab:data-cd']);
-    gulp.watch(conf.src + '/css/style.css', ['patternlab:copy-css']);
+    gulp.watch(conf.src + '/css/**', ['patternlab:copy-css']);
     gulp.watch(conf.src + '/fonts/**', ['patternlab:copy-cd']);
     gulp.watch(conf.src + '/images/**', ['patternlab:copy-cd']);
-    gulp.watch(conf.src + '/js/*/**', ['patternlab:copy-cd']);
+    gulp.watch(conf.src + '/js/**', ['patternlab:copy-cd']);
     gulp.watch(conf.src + '/static/**', ['patternlab:copy-cd']);
   });
 })();
