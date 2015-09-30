@@ -44,8 +44,10 @@
       // Fail gracefully.
     }
     if (stats && stats.isFile()) {
-      fs.unlink(log);
-      return open(conf.timeout_main * 2, '/success');
+      setTimeout(function () {
+        fs.unlink(log);
+        return open(0, '/success');
+      }, conf.timeout_main * 2);
     }
     else {
       return open(conf.timeout_main);

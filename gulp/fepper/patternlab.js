@@ -126,19 +126,31 @@
   });
 
   gulp.task('patternlab:watch', function () {
+    var stats;
+
+    // Skip additional Pattern Lab builds during first launch after install.
+    try {
+      stats = fs.statSync(conf.pln + '/npm-install.log');
+    }
+    catch (err) {
+      // Fail gracefully.
+    }
+    if (!stats) {
+      gulp.watch(conf.src + '/_data/!(_)*.json', ['patternlab:build-cd']);
+      gulp.watch(conf.src + '/_data/annotations.js', ['patternlab:copy-cd']);
+      gulp.watch(conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build-cd']);
+      gulp.watch(conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build-cd']);
+      gulp.watch(conf.src + '/_patterns/**/*.mustache', ['patternlab:build-cd']);
+      gulp.watch(conf.src + '/_patterns/**/_*.json', ['patternlab:data-cd']);
+      gulp.watch(conf.src + '/css/**', ['patternlab:copy-css']);
+      gulp.watch(conf.src + '/fonts/**', ['patternlab:copy-cd']);
+      gulp.watch(conf.src + '/images/**', ['patternlab:copy-cd']);
+      gulp.watch(conf.src + '/js/**', ['patternlab:copy-cd']);
+      gulp.watch(conf.src + '/static/**', ['patternlab:copy-cd']);
+    }
+
     gulp.watch(conf.pub + '/!(css|patterns|styleguide)/**', ['livereload:assets']);
     gulp.watch(conf.pub + '/**/*.css', ['livereload:inject']);
     gulp.watch(conf.pub + '/index.html', ['livereload:index']);
-    gulp.watch(conf.src + '/_data/!(_)*.json', ['patternlab:build-cd']);
-    gulp.watch(conf.src + '/_data/annotations.js', ['patternlab:copy-cd']);
-    gulp.watch(conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build-cd']);
-    gulp.watch(conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build-cd']);
-    gulp.watch(conf.src + '/_patterns/**/*.mustache', ['patternlab:build-cd']);
-    gulp.watch(conf.src + '/_patterns/**/_*.json', ['patternlab:data-cd']);
-    gulp.watch(conf.src + '/css/**', ['patternlab:copy-css']);
-    gulp.watch(conf.src + '/fonts/**', ['patternlab:copy-cd']);
-    gulp.watch(conf.src + '/images/**', ['patternlab:copy-cd']);
-    gulp.watch(conf.src + '/js/**', ['patternlab:copy-cd']);
-    gulp.watch(conf.src + '/static/**', ['patternlab:copy-cd']);
   });
 })();
