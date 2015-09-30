@@ -3,7 +3,21 @@ Fepper
 
 A frontend prototyper for streamlining website design and development
 
-###Installation###
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Utilization](#utilization)
+* [Static Site Generation](#static-site-generation)
+* [The Backend](#the-backend)
+* [Webserved Directories](#webserved-directories)
+* [GitHub Pages](#github-pages)
+* [Templater](#templater)
+* [Mustache Browser](#mustache-browser)
+* [HTML Scraper](#html-scraper)
+* [variables.styl](#variables.styl)
+* [More Documentation](#more-documentation)
+* [Contributing](#contributing)
+
+###<a id="installation"></a>Installation###
 
 * On Mac OS X:
   * Install Homebrew [http://brew.sh](http://brew.sh)
@@ -30,7 +44,7 @@ A frontend prototyper for streamlining website design and development
   * Or enter `node .` on the command line.
 * Open [http://localhost:3000](http://localhost:3000) in a browser if it doesn't open automatically.
 
-###Configuration###
+###<a id="configuration"></a>Configuration###
 
 Edit `conf.yml` for customizing local settings and for general configuration 
 information. If you wish to use the `syncback`, `frontend-copy`, or `template` 
@@ -48,7 +62,7 @@ This is where all custom work is to be done.
 
 If using Git for version control, directories named "ignore" will be ignored.
 
-###Utilization###
+###<a id="utilization"></a>Utilization###
 
 * To launch from Mac OS X Finder:
   * Double-click `fepper.command`
@@ -65,7 +79,7 @@ If using Git for version control, directories named "ignore" will be ignored.
   * `node . syncback` combines lint, minify, frontend-copy, and template.
   * `node . template` translates templates for backend and copies them there.
 
-###Static Site Generation###
+###<a id="static-site-generation"></a>Static Site Generation###
 Running `node . static` will generate a complete static site based on the files 
 in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
 [http://localhost:3000/static/](http://localhost:3000/static/). An `index.html` 
@@ -76,7 +90,7 @@ the Pattern Lab UI, they will work correctly in the static site even if the
 pages in the `patterns` directory must start with `../04-pages-` and not 
 `../../patterns/04-pages-`.
 
-###The Backend###
+###<a id="the-backend"></a>The Backend###
 Fepper can almost as easily work with a CMS backend such as WordPress or Drupal, 
 while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
 even just a symbolic link to the codebase into the `backend` directory. Then, 
@@ -85,7 +99,7 @@ enter the relative paths to the appropriate backend directories into `conf.yml`.
 `node . syncback`, `node . frontend-copy`, or `node . template` to export your 
 frontend data into your backend web application.
 
-###Webserved Directories###
+###<a id="webserved-directories"></a>Webserved Directories###
 When using a CMS backend, assets generally need to be shared with the Fepper 
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a task to copy in the 
@@ -103,7 +117,7 @@ SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE
 INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 ```
 
-###GitHub Pages###
+###<a id="github-pages"></a>GitHub Pages###
 If you have checked Fepper into a repository in your GitHub account, you may run 
 `node . publish` to publish `patternlab-node/public` to GitHub pages. The 
 Pattern Lab UI and Fepper static files will then be viewable from the Web at 
@@ -115,7 +129,7 @@ slash. Setting `gh_pages_prefix` in `_data.json` will save that value in version
 control. If `gh_pages_prefix` is set in both `conf.yml` and `_data.json`, the 
 value in `conf.yml` will take priority.
 
-###Templater###
+###<a id="templater"></a>Templater###
 Pattern Lab's Mustache templates can be translated into templates compatible 
 with your backend CMS. Mustache tags just need to be replaced with tags the CMS 
 can use. Put these translations into YAML files named similarly to the Mustache 
@@ -128,7 +142,7 @@ or `node . template` to execute the Templater. The Templater will recurse throug
 nested Mustache templates if the tags are written in the verbose syntax and 
 include the `.mustache` extension, i.e., `{{> 02-organisms/00-global/00-header.mustache }}`
 
-###Mustache Browser###
+###<a id="mustache-browser"></a>Mustache Browser###
 Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
 in the upper right, then clicking Code, and then clicking the Mustache tab in 
 the bottom pane. The Mustache tags are hot-linked, and if they are written in 
@@ -139,7 +153,7 @@ Mustache tags must be coded in this manner: `{{> 02-organisms/00-global/00-heade
 The path must be correct; however, the `.mustache` extension is optional. The 
 default homepage is a working example.
 
-###HTML Scraper###
+###<a id="html-scraper"></a>HTML Scraper###
 Fepper can scrape and import Mustache templates and JSON data files from actual 
 web pages, preferably the actual backend CMS that Fepper is prototyping for. To 
 open the Scraper, click Scrape in the Pattern Lab UI, and then click HTML 
@@ -159,7 +173,7 @@ correctly indent the Mustache code. However, the JSON parsing requires a
 conversion from HTML to XHTML, so don't expect an exact copy of the HTML 
 structure of the source HTML.
 
-###variables.styl###
+###<a id="variables.styl"></a>variables.styl###
 `patternlab-node/source/js/src/variables.styl` is a file containing variables 
 that can be shared across the Stylus CSS preprocessor, browser JavaScripts, and 
 PHP backends (and possibly other language backends as well). It ships with these 
@@ -185,13 +199,13 @@ Stylus files are written in the terse, Python-like, indentation-based syntax;
 however, the more verbose, CSS-like syntax (with curly braces, colons, and 
 semi-colons) is perfectly valid as well.
 
-###More Documentation###
+###<a id="more-documentation"></a>More Documentation###
 
 * [default.conf.yml](https://github.com/electric-eloquence/fepper/blob/master/default.conf.yml)
 * [Pattern Lab](http://patternlab.io/docs/index.html)
 * [Mustache](https://mustache.github.io/mustache.5.html)
 
-###Contributing###
+###<a id="contributing"></a>Contributing###
 
 Contributions and bug fixes are greatly appreciated!
 
