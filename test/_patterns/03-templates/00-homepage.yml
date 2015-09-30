@@ -22,7 +22,11 @@
   <?php print $post; ?>
 "/ latest-posts": |
   <?php endforeach; ?>
-"> 02-organisms/00-global/01-footer": |
+"> 02-organisms/04-sections/02-related-posts": |
+  <?php print $page['related_posts']; ?>
+"> 02-organisms/04-sections/01-recent-tweets\\(strings: 'and special characters in keys must be wrapped in single-quotes'\\)": |
+  <?php print $page['recent_tweets']; ?>
+"> 02-organisms/00-global/01-footer\\('boolean\\?': true\\)": |
   <?php print $page['footer']; ?>
 "> molecules-primary-nav": |
   <?php print $page['primary_nav']; ?>

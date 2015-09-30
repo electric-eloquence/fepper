@@ -27,17 +27,23 @@
 
 		<hr />
 
-		<div class="l-main">
-			<section class="section latest-posts">
-				<h2 class="section-title">Latest Posts</h2>
-				<ul class="post-list">
-					<?php foreach ($latest_posts as $post): ?>
-						<li><?php print $post; ?></li>
-					</ul>
-				<a href="#" class="text-btn">View more posts</a>
-			</section>
-		</div><!--end .l-main-->
+		<div class="l-two-col">
+			<div class="l-main">
+				<section class="section latest-posts">
+					<h2 class="section-title">Latest Posts</h2>
+					<ul class="post-list">
+						<?php foreach ($latest_posts as $post): ?>
+							<li><?php print $post; ?></li>
+						</ul>
+					<a href="#" class="text-btn">View more posts</a>
+				</section>
+			</div><!--end .l-main-->
 
+			<div class="l-sidebar">
+				<?php print $page['related_posts']; ?>
+				<?php print $page['recent_tweets']; ?>
+			</div><!--end l-sidebar-->
+		</div><!--end l-two-col-->
 	</div><!--End role=main-->
 	<?php print $page['footer']; ?>
 </div>
