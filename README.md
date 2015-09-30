@@ -131,7 +131,7 @@ value in `conf.yml` will take priority.
 
 ###<a id="templater"></a>Templater###
 Pattern Lab's Mustache templates can be translated into templates compatible 
-with your backend CMS. Mustache tags just need to be replaced with tags the CMS 
+with your CMS backend. Mustache tags just need to be replaced with tags the CMS 
 can use. Put these translations into YAML files named similarly to the Mustache 
 files in `patternlab-node/source/_patterns/03-templates`. Follow the example in 
 `test/patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
@@ -155,7 +155,7 @@ default homepage is a working example.
 
 ###<a id="html-scraper"></a>HTML Scraper###
 Fepper can scrape and import Mustache templates and JSON data files from actual 
-web pages, preferably the actual backend CMS that Fepper is prototyping for. To 
+web pages, preferably the actual CMS backend that Fepper is prototyping for. To 
 open the Scraper, click Scrape in the Pattern Lab UI, and then click HTML 
 Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
 selector you wish to target (prepended with "#" for IDs and "." for classes). 
