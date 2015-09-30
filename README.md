@@ -134,7 +134,7 @@ Pattern Lab's Mustache templates can be translated into templates compatible
 with your CMS backend. Mustache tags just need to be replaced with tags the CMS 
 can use. Put these translations into YAML files named similarly to the Mustache 
 files in `patternlab-node/source/_patterns/03-templates`. Follow the example in 
-`test/patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
+`test/_patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
 Templates prefixed by "__" will be ignored by the Templater as will files in the 
 `_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
 `backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `node . syncback` 
