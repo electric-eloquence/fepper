@@ -119,7 +119,7 @@ INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 
 ###<a id="github-pages"></a>GitHub Pages###
 If you have checked Fepper into a repository in your GitHub account, you may run 
-`node . publish` to publish `patternlab-node/public` to GitHub pages. The 
+`node . publish` to publish `patternlab-node/public` to GitHub Pages. The 
 Pattern Lab UI and Fepper static files will then be viewable from the Web at 
 `http://{user}.github.io/{repo}`. Normally, this is all that is needed. However, 
 if you are using `webserved_dirs`, you will need to supply a `gh_pages_prefix` 
