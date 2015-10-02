@@ -126,16 +126,8 @@
   });
 
   gulp.task('patternlab:watch', function () {
-    var stats;
-
-    // Skip additional Pattern Lab builds during first launch after install.
-    try {
-      stats = fs.statSync(conf.pln + '/npm-install.log');
-    }
-    catch (err) {
-      // Fail gracefully.
-    }
-    if (!stats) {
+    // Need delay in order for launch to succeed consistently.
+    setTimeout(function () {
       gulp.watch(conf.src + '/_data/!(_)*.json', ['patternlab:build-cd']);
       gulp.watch(conf.src + '/_data/annotations.js', ['patternlab:copy-cd']);
       gulp.watch(conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build-cd']);
@@ -147,10 +139,9 @@
       gulp.watch(conf.src + '/images/**', ['patternlab:copy-cd']);
       gulp.watch(conf.src + '/js/**', ['patternlab:copy-cd']);
       gulp.watch(conf.src + '/static/**', ['patternlab:copy-cd']);
-    }
-
-    gulp.watch(conf.pub + '/!(css|patterns|styleguide)/**', ['livereload:assets']);
-    gulp.watch(conf.pub + '/**/*.css', ['livereload:inject']);
-    gulp.watch(conf.pub + '/index.html', ['livereload:index']);
+      gulp.watch(conf.pub + '/!(css|patterns|styleguide)/**', ['livereload:assets']);
+      gulp.watch(conf.pub + '/**/*.css', ['livereload:inject']);
+      gulp.watch(conf.pub + '/index.html', ['livereload:index']);
+    }, conf.timeout_main);
   });
 })();
