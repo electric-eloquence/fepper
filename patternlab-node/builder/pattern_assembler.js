@@ -81,14 +81,25 @@
       //extract some information
       var subdir = path.dirname(path.relative(patternlab.config.patterns.source, file)).replace('\\', '/');
       var filename = path.basename(file);
+      var ext = path.extname(filename);
 
-      //ignore _underscored patterns, json (for now), and dotfiles
-      if(filename.charAt(0) === '_' || path.extname(filename) === '.json' || filename.charAt(0) === '.'){
+      //ignore _underscored patterns, dotfiles, and non-variant .json files
+      if(filename.charAt(0) === '_' || filename.charAt(0) === '.' || (ext === '.json' && filename.indexOf('~') === -1)){
         return;
       }
 
       //make a new Pattern Object
       var currentPattern = new of.oPattern(file, subdir, filename);
+
+      //if file is named in the syntax for variants
+      if(ext === '.json' && filename.indexOf('~') > -1){
+        //add current pattern to patternlab object with minimal data
+        //processPatternRecursive() will run find_pseudopatterns() to fill out
+        //the object in the next diveSync
+        addPattern(currentPattern, patternlab);
+        //no need to process further
+        return;
+      }
 
       //see if this file has a state
       setState(currentPattern, patternlab);
@@ -133,6 +144,7 @@
       list_item_hunter = new lih(),
       pseudopattern_hunter = new pph();
 
+      //find current pattern in patternlab object using var file as a key
       var currentPattern, i;
       for(i = 0; i < patternlab.patterns.length; i++){
         if(patternlab.patterns[i].abspath === file){
@@ -229,8 +241,8 @@
               obj2[p] = {};
             }
             obj2[p] = mergeData(obj1[p], obj2[p]);
-            // Pop when recursion meets a non-object. If obj1[p] is a non-object,
-            // only copy to undefined obj2[p]. This way, obj2 maintains priority.
+          // Pop when recursion meets a non-object. If obj1[p] is a non-object,
+          // only copy to undefined obj2[p]. This way, obj2 maintains priority.
           } else if(typeof obj2[p] === 'undefined'){
             obj2[p] = obj1[p];
           }
