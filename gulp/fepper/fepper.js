@@ -75,6 +75,9 @@
     if (typeof conf.backend.synced_dirs.templates_dir === 'string' && conf.backend.synced_dirs.templates_dir.match(/^[\w.\/-]+$/)) {
       fepper.template();
     }
+    else {
+      utils.warn('No templates_dir defined.');
+    }
     cb();
   });
 })();

@@ -17,9 +17,6 @@
   var conf = utils.conf();
   var rootDir = utils.rootDir();
 
-  var i;
-  var yml;
-
   exports.mustacheRecurse = function (file, patternDir) {
     var code1;
     var code2 = '';
@@ -85,14 +82,28 @@
     // Write to file system.
     fs.mkdirsSync(path.dirname(dest));
     fs.writeFileSync(dest, code);
+
+    return dest;
   };
 
   exports.tokensLoad = function (ymlFile) {
-    yml = fs.readFileSync(ymlFile, conf.enc);
-    return yaml.safeLoad(yml);
+    var tokens;
+    var yml = '';
+
+    try {
+      yml = fs.readFileSync(ymlFile, conf.enc);
+      tokens = yaml.safeLoad(yml);
+    }
+    catch (err) {
+      // Fail gracefully.
+      tokens = {}
+    }
+
+    return tokens;
   };
 
   exports.tokensReplace = function (tokens, code) {
+    var i;
     var re;
     var token;
     var unescaped;
@@ -106,8 +117,10 @@
       }
     }
 
-    // Delete remaining Mustache tags.
-    code = code.replace(/{{[^}]*}+}\s*\n?/g, '');
+    // Delete remaining Mustache tags if configured to do so.
+    if (!conf.templater.retain_mustache) {
+      code = code.replace(/{{[^}]*}+}\s*\n?/g, '');
+    }
     // Replace escaped curly braces.
     code = code.replace(/\\{/g, '{');
     code = code.replace(/\\}/g, '}');
@@ -119,13 +132,14 @@
     var code;
     var dest;
     var files;
+    var i;
     var patternDir = rootDir + '/' + conf.src + '/_patterns/';
     var srcDir = patternDir + '03-templates';
     var stats;
     var templatesDir;
     var templatesExt;
     var tokens;
-    var ymlFile;
+    var ymlFile = '';
 
     try {
       // Only proceed if templates_dir is set.
@@ -164,10 +178,11 @@
           stats = fs.statSync(ymlFile);
         }
         catch (err) {
-          utils.error(err);
-          continue;
+          // Unset ymlFile if no YAML file.
+          ymlFile = '';
         }
         if (!stats.isFile()) {
+          // Fail gracefully in weird situations.
           continue;
         }
 
@@ -178,7 +193,7 @@
         // Iterate through tokens and replace keys for values in the code.
         code = exports.tokensReplace(tokens, code);
         // Write compiled templates.
-        exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
+        dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
 
         // Log to console.
         utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(rootDir, '').replace(/^\//, ''));
