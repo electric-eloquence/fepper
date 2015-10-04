@@ -116,7 +116,7 @@
       'lint',
       'minify',
       'frontend-copy',
-      'templater',
+      'template',
       ['contrib:syncback', 'custom:syncback'],
       cb
     );
