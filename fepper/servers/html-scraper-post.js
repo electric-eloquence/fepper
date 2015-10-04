@@ -371,7 +371,7 @@
         fileName = req.body.filename;
       }
 
-      templateDir = 'patternlab-node/source/_patterns/05-scrape';
+      templateDir = 'patternlab-node/source/_patterns/98-scrape';
       fileHtml = exports.newlineFormat(req.body.html);
       fileJson = exports.newlineFormat(req.body.json);
       exports.filesWrite(templateDir, fileName, fileHtml, fileJson, res);
