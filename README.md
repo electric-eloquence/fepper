@@ -167,7 +167,7 @@ a Mustache template.
 
 Upon submit, you should be able to review the scraped output on the subsequent 
 page. If the output looks correct, enter a filename and submit again. The 
-Scraper will save Mustache and JSON files by that name in the 05-scrape 
+Scraper will save Mustache and JSON files by that name in the 98-scrape 
 directory, also viewable under the Scrape menu of the toolbar. The Scraper will 
 correctly indent the Mustache code. However, the JSON parsing requires a 
 conversion from HTML to XHTML, so don't expect an exact copy of the HTML 

@@ -13,7 +13,7 @@
   var htmlScraperPost = require(rootDir + '/fepper/servers/html-scraper-post');
   var req = {body: {target: '', url: ''}};
   var testDir = rootDir + '/test';
-  var scrapeDir = testDir + '/_patterns/05-scrape';
+  var scrapeDir = testDir + '/_patterns/98-scrape';
 
   var xhtml = htmlScraperPost.htmlToXhtml(html);
   var dataObj = htmlScraperPost.xhtmlToJsonAndArray(xhtml);
