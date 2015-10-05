@@ -52,7 +52,13 @@
   });
 
   gulp.task('fepper:gh-pages', function (cb) {
-    fepper.ghPagesPrefix();
+    if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() !== '') {
+      fepper.ghPagesPrefix(rootDir + '/' + conf.gh_pages_src);
+    }
+    else {
+      // Quit if gh_pages_src not set.
+      utils.error('gh_pages_src not set.');
+    }
     cb();
   });
 

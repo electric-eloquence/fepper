@@ -7,7 +7,7 @@
   var utils = require('../fepper/lib/utils');
   var conf = utils.conf();
   var rootDir = utils.rootDir();
-  var testDir = rootDir + '/test';
+  var testDir = rootDir + '/test/files';
 
   var appendixer = require(rootDir + '/fepper/tasks/appendixer');
   var appendixFile = testDir + '/_data/_appendix.json';

@@ -11,6 +11,7 @@ if (codeFill) {
     var code = encodeURIComponent(this.innerHTML);
     var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
     window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
+    return false;
   });
 }
 

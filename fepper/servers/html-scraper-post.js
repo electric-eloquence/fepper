@@ -52,7 +52,7 @@
       fs.writeFileSync(templateDir + '/' + fileName + '.json', fileJson);
 
       exports.redirectWithMsg(res, 'success', 'Go+back+to+the+Pattern+Lab+tab+and+refresh+the+browser+to+check+that+your+template+appears+under+the+Scrape+menu.');
-      return false;
+      return;
     }
     catch (err) {
       utils.error(err);
@@ -219,14 +219,14 @@
     // Validate that targetSplit[0] is a css selector.
     if (!targetSplit[0].match(/^(#|\.)?[a-z][\w#\-\.]*$/i)) {
       exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
-      return false;
+      return [];
     }
 
     // Remove closing bracket from targetSplit[1] and validate it is an integer.
     targetSplit[1] = targetSplit[1].substr(0, targetSplit[1].length - 1);
     if (!targetSplit[1].match(/\d*/)) {
       exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
-      return false;
+      return [];
     }
 
     return targetSplit;
@@ -246,7 +246,7 @@
     xml2js.parseString(targetXhtml, function (err, res) {
       if (err) {
         utils.error(err);
-        return false;
+        return {};
       }
 
       // jsonRecurse builds dataArr.
@@ -286,7 +286,7 @@
         request(req.body.url, function (error, response, body) {
           if (error || response.statusCode !== 200) {
             exports.redirectWithMsg(res, 'error', 'Not+getting+a+valid+response+from+that+URL.', req.body.target, req.body.url);
-            return false;
+            return;
           }
 
           $ = cheerio.load(body);
@@ -365,7 +365,7 @@
       // Limit filename characters.
       if (!exports.isFilenameValid(req.body.filename)) {
         exports.redirectWithMsg(res, 'error', 'Please+enter+a+valid+filename!.', req.body.target, req.body.url);
-        return false;
+        return;
       }
       else {
         fileName = req.body.filename;
@@ -381,7 +381,7 @@
     else {
       try {
         exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
-        return false;
+        return;
       }
       catch (err) {
         utils.error(err);

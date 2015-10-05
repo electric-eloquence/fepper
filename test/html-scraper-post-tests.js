@@ -12,7 +12,7 @@
   var $ = cheerio.load(html);
   var htmlScraperPost = require(rootDir + '/fepper/servers/html-scraper-post');
   var req = {body: {target: '', url: ''}};
-  var testDir = rootDir + '/test';
+  var testDir = rootDir + '/test/files';
   var scrapeDir = testDir + '/_patterns/98-scrape';
 
   var xhtml = htmlScraperPost.htmlToXhtml(html);
