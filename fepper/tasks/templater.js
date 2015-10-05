@@ -96,7 +96,7 @@
     }
     catch (err) {
       // Fail gracefully.
-      tokens = {}
+      tokens = {};
     }
 
     return tokens;
