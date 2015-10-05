@@ -62,7 +62,7 @@
   });
 
   gulp.task('patternlab:cd-in-to-fepper', function (cb) {
-    process.chdir('../fepper/tasks/');
+    process.chdir('fepper/tasks/');
     cb();
   });
 
@@ -72,7 +72,7 @@
   });
 
   gulp.task('patternlab:cd-out-of-fepper', function (cb) {
-    process.chdir('../../' + conf.pln);
+    process.chdir('../../');
     cb();
   });
 
@@ -133,7 +133,7 @@
       gulp.watch(conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build-cd']);
       gulp.watch(conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build-cd']);
       gulp.watch(conf.src + '/_patterns/**/*.mustache', ['patternlab:build-cd']);
-      gulp.watch(conf.src + '/_patterns/**/_*.json', ['patternlab:data-cd']);
+      gulp.watch(conf.src + '/_patterns/**/_*.json', ['patternlab:data']);
       gulp.watch(conf.src + '/css/**', ['patternlab:copy-css']);
       gulp.watch(conf.src + '/fonts/**', ['patternlab:copy-cd']);
       gulp.watch(conf.src + '/images/**', ['patternlab:copy-cd']);
