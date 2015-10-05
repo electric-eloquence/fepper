@@ -134,13 +134,27 @@ Pattern Lab's Mustache templates can be translated into templates compatible
 with your CMS backend. Mustache tags just need to be replaced with tags the CMS 
 can use. Put these translations into YAML files named similarly to the Mustache 
 files in `patternlab-node/source/_patterns/03-templates`. Follow the example in 
-`test/_patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
-Templates prefixed by "__" will be ignored by the Templater as will files in the 
+`test/files/_patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
+
+Follow these rules for setting up keys and values:
+
+* Delete the outer two curly Mustache braces for keys.
+* Trim any exterior whitespace.
+* Leave other control structures within the key, i.e., !#/>^{}
+* Escape parentheses and question marks with two backslashes.
+* Wrap the key in double quotes.
+* Follow the closing quote with a colon, space, and pipe.
+* Indent the first line of the value two spaces.
+* Indent all following lines of the value by at least two spaces.
+
+Templates prefixed by "\_\_" will be ignored by the Templater as will files in the 
 `_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
 `backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `node . syncback` 
 or `node . template` to execute the Templater. The Templater will recurse through 
 nested Mustache templates if the tags are written in the verbose syntax and 
-include the `.mustache` extension, i.e., `{{> 02-organisms/00-global/00-header.mustache }}`
+include the `.mustache` extension, i.e., `{{> 02-organisms/00-global/00-header.mustache }}`. 
+When including parameterized partials, be sure string values and keys with 
+question marks are wrapped in _single_ quotes.
 
 ###<a id="mustache-browser"></a>Mustache Browser###
 Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 

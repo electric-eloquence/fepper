@@ -39,14 +39,6 @@
       expect(code).to.contain(partial);
     });
 
-    it('should strip Mustache tags', function () {
-      var tag = '{{> 02-organisms/00-global/00-header.mustache }}';
-      var stripped = templater.mustacheStrip(tag);
-      expect(stripped).to.not.equal(tag);
-      expect(stripped).to.not.contain('{{');
-      expect(stripped).to.not.contain('}}');
-    });
-
     it('should unescape Mustache tags', function () {
       var token = '{ tout }';
       var unescaped = templater.mustacheUnescape(token);
