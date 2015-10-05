@@ -181,10 +181,6 @@
           // Unset ymlFile if no YAML file.
           ymlFile = '';
         }
-        if (!stats.isFile()) {
-          // Fail gracefully in weird situations.
-          continue;
-        }
 
         // Recurse through Mustache templates (sparingly. See comment above)
         code = exports.mustacheRecurse(files[i], patternDir);
