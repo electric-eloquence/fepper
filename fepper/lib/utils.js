@@ -77,6 +77,50 @@
   };
 
   // ///////////////////////////////////////////////////////////////////////////
+  // Data utilities.
+  // ///////////////////////////////////////////////////////////////////////////
+  /**
+   * Recursively merge properties of two objects.
+   *
+   * @param {Object} obj1 If obj1 has properties obj2 doesn't, add to obj2.
+   * @param {Object} obj2 This object's properties have priority over obj1.
+   * @returns {Object} obj2
+   */
+  exports.mergeObjects = function (obj1, obj2) {
+    if (typeof obj2 === 'undefined') {
+      obj2 = {};
+    }
+
+    for (var i in obj1) {
+      if (obj1.hasOwnProperty(i)) {
+        try {
+          // Only recurse if obj1[i] is an object.
+          if (obj1[i].constructor === Object) {
+            // Requires 2 objects as params; create obj2[i] if undefined.
+            if (typeof obj2[i] === 'undefined' || obj2[i] === null) {
+              obj2[i] = {};
+            }
+            obj2[i] = exports.mergeObjects(obj1[i], obj2[i]);
+          // Pop when recursion meets a non-object. If obj1[i] is a non-object,
+          // only copy to undefined obj2[i]. This way, obj2 maintains priority.
+          }
+          else if (typeof obj2[i] === 'undefined' || obj2[i] === null) {
+            obj2[i] = obj1[i];
+          }
+        }
+        catch (err) {
+          // Property in destination object not set; create it and set its value.
+          if (typeof obj2[i] === 'undefined' || obj2[i] === null) {
+            obj2[i] = obj1[i];
+          }
+        }
+      }
+    }
+
+    return obj2;
+  };
+
+  // ///////////////////////////////////////////////////////////////////////////
   // Logging.
   // ///////////////////////////////////////////////////////////////////////////
   exports.console = console;
@@ -114,50 +158,6 @@
   exports.log = exports.isTest() ? function () {} : exports.console.log;
 
   exports.warn = exports.console.warn;
-
-  // ///////////////////////////////////////////////////////////////////////////
-  // Data utilities.
-  // ///////////////////////////////////////////////////////////////////////////
-  /**
-   * Recursively merge properties of two objects.
-   *
-   * @param {Object} obj1 If obj1 has properties obj2 doesn't, add to obj2.
-   * @param {Object} obj2 This object's properties have priority over obj1.
-   * @returns {Object} obj2
-   */
-  exports.mergeObjects = function (obj1, obj2) {
-    if (typeof obj2 === 'undefined') {
-      obj2 = {};
-    }
-
-    for (var i in obj1) {
-      if (obj1.hasOwnProperty(i)) {
-        try {
-          // Only recurse if obj1[i] is an object.
-          if (obj1[i].constructor === Object) {
-            // Requires 2 objects as params; create obj2[i] if undefined.
-            if (typeof obj2[i] === 'undefined') {
-              obj2[i] = {};
-            }
-            obj2[i] = exports.mergeObjects(obj1[i], obj2[i]);
-          // Pop when recursion meets a non-object. If obj1[i] is a non-object,
-          // only copy to undefined obj2[i]. This way, obj2 maintains priority.
-          }
-          else if (typeof obj2[i] === 'undefined') {
-            obj2[i] = obj1[i];
-          }
-        }
-        catch (err) {
-          // Property in destination object not set; create it and set its value.
-          if (typeof obj2[i] === 'undefined') {
-            obj2[i] = obj1[i];
-          }
-        }
-      }
-    }
-
-    return obj2;
-  };
 
   // ///////////////////////////////////////////////////////////////////////////
   // Webserved directories.

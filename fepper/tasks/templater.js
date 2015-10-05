@@ -22,41 +22,53 @@
     var code2 = '';
     var codeSplit;
     var fs = require('fs-extra');
-    var k;
+    var i;
+    var j;
     var partial;
     var partialCode;
 
     try {
       // Read code which will receive token replacement.
       code1 = fs.readFileSync(file, conf.enc);
-      // Split code line by line for parsing.
-      codeSplit = code1.split('\n');
-      for (k = 0; k < codeSplit.length; k++) {
+      // Split by Mustache tag for parsing.
+      codeSplit = code1.split('{{');
+      for (i = 0; i < codeSplit.length; i++) {
+        // Replace line feeds and carriage returns with tokens.
+        codeSplit[i] = codeSplit[i].replace(/\n/g, '{{ \\n }}');
+        codeSplit[i] = codeSplit[i].replace(/\r/g, '{{ \\r }}');
         // Signal the OK to recurse by appending partial tags with the .mustache
         // extension. We do NOT want to recurse EVERY included partial because
         // then the outputted file will not contain any partials, which defeats
         // the purpose of recursing templates in the first place.
-        if (codeSplit[k].match(/\/[^\/]*\.mustache\s*}}/)) {
-          partial = exports.mustacheStrip(codeSplit[k]).trim();
-          partialCode = exports.mustacheRecurse(patternDir + '/' + partial, patternDir);
+        if (codeSplit[i].match(/^>\s*[\w\-\.\/]+\.mustache\s*}}/)) {
+          partial = codeSplit[i].split('}}');
+          partial[0] = partial[0].replace(/^>\s*/, '').trim();
+          partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], patternDir);
           code2 += partialCode;
+          for (j = 0; j < partial.length; j++) {
+            if (j > 0 && j < partial.length - 1) {
+              code2 += partial[j] + '}}';
+            }
+          }
         }
         else {
-          code2 += codeSplit[k] + '\n';
+          if (i > 0) {
+            code2 += '{{' + codeSplit[i];
+          }
+          else {
+            code2 += codeSplit[i];
+          }
         }
       }
+      // Reinstate line feeds and carriage returns.
+      code2 = code2.replace(/{{ \\n }}/g, '\n');
+      code2 = code2.replace(/{{ \\r }}/g, '\r');
 
       return code2;
     }
     catch (err) {
       utils.error(err);
     }
-  };
-
-  exports.mustacheStrip = function (unstripped) {
-    var stripped = unstripped.replace(/{{+[^\w]?\s*/, '');
-    stripped = stripped.replace(/\s*}+}/, '');
-    return stripped;
   };
 
   exports.mustacheUnescape = function (escaped) {
@@ -133,8 +145,8 @@
     var dest;
     var files;
     var i;
-    var patternDir = rootDir + '/' + conf.src + '/_patterns/';
-    var srcDir = patternDir + '03-templates';
+    var patternDir = rootDir + '/' + conf.src + '/_patterns';
+    var srcDir = patternDir + '/03-templates';
     var stats;
     var templatesDir;
     var templatesExt;
@@ -154,7 +166,7 @@
 
       // Only proceed if templatesExt is set correctly.
       templatesExt = conf.backend.synced_dirs.templates_ext;
-      if (!templatesExt.match(/^[\w.\/-]+$/)) {
+      if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
         return;
       }
 
