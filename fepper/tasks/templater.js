@@ -46,7 +46,7 @@
           partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], patternDir);
           code2 += partialCode;
           for (j = 0; j < partial.length; j++) {
-            if (j > 0 && j !== partial.length - 1) {
+            if (j > 0 && j < partial.length - 1) {
               code2 += partial[j] + '}}';
             }
           }
