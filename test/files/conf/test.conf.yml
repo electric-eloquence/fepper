@@ -1,8 +1,10 @@
 ---
-# Copy this file to conf.yml. This is absolutely necessary for installation.
-
 express_port: 3000
 livereload_port: 35729
+
+# kill_zombies will kill lingering Node and Gulp processes. However, if you wish
+# to run multiple Fepper instances, you'll need to set this to false.
+kill_zombies: true
 
 # timeout_main sets the number of milliseconds to wait for asynchronous tasks to
 # complete, particularly the wait before Fepper opens in a browser.
@@ -75,6 +77,12 @@ backend:
     #- docroot/assets
     #- docroot/media
     - docroot/assets
+
+templater:
+  # By default, the Templater will not retain untranslated Mustache tags when
+  # translating to the backend's templating language. However, if the backend's
+  # templating language happens to be Mustache, set this value to true.
+  retain_mustache: false
 
 # If using webserved_dirs and publishing to GitHub Pages, the repository name
 # must be prefixed to the src of images and other assets in webserved_dirs. This

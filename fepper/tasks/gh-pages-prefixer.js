@@ -75,24 +75,14 @@
     }
   };
 
-  exports.main = function () {
+  exports.main = function (ghPagesDir) {
     var dataJson = utils.data(conf);
     var files;
     var prefix;
-    var ghPagesDir;
     var rootDir = utils.rootDir();
     var publicDir = rootDir + '/' + conf.pub;
     var webservedDirsShort;
     var webservedDirsFull;
-
-    if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() !== '') {
-      ghPagesDir = rootDir + '/' + conf.gh_pages_src;
-    }
-    else {
-      // Quit if gh_pages_src not set.
-      utils.error('gh_pages_src not set.');
-      return;
-    }
 
     // Before checking for any gh_pages_prefix to insert, copy over the Pattern
     // Lab public directory to the fepper-gh-pages directory. Clean up any old

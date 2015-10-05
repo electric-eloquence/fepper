@@ -10,7 +10,7 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test';
+  var testDir = rootDir + '/test/files';
   var patternDir = testDir + '/_patterns';
   var srcDir = patternDir + '/03-templates';
   var templater = require(rootDir + '/fepper/tasks/templater');

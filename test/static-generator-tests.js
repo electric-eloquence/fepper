@@ -9,7 +9,7 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test';
+  var testDir = rootDir + '/test/files';
   var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
   var conf = yaml.safeLoad(yml);
   var staticDir = testDir + '/static';

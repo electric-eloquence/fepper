@@ -10,10 +10,10 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test';
+  var testDir = rootDir + '/test/files';
   var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
   var conf = yaml.safeLoad(yml);
-  var ghPagesDir = rootDir + '/' + conf.gh_pages_src;
+  var ghPagesDir = testDir + '/' + conf.gh_pages_src;
   var ghPagesPrefixer = require(rootDir + '/fepper/tasks/gh-pages-prefixer');
 
   describe('GitHub Pages Prefixer', function () {
@@ -23,7 +23,7 @@
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    ghPagesPrefixer.main();
+    ghPagesPrefixer.main(ghPagesDir);
 
     it('should read a valid .gh_pages_src config', function () {
       expect(conf.gh_pages_src).to.be.a('string');
