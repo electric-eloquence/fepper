@@ -48,7 +48,7 @@
       if (typeof process.env.CONF === 'string') {
         try {
           conf = JSON.parse(process.env.CONF);
-          conf = exports.mergeObjects(conf, defaults);
+          conf = exports.mergeObjects(defaults, conf);
         }
         catch (err) {
           // Fail gracefully.
@@ -58,7 +58,7 @@
       if (!conf) {
         yml = fs.readFileSync(__dirname + '/../../conf.yml', enc);
         conf = yaml.safeLoad(yml);
-        conf = exports.mergeObjects(conf, defaults);
+        conf = exports.mergeObjects(defaults, conf);
         process.env.CONF = JSON.stringify(conf);
       }
 
