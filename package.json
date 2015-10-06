@@ -22,7 +22,6 @@
     "gulp-htmlhint": "^0.3.0",
     "gulp-htmllint": "0.0.5",
     "gulp-jsonlint": "^1.1.0",
-    "gulp-live-server": "0.0.28",
     "gulp-livereload": "^3.8.0",
     "gulp-load-plugins": "^1.0.0-rc.1",
     "gulp-mocha": "^2.1.3",

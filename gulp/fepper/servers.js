@@ -5,10 +5,11 @@
   var gulp = require('gulp');
   var plugins = require('gulp-load-plugins')();
 
+  var Servers = require('../../fepper/servers/servers.js');
+
   gulp.task('express', function () {
-    process.env.PORT = conf.express_port;
-    var express = plugins.liveServer('fepper/servers/servers.js', null, false);
-    express.start();
+    var app = Servers.express();
+    app.listen(conf.express_port);
   });
 
   gulp.task('livereload', function () {
