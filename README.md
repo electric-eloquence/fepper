@@ -45,6 +45,7 @@ A frontend prototyper for streamlining website design and development
 * Open [http://localhost:3000](http://localhost:3000) in a browser if it doesn't open automatically.
 * Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
 * Start editing files in `patternlab-node/source`. Changes should automatically appear in the browser.
+* To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
 
 ###<a id="configuration"></a>Configuration###
 
