@@ -43,7 +43,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "postinstall": "if [ ! -f conf.yml ]; then cp default.conf.yml conf.yml; fi && gulp install",
+    "postinstall": "if [ ! -f conf.yml ]; then cp default.conf.yml conf.yml; fi && gulp install > install.log",
     "test": "gulp test"
   },
   "engines": {
