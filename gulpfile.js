@@ -55,9 +55,6 @@
       'install:copy',
       'install:config',
       'data',
-      'patternlab:cd-in',
-      'shell:install-npm',
-      'patternlab:cd-out',
       cb
     );
   });
