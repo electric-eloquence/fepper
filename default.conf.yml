@@ -35,12 +35,6 @@ backend:
     #js_dir: docroot/themes/theme/js
     #templates_dir: docroot/themes/theme/templates
     #templates_ext: tpl.php
-    css_dir:
-    fonts_dir:
-    images_dir:
-    js_dir:
-    templates_dir:
-    templates_ext:
 
   webserved_dirs:
     # Relative paths to the backend directories that will be served by Fepper's
