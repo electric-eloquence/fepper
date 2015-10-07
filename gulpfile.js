@@ -76,10 +76,8 @@
 
   gulp.task('once', function (cb) {
     runSequence(
-      'patternlab:cd-in',
       'patternlab:clean',
       ['patternlab:build', 'patternlab:copy'],
-      'patternlab:cd-out',
       ['contrib:once', 'custom:once'],
       cb
     );
