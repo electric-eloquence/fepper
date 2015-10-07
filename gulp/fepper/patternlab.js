@@ -90,13 +90,33 @@
   });
 
   gulp.task('patternlab:data', function (cb) {
-    runSequence(
-      'patternlab:cd-in-to-fepper',
-      'fepper:appendix',
-      'fepper:json-compile',
-      'patternlab:cd-out-of-fepper',
-      cb
-    );
+    var p1 = new Promise(function (resolve, reject) {
+      process.chdir(rootDir + '/fepper/tasks');
+      var fpAppendix = pl.data()[0];
+      fpAppendix(rootDir + '/' + conf.src);
+      resolve();
+    });
+    p1.then(function () {
+      f2();
+    })
+    .catch(function (reason) {
+      utils.error(reason);
+    });
+
+    var f2 = function () {
+      var p2 = new Promise(function (resolve, reject) {
+        var fpJsonCompile= pl.data()[1];
+        fpJsonCompile(rootDir + '/' + conf.src);
+        resolve();
+      });
+      p2.then(function () {
+        process.chdir(rootDir);
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    };
   });
 
   gulp.task('patternlab:help', function (cb) {

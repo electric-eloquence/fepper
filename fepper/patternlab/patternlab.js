@@ -3,6 +3,7 @@
 
   var fs = require('fs-extra');
 
+  var Tasks = require('../tasks/tasks');
   var utils = require('../lib/utils');
 
   module.exports = class {
@@ -52,6 +53,10 @@
       return function () {
         fs.copySync('./source/css', './public/css');
       };
+    }
+
+    data() {
+      return [Tasks.appendix, Tasks.jsonCompile];
     }
   };
 })();

@@ -32,10 +32,7 @@
 
   gulp.task('data', function (cb) {
     runSequence(
-      'fepper:cd-in',
-      'fepper:appendix',
-      'fepper:json-compile',
-      'fepper:cd-out',
+      'patternlab:data',
       ['contrib:data', 'custom:data'],
       cb
     );

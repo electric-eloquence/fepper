@@ -4,14 +4,9 @@
   var conf = global.conf;
   var gulp = require('gulp');
 
-  var Tasks = require('../../fepper/tasks/tasks.js');
+  var Tasks = require('../../fepper/tasks/tasks');
   var utils = require('../../fepper/lib/utils');
   var rootDir = utils.rootDir();
-
-  gulp.task('fepper:appendix', function (cb) {
-    Tasks.appendix(rootDir + '/' + conf.src);
-    cb();
-  });
 
   gulp.task('fepper:cd-in', function (cb) {
     process.chdir('fepper/tasks');
@@ -59,11 +54,6 @@
       // Quit if gh_pages_src not set.
       utils.error('gh_pages_src not set.');
     }
-    cb();
-  });
-
-  gulp.task('fepper:json-compile', function (cb) {
-    Tasks.jsonCompile(rootDir + '/' + conf.src);
     cb();
   });
 
