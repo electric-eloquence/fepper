@@ -14,7 +14,6 @@
   var PatternLab = require('../../fepper/patternlab/patternlab');
   var pl = new PatternLab(rootDir + '/' + conf.pln, rootDir);
   var plBuild;
-  var plCopy;
 
   gulp.task('patternlab:build', function (cb) {
     var p = new Promise(function (resolve, reject) {
@@ -43,14 +42,25 @@
   });
 
   gulp.task('patternlab:clean', function (cb) {
-    fs.removeSync(rootDir + '/public/patterns');
-    cb();
+    var p = new Promise(function (resolve, reject) {
+      process.chdir(pathIn);
+      var plClean= pl.clean();
+      plClean();
+      resolve();
+    });
+    p.then(function () {
+      process.chdir(pathOut);
+      cb();
+    })
+    .catch(function (reason) {
+      utils.error(reason);
+    });
   });
 
   gulp.task('patternlab:copy', function (cb) {
     var p = new Promise(function (resolve, reject) {
       process.chdir(pathIn);
-      plCopy = pl.copy();
+      var plCopy = pl.copy();
       plCopy();
       resolve();
     });
@@ -63,9 +73,20 @@
     });
   });
 
-  gulp.task('patternlab:copy-css', function () {
-    return gulp.src(conf.src + '/css/**')
-      .pipe(gulp.dest(conf.pub + '/css/'));
+  gulp.task('patternlab:copy-css', function (cb) {
+    var p = new Promise(function (resolve, reject) {
+      process.chdir(pathIn);
+      var plCopyCss = pl.copyCss();
+      plCopyCss();
+      resolve();
+    });
+    p.then(function () {
+      process.chdir(pathOut);
+      cb();
+    })
+    .catch(function (reason) {
+      utils.error(reason);
+    });
   });
 
   gulp.task('patternlab:data', function (cb) {

@@ -31,6 +31,12 @@
       }
     }
 
+    clean() {
+      return function () {
+        fs.removeSync('./public/patterns');
+      };
+    }
+
     copy() {
       return function () {
         fs.copySync('./source/_data/annotations.js', './public/data/annotations.js');
@@ -39,6 +45,12 @@
         fs.copySync('./source/images', './public/images');
         fs.copySync('./source/js', './public/js');
         fs.copySync('./source/static', './public/static/');
+      };
+    }
+
+    copyCss() {
+      return function () {
+        fs.copySync('./source/css', './public/css');
       };
     }
   };
