@@ -2,8 +2,10 @@
   'use strict';
 
   module.exports = class {
-    constructor(plPath) {
-      this.plPath = plPath;
+    constructor(conf, rootPath, pubPath) {
+      this.conf = conf;
+      this.rootPath = rootPath;
+      this.pubPath = pubPath;
     }
 
     appendix(srcDir) {
@@ -11,7 +13,7 @@
     }
 
     ghPagesPrefix() {
-      require('./gh-pages-prefixer.js').main(this.plPath);
+      require('./gh-pages-prefixer.js').main(this.conf, this.rootPath, this.pubPath);
     }
 
     jsonCompile(srcDir) {
@@ -23,11 +25,11 @@
     }
 
     staticGenerate() {
-      require('./static-generator.js').main(this.plPath);
+      require('./static-generator.js').main(this.rootPath);
     }
 
     template() {
-      require('./templater.js').main(this.plPath);
+      require('./templater.js').main(this.rootPath);
     }
   };
 })();

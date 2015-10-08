@@ -4,10 +4,10 @@
   var conf = global.conf;
   var gulp = require('gulp');
 
-  var Tasks = require('../../fepper/tasks/tasks');
-  var tasks = new Tasks(conf.pln);
   var utils = require('../../fepper/lib/utils');
   var rootDir = utils.rootDir();
+  var Tasks = require('../../fepper/tasks/tasks');
+  var tasks = new Tasks(conf, rootDir, conf.pln);
 
   gulp.task('fepper:cd-in', function (cb) {
     process.chdir('fepper/tasks');
@@ -49,7 +49,7 @@
 
   gulp.task('fepper:gh-pages', function (cb) {
     if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() !== '') {
-      tasks.ghPagesPrefix(rootDir + '/' + conf.gh_pages_src);
+      tasks.ghPagesPrefix();
     }
     else {
       // Quit if gh_pages_src not set.

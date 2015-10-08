@@ -13,7 +13,6 @@
   var glob = require('glob');
 
   var utils = require('../lib/utils');
-  var conf = utils.conf();
 
   /**
    * Recursively glob pattern files, and then iterate through them.
@@ -75,21 +74,31 @@
     }
   };
 
-  exports.main = function (ghPagesDir, rootDir, pubDirShort) {
+  exports.main = function (conf, rootPath, pubPath) {
     var dataJson = utils.data(conf);
     var files;
     var prefix;
-    var publicDir = rootDir + '/' + pubDirShort;
+    var pubDir = rootPath + '/' + pubPath;
     var webservedDirsShort;
     var webservedDirsFull;
+
+    // First make sure conf.gh_pages_src and conf.gh_pages_dest are set.
+    if (!conf.gh_pages_src) {
+      utils.warn('gh_pages_src not set for ' + rootPath + '. Skipping...');
+      return;
+    }
+    if (!conf.gh_pages_dest) {
+      utils.warn('gh_pages_dest not set for ' + rootPath + '. Skipping...');
+      return;
+    }
 
     // Before checking for any gh_pages_prefix to insert, copy over the Pattern
     // Lab public directory to the fepper-gh-pages directory. Clean up any old
     // destination files before copying.
     utils.log('Preparing gh_pages_src...');
-    fs.removeSync(ghPagesDir);
+    fs.removeSync(conf.gh_pages_src);
     // Then, copy.
-    fs.copySync(publicDir, ghPagesDir);
+    fs.copySync(pubDir, conf.gh_pages_src);
 
     // Then, check for gh_pages_prefix. If it is set in conf.yml, that takes
     // priority over gh_pages_prefix set in data.json. The data.json setting can
@@ -121,12 +130,12 @@
     if (webservedDirsShort.length) {
       utils.log('Prepending gh_pages_prefix...');
       // Recursively glob pattern files, and then iterate through them.
-      files = exports.filesGet(ghPagesDir);
+      files = exports.filesGet(conf.gh_pages_src);
       // Read files, token replace path prefix tags, and write output.
       exports.filesProcess(files, conf, webservedDirsShort, prefix);
       // Copy webserved_dirs to gh_pages_src.
       utils.log('Copying webserved_dirs to gh_pages_src...');
-      utils.webservedDirsCopy(webservedDirsFull, rootDir, webservedDirsShort, ghPagesDir);
+      utils.webservedDirsCopy(webservedDirsFull, rootPath, webservedDirsShort, conf.gh_pages_src);
     }
     utils.log('Finished preprocessing GitHub Pages files.');
   };

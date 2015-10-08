@@ -77,6 +77,13 @@ templater:
   # templating language happens to be Mustache, set this value to true.
   retain_mustache: false
 
+# It is not a good idea to change the following values, but you can comment out
+# gh_pages_src and gh_pages_dest to surpress publishing the Fepper public dir to
+# GitHub Pages. This may be desired if you only wish to publish a Fepper subsite
+# and not the global site.
+gh_pages_src: .publish/fepper-gh-pages
+gh_pages_dest: .publish/gulp-gh-pages
+
 # If using webserved_dirs and publishing to GitHub Pages, the repository name
 # must be prefixed to the src of images and other assets in webserved_dirs. This
 # value can also be set in data.json and be saved in version control. If both
@@ -84,10 +91,8 @@ templater:
 # leading slash in this setting.
 #gh_pages_prefix: /github-repository-name
 
-# It isn't a good idea to change the following values.
+# It is not a good idea to change the following values.
 enc: utf8
-gh_pages_src: .publish/fepper-gh-pages
-gh_pages_dest: .publish/gulp-gh-pages
 pln: patternlab-node
 bld: patternlab-node/builder
 pub: patternlab-node/public
