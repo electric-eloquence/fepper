@@ -77,7 +77,7 @@
   };
 
   exports.main = function (workDir, conf) {
-    var dataJson = utils.data(conf, workDir);
+    var dataJson = utils.data(workDir, conf);
     var files;
     var ghPagesSrc;
     var prefix;

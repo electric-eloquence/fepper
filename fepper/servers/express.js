@@ -13,7 +13,7 @@
   var utils = require('../lib/utils');
   var conf = utils.conf();
   var rootDir = utils.rootDir();
-  var dataJson = utils.data(conf, rootDir);
+  var dataJson = utils.data(rootDir, conf);
 
   exports.main = function () {
     var app = express();

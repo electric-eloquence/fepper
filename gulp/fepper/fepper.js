@@ -47,6 +47,34 @@
     }
   });
 
+  gulp.task('fepper:data', function (cb) {
+    var p1 = new Promise(function (resolve, reject) {
+      process.chdir(rootDir + '/fepper/tasks');
+      tasks.appendix();
+      resolve();
+    });
+    p1.then(function () {
+      f2();
+    })
+    .catch(function (reason) {
+      utils.error(reason);
+    });
+
+    var f2 = function () {
+      var p2 = new Promise(function (resolve, reject) {
+        tasks.jsonCompile();
+        resolve();
+      });
+      p2.then(function () {
+        process.chdir(rootDir);
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    };
+  });
+
   gulp.task('fepper:gh-pages', function (cb) {
     if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() !== '') {
       tasks.ghPagesPrefix();

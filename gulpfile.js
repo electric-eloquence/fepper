@@ -32,7 +32,7 @@
 
   gulp.task('data', function (cb) {
     runSequence(
-      'patternlab:data',
+      'fepper:data',
       ['contrib:data', 'custom:data'],
       cb
     );

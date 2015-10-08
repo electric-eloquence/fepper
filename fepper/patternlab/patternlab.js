@@ -4,8 +4,6 @@
   var fs = require('fs-extra');
   var path = require('path');
 
-  var Tasks = require('../tasks/tasks');
-
   module.exports = class {
     constructor(workDir, conf) {
       this.workDir = workDir;
@@ -18,19 +16,19 @@
       var patternlab = patternlab_engine();
 
       if (typeof arg === 'undefined') {
-        return patternlab.build;
+        patternlab.build();
       }
       else if (arg === 'v') {
-        return patternlab.version;
+        patternlab.version();
       }
       else if (arg === 'only-patterns') {
-        return patternlab.build_patterns_only;
+        patternlab.build_patterns_only();
       }
       else if (arg === 'help') {
-        return patternlab.help;
+        patternlab.help();
       }
       else {
-        return patternlab.help;
+        patternlab.help();
       }
     }
 
@@ -55,12 +53,6 @@
       return function () {
         fs.copySync('./source/css', './public/css');
       };
-    }
-
-    data() {
-      var tasks = new Tasks(this.workDir, this.conf);
-
-      return [tasks.appendix, tasks.jsonCompile];
     }
   };
 })();
