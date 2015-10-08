@@ -10,9 +10,9 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test/files';
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
   var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
   var poFile = testDir + '/' + conf.src + '/js/pattern-overrider.js';
   var Tasks = require(rootDir + '/fepper/tasks/tasks');
   var tasks = new Tasks(testDir, conf);

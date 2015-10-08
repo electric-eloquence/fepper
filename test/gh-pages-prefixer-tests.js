@@ -10,9 +10,9 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test/files';
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
   var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
   var ghPagesDir = testDir + '/' + conf.gh_pages_src;
   var ghPagesPrefixer = require(rootDir + '/fepper/tasks/gh-pages-prefixer');
   var Tasks = require(rootDir + '/fepper/tasks/tasks');

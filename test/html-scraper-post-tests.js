@@ -14,9 +14,9 @@
   var $ = cheerio.load(html);
   var htmlScraperPost = require(rootDir + '/fepper/servers/html-scraper-post');
   var req = {body: {target: '', url: ''}};
-  var testDir = rootDir + '/test/files';
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
   var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
   var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
 
   var xhtml = htmlScraperPost.htmlToXhtml(html);

@@ -9,12 +9,12 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test/files';
+  var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
+  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
   var publicDir = testDir + '/public';
   var staticDir = testDir + '/static';
-  var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
 
   describe('Static Generator', function () {
     it('should copy css to the static dir', function () {

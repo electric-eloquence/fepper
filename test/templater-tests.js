@@ -11,9 +11,9 @@
   var rootDir = utils.rootDir();
 
   var templater = require(rootDir + '/fepper/tasks/templater');
-  var testDir = rootDir + '/test/files';
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
   var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
   var patternDir = testDir + '/' + conf.src + '/_patterns';
   var srcDir = patternDir + '/03-templates';
 

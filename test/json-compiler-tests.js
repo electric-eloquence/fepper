@@ -10,9 +10,9 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test/files';
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
   var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
   var appendixFile = testDir + '/' + conf.src + '/_data/_appendix.json';
   var dataFile = testDir + '/' + conf.src + '/_data/data.json';
   var Tasks = require(rootDir + '/fepper/tasks/tasks');
