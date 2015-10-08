@@ -31,16 +31,6 @@
     });
   });
 
-  gulp.task('patternlab:cd-in-to-fepper', function (cb) {
-    process.chdir('fepper/tasks/');
-    cb();
-  });
-
-  gulp.task('patternlab:cd-out-of-fepper', function (cb) {
-    process.chdir('../../');
-    cb();
-  });
-
   gulp.task('patternlab:clean', function (cb) {
     var p = new Promise(function (resolve, reject) {
       process.chdir(pathIn);

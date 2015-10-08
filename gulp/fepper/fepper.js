@@ -5,6 +5,7 @@
   var gulp = require('gulp');
 
   var Tasks = require('../../fepper/tasks/tasks');
+  var tasks = new Tasks(conf.pln);
   var utils = require('../../fepper/lib/utils');
   var rootDir = utils.rootDir();
 
@@ -48,7 +49,7 @@
 
   gulp.task('fepper:gh-pages', function (cb) {
     if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() !== '') {
-      Tasks.ghPagesPrefix(rootDir + '/' + conf.gh_pages_src);
+      tasks.ghPagesPrefix(rootDir + '/' + conf.gh_pages_src);
     }
     else {
       // Quit if gh_pages_src not set.
@@ -58,18 +59,18 @@
   });
 
   gulp.task('fepper:pattern-override', function (cb) {
-    Tasks.patternOverride(rootDir + '/' + conf.pub + '/js/pattern-overrider.js');
+    tasks.patternOverride(rootDir + '/' + conf.pub + '/js/pattern-overrider.js');
     cb();
   });
 
   gulp.task('fepper:static-generate', function (cb) {
-    Tasks.staticGenerate();
+    tasks.staticGenerate();
     cb();
   });
 
   gulp.task('fepper:template', function (cb) {
     if (typeof conf.backend.synced_dirs.templates_dir === 'string' && conf.backend.synced_dirs.templates_dir.match(/^[\w.\/-]+$/)) {
-      Tasks.template();
+      tasks.template();
     }
     else {
       utils.warn('No templates_dir defined.');

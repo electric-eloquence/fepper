@@ -56,7 +56,9 @@
     }
 
     data() {
-      return [Tasks.appendix, Tasks.jsonCompile];
+      var tasks = new Tasks(this.plPath);
+
+      return [tasks.appendix, tasks.jsonCompile];
     }
   };
 })();

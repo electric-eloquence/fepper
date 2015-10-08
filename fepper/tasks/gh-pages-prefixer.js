@@ -75,12 +75,11 @@
     }
   };
 
-  exports.main = function (ghPagesDir) {
+  exports.main = function (ghPagesDir, rootDir, pubDirShort) {
     var dataJson = utils.data(conf);
     var files;
     var prefix;
-    var rootDir = utils.rootDir();
-    var publicDir = rootDir + '/' + conf.pub;
+    var publicDir = rootDir + '/' + pubDirShort;
     var webservedDirsShort;
     var webservedDirsFull;
 

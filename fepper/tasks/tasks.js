@@ -2,28 +2,32 @@
   'use strict';
 
   module.exports = class {
-    static appendix(srcDir) {
+    constructor(plPath) {
+      this.plPath = plPath;
+    }
+
+    appendix(srcDir) {
       require('./appendixer.js').main(srcDir);
     }
 
-    static ghPagesPrefix() {
-      require('./gh-pages-prefixer.js').main();
+    ghPagesPrefix() {
+      require('./gh-pages-prefixer.js').main(this.plPath);
     }
 
-    static jsonCompile(srcDir) {
+    jsonCompile(srcDir) {
       require('./json-compiler.js').main(srcDir);
     }
 
-    static patternOverride(dest) {
+    patternOverride(dest) {
       require('./pattern-overrider.js').main(dest);
     }
 
-    static staticGenerate() {
-      require('./static-generator.js').main();
+    staticGenerate() {
+      require('./static-generator.js').main(this.plPath);
     }
 
-    static template() {
-      require('./templater.js').main();
+    template() {
+      require('./templater.js').main(this.plPath);
     }
   };
 })();
