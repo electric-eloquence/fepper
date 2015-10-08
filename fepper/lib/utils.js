@@ -35,8 +35,8 @@
         retain_mustache: false
       },
       enc: 'utf8',
-      gh_pages_src: '.publish/fepper-gh-pages',
-      gh_pages_dest: '.publish/gulp-gh-pages',
+      gh_pages_src: null,
+      gh_pages_dest: null,
       pln: 'patternlab-node',
       bld: 'patternlab-node/builder',
       pub: 'patternlab-node/public',

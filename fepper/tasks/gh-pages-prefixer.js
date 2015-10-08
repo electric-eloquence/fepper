@@ -77,6 +77,7 @@
   exports.main = function (conf, rootPath, pubPath) {
     var dataJson = utils.data(conf);
     var files;
+    var ghPagesSrc;
     var prefix;
     var pubDir = rootPath + '/' + pubPath;
     var webservedDirsShort;
@@ -92,13 +93,15 @@
       return;
     }
 
+    ghPagesSrc = rootPath + '/' + conf.gh_pages_src;
+
     // Before checking for any gh_pages_prefix to insert, copy over the Pattern
     // Lab public directory to the fepper-gh-pages directory. Clean up any old
     // destination files before copying.
     utils.log('Preparing gh_pages_src...');
-    fs.removeSync(conf.gh_pages_src);
+    fs.removeSync(ghPagesSrc);
     // Then, copy.
-    fs.copySync(pubDir, conf.gh_pages_src);
+    fs.copySync(pubDir, ghPagesSrc);
 
     // Then, check for gh_pages_prefix. If it is set in conf.yml, that takes
     // priority over gh_pages_prefix set in data.json. The data.json setting can
@@ -130,12 +133,12 @@
     if (webservedDirsShort.length) {
       utils.log('Prepending gh_pages_prefix...');
       // Recursively glob pattern files, and then iterate through them.
-      files = exports.filesGet(conf.gh_pages_src);
+      files = exports.filesGet(ghPagesSrc);
       // Read files, token replace path prefix tags, and write output.
       exports.filesProcess(files, conf, webservedDirsShort, prefix);
       // Copy webserved_dirs to gh_pages_src.
       utils.log('Copying webserved_dirs to gh_pages_src...');
-      utils.webservedDirsCopy(webservedDirsFull, rootPath, webservedDirsShort, conf.gh_pages_src);
+      utils.webservedDirsCopy(webservedDirsFull, rootPath, webservedDirsShort, ghPagesSrc);
     }
     utils.log('Finished preprocessing GitHub Pages files.');
   };

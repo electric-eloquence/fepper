@@ -5,7 +5,6 @@
     constructor(conf, rootPath, pubPath) {
       this.conf = conf;
       this.rootPath = rootPath;
-      this.pubPath = pubPath;
     }
 
     appendix(srcDir) {
@@ -13,7 +12,7 @@
     }
 
     ghPagesPrefix() {
-      require('./gh-pages-prefixer.js').main(this.conf, this.rootPath, this.pubPath);
+      require('./gh-pages-prefixer.js').main(this.conf, this.rootPath, this.conf.pub);
     }
 
     jsonCompile(srcDir) {
