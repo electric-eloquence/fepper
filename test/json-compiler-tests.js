@@ -10,7 +10,7 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;
   var appendixFile = testDir + '/' + conf.src + '/_data/_appendix.json';

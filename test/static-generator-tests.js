@@ -10,7 +10,7 @@
   var rootDir = utils.rootDir();
 
   var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
-  var yml = fs.readFileSync(rootDir + '/test/files/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;
   var publicDir = testDir + '/public';
