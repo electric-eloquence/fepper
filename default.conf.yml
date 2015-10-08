@@ -58,7 +58,7 @@ backend:
     # - browser), enter the path without the document root. For example, if the
     #   setting is docroot/assets, enter /assets without docroot.
     # - A version-controlled instance of these settings can be set in data.json
-    #   under backend_webserved_dirs.
+    #   under backend_webserved_dirs. Be sure they are entered in array syntax!
     # - The backend_webserved_dirs settings in data.json takes precedence over
     #   these settings in conf.yml.
     # - Assuming a host on the web is serving an instance of the backend, a
