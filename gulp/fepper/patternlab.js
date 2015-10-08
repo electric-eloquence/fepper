@@ -2,9 +2,7 @@
   'use strict';
 
   var conf = global.conf;
-  var fs = require('fs-extra');
   var gulp = require('gulp');
-  var runSequence = require('run-sequence');
 
   var utils = require('../../fepper/lib/utils');
   var rootDir = utils.rootDir();
@@ -12,7 +10,7 @@
   var pathIn = rootDir + '/' + conf.pln;
   var pathOut = rootDir;
   var PatternLab = require('../../fepper/patternlab/patternlab');
-  var pl = new PatternLab(rootDir + '/' + conf.pln, rootDir);
+  var pl = new PatternLab(rootDir, conf);
   var plBuild;
 
   gulp.task('patternlab:build', function (cb) {
@@ -34,7 +32,7 @@
   gulp.task('patternlab:clean', function (cb) {
     var p = new Promise(function (resolve, reject) {
       process.chdir(pathIn);
-      var plClean= pl.clean();
+      var plClean = pl.clean();
       plClean();
       resolve();
     });
@@ -83,7 +81,7 @@
     var p1 = new Promise(function (resolve, reject) {
       process.chdir(rootDir + '/fepper/tasks');
       var fpAppendix = pl.data()[0];
-      fpAppendix(rootDir + '/' + conf.src);
+      fpAppendix();
       resolve();
     });
     p1.then(function () {
@@ -95,7 +93,7 @@
 
     var f2 = function () {
       var p2 = new Promise(function (resolve, reject) {
-        var fpJsonCompile= pl.data()[1];
+        var fpJsonCompile = pl.data()[1];
         fpJsonCompile(rootDir + '/' + conf.src);
         resolve();
       });

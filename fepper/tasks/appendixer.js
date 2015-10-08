@@ -12,13 +12,11 @@
 
   var fs = require('fs-extra');
 
-  var utils = require('../lib/utils');
-  var conf = utils.conf();
-
-  exports.main = function (srcDir) {
-    var appendix = srcDir + '/_data/_appendix.json';
+  exports.main = function (workDir, conf) {
     var i;
     var jsonStr = '{\n';
+    var srcDir = workDir + '/' + conf.src;
+    var appendix = srcDir + '/_data/_appendix.json';
     var varFile = srcDir + '/js/src/variables.styl';
     var varLine;
     var vars = fs.readFileSync(varFile, conf.enc);

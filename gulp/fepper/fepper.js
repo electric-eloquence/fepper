@@ -7,7 +7,7 @@
   var utils = require('../../fepper/lib/utils');
   var rootDir = utils.rootDir();
   var Tasks = require('../../fepper/tasks/tasks');
-  var tasks = new Tasks(conf, rootDir);
+  var tasks = new Tasks(rootDir, conf);
 
   gulp.task('fepper:cd-in', function (cb) {
     process.chdir('fepper/tasks');

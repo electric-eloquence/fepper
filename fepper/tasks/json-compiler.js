@@ -12,19 +12,17 @@
   var fs = require('fs-extra');
   var glob = require('glob');
 
-  var utils = require('../lib/utils');
-  var conf = utils.conf();
-
-  exports.main = function (srcDir) {
-    var appendix = srcDir + '/_data/_appendix.json';
+  exports.main = function (workDir, conf) {
     var appendixTest = {};
-    var dest = srcDir + '/_data/data.json';
-    var globals = srcDir + '/_data/_data.json';
     var globalsTest = {};
     var i;
     var j;
     var jsonStr = '';
     var partials;
+    var srcDir = workDir + '/' + conf.src;
+    var appendix = srcDir + '/_data/_appendix.json';
+    var dest = srcDir + '/_data/data.json';
+    var globals = srcDir + '/_data/_data.json';
     var tmp;
 
     // Delete (optional) closing curly brace from _data.json.

@@ -2,17 +2,19 @@
   'use strict';
 
   var fs = require('fs-extra');
+  var path = require('path');
 
   var Tasks = require('../tasks/tasks');
-  var utils = require('../lib/utils');
 
   module.exports = class {
-    constructor(plPath) {
-      this.plPath = plPath;
+    constructor(workDir, conf) {
+      this.workDir = workDir;
+      this.plDir = path.normalize(workDir + '/' + conf.pln);
+      this.conf = conf;
     }
 
     build(arg) {
-      var patternlab_engine = require(this.plPath + '/builder/patternlab.js');
+      var patternlab_engine = require(this.plDir + '/builder/patternlab.js');
       var patternlab = patternlab_engine();
 
       if (typeof arg === 'undefined') {
@@ -56,7 +58,7 @@
     }
 
     data() {
-      var tasks = new Tasks(this.plPath);
+      var tasks = new Tasks(this.workDir, this.conf);
 
       return [tasks.appendix, tasks.jsonCompile];
     }

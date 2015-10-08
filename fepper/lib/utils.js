@@ -22,7 +22,7 @@
     }
     catch (err) {
       exports.error('Missing or malformed defaults.conf.yml! Exiting!');
-      process.exit();
+      return;
     }
 
     defaults.gh_pages_src = null;
@@ -47,7 +47,7 @@
         }
         catch (err) {
           exports.error('Missing or malformed conf.yml! Exiting!');
-          process.exit();
+          return;
         }
 
         conf = exports.mergeObjects(defaults, conf);
@@ -60,8 +60,8 @@
     return global.conf;
   };
 
-  exports.data = function (conf) {
-    return fs.readJsonSync(__dirname + '/../../' + conf.src + '/_data/data.json', {throws: false});
+  exports.data = function (workDir, conf) {
+    return fs.readJsonSync(workDir + '/' + conf.src + '/_data/data.json', {throws: false});
   };
 
   exports.rootDir = function () {

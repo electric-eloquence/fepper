@@ -85,7 +85,7 @@
       'fepper:cd-in',
       'fepper:gh-pages',
       'fepper:cd-out',
-      'gh-pages',
+//      'gh-pages',
       ['contrib:publish', 'custom:publish'],
       cb
     );

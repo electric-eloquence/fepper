@@ -4,8 +4,10 @@
   var cheerio = require('cheerio');
   var expect = require('chai').expect;
   var fs = require('fs-extra');
+  var yaml = require('js-yaml');
 
   var utils = require('../fepper/lib/utils');
+  var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
   var html = '<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><script></script><textarea></textarea></body></html>';
@@ -13,7 +15,9 @@
   var htmlScraperPost = require(rootDir + '/fepper/servers/html-scraper-post');
   var req = {body: {target: '', url: ''}};
   var testDir = rootDir + '/test/files';
-  var scrapeDir = testDir + '/_patterns/98-scrape';
+  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
 
   var xhtml = htmlScraperPost.htmlToXhtml(html);
   var dataObj = htmlScraperPost.xhtmlToJsonAndArray(xhtml);
