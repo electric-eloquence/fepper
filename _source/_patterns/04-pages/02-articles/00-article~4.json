@@ -1,9 +1,9 @@
 {
-	"article_title" : "Explore hiking trails",
-	"img": {
-		"landscape_16x9": {
-			"src": "../../images/sample/tout-4x3-climbers.jpg",
-			"alt": "Explore hiking trails"
-		}
-	}
+  "article_title" : "Explore hiking trails",
+  "img": {
+    "landscape_16x9": {
+      "src": "../../images/sample/tout-4x3-climbers.jpg",
+      "alt": "Explore hiking trails"
+    }
+  }
 }
