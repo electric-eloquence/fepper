@@ -1,7 +1,7 @@
 {
-	"month" : {
-		"long": "February",
-		"short": "Feb",
-		"digit": "02"
-	}
+  "month" : {
+    "long": "February",
+    "short": "Feb",
+    "digit": "02"
+  }
 }

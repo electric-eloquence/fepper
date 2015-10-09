@@ -1,9 +1,9 @@
 {
-	"article_title" : "Pick the right camping gear",
-	"img": {
-		"landscape_16x9": {
-			"src": "../../images/sample/thumb-square-gear.jpg",
-			"alt": "Camping Gear"
-		}
-	}
+  "article_title" : "Pick the right camping gear",
+  "img": {
+    "landscape_16x9": {
+      "src": "../../images/sample/thumb-square-gear.jpg",
+      "alt": "Camping Gear"
+    }
+  }
 }

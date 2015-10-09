@@ -1,9 +1,9 @@
 {
-	"article_title" : "How to detect and avoid poison ivy",
-	"img": {
-		"landscape_16x9": {
-			"src": "../../images/sample/thumb-square-ivy.jpg",
-			"alt": "Ivy"
-		}
-	}
+  "article_title" : "How to detect and avoid poison ivy",
+  "img": {
+    "landscape_16x9": {
+      "src": "../../images/sample/thumb-square-ivy.jpg",
+      "alt": "Ivy"
+    }
+  }
 }

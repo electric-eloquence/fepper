@@ -1,9 +1,9 @@
 {
-	"article_title" : "Extreme climbing tips",
-	"img": {
-		"landscape_16x9": {
-			"src": "../../images/sample/tout-4x3-climber.jpg",
-			"alt": "Climber"	
-		}
-	}
+  "article_title" : "Extreme climbing tips",
+  "img": {
+    "landscape_16x9": {
+      "src": "../../images/sample/tout-4x3-climber.jpg",
+      "alt": "Climber"  
+    }
+  }
 }

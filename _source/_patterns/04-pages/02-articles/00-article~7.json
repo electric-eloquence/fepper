@@ -1,9 +1,9 @@
 {
-	"article_title" : "Top 10 hiking mountains",
-	"img": {
-		"landscape_16x9": {
-			"src": "../../images/sample/thumb-square-yosemite.jpg",
-			"alt": "Yosemite"
-		}
-	}
+  "article_title" : "Top 10 hiking mountains",
+  "img": {
+    "landscape_16x9": {
+      "src": "../../images/sample/thumb-square-yosemite.jpg",
+      "alt": "Yosemite"
+    }
+  }
 }

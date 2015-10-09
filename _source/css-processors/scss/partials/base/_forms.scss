@@ -3,23 +3,23 @@
 \*------------------------------------*/
 
 form > div {
-	margin-bottom: $space;
+  margin-bottom: $space;
 }
 
 form ol, form ul {
-	list-style: none;
-	margin-left: 0;
+  list-style: none;
+  margin-left: 0;
 }
 
 fieldset {
-	border: 0;
-	padding: 0;
-	margin: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
 }
 
 label {
-	display: block;
-	padding-bottom: $space-quarter;
+  display: block;
+  padding-bottom: $space-quarter;
 }
 
 button, input, select, textarea {
@@ -29,20 +29,20 @@ button, input, select, textarea {
 }
 
 input, textarea {
-	border: 1px solid $gray;
-	padding: $pad-half 0.65rem;
+  border: 1px solid $gray;
+  padding: $pad-half 0.65rem;
 }
 
 input[type=text], input[type=search], input[type=url], input[type=number], textarea {
-	-webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 button, input[type="submit"] {
-	padding: $pad-half;
-	background: $gray-dark;
-	border: 1px solid $gray;
-	color: $white;
-	cursor: pointer;
+  padding: $pad-half;
+  background: $gray-dark;
+  border: 1px solid $gray;
+  color: $white;
+  cursor: pointer;
 }
 
 input[type="checkbox"],
@@ -63,59 +63,59 @@ input[type="search"]::-webkit-search-decoration {
 
 //Form Field Container
 .field-container {
-	margin-bottom: $space;
+  margin-bottom: $space;
 }
 
 .inline-form {
-	
-	fieldset, .inline-container {
-		position: relative;
-	}
-	
-	input[type=submit], button, .btn {
-		font-size: $font-size-slightly-smaller;
-		padding: 0.65rem 1.3rem;
-		background: $gray-dark;
-		position: absolute;
-		top: 0;
-		right: 0;
-		z-index: 1;
-		width: auto;
+  
+  fieldset, .inline-container {
+    position: relative;
+  }
+  
+  input[type=submit], button, .btn {
+    font-size: $font-size-slightly-smaller;
+    padding: 0.65rem 1.3rem;
+    background: $gray-dark;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: auto;
 
-		&:hover, &:focus {
-			background: $gray;
-			color: $white;
-		}
-	}
+    &:hover, &:focus {
+      background: $gray;
+      color: $white;
+    }
+  }
 }
 
 // PK to clean this up
 .inline-search-results-form {
-	width: 100%;
-	@media all and (min-width: $bp-med) {
-		width: 82%;
+  width: 100%;
+  @media all and (min-width: $bp-med) {
+    width: 82%;
 
-	} 
-	
-	fieldset, .inline-container {
-		position: relative;
-	}
-	
-	input[type=submit], button {
-		position: absolute;
-		top: 0;
-		right: 0;
-		z-index: 1;
-		width: auto;
-	}
+  } 
+  
+  fieldset, .inline-container {
+    position: relative;
+  }
+  
+  input[type=submit], button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: auto;
+  }
 }
 
 /* Validation */
 .has-error {
-	border-color: $error;
+  border-color: $error;
 }
 .is-valid {
-	border-color: $valid;
+  border-color: $valid;
 }
 
 
@@ -127,12 +127,12 @@ input[type="search"]::-webkit-search-decoration {
 
 /* Search Form */
 .search-field {
-	padding-right: 3em;
+  padding-right: 3em;
 }
 .inline-form .search-submit {
-	background: none;
-	padding: 0.78em 1em;
-	border: 0;
-	border-left: 1px solid $gray;
-	color: $gray;
+  background: none;
+  padding: 0.78em 1em;
+  border: 0;
+  border-left: 1px solid $gray;
+  color: $gray;
 }

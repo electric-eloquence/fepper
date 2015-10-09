@@ -1,16 +1,16 @@
 /* Horizontal Carousel */
 .carousel-horizontal {
-	margin-bottom: $space;
-	overflow: hidden;
-	position: relative;
+  margin-bottom: $space;
+  overflow: hidden;
+  position: relative;
 }
 
 .carousel-island-container {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .carousel-container {
-	position: relative;
+  position: relative;
 }
 
 .carousel-list {
@@ -18,21 +18,21 @@
 }
 
 .carousel-controls {
-	display: table;
-	width: 100%;
-	margin: (-$space-half) 0 $space;
+  display: table;
+  width: 100%;
+  margin: (-$space-half) 0 $space;
 
-	a, div {
-		display: table-cell;
-		padding: $pad-half;
-	}
+  a, div {
+    display: table-cell;
+    padding: $pad-half;
+  }
 
-	.carousel-pagination {
-		text-align: center;
-	}
+  .carousel-pagination {
+    text-align: center;
+  }
 
-	.carousel-next {
-		text-align: right;
-	}
+  .carousel-next {
+    text-align: right;
+  }
 
 }
