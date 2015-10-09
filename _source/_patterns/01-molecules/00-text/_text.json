@@ -1,6 +1,6 @@
 {
 	"author" : {
-		"first-name": "Author",
-		"last-name": "Name"
+		"first_name": "Author",
+		"last_name": "Name"
 	}
 }

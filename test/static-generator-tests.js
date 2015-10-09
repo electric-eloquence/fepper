@@ -9,11 +9,12 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test/files';
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
-  var staticDir = testDir + '/static';
   var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
+  var publicDir = testDir + '/public';
+  var staticDir = testDir + '/static';
 
   describe('Static Generator', function () {
     it('should copy css to the static dir', function () {
@@ -30,7 +31,7 @@
         // Fail gracefully.
       }
       // Copy css dir.
-      staticGenerator.cssDirCopy(testDir, staticDir);
+      staticGenerator.cssDirCopy(publicDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(cssDir).isDirectory();
 
@@ -52,7 +53,7 @@
         // Fail gracefully.
       }
       // Copy fonts dir.
-      staticGenerator.fontsDirCopy(testDir, staticDir);
+      staticGenerator.fontsDirCopy(publicDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(fontsDir).isDirectory();
 
@@ -75,7 +76,7 @@
       }
       // Copy images dir.
       // Run pattern-overrider.js.
-      staticGenerator.imagesDirCopy(testDir, staticDir);
+      staticGenerator.imagesDirCopy(publicDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(imagesDir).isDirectory();
 
@@ -97,7 +98,7 @@
         // Fail gracefully.
       }
       // Copy js dir.
-      staticGenerator.jsDirCopy(testDir, staticDir);
+      staticGenerator.jsDirCopy(publicDir, staticDir);
       // Stat copied dir.
       var dirExistsAfter = fs.statSync(jsDir).isDirectory();
 
@@ -113,7 +114,7 @@
       // Get empty string for comparison.
       var indexBefore = fs.readFileSync(testFile, conf.enc);
       // Compile pages dir.
-      staticGenerator.pagesDirCompile(testDir + '/patterns', staticDir);
+      staticGenerator.pagesDirCompile(testDir, conf, publicDir + '/patterns', staticDir);
       // Check test file.
       var indexAfter = fs.readFileSync(testFile, conf.enc);
 
@@ -129,7 +130,7 @@
       // Get empty string for comparison.
       var indexBefore = fs.readFileSync(testFile, conf.enc);
       // Compile pages dir.
-      staticGenerator.pagesDirCompile(testDir + '/patterns', staticDir);
+      staticGenerator.pagesDirCompile(testDir, conf, publicDir + '/patterns', staticDir);
       // Check test file.
       var indexAfter = fs.readFileSync(testFile, conf.enc);
 

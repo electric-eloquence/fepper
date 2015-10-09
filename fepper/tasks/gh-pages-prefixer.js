@@ -13,7 +13,6 @@
   var glob = require('glob');
 
   var utils = require('../lib/utils');
-  var conf = utils.conf();
 
   /**
    * Recursively glob pattern files, and then iterate through them.
@@ -30,27 +29,28 @@
    *
    * @param {array} files The files to process.
    */
-  exports.filesProcess = function (files, confParam, webservedDirsShort, prefix) {
+  exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, workDir) {
     var code;
     var codeSplit;
-    var file;
+    var publicFile;
+    var ghPagesSrcFile;
     var i;
     var j;
     var k;
     var regex;
     var stats;
 
-    for (i = 0; i < files.length; i++) {
+    for (i = 0; i < publicFiles.length; i++) {
       // Read each pattern file.
-      stats = fs.statSync(files[i]);
+      stats = fs.statSync(publicFiles[i]);
       if (!stats.isFile()) {
         continue;
       }
 
       code = '';
-      file = fs.readFileSync(files[i], confParam.enc);
+      publicFile = fs.readFileSync(publicFiles[i], conf.enc);
       // Split code line by line for parsing.
-      codeSplit = file.split('\n');
+      codeSplit = publicFile.split('\n');
       for (j = 0; j < codeSplit.length; j++) {
         // Iterate through webservedDirsShort. Check to see if the line is
         // calling a path to the dir with href or src elements.
@@ -71,26 +71,28 @@
         code += codeSplit[j] + '\n';
       }
 
-      fs.writeFileSync(files[i], code);
+      ghPagesSrcFile = publicFiles[i].replace(workDir + '/' + conf.pub, workDir + '/' + conf.gh_pages_src);
+      fs.writeFileSync(ghPagesSrcFile, code);
     }
   };
 
-  exports.main = function (ghPagesDir) {
-    var dataJson = utils.data(conf);
+  exports.main = function (workDir, conf) {
+    var dataJson = utils.data(workDir, conf);
     var files;
+    var ghPagesSrc;
     var prefix;
-    var rootDir = utils.rootDir();
-    var publicDir = rootDir + '/' + conf.pub;
     var webservedDirsShort;
     var webservedDirsFull;
 
-    // Before checking for any gh_pages_prefix to insert, copy over the Pattern
-    // Lab public directory to the fepper-gh-pages directory. Clean up any old
-    // destination files before copying.
-    utils.log('Preparing gh_pages_src...');
-    fs.removeSync(ghPagesDir);
-    // Then, copy.
-    fs.copySync(publicDir, ghPagesDir);
+    // First, make sure conf.gh_pages_src and conf.gh_pages_dest are set.
+    if (!conf.gh_pages_src) {
+      utils.warn('gh_pages_src not set for ' + workDir + '. Skipping...');
+      return;
+    }
+    if (!conf.gh_pages_dest) {
+      utils.warn('gh_pages_dest not set for ' + workDir + '. Skipping...');
+      return;
+    }
 
     // Then, check for gh_pages_prefix. If it is set in conf.yml, that takes
     // priority over gh_pages_prefix set in data.json. The data.json setting can
@@ -107,27 +109,34 @@
     }
 
     // Similar to gh_pages_prefix, conf.yml takes priority over data.json.
-    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs) {
+    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs instanceof Array) {
       webservedDirsFull = conf.backend.webserved_dirs;
     }
-    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs) {
+    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs instanceof Array) {
       webservedDirsFull = dataJson.backend_webserved_dirs;
     }
     if (!webservedDirsFull) {
       return;
     }
 
+    // Before checking for any gh_pages_prefix to insert, clean up any old
+    // destination files before copying.
+    utils.log('Preparing gh_pages_src...');
+    ghPagesSrc = workDir + '/' + conf.gh_pages_src;
+    fs.removeSync(ghPagesSrc);
+
+    // Get array of truncated dirnames for processing.
     webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
 
     if (webservedDirsShort.length) {
       utils.log('Prepending gh_pages_prefix...');
       // Recursively glob pattern files, and then iterate through them.
-      files = exports.filesGet(ghPagesDir);
+      files = exports.filesGet(ghPagesSrc);
       // Read files, token replace path prefix tags, and write output.
-      exports.filesProcess(files, conf, webservedDirsShort, prefix);
+      exports.filesProcess(files, conf, webservedDirsShort, prefix, workDir);
       // Copy webserved_dirs to gh_pages_src.
       utils.log('Copying webserved_dirs to gh_pages_src...');
-      utils.webservedDirsCopy(webservedDirsFull, rootDir, webservedDirsShort, ghPagesDir);
+      utils.webservedDirsCopy(webservedDirsFull, workDir, webservedDirsShort, ghPagesSrc);
     }
     utils.log('Finished preprocessing GitHub Pages files.');
   };

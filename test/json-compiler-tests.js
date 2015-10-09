@@ -4,15 +4,19 @@
   var expect = require('chai').expect;
   var fs = require('fs-extra');
   var glob = require('glob');
+  var yaml = require('js-yaml');
 
   var utils = require('../fepper/lib/utils');
-  var conf = utils.conf();
+  var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
-  var testDir = rootDir + '/test/files';
 
-  var appendixFile = testDir + '/_data/_appendix.json';
-  var dataFile = testDir + '/_data/data.json';
-  var jsonCompiler = require(rootDir + '/fepper/tasks/json-compiler');
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
+  var appendixFile = testDir + '/' + conf.src + '/_data/_appendix.json';
+  var dataFile = testDir + '/' + conf.src + '/_data/data.json';
+  var Tasks = require(rootDir + '/fepper/tasks/tasks');
+  var tasks = new Tasks(testDir, conf);
 
   describe('JSON Compiler', function () {
     // Clear out data.json.
@@ -20,7 +24,7 @@
     // Get empty string for comparison.
     var dataBefore = fs.readFileSync(dataFile, conf.enc);
     // Run json-compiler.js.
-    jsonCompiler.main(testDir);
+    tasks.jsonCompile(testDir + '/' + conf.src);
     // Get json-compiler.js output.
     var dataAfter = fs.readFileSync(dataFile, conf.enc);
 
@@ -49,7 +53,7 @@
     });
 
     it('should compile _data.json to data.json', function () {
-      var _data = stripBraces(fs.readFileSync(testDir + '/_data/_data.json', conf.enc));
+      var _data = stripBraces(fs.readFileSync(testDir + '/' + conf.src + '/_data/_data.json', conf.enc));
       expect(dataAfter).to.contain(_data);
     });
 

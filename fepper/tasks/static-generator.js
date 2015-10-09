@@ -6,27 +6,25 @@
   var path = require('path');
 
   var utils = require('../lib/utils');
-  var conf = utils.conf();
-  var dataJson = utils.data(conf);
-  var rootDir = utils.rootDir();
 
-  exports.cssDirCopy = function (pubDir, staticDir) {
-    fs.copySync(pubDir + '/css', staticDir + '/css');
+  exports.cssDirCopy = function (publicDir, staticDir) {
+    fs.copySync(publicDir + '/css', staticDir + '/css');
   };
 
-  exports.fontsDirCopy = function (pubDir, staticDir) {
-    fs.copySync(pubDir + '/fonts', staticDir + '/fonts');
+  exports.fontsDirCopy = function (publicDir, staticDir) {
+    fs.copySync(publicDir + '/fonts', staticDir + '/fonts');
   };
 
-  exports.imagesDirCopy = function (pubDir, staticDir) {
-    fs.copySync(pubDir + '/images', staticDir + '/images');
+  exports.imagesDirCopy = function (publicDir, staticDir) {
+    fs.copySync(publicDir + '/images', staticDir + '/images');
   };
 
-  exports.jsDirCopy = function (pubDir, staticDir) {
-    fs.copySync(pubDir + '/js', staticDir + '/js');
+  exports.jsDirCopy = function (publicDir, staticDir) {
+    fs.copySync(publicDir + '/js', staticDir + '/js');
   };
 
-  exports.pagesDirCompile = function (patternDir, staticDir) {
+  exports.pagesDirCompile = function (workDir, conf, patternDir, staticDir) {
+    var dataJson = utils.data(workDir, conf);
     var dirs = [];
     var f;
     var files = [];
@@ -62,32 +60,33 @@
     }
   };
 
-  exports.main = function () {
-    var pubDir = rootDir + '/' + conf.pub;
-    var staticDir = rootDir + '/' + conf.src + '/static';
+  exports.main = function (workDir, conf) {
+    var dataJson = utils.data(workDir, conf);
+    var publicDir = workDir + '/' + conf.pub;
+    var staticDir = workDir + '/' + conf.src + '/static';
     var webservedDirsFull;
     var webservedDirsShort;
 
     // Copy asset directories.
-    exports.cssDirCopy(pubDir, staticDir);
-    exports.fontsDirCopy(pubDir, staticDir);
-    exports.imagesDirCopy(pubDir, staticDir);
-    exports.jsDirCopy(pubDir, staticDir);
+    exports.cssDirCopy(publicDir, staticDir);
+    exports.fontsDirCopy(publicDir, staticDir);
+    exports.imagesDirCopy(publicDir, staticDir);
+    exports.jsDirCopy(publicDir, staticDir);
 
     // Copy pages directory.
-    exports.pagesDirCompile(pubDir + '/patterns', staticDir);
+    exports.pagesDirCompile(workDir, conf, publicDir + '/patterns', staticDir);
 
     // Copy webserved directories.
     // conf.yml takes priority over data.json.
-    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs) {
+    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs instanceof Array) {
       webservedDirsFull = conf.backend.webserved_dirs;
     }
-    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs) {
+    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs instanceof Array) {
       webservedDirsFull = dataJson.backend_webserved_dirs;
     }
     if (webservedDirsFull) {
       webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
-      utils.webservedDirsCopy(webservedDirsFull, rootDir, webservedDirsShort, staticDir);
+      utils.webservedDirsCopy(webservedDirsFull, workDir, webservedDirsShort, staticDir);
     }
   };
 })();

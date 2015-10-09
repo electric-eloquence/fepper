@@ -10,12 +10,12 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test/files';
-  var patternDir = testDir + '/_patterns';
-  var srcDir = patternDir + '/03-templates';
   var templater = require(rootDir + '/fepper/tasks/templater');
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
+  var patternDir = testDir + '/' + conf.src + '/_patterns';
+  var srcDir = patternDir + '/03-templates';
 
   describe('Templater', function () {
     it('should ignore Mustache files prefixed with two undercores', function () {
@@ -33,7 +33,7 @@
     it('should recurse through Mustache partials', function () {
       var fileFurthest = patternDir + '/00-atoms/03-images/00-logo.mustache';
       var fileRoot = patternDir + '/03-templates/00-homepage.mustache';
-      var code = templater.mustacheRecurse(fileRoot, patternDir);
+      var code = templater.mustacheRecurse(fileRoot, conf, patternDir);
       var partial = fs.readFileSync(fileFurthest, conf.enc);
       // Should contain fileFurthest.
       expect(code).to.contain(partial);
@@ -46,7 +46,7 @@
     });
 
     it('should load tokens', function () {
-      var tokens = templater.tokensLoad(srcDir + '/00-homepage.yml');
+      var tokens = templater.tokensLoad(srcDir + '/00-homepage.yml', conf);
       expect(tokens).to.not.be.empty;
     });
 
@@ -58,11 +58,11 @@
       fs.removeSync(templatesDir);
 
       // Run templating functions.
-      var fileRoot = patternDir + '/03-templates/00-homepage.mustache';
-      var code = templater.mustacheRecurse(fileRoot, patternDir);
+      var fileRoot = srcDir + '/00-homepage.mustache';
+      var code = templater.mustacheRecurse(fileRoot, conf, patternDir);
       // Load tokens from YAML file.
-      var tokens = templater.tokensLoad(srcDir + '/00-homepage.yml');
-      code = templater.tokensReplace(tokens, code);
+      var tokens = templater.tokensLoad(srcDir + '/00-homepage.yml', conf);
+      code = templater.tokensReplace(tokens, code, conf);
       templater.templatesWrite(fileRoot, srcDir, templatesDir, templatesExt, code);
     });
   });

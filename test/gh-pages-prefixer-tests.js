@@ -10,11 +10,13 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var testDir = rootDir + '/test/files';
-  var yml = fs.readFileSync(testDir + '/conf/test.conf.yml', enc);
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
   var ghPagesDir = testDir + '/' + conf.gh_pages_src;
   var ghPagesPrefixer = require(rootDir + '/fepper/tasks/gh-pages-prefixer');
+  var Tasks = require(rootDir + '/fepper/tasks/tasks');
+  var tasks = new Tasks(testDir, conf);
 
   describe('GitHub Pages Prefixer', function () {
     // Get array of truncated dirnames.
@@ -23,7 +25,7 @@
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    ghPagesPrefixer.main(ghPagesDir);
+    tasks.ghPagesPrefix();
 
     it('should read a valid .gh_pages_src config', function () {
       expect(conf.gh_pages_src).to.be.a('string');
@@ -31,7 +33,7 @@
     });
 
     it('should glob the specified patterns directory', function () {
-      var files = ghPagesPrefixer.filesGet(testDir + '/patterns');
+      var files = ghPagesPrefixer.filesGet(testDir + '/' + conf.pub + '/patterns');
 
       expect(files).to.not.be.empty;
     });
@@ -43,12 +45,12 @@
     });
 
     it('should prefix webserved_dirs with gh_pages_prefix', function () {
-      var fileBeforePath = testDir + '/patterns/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
+      var fileBeforePath = testDir + '/' + conf.pub + '/patterns/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
       var fileBefore = fs.readFileSync(fileBeforePath);
       var fileAfterPath = ghPagesDir + '/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
 
       fs.copySync(fileBeforePath, fileAfterPath);
-      ghPagesPrefixer.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix);
+      ghPagesPrefixer.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix, testDir);
       var fileAfter = fs.readFileSync(fileAfterPath);
 
       expect(fileAfter).to.not.equal('');

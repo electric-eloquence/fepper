@@ -13,35 +13,20 @@
   // ///////////////////////////////////////////////////////////////////////////
   exports.conf = function () {
     var conf;
+    var defaults;
     var yml;
 
-    var defaults = {
-      express_port: 3000,
-      livereload_port: 35729,
-      kill_zombies: true,
-      timeout_main: 500,
-      backend: {
-        synced_dirs: {
-          css_dir: null,
-          fonts_dir: null,
-          images_dir: null,
-          js_dir: null,
-          templates_dir: null,
-          templates_ext: null
-        },
-        webserved_dirs: null
-      },
-      templater: {
-        retain_mustache: false
-      },
-      enc: 'utf8',
-      gh_pages_src: '.publish/fepper-gh-pages',
-      gh_pages_dest: '.publish/gulp-gh-pages',
-      pln: 'patternlab-node',
-      bld: 'patternlab-node/builder',
-      pub: 'patternlab-node/public',
-      src: 'patternlab-node/source'
-    };
+    try {
+      yml = fs.readFileSync(__dirname + '/../../default.conf.yml', enc);
+      defaults = yaml.safeLoad(yml);
+    }
+    catch (err) {
+      exports.error('Missing or malformed defaults.conf.yml! Exiting!');
+      return;
+    }
+
+    defaults.gh_pages_src = null;
+    defaults.gh_pages_dest = null;
 
     if (!global.conf) {
       // Try getting conf from global process object.
@@ -56,8 +41,15 @@
       }
 
       if (!conf) {
-        yml = fs.readFileSync(__dirname + '/../../conf.yml', enc);
-        conf = yaml.safeLoad(yml);
+        try {
+          yml = fs.readFileSync(__dirname + '/../../conf.yml', enc);
+          conf = yaml.safeLoad(yml);
+        }
+        catch (err) {
+          exports.error('Missing or malformed conf.yml! Exiting!');
+          return;
+        }
+
         conf = exports.mergeObjects(defaults, conf);
         process.env.CONF = JSON.stringify(conf);
       }
@@ -68,8 +60,8 @@
     return global.conf;
   };
 
-  exports.data = function (conf) {
-    return fs.readJsonSync(__dirname + '/../../' + conf.src + '/_data/data.json', {throws: false});
+  exports.data = function (workDir, conf) {
+    return fs.readJsonSync(workDir + '/' + conf.src + '/_data/data.json', {throws: false});
   };
 
   exports.rootDir = function () {

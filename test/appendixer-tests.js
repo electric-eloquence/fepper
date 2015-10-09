@@ -3,14 +3,18 @@
 
   var expect = require('chai').expect;
   var fs = require('fs-extra');
+  var yaml = require('js-yaml');
 
   var utils = require('../fepper/lib/utils');
-  var conf = utils.conf();
+  var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
-  var testDir = rootDir + '/test/files';
 
-  var appendixer = require(rootDir + '/fepper/tasks/appendixer');
-  var appendixFile = testDir + '/_data/_appendix.json';
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
+  var appendixFile = testDir + '/' + conf.src + '/_data/_appendix.json';
+  var Tasks = require(rootDir + '/fepper/tasks/tasks');
+  var tasks = new Tasks(testDir, conf);
 
   describe('Appendixer', function () {
     // Clear out _appendix.json.
@@ -18,7 +22,7 @@
     // Get empty string for comparison.
     var appendixBefore = fs.readFileSync(appendixFile, conf.enc);
     // Run appendixer.js.
-    appendixer.main(testDir);
+    tasks.appendix();
     // Get appendixer.js output.
     var appendixAfter = fs.readFileSync(appendixFile, conf.enc);
 

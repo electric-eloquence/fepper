@@ -1,11 +1,11 @@
 {
 	"article_title" : "Top 10 mountain ranges for hiking",
 	"author" : {
-		"first-name" : "Julianne",
-		"last-name" : "McCormick"
+		"first_name" : "Julianne",
+		"last_name" : "McCormick"
 	},
 	"img": {
-		"landscape-16x9": {
+		"landscape_16x9": {
 			"src": "../../images/sample/landscape-16x9-mountains.jpg",
 			"alt": "Mountains"
 		}

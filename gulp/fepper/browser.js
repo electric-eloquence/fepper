@@ -34,7 +34,7 @@
   });
 
   gulp.task('open', function () {
-    var log = conf.pln + '/npm-install.log';
+    var log = './install.log';
     var stats;
 
     try {

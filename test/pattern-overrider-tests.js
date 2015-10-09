@@ -4,13 +4,18 @@
   var expect = require('chai').expect;
   var fs = require('fs-extra');
   var path = require('path');
+  var yaml = require('js-yaml');
 
   var utils = require('../fepper/lib/utils');
-  var conf = utils.conf();
+  var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var patternOverrider = require(rootDir + '/fepper/tasks/pattern-overrider');
-  var poFile = rootDir + '/test/js/pattern-overrider.js';
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
+  var poFile = testDir + '/' + conf.src + '/js/pattern-overrider.js';
+  var Tasks = require(rootDir + '/fepper/tasks/tasks');
+  var tasks = new Tasks(testDir, conf);
 
   describe('Pattern Overrider', function () {
     // Clear out pattern-overrider.js.
@@ -19,7 +24,7 @@
     // Get empty string for comparison.
     var poBefore = fs.readFileSync(poFile, conf.enc);
     // Run pattern-overrider.js.
-    patternOverrider.main(poFile);
+    tasks.patternOverride();
     // Get pattern-overrider.js output.
     var poAfter = fs.readFileSync(poFile, conf.enc);
 

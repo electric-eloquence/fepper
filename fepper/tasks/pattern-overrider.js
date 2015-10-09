@@ -12,11 +12,11 @@
   var path = require('path');
 
   var utils = require('../lib/utils');
-  var conf = utils.conf();
 
-  exports.main = function (dest) {
-    var dataJson = utils.data(conf);
+  exports.main = function (workDir, conf) {
+    var dataJson = utils.data(workDir, conf);
     var defaultPort = 35729;
+    var dest = workDir + '/' + conf.src + '/js/pattern-overrider.js';
 
     // Backticked multi-line string.
     var output = `// Mustache code browser.

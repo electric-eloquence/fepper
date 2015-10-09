@@ -32,10 +32,7 @@
 
   gulp.task('data', function (cb) {
     runSequence(
-      'fepper:cd-in',
-      'fepper:appendix',
-      'fepper:json-compile',
-      'fepper:cd-out',
+      'fepper:data',
       ['contrib:data', 'custom:data'],
       cb
     );
@@ -55,9 +52,6 @@
       'install:copy',
       'install:config',
       'data',
-      'patternlab:cd-in',
-      'shell:install-npm',
-      'patternlab:cd-out',
       cb
     );
   });
@@ -79,10 +73,8 @@
 
   gulp.task('once', function (cb) {
     runSequence(
-      'patternlab:cd-in',
       'patternlab:clean',
       ['patternlab:build', 'patternlab:copy'],
-      'patternlab:cd-out',
       ['contrib:once', 'custom:once'],
       cb
     );
@@ -93,7 +85,7 @@
       'fepper:cd-in',
       'fepper:gh-pages',
       'fepper:cd-out',
-      'gh-pages',
+//      'gh-pages',
       ['contrib:publish', 'custom:publish'],
       cb
     );

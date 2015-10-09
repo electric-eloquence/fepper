@@ -14,10 +14,8 @@
   var yaml = require('js-yaml');
 
   var utils = require('../lib/utils');
-  var conf = utils.conf();
-  var rootDir = utils.rootDir();
 
-  exports.mustacheRecurse = function (file, patternDir) {
+  exports.mustacheRecurse = function (file, conf, patternDir) {
     var code1;
     var code2 = '';
     var codeSplit;
@@ -43,7 +41,7 @@
         if (codeSplit[i].match(/^>\s*[\w\-\.\/]+\.mustache\s*}}/)) {
           partial = codeSplit[i].split('}}');
           partial[0] = partial[0].replace(/^>\s*/, '').trim();
-          partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], patternDir);
+          partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], conf, patternDir);
           code2 += partialCode;
           for (j = 0; j < partial.length; j++) {
             if (j > 0 && j < partial.length - 1) {
@@ -98,7 +96,7 @@
     return dest;
   };
 
-  exports.tokensLoad = function (ymlFile) {
+  exports.tokensLoad = function (ymlFile, conf) {
     var tokens;
     var yml = '';
 
@@ -114,7 +112,7 @@
     return tokens;
   };
 
-  exports.tokensReplace = function (tokens, code) {
+  exports.tokensReplace = function (tokens, code, conf) {
     var i;
     var re;
     var token;
@@ -140,12 +138,12 @@
     return code;
   };
 
-  exports.main = function () {
+  exports.main = function (workDir, conf) {
     var code;
     var dest;
     var files;
     var i;
-    var patternDir = rootDir + '/' + conf.src + '/_patterns';
+    var patternDir = workDir + '/' + conf.src + '/_patterns';
     var srcDir = patternDir + '/03-templates';
     var stats;
     var templatesDir;
@@ -172,7 +170,7 @@
 
       // Only proceed if templatesDir exists.
       templatesDir = conf.backend.synced_dirs.templates_dir;
-      templatesDir = rootDir + '/backend/' + templatesDir;
+      templatesDir = workDir + '/backend/' + templatesDir;
       stats = fs.statSync(templatesDir);
       if (!stats.isDirectory()) {
         return;
@@ -195,16 +193,16 @@
         }
 
         // Recurse through Mustache templates (sparingly. See comment above)
-        code = exports.mustacheRecurse(files[i], patternDir);
+        code = exports.mustacheRecurse(files[i], conf, patternDir);
         // Load tokens from YAML file.
-        tokens = exports.tokensLoad(ymlFile);
+        tokens = exports.tokensLoad(ymlFile, conf);
         // Iterate through tokens and replace keys for values in the code.
-        code = exports.tokensReplace(tokens, code);
+        code = exports.tokensReplace(tokens, code, conf);
         // Write compiled templates.
         dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
 
         // Log to console.
-        utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(rootDir, '').replace(/^\//, ''));
+        utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
       }
     }
     catch (err) {
