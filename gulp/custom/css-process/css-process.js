@@ -5,6 +5,7 @@
   'use strict';
 
   var gulp = require('gulp');
+//  var plugins = require('gulp-load-plugins')();
 
   gulp.task('custom:css-process', function () {
 // Uncomment if you want to use Stylus.
@@ -24,7 +25,7 @@
 //      .pipe(gulp.dest('./' + conf.src + '/css'));
   });
 
-  gulp.task('custom:css-process:compile-no-comments', function () {
+  gulp.task('custom:css-process:no-comments', function () {
 // Uncomment if you want to use node . syncback without Stylus line comments.
 //    return gulp.src('./' + conf.src + '/css-processors/stylus/*.styl')
 //      .pipe(plugins.stylus({
