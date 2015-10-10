@@ -6,7 +6,7 @@
 
   var gulp = require('gulp');
 //  var plugins = require('gulp-load-plugins')();
-//  var utils = require('../../../fepper/lib/utils');
+//  var utilsGulp = require('../../lib/utils');
 
   gulp.task('custom:css-process', function () {
 // Uncomment if you want to use Stylus.
@@ -14,7 +14,7 @@
 //      .pipe(plugins.stylus({
 //        linenos: true
 //      }))
-//      .on('error', utils.handleError)
+//      .on('error', utilsGulp.handleError)
 //      .pipe(gulp.dest('./' + conf.src + '/css'));
 // Uncomment if you want to use SCSS. Replace if you want to use something else.
 //    return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
@@ -32,7 +32,7 @@
 //      .pipe(plugins.stylus({
 //        linenos: false
 //      }))
-//      .on('error', utils.handleError)
+//      .on('error', utilsGulp.handleError)
 //      .pipe(gulp.dest('./' + conf.src + '/css'));
 // Uncomment if you want to use SCSS. Replace if you want to use something else.
 //    return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
