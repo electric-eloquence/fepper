@@ -18,12 +18,16 @@
       .pipe(plugins.open(options));
   }
 
-  gulp.task('tcp-ip-load:express', function () {
+  gulp.task('tcp-ip-load:init', function () {
+    global.express = TcpIp.express();
+  });
+
+  gulp.task('tcp-ip-load:listen', function () {
     if (!conf) {
       return;
     }
 
-    var app = TcpIp.express();
+    var app = global.express;
     app.listen(conf.express_port);
   });
 

@@ -24,7 +24,9 @@
       'fepper:cd-in',
       'fepper:pattern-override',
       'fepper:cd-out',
-      ['tcp-ip-load:express', 'tcp-ip-reload:listen'],
+      'tcp-ip-load:init',
+      ['contrib:tcp-ip', 'custom:tcp-ip'],
+      ['tcp-ip-load:listen', 'tcp-ip-reload:listen'],
       ['contrib:watch', 'custom:watch', 'tcp-ip-load:open', 'tcp-ip-reload:watch'],
       cb
     );
