@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  var fs = require('fs-extra');
-
   var conf = global.conf;
   var gulp = require('gulp');
   var plugins = require('gulp-load-plugins')();
+
   var port = conf.express_port;
   var host = 'http://localhost:' + port;
+  var TcpIp = require('../../fepper/tcp-ip/tcp-ip.js');
 
   function open(time, path) {
     path = path ? path : '';
@@ -18,22 +18,16 @@
       .pipe(plugins.open(options));
   }
 
-  gulp.task('livereload:assets', function () {
-    return gulp.src(conf.pub + '/!(css|patterns|styleguide)/**')
-      .pipe(plugins.livereload());
+  gulp.task('tcp-ip-load:express', function () {
+    if (!conf) {
+      return;
+    }
+
+    var app = TcpIp.express();
+    app.listen(conf.express_port);
   });
 
-  gulp.task('livereload:index', function () {
-    return gulp.src(conf.pub + '/index.html')
-      .pipe(plugins.livereload());
-  });
-
-  gulp.task('livereload:inject', function () {
-    return gulp.src(conf.pub + '/**/*.css')
-      .pipe(plugins.livereload());
-  });
-
-  gulp.task('open', function () {
+  gulp.task('tcp-ip-load:open', function () {
     var log = './install.log';
     var stats;
 

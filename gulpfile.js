@@ -24,8 +24,8 @@
       'fepper:cd-in',
       'fepper:pattern-override',
       'fepper:cd-out',
-      ['express', 'livereload'],
-      ['contrib:watch', 'custom:watch', 'open', 'patternlab:watch'],
+      ['tcp-ip-load:express', 'tcp-ip-reload:listen'],
+      ['contrib:watch', 'custom:watch', 'tcp-ip-load:open', 'tcp-ip-reload:watch'],
       cb
     );
   });
@@ -66,7 +66,7 @@
   ]);
 
   gulp.task('minify', [
-    'uglify',
+    'minify:uglify',
     'contrib:minify',
     'custom:minify'
   ]);
@@ -85,7 +85,7 @@
       'fepper:cd-in',
       'fepper:gh-pages',
       'fepper:cd-out',
-//      'gh-pages',
+      'publish:gh-pages',
       ['contrib:publish', 'custom:publish'],
       cb
     );

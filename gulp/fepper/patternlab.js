@@ -116,24 +116,4 @@
       utils.error(reason);
     });
   });
-
-  gulp.task('patternlab:watch', function () {
-    // Need delay in order for launch to succeed consistently.
-    setTimeout(function () {
-      gulp.watch(conf.src + '/_data/!(_)*.json', ['patternlab:build']);
-      gulp.watch(conf.src + '/_data/annotations.js', ['patternlab:copy']);
-      gulp.watch(conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build']);
-      gulp.watch(conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build']);
-      gulp.watch(conf.src + '/_patterns/**/*.mustache', ['patternlab:build']);
-      gulp.watch(conf.src + '/_patterns/**/_*.json', ['fepper:data']);
-      gulp.watch(conf.src + '/css/**', ['patternlab:copy-css']);
-      gulp.watch(conf.src + '/fonts/**', ['patternlab:copy']);
-      gulp.watch(conf.src + '/images/**', ['patternlab:copy']);
-      gulp.watch(conf.src + '/js/**', ['patternlab:copy']);
-      gulp.watch(conf.src + '/static/**', ['patternlab:copy']);
-      gulp.watch(conf.pub + '/!(css|patterns|styleguide)/**', ['livereload:assets']);
-      gulp.watch(conf.pub + '/**/*.css', ['livereload:inject']);
-      gulp.watch(conf.pub + '/index.html', ['livereload:index']);
-    }, conf.timeout_main);
-  });
 })();
