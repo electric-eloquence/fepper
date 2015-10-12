@@ -35,7 +35,7 @@ A frontend prototyper for streamlining website design and development
   * Update if necessary: `brew update && brew upgrade node`
   * If not on a Mac, and not using Homebrew:
 [https://github.com/joyent/node/wiki/installing-node.js-via-package-manager](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager)
-  * After installing Node, enter `npm install -g fepper-cli` on the command line.
+  * After installing Node, `npm install -g fepper-cli`
 * On Mac OS X:
   * Double-click `fepper.command`
 * On other OSs (or if you prefer the command line):
