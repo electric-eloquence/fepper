@@ -6,7 +6,7 @@
   var fs = require('fs-extra');
   var gulp = require('gulp');
 
-  var utils = require('../../../core/lib/utils');
+  var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
 
   var $;
@@ -20,7 +20,7 @@
   var version = '0_0_0';
 
   if (typeof subsites === 'object' && subsites instanceof Array) {
-    gulp.task('contrib:multisite', function (cb) {
+    gulp.task('contrib:multisite:build', function (cb) {
       var plOverriderFile = rootDir + '/' + conf.src + '/js/patternlab-overrider.js';
       var plOverriderContent = fs.readFileSync(plOverriderFile, conf.enc);
 
@@ -84,6 +84,16 @@
           utils.error(reason);
         });
       }
+    });
+
+    gulp.task('contrib:multisite:tcp-ip', function (cb) {
+      var express = require('express');
+
+      for (i = 0; i < subsites.length; i++) {
+        subsiteDir = multisiteDir + '/' + subsites[i];
+        global.express.use('/' + subsites[i], express.static(subsiteDir + '/' + conf.pub));
+      }
+      cb();
     });
   }
 })();

@@ -6,7 +6,7 @@
 
   var gulp = require('gulp');
 //  var plugins = require('gulp-load-plugins')();
-//  var utilsGulp = require('../../lib/utils');
+//  var utilsGulp = require('../lib/utils');
 
   gulp.task('custom:css-process', function () {
 // Uncomment if you want to use Stylus.
