@@ -51,6 +51,7 @@
           process.chdir(plnDir);
 
           patternNavOuter = '<div class="fp-nav-container sg-nav-container" id="fp-nav-container--' + subsites[i] + '">\\n';
+          patternNavOuter += '<div class="fp-nav-label">' + subsites[i].toUpperCase() + '</div>\\n<ol class="sg-nav">\\n';
 
           FpPln = require(rootDir + '/core/fp-pln/fp-pln');
           fpPln = new FpPln(subsiteDir, conf);
@@ -63,13 +64,13 @@
 
           patternIndex = fs.readFileSync(plnDir + '/public/index.html', conf.enc);
           $ = cheerio.load(patternIndex);
-          patternNavInner = $('#sg-nav-container').html();
-          patternNavInner = $('#sg-nav-container').html();
+
+          patternNavInner = $('ol.sg-nav').html();
           patternNavInner = patternNavInner.replace(/\'/g, '\\\'');
           patternNavInner = patternNavInner.replace(/\n/g, '\\n');
 
           patternNavOuter += patternNavInner;
-          patternNavOuter += '\\n</div>\\n'
+          patternNavOuter += '\\n</ol>\\n</div>\\n'
 
           plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
           plOverriderContent += patternNavOuter;
