@@ -12,8 +12,7 @@
     }
 
     build(arg) {
-      var patternlab_engine = require(this.plnDir + '/builder/patternlab.js');
-      var patternlab = patternlab_engine();
+      var patternlab = require(this.plnDir + '/builder/patternlab.js')();
 
       if (typeof arg === 'undefined') {
         patternlab.build();
