@@ -3,8 +3,8 @@
 
   module.exports = class {
     static express() {
-      var express = require('./express');
-      var app = express.main();
+      var fpExpress = require('./fp-express');
+      var app = fpExpress.main();
 
       return app;
     }
