@@ -5,7 +5,7 @@
   var fs = require('fs-extra');
   var yaml = require('js-yaml');
 
-  var utils = require('../fepper/lib/utils');
+  var utils = require('../core/lib/utils');
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
@@ -13,7 +13,7 @@
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;
   var appendixFile = testDir + '/' + conf.src + '/_data/_appendix.json';
-  var Tasks = require(rootDir + '/fepper/tasks/tasks');
+  var Tasks = require(rootDir + '/core/tasks/tasks');
   var tasks = new Tasks(testDir, conf);
 
   describe('Appendixer', function () {

@@ -4,12 +4,12 @@
   var conf = global.conf;
   var gulp = require('gulp');
 
-  var utils = require('../../fepper/lib/utils');
+  var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
 
   var pathIn = rootDir + '/' + conf.pln;
   var pathOut = rootDir;
-  var PatternLab = require('../../fepper/patternlab/patternlab');
+  var PatternLab = require('../../core/patternlab/patternlab');
   var pl = new PatternLab(rootDir, conf);
 
   gulp.task('patternlab:build', function (cb) {

@@ -1,8 +1,6 @@
 (function () {
   'use strict';
 
-  var fs = require('fs-extra');
-
   var conf = global.conf;
   var gulp = require('gulp');
   var plugins = require('gulp-load-plugins')();

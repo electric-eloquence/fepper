@@ -5,11 +5,11 @@
   var fs = require('fs-extra');
   var yaml = require('js-yaml');
 
-  var utils = require('../fepper/lib/utils');
+  var utils = require('../core/lib/utils');
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var staticGenerator = require(rootDir + '/fepper/tasks/static-generator');
+  var staticGenerator = require(rootDir + '/core/tasks/static-generator');
   var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;

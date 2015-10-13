@@ -1,13 +1,15 @@
 (function () {
   'use strict';
 
+  var fs = require('fs-extra');
+
   var conf = global.conf;
   var gulp = require('gulp');
   var plugins = require('gulp-load-plugins')();
 
   var port = conf.express_port;
   var host = 'http://localhost:' + port;
-  var TcpIp = require('../../fepper/tcp-ip/tcp-ip.js');
+  var TcpIp = require('../../core/tcp-ip/tcp-ip.js');
 
   function open(time, path) {
     path = path ? path : '';
