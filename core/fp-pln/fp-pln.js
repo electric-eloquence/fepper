@@ -7,12 +7,12 @@
   module.exports = class {
     constructor(workDir, conf) {
       this.workDir = workDir;
-      this.plDir = path.normalize(workDir + '/' + conf.pln);
+      this.plnDir = path.normalize(workDir + '/' + conf.pln);
       this.conf = conf;
     }
 
     build(arg) {
-      var patternlab_engine = require(this.plDir + '/builder/patternlab.js');
+      var patternlab_engine = require(this.plnDir + '/builder/patternlab.js');
       var patternlab = patternlab_engine();
 
       if (typeof arg === 'undefined') {
@@ -33,26 +33,20 @@
     }
 
     clean() {
-      return function () {
-        fs.removeSync('./public/patterns');
-      };
+      fs.removeSync(this.plnDir + '/public/patterns');
     }
 
     copy() {
-      return function () {
-        fs.copySync('./source/_data/annotations.js', './public/data/annotations.js');
-        fs.copySync('./source/css', './public/css');
-        fs.copySync('./source/fonts', './public/fonts');
-        fs.copySync('./source/images', './public/images');
-        fs.copySync('./source/js', './public/js');
-        fs.copySync('./source/static', './public/static/');
-      };
+      fs.copySync(this.plnDir + '/source/_data/annotations.js', this.plnDir + '/public/data/annotations.js');
+      fs.copySync(this.plnDir + '/source/css', this.plnDir + '/public/css');
+      fs.copySync(this.plnDir + '/source/fonts', this.plnDir + '/public/fonts');
+      fs.copySync(this.plnDir + '/source/images', this.plnDir + '/public/images');
+      fs.copySync(this.plnDir + '/source/js', this.plnDir + '/public/js');
+      fs.copySync(this.plnDir + '/source/static', this.plnDir + '/public/static/');
     }
 
     copyCss() {
-      return function () {
-        fs.copySync('./source/css', './public/css');
-      };
+      fs.copySync(this.plnDir + '/source/css', this.plnDir + '/public/css');
     }
   };
 })();
