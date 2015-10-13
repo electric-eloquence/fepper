@@ -20,20 +20,19 @@
       .pipe(plugins.open(options));
   }
 
-  gulp.task('tcp-ip-load:init', function () {
+  gulp.task('tcp-ip-load:init', function (cb) {
     global.express = TcpIp.express();
+    cb();
   });
 
   gulp.task('tcp-ip-load:listen', function () {
     if (!conf) {
       return;
     }
-
-    var app = global.express;
-    app.listen(conf.express_port);
+    global.express.listen(conf.express_port);
   });
 
-  gulp.task('tcp-ip-load:open', function () {
+  gulp.task('tcp-ip-load:open', function (cb) {
     var log = './install.log';
     var stats;
 
@@ -52,5 +51,6 @@
     else {
       return open(conf.timeout_main);
     }
+    cb();
   });
 })();
