@@ -35,14 +35,14 @@ A frontend prototyper for streamlining website design and development
   * Update if necessary: `brew update && brew upgrade node`
   * If not on a Mac, and not using Homebrew:
 [https://github.com/joyent/node/wiki/installing-node.js-via-package-manager](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager)
-  * After installing Node, enter `npm install -g fepper-cli` on the command line.
+  * After installing Node, `npm install -g fepper-cli`
 * On Mac OS X:
   * Double-click `fepper.command`
 * On other OSs (or if you prefer the command line):
   * `npm install`
 * After successful installation:
   * Double-click `fepper.command` again
-  * Or enter `fepper` on the command line.
+  * Or enter `fp` on the command line.
 * Open [http://localhost:3000](http://localhost:3000) in a browser if it doesn't open automatically.
 * Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
 * Start editing files in `patternlab-node/source`. Changes should automatically appear in the browser.
@@ -71,20 +71,20 @@ If using Git for version control, directories named "ignore" will be ignored.
 * To launch from Mac OS X Finder:
   * Double-click `fepper.command`
 * To launch from the command line:
-  * `fepper`
+  * `fp`
 * These other utility tasks are runnable on the command line:
-  * `fepper data` to force compile data.json.
-  * `fepper frontend-copy` to copy css, fonts, images, and js to backend.
-  * `fepper lint` to lint HTML, JavaScripts, and JSON.
-  * `fepper minify` to minify JavaScripts.
-  * `fepper once` to clean the public folder and do a one-off Fepper build.
-  * `fepper publish` to publish the public folder to GitHub Pages.
-  * `fepper static` to generate a static site from the 04-pages directory.
-  * `fepper syncback` combines lint, minify, frontend-copy, and template.
-  * `fepper template` translates templates for backend and copies them there.
+  * `fp data` to force compile data.json.
+  * `fp frontend-copy` to copy css, fonts, images, and js to backend.
+  * `fp lint` to lint HTML, JavaScripts, and JSON.
+  * `fp minify` to minify JavaScripts.
+  * `fp once` to clean the public folder and do a one-off Fepper build.
+  * `fp publish` to publish the public folder to GitHub Pages.
+  * `fp static` to generate a static site from the 04-pages directory.
+  * `fp syncback` combines lint, minify, frontend-copy, and template.
+  * `fp template` translates templates for backend and copies them there.
 
 ###<a id="static-site-generation"></a>Static Site Generation###
-Running `fepper static` will generate a complete static site based on the files 
+Running `fp static` will generate a complete static site based on the files 
 in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
 [http://localhost:3000/static/](http://localhost:3000/static/). An `index.html` 
 will be generated based on `04-pages-00-homepage` or whatever is defined as the 
@@ -100,7 +100,7 @@ while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or
 even just a symbolic link to the codebase into the `backend` directory. Then, 
 enter the relative paths to the appropriate backend directories into `conf.yml`. 
 (Do not include "backend" or a leading slash.) You will then be able to run 
-`fepper syncback`, `fepper frontend-copy`, or `fepper template` to export your 
+`fp syncback`, `fp frontend-copy`, or `fp template` to export your 
 frontend data into your backend web application.
 
 ###<a id="webserved-directories"></a>Webserved Directories###
@@ -123,7 +123,7 @@ INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 
 ###<a id="github-pages"></a>GitHub Pages###
 If you have checked Fepper into a repository in your GitHub account, you may run 
-`fepper publish` to publish `patternlab-node/public` to GitHub Pages. The 
+`fp publish` to publish `patternlab-node/public` to GitHub Pages. The 
 Pattern Lab UI and Fepper static files will then be viewable from the Web at 
 `http://{user}.github.io/{repo}`. Normally, this is all that is needed. However, 
 if you are using `webserved_dirs`, you will need to supply a `gh_pages_prefix` 
@@ -153,8 +153,8 @@ Follow these rules for setting up keys and values:
 
 Templates prefixed by "\_\_" will be ignored by the Templater as will files in the 
 `_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
-`backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `fepper syncback` 
-or `fepper template` to execute the Templater. The Templater will recurse through 
+`backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `fp syncback` 
+or `fp template` to execute the Templater. The Templater will recurse through 
 nested Mustache templates if the tags are written in the verbose syntax and 
 include the `.mustache` extension, i.e., `{{> 02-organisms/00-global/00-header.mustache }}`. 
 When including parameterized partials, be sure string values and keys with 

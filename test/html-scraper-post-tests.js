@@ -6,13 +6,13 @@
   var fs = require('fs-extra');
   var yaml = require('js-yaml');
 
-  var utils = require('../fepper/lib/utils');
+  var utils = require('../core/lib/utils');
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
   var html = '<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><script></script><textarea></textarea></body></html>';
   var $ = cheerio.load(html);
-  var htmlScraperPost = require(rootDir + '/fepper/servers/html-scraper-post');
+  var htmlScraperPost = require(rootDir + '/core/tcp-ip/html-scraper-post');
   var req = {body: {target: '', url: ''}};
   var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);

@@ -5,7 +5,7 @@
   var plugins = require('gulp-load-plugins')();
 
   gulp.task('test:eslint-fepper', function () {
-    return gulp.src('./fepper/**/*.js')
+    return gulp.src('./core/**/*.js')
       .pipe(plugins.eslint())
       .pipe(plugins.eslint.format())
       .pipe(plugins.eslint.failAfterError());

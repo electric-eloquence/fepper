@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var utilsFepper = require('../../fepper/lib/utils');
+  var utilsFepper = require('../../core/lib/utils');
 
   exports.handleError = function (err) {
     utilsFepper.log(err.toString());

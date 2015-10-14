@@ -2,10 +2,10 @@
   'use strict';
 
   var expect = require('chai').expect;
-  var utils = require('../fepper/lib/utils');
+  var utils = require('../core/lib/utils');
   var rootDir = utils.rootDir();
 
-  var mustacheBrowser = require(rootDir + '/fepper/servers/mustache-browser');
+  var mustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
 
   var mustache = '<section id="one" class="test">{{> 02-organisms/00-global/00-header(\'partial?\': true) }}</section><section id="two" class="test">{{> 02-organisms/00-global/01-footer.mustache }}</section><script></script><textarea></textarea></body></html>';
   var htmlEntitiesAndLinks = mustacheBrowser.toHtmlEntitiesAndLinks(mustache);

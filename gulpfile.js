@@ -10,7 +10,7 @@
   var requireDir = require('require-dir');
   var runSequence = require('run-sequence');
 
-  var utils = require('./fepper/lib/utils');
+  var utils = require('./core/lib/utils');
   // Set global.conf and process.env.CONF.
   utils.conf();
 
@@ -21,11 +21,11 @@
     runSequence(
       'once',
       'data',
-      'fepper:cd-in',
       'fepper:pattern-override',
-      'fepper:cd-out',
-      ['express', 'livereload'],
-      ['contrib:watch', 'custom:watch', 'open', 'patternlab:watch'],
+      'tcp-ip-load:init',
+      ['contrib:tcp-ip', 'custom:tcp-ip'],
+      ['tcp-ip-load:listen', 'tcp-ip-reload:listen'],
+      ['contrib:watch', 'custom:watch', 'tcp-ip-load:open', 'tcp-ip-reload:watch'],
       cb
     );
   });
@@ -66,7 +66,7 @@
   ]);
 
   gulp.task('minify', [
-    'uglify',
+    'minify:uglify',
     'contrib:minify',
     'custom:minify'
   ]);
@@ -82,10 +82,8 @@
 
   gulp.task('publish', function (cb) {
     runSequence(
-      'fepper:cd-in',
       'fepper:gh-pages',
-      'fepper:cd-out',
-//      'gh-pages',
+      'publish:gh-pages',
       ['contrib:publish', 'custom:publish'],
       cb
     );
@@ -95,9 +93,7 @@
     runSequence(
       'lint',
       'minify',
-      'fepper:cd-in',
       'fepper:static-generate',
-      'fepper:cd-out',
       ['contrib:static', 'custom:static'],
       cb
     );
@@ -116,9 +112,7 @@
 
   gulp.task('template', function (cb) {
     runSequence(
-      'fepper:cd-in',
       'fepper:template',
-      'fepper:cd-out',
       ['contrib:template', 'custom:template'],
       cb
     );
