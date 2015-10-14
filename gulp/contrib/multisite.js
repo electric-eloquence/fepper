@@ -37,8 +37,7 @@
   'use strict';
 
   var sgNavContainer = document.getElementById('sg-nav-container');
-`;
-      // End backticked multi-line string.
+`;    // End backticked multi-line string.
 
       Promise.resolve(0).then(function loop(i) {
         if (i < subsites.length) {
@@ -76,16 +75,63 @@
             plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
             plOverriderContent += patternNavOuter;
             plOverriderContent += `  ');\n`;
-            plOverriderContent += `\n  document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';\n`;
-            plOverriderContent += '})();\n';
-
-            fs.writeFileSync(plOverriderFile, plOverriderContent);
           })
           .then(function () {
             return i + 1;
           })
           .then(loop);
         }
+
+        // Begin backticked multi-line string.
+        plOverriderContent += `
+  document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';
+
+  /* Pattern Lab accordion dropdown */
+  // Accordion dropdown
+  $('.fp-nav-container .sg-acc-handle').on("click", function(e){
+    e.preventDefault();
+
+    var $this = $(this),
+      $panel = $this.next('.fp-nav-container .sg-acc-panel'),
+      subnav = $this.parent().parent().hasClass('sg-acc-panel');
+
+    //Close other panels if link isn't a subnavigation item
+    if (!subnav) {
+      $('.fp-nav-container .sg-acc-handle').not($this).removeClass('active');
+      $('.fp-nav-container .sg-acc-panel').not($panel).removeClass('active');
+    }
+
+    //Activate selected panel
+    $this.toggleClass('active');
+    $panel.toggleClass('active');
+    setAccordionHeight();
+  });
+
+  $('.fp-nav-container .sg-nav-toggle').on("click", function(e){
+    e.preventDefault();
+    $('.fp-nav-container .sg-nav-container').toggleClass('active');
+  });
+
+  // update the iframe with the source from clicked element in pull down menu. also close the menu
+  // having it outside fixes an auto-close bug i ran into
+  $('.fp-nav-container .sg-nav a').not('.fp-nav-container .sg-acc-handle').on("click", function(e){
+
+	e.preventDefault();
+
+	// update the iframe via the history api handler
+	document.getElementById("sg-viewport").contentWindow.postMessage( { "path": urlHandler.getFileName($(this).attr("data-patternpartial")) }, urlHandler.targetOrigin);
+
+	// close up the menu
+	$(this).parents('.fp-nav-container .sg-acc-panel').toggleClass('active');
+	$(this).parents('.fp-nav-container .sg-acc-panel').siblings('.sg-acc-handle').toggleClass('active');
+
+	return false;
+
+  });
+})();
+`;      // End backticked multi-line string.
+
+        fs.writeFileSync(plOverriderFile, plOverriderContent);
         cb();
       })
       .catch(function (reason) {
@@ -104,3 +150,11 @@
     });
   }
 })();
+
+
+
+
+
+
+
+
