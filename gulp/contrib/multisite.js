@@ -40,7 +40,6 @@
 `;
       // End backticked multi-line string.
 
-//      for (i = 0; i < subsites.length; i++) {
       Promise.resolve(0).then(function loop(i) {
         if (i < subsites.length) {
           var patternIndex;
