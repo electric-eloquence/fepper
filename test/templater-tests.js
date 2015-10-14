@@ -6,11 +6,11 @@
   var path = require('path');
   var yaml = require('js-yaml');
 
-  var utils = require('../fepper/lib/utils');
+  var utils = require('../core/lib/utils');
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var templater = require(rootDir + '/fepper/tasks/templater');
+  var templater = require(rootDir + '/core/tasks/templater');
   var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;

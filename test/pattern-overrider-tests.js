@@ -6,7 +6,7 @@
   var path = require('path');
   var yaml = require('js-yaml');
 
-  var utils = require('../fepper/lib/utils');
+  var utils = require('../core/lib/utils');
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
@@ -14,7 +14,7 @@
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;
   var poFile = testDir + '/' + conf.src + '/js/pattern-overrider.js';
-  var Tasks = require(rootDir + '/fepper/tasks/tasks');
+  var Tasks = require(rootDir + '/core/tasks/tasks');
   var tasks = new Tasks(testDir, conf);
 
   describe('Pattern Overrider', function () {

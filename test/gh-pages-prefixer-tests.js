@@ -6,7 +6,7 @@
   var glob = require('glob');
   var yaml = require('js-yaml');
 
-  var utils = require('../fepper/lib/utils');
+  var utils = require('../core/lib/utils');
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
@@ -14,8 +14,8 @@
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;
   var ghPagesDir = testDir + '/' + conf.gh_pages_src;
-  var ghPagesPrefixer = require(rootDir + '/fepper/tasks/gh-pages-prefixer');
-  var Tasks = require(rootDir + '/fepper/tasks/tasks');
+  var ghPagesPrefixer = require(rootDir + '/core/tasks/gh-pages-prefixer');
+  var Tasks = require(rootDir + '/core/tasks/tasks');
   var tasks = new Tasks(testDir, conf);
 
   describe('GitHub Pages Prefixer', function () {

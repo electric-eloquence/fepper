@@ -31,6 +31,10 @@
   gulp.task('contrib:syncback', [
   ]);
 
+  gulp.task('contrib:tcp-ip', [
+    'contrib:multisite:tcp-ip'
+  ]);
+
   gulp.task('contrib:template', [
   ]);
 
