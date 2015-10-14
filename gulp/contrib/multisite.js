@@ -33,58 +33,65 @@
 
       // Begin backticked multi-line string.
       plOverriderContent += `
-(function multisite_0_0_0 () {
+(function multisite_` + version + ` () {
   'use strict';
 
   var sgNavContainer = document.getElementById('sg-nav-container');
 `;
       // End backticked multi-line string.
 
-      for (i = 0; i < subsites.length; i++) {
-        var patternIndex;
-        var patternNavInner;
-        var patternNavOuter;
+//      for (i = 0; i < subsites.length; i++) {
+      Promise.resolve(0).then(function loop(i) {
+        if (i < subsites.length) {
+          var patternIndex;
+          var patternNavInner;
+          var patternNavOuter;
 
-        var p = new Promise(function (resolve, reject) {
-          subsiteDir = multisiteDir + '/' + subsites[i];
-          plnDir = subsiteDir + '/patternlab-node';
-          process.chdir(plnDir);
+          return new Promise(function (resolve, reject) {
+            subsiteDir = multisiteDir + '/' + subsites[i];
+            plnDir = subsiteDir + '/patternlab-node';
+            process.chdir(plnDir);
 
-          patternNavOuter = '<div class="fp-nav-container sg-nav-container" id="fp-nav-container--' + subsites[i] + '">\\n';
-          patternNavOuter += '<div class="fp-nav-label">' + subsites[i].toUpperCase() + '</div>\\n<ol class="sg-nav">\\n';
+            patternNavOuter = '<div class="fp-nav-container sg-nav-container" id="fp-nav-container--' + subsites[i] + '">\\n';
+            patternNavOuter += '<div class="fp-nav-label">' + subsites[i].toUpperCase() + '</div>\\n<ol class="sg-nav">\\n';
 
-          FpPln = require(rootDir + '/core/fp-pln/fp-pln');
-          fpPln = new FpPln(subsiteDir, conf);
-          fpPln.build();
+            FpPln = require(rootDir + '/core/fp-pln/fp-pln');
+            fpPln = new FpPln(subsiteDir, conf);
+            fpPln.build();
 
-          resolve();
-        });
-        p.then(function () {
-          process.chdir(rootDir);
+            resolve();
+          })
+          .then(function () {
+            process.chdir(rootDir);
 
-          patternIndex = fs.readFileSync(plnDir + '/public/index.html', conf.enc);
-          $ = cheerio.load(patternIndex);
+            patternIndex = fs.readFileSync(plnDir + '/public/index.html', conf.enc);
+            $ = cheerio.load(patternIndex);
 
-          patternNavInner = $('ol.sg-nav').html();
-          patternNavInner = patternNavInner.replace(/\'/g, '\\\'');
-          patternNavInner = patternNavInner.replace(/\n/g, '\\n');
+            patternNavInner = $('ol.sg-nav').html();
+            patternNavInner = patternNavInner.replace(/\'/g, '\\\'');
+            patternNavInner = patternNavInner.replace(/\n/g, '\\n');
 
-          patternNavOuter += patternNavInner;
-          patternNavOuter += '\\n</ol>\\n</div>\\n'
+            patternNavOuter += patternNavInner;
+            patternNavOuter += '\\n</ol>\\n</div>\\n';
 
-          plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
-          plOverriderContent += patternNavOuter;
-          plOverriderContent += `  ');\n`;
-          plOverriderContent += `\n  document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';\n`;
-          plOverriderContent += '})();\n';
+            plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
+            plOverriderContent += patternNavOuter;
+            plOverriderContent += `  ');\n`;
+            plOverriderContent += `\n  document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';\n`;
+            plOverriderContent += '})();\n';
 
-          fs.writeFileSync(plOverriderFile, plOverriderContent);
-          cb();
-        })
-        .catch(function (reason) {
-          utils.error(reason);
-        });
-      }
+            fs.writeFileSync(plOverriderFile, plOverriderContent);
+          })
+          .then(function () {
+            return i + 1;
+          })
+          .then(loop);
+        }
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
     });
 
     gulp.task('contrib:multisite:tcp-ip', function (cb) {
