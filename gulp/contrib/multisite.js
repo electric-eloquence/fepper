@@ -74,7 +74,8 @@
 
           plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
           plOverriderContent += patternNavOuter;
-          plOverriderContent += `');\n`;
+          plOverriderContent += `  ');\n`;
+          plOverriderContent += `\n  document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';\n`;
           plOverriderContent += '})();\n';
 
           fs.writeFileSync(plOverriderFile, plOverriderContent);

@@ -101,7 +101,7 @@
     list-style: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
   .sg-header a {
-    font-size: 70%;
+    font-size: 68.75%;
     color: gray;
     text-decoration: none;
     display: block;
@@ -157,8 +157,8 @@
 .fp-nav-label {
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   float: left;
-  font-size: 70%;
-  padding: 1em; }
+  font-size: 68.75%;
+  padding: 1em 1em 0 1em; }
 
 .sg-nav {
   z-index: 1;
