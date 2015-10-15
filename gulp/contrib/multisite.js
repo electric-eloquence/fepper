@@ -14,10 +14,12 @@
   var fpPln;
   var i;
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
+  var patternPaths;
   var plnDir;
   var subsiteDir;
   var subsites = require(multisiteDir + '/subsites.js');
   var version = '0_0_0';
+  var viewAllPaths;
 
   if (typeof subsites === 'object' && subsites instanceof Array) {
     gulp.task('contrib:multisite:build', function (cb) {
@@ -103,7 +105,7 @@
       var pathParts = sgViewportPathname.split("/");
 
       if (pathParts.length > 3 && pathParts[1] !== "patterns" && pathParts[2] === "patterns") {
-        addressReplacement += "&subsite=" + pathParts[1];
+        addressReplacement += "&subsite="+pathParts[1];
         href = sgViewportPathname.substr(1);
       } else {
         href = urlHandler.getFileName(pattern);
@@ -167,11 +169,13 @@
     var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
     var $this = $(this);
     var navLinkHref = $this.attr("href");
+    var hrefParts = navLinkHref.split("/");
     var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
+    var pathnameParts = sgViewportPathname.split("/");
 
-    if (sgViewportPathname.match(/^\\/[^\\/]+\\/patterns/)) {
-      if (navLinkHref.match(/^[^\\/]+\\/patterns/)) {
-        navLinkHref = navLinkHref.replace(/^[^\\/]+\\//, "");
+    if (pathnameParts.length > 3 && pathnameParts[1] !== "patterns" && pathnameParts[2] === "patterns") {
+      if (hrefParts.length > 2 && hrefParts[0] !== "patterns" && hrefParts[1] === "patterns") {
+        navLinkHref = hrefParts.splice(1).join("/");
       } else {
         navLinkHref = "../" + navLinkHref;
       }
@@ -187,8 +191,28 @@
 
   });
 
-  // Push viewport down beyond expanded toolbar.
+  // push viewport down beyond expanded toolbar
   document.getElementById("sg-vp-wrap").style.top = "` + (2.0625 + 2.0625 * subsites.length) + `em";
+
+  // set correct iframe location for urls with subsite query string parameter
+  // as hacky as it is to use a timeout to wait for the default location replace
+  // to finish, there isn't really much of a choice
+  setTimeout(function () {
+    var oGetVars = urlHandler.getRequestVars();
+    var iFramePath;
+    var iFrameLocation = document.getElementById("sg-viewport").contentWindow.location;
+    var patternName;
+    var patternPath;
+
+    if (typeof oGetVars.subsite === "string") {
+      if (typeof oGetVars.p === "string" || typeof oGetVars.pattern === "string") {
+        patternName = (typeof oGetVars.p === "string") ? oGetVars.p : oGetVars.pattern;
+        patternPath = urlHandler.getFileName(patternName);
+        iFramePath = iFrameLocation.protocol+"//"+iFrameLocation.host+"/"+oGetVars.subsite+iFrameLocation.pathname;
+//        document.getElementById("sg-viewport").contentWindow.location.replace(iFramePath);
+      }
+    }
+  }, 10);
 })();
 `;      // End backticked multi-line string.
         // /////////////////////////////////////////////////////////////////////
