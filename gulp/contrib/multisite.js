@@ -73,7 +73,8 @@
             patternNavInner = $('ol.sg-nav').html();
             patternNavInner = patternNavInner.replace(/\'/g, '\\\'');
             patternNavInner = patternNavInner.replace(/\n/g, '\\n');
-            patternNavInner = patternNavInner.replace(/href="patterns/g, 'href="' + subsites[i] + '/patterns');
+            patternNavInner = patternNavInner.replace(/(href=")(patterns)/g, '$1' + subsites[i] + '/$2');
+            patternNavInner = patternNavInner.replace(/(href=")(styleguide)/g, '$1' + subsites[i] + '/$2');
 
             patternNavOuter += patternNavInner;
             patternNavOuter += '\\n</ol>\\n</div>\\n';
@@ -112,7 +113,10 @@
       var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
       var pathParts = sgViewportPathname.split("/");
 
-      if (pathParts.length > 3 && pathParts[1] !== "patterns" && pathParts[2] === "patterns") {
+      if (pathParts.length > 3 && (
+          (pathParts[1] !== "patterns" && pathParts[2] === "patterns") ||
+          (pathParts[1] !== "styleguide" && pathParts[2] === "styleguide")))
+      {
         addressReplacement += "&subsite="+pathParts[1];
         href = sgViewportPathname.substr(1);
       } else {
@@ -181,8 +185,14 @@
     var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
     var pathnameParts = sgViewportPathname.split("/");
 
-    if (pathnameParts.length > 3 && pathnameParts[1] !== "patterns" && pathnameParts[2] === "patterns") {
-      if (hrefParts.length > 2 && hrefParts[0] !== "patterns" && hrefParts[1] === "patterns") {
+    if (pathnameParts.length > 3 && (
+        (pathnameParts[1] !== "patterns" && pathnameParts[2] === "patterns") ||
+        (pathnameParts[1] !== "styleguide" && pathnameParts[2] === "styleguide")))
+    {
+      if (hrefParts.length > 2 && (
+          (hrefParts[0] !== "patterns" && hrefParts[1] === "patterns") ||
+          (hrefParts[0] !== "styleguide" && hrefParts[1] === "styleguide")))
+      {
         navLinkHref = hrefParts.splice(1).join("/");
       } else {
         navLinkHref = "../" + navLinkHref;
@@ -202,14 +212,16 @@
   // push viewport down beyond expanded toolbar
   document.getElementById("sg-vp-wrap").style.top = "` + (2.0625 + 2.0625 * subsites.length) + `em";
 
+  // load iframe on parent load
   // possible but unlikely race condition here with the default location.replace
+  // will ignore unless it becomes a recurring problem
   var oGetVars = urlHandler.getRequestVars();
-  var iFramePath;
-  var iFrameLocation = document.getElementById("sg-viewport").contentWindow.location;
-  var patternPath;
-
   if (typeof oGetVars.subsite === "string" && oGetVars.subsite) {
     if (typeof oGetVars.p === "string" && oGetVars.p) {
+      var iFramePath;
+      var iFrameLocation = document.getElementById("sg-viewport").contentWindow.location;
+      var patternPath;
+
       patternPath = msPatternPaths[oGetVars.subsite][oGetVars.p];
       iFramePath = window.location.protocol+"//"+window.location.host+"/"+oGetVars.subsite+"/"+patternPath;
       document.getElementById("sg-viewport").contentWindow.location.replace(iFramePath);
