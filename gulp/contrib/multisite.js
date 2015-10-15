@@ -101,7 +101,14 @@
       var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
       history.pushState(data, null, addressReplacement);
       document.getElementById("title").innerHTML = "Fepper - "+pattern;
-      document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(pattern));
+
+      // insert multisite path into "Open in new window" link
+      var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
+      if (sgViewportPathname.match(/^\\/[^\\/]+\\/patterns/)) {
+        document.getElementById("sg-raw").setAttribute("href",sgViewportPathname.substr(1));
+      } else {
+        document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(pattern));
+      }
     }
   };
 
@@ -162,15 +169,6 @@
     // close up the menu
     $this.parents('.fp-nav-container .sg-acc-panel').toggleClass('active');
     $this.parents('.fp-nav-container .sg-acc-panel').siblings('.sg-acc-handle').toggleClass('active');
-
-    // Insert Multisite path into "Open in new window" link.
-    if (sgViewportPathOld.match(/^[^\\/]+\\/patterns/)) {
-      // Yes, it's hacky, but we're not modifying the js of the page within the
-      // iframe, so we have to wait for the js within the iframe to finish.
-      setTimeout(function () {
-        document.getElementById('sg-raw').href = sgViewportPathOld;
-      }, 500);
-    }
 
     return false;
 
