@@ -213,6 +213,7 @@
       patternPath = msPatternPaths[oGetVars.subsite][oGetVars.p];
       iFramePath = window.location.protocol+"//"+window.location.host+"/"+oGetVars.subsite+"/"+patternPath;
       document.getElementById("sg-viewport").contentWindow.location.replace(iFramePath);
+      document.getElementById("sg-raw").setAttribute("href", oGetVars.subsite+"/"+patternPath);
     }
   }
 })();
