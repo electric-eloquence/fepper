@@ -150,21 +150,33 @@
 
     // update the iframe via the history api handler
     var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
+    var $this = $(this);
+    var sgViewportPathOld = $this.attr("href");
+    var sgViewportPathNew = sgViewportPathOld;
     var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
-    var sgViewportNewpath = $(this).attr("href");
     if (sgViewportPathname.match(/^\\/[^\\/]+\\/patterns/)) {
-      sgViewportNewpath = sgViewportNewpath.replace(/^[^\\/]+\\//, '');
+      sgViewportPathNew = sgViewportPathNew.replace(/^[^\\/]+\\//, '');
     }
-    document.getElementById("sg-viewport").contentWindow.postMessage( { "path": sgViewportNewpath }, targetOrigin);
+    document.getElementById("sg-viewport").contentWindow.postMessage( { "path": sgViewportPathNew }, targetOrigin);
 
     // close up the menu
-    $(this).parents('.fp-nav-container .sg-acc-panel').toggleClass('active');
-    $(this).parents('.fp-nav-container .sg-acc-panel').siblings('.sg-acc-handle').toggleClass('active');
+    $this.parents('.fp-nav-container .sg-acc-panel').toggleClass('active');
+    $this.parents('.fp-nav-container .sg-acc-panel').siblings('.sg-acc-handle').toggleClass('active');
+
+    // Insert Multisite path into "Open in new window" link.
+    if (sgViewportPathOld.match(/^[^\\/]+\\/patterns/)) {
+      // Yes, it's hacky, but we're not modifying the js of the page within the
+      // iframe, so we have to wait for the js within the iframe to finish.
+      setTimeout(function () {
+        document.getElementById('sg-raw').href = sgViewportPathOld;
+      }, 500);
+    }
 
     return false;
 
   });
 
+  // Push viewport down beyond expanded toolbar.
   document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';
 })();
 `;      // End backticked multi-line string.
