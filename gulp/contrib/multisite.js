@@ -31,6 +31,7 @@
         plOverriderContent = plOverriderContent.replace(new RegExp(regex1 + regex2), '');
       }
 
+      // ///////////////////////////////////////////////////////////////////////
       // Begin backticked multi-line string.
       plOverriderContent += `
 (function multisite_` + version + ` () {
@@ -38,6 +39,7 @@
 
   var sgNavContainer = document.getElementById('sg-nav-container');
 `;    // End backticked multi-line string.
+      // ///////////////////////////////////////////////////////////////////////
 
       Promise.resolve(0).then(function loop(i) {
         if (i < subsites.length) {
@@ -68,6 +70,7 @@
             patternNavInner = $('ol.sg-nav').html();
             patternNavInner = patternNavInner.replace(/\'/g, '\\\'');
             patternNavInner = patternNavInner.replace(/\n/g, '\\n');
+            patternNavInner = patternNavInner.replace(/href="patterns/g, 'href="' + subsites[i] + '/patterns');
 
             patternNavOuter += patternNavInner;
             patternNavOuter += '\\n</ol>\\n</div>\\n';
@@ -82,9 +85,25 @@
           .then(loop);
         }
 
+        // /////////////////////////////////////////////////////////////////////
         // Begin backticked multi-line string.
         plOverriderContent += `
-  document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';
+  urlHandler.pushPattern = function (pattern, givenPath) {
+    var data         = { "pattern": pattern };
+    var fileName     = urlHandler.getFileName(pattern);
+    var expectedPath = window.location.pathname.replace("public/index.html","public/")+fileName;
+
+    if (givenPath.indexOf(expectedPath) === -1) {
+      // make sure to update the iframe because there was a click
+      document.getElementById("sg-viewport").contentWindow.postMessage( { "path": fileName }, urlHandler.targetOrigin);
+    } else {
+      // add to the history
+      var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
+      history.pushState(data, null, addressReplacement);
+      document.getElementById("title").innerHTML = "Fepper - "+pattern;
+      document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(pattern));
+    }
+  };
 
   /* Pattern Lab accordion dropdown */
   // Accordion dropdown
@@ -107,6 +126,17 @@
     setAccordionHeight();
   });
 
+  //Accordion Height
+  function setAccordionHeight() {
+    var $activeAccordion = $('.fp-nav-container .sg-acc-panel.active').first(),
+      accordionHeight = $activeAccordion.height(),
+      sh = $(document).height(), //Viewport Height
+      $headerHeight = $('.sg-header').height(),
+      availableHeight = sh-$headerHeight; //Screen height minus the height of the header
+
+    $activeAccordion.height(availableHeight); //Set height of accordion to the available height
+  }
+
   $('.fp-nav-container .sg-nav-toggle').on("click", function(e){
     e.preventDefault();
     $('.fp-nav-container .sg-nav-container').toggleClass('active');
@@ -116,20 +146,29 @@
   // having it outside fixes an auto-close bug i ran into
   $('.fp-nav-container .sg-nav a').not('.fp-nav-container .sg-acc-handle').on("click", function(e){
 
-	e.preventDefault();
+    e.preventDefault();
 
-	// update the iframe via the history api handler
-	document.getElementById("sg-viewport").contentWindow.postMessage( { "path": urlHandler.getFileName($(this).attr("data-patternpartial")) }, urlHandler.targetOrigin);
+    // update the iframe via the history api handler
+    var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
+    var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
+    var sgViewportNewpath = $(this).attr("href");
+    if (sgViewportPathname.match(/^\\/[^\\/]+\\/patterns/)) {
+      sgViewportNewpath = sgViewportNewpath.replace(/^[^\\/]+\\//, '');
+    }
+    document.getElementById("sg-viewport").contentWindow.postMessage( { "path": sgViewportNewpath }, targetOrigin);
 
-	// close up the menu
-	$(this).parents('.fp-nav-container .sg-acc-panel').toggleClass('active');
-	$(this).parents('.fp-nav-container .sg-acc-panel').siblings('.sg-acc-handle').toggleClass('active');
+    // close up the menu
+    $(this).parents('.fp-nav-container .sg-acc-panel').toggleClass('active');
+    $(this).parents('.fp-nav-container .sg-acc-panel').siblings('.sg-acc-handle').toggleClass('active');
 
-	return false;
+    return false;
 
   });
+
+  document.getElementById('sg-vp-wrap').style.top = '` + (2.0625 + 2.0625 * subsites.length) + `em';
 })();
 `;      // End backticked multi-line string.
+        // /////////////////////////////////////////////////////////////////////
 
         fs.writeFileSync(plOverriderFile, plOverriderContent);
         cb();
@@ -150,11 +189,3 @@
     });
   }
 })();
-
-
-
-
-
-
-
-
