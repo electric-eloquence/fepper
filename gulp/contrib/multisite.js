@@ -97,18 +97,24 @@
       // make sure to update the iframe because there was a click
       document.getElementById("sg-viewport").contentWindow.postMessage( { "path": fileName }, urlHandler.targetOrigin);
     } else {
-      // add to the history
       var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
-      history.pushState(data, null, addressReplacement);
-      document.getElementById("title").innerHTML = "Fepper - "+pattern;
-
-      // insert multisite path into "Open in new window" link
+      var href;
       var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
-      if (sgViewportPathname.match(/^\\/[^\\/]+\\/patterns/)) {
-        document.getElementById("sg-raw").setAttribute("href",sgViewportPathname.substr(1));
+      var pathParts = sgViewportPathname.split('/');
+
+      if (pathParts.length > 3 && pathParts[1] !== 'patterns' && pathParts[2] === 'patterns') {
+        addressReplacement += '&subsite=' + pathParts[1];
+        href = sgViewportPathname.substr(1);
       } else {
-        document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(pattern));
+        href = urlHandler.getFileName(pattern);
       }
+
+      // add to the history
+      history.pushState(data, null, addressReplacement);
+      // update title
+      document.getElementById("title").innerHTML = "Fepper - "+pattern;
+      // insert multisite path into "Open in new window" link
+      document.getElementById("sg-raw").setAttribute("href", href);
     }
   };
 
@@ -151,20 +157,27 @@
 
   // update the iframe with the source from clicked element in pull down menu. also close the menu
   // having it outside fixes an auto-close bug i ran into
-  $('.fp-nav-container .sg-nav a').not('.fp-nav-container .sg-acc-handle').on("click", function(e){
+  // replacing the default listener
+  $('.sg-nav a').not('.sg-acc-handle').off('click', '**');
+  $('.sg-nav a').not('.sg-acc-handle').on('click', function(e){
 
     e.preventDefault();
 
     // update the iframe via the history api handler
     var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
     var $this = $(this);
-    var sgViewportPathOld = $this.attr("href");
-    var sgViewportPathNew = sgViewportPathOld;
+    var navLinkHref = $this.attr("href");
     var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
+
     if (sgViewportPathname.match(/^\\/[^\\/]+\\/patterns/)) {
-      sgViewportPathNew = sgViewportPathNew.replace(/^[^\\/]+\\//, '');
+      if (navLinkHref.match(/^[^\\/]+\\/patterns/)) {
+        navLinkHref = navLinkHref.replace(/^[^\\/]+\\//, '');
+      } else {
+        navLinkHref = '../' + navLinkHref;
+      }
     }
-    document.getElementById("sg-viewport").contentWindow.postMessage( { "path": sgViewportPathNew }, targetOrigin);
+
+    document.getElementById("sg-viewport").contentWindow.postMessage( { "path": navLinkHref }, targetOrigin);
 
     // close up the menu
     $this.parents('.fp-nav-container .sg-acc-panel').toggleClass('active');
