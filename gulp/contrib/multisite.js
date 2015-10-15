@@ -13,13 +13,12 @@
   var FpPln;
   var fpPln;
   var i;
+  var msPatternPaths = {};
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
-  var patternPaths;
   var plnDir;
   var subsiteDir;
   var subsites = require(multisiteDir + '/subsites.js');
   var version = '0_0_0';
-  var viewAllPaths;
 
   if (typeof subsites === 'object' && subsites instanceof Array) {
     gulp.task('contrib:multisite:build', function (cb) {
@@ -48,8 +47,10 @@
           var patternIndex;
           var patternNavInner;
           var patternNavOuter;
+          var $this;
 
           return new Promise(function (resolve, reject) {
+            msPatternPaths[subsites[i]] = {};
             subsiteDir = multisiteDir + '/' + subsites[i];
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
@@ -77,6 +78,11 @@
             patternNavOuter += patternNavInner;
             patternNavOuter += '\\n</ol>\\n</div>\\n';
 
+            $('a.sg-pop').each(function () {
+              $this = $(this);
+              msPatternPaths[subsites[i]][$this.attr('data-patternpartial')] = $this.attr('href');
+            });
+
             plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
             plOverriderContent += patternNavOuter;
             plOverriderContent += `  ');\n`;
@@ -86,6 +92,8 @@
           })
           .then(loop);
         }
+
+        plOverriderContent += `\n  var msPatternPaths = ` + JSON.stringify(msPatternPaths) + `;\n`;
 
         // /////////////////////////////////////////////////////////////////////
         // Begin backticked multi-line string.
@@ -194,25 +202,19 @@
   // push viewport down beyond expanded toolbar
   document.getElementById("sg-vp-wrap").style.top = "` + (2.0625 + 2.0625 * subsites.length) + `em";
 
-  // set correct iframe location for urls with subsite query string parameter
-  // as hacky as it is to use a timeout to wait for the default location replace
-  // to finish, there isn't really much of a choice
-  setTimeout(function () {
-    var oGetVars = urlHandler.getRequestVars();
-    var iFramePath;
-    var iFrameLocation = document.getElementById("sg-viewport").contentWindow.location;
-    var patternName;
-    var patternPath;
+  // possible but unlikely race condition here with the default location.replace
+  var oGetVars = urlHandler.getRequestVars();
+  var iFramePath;
+  var iFrameLocation = document.getElementById("sg-viewport").contentWindow.location;
+  var patternPath;
 
-    if (typeof oGetVars.subsite === "string") {
-      if (typeof oGetVars.p === "string" || typeof oGetVars.pattern === "string") {
-        patternName = (typeof oGetVars.p === "string") ? oGetVars.p : oGetVars.pattern;
-        patternPath = urlHandler.getFileName(patternName);
-        iFramePath = iFrameLocation.protocol+"//"+iFrameLocation.host+"/"+oGetVars.subsite+iFrameLocation.pathname;
-//        document.getElementById("sg-viewport").contentWindow.location.replace(iFramePath);
-      }
+  if (typeof oGetVars.subsite === "string" && oGetVars.subsite) {
+    if (typeof oGetVars.p === "string" && oGetVars.p) {
+      patternPath = msPatternPaths[oGetVars.subsite][oGetVars.p];
+      iFramePath = window.location.protocol+"//"+window.location.host+"/"+oGetVars.subsite+"/"+patternPath;
+      document.getElementById("sg-viewport").contentWindow.location.replace(iFramePath);
     }
-  }, 10);
+  }
 })();
 `;      // End backticked multi-line string.
         // /////////////////////////////////////////////////////////////////////
