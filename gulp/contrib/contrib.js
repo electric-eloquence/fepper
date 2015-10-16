@@ -20,6 +20,8 @@
   ]);
 
   gulp.task('contrib:once', [
+// Uncomment if you wish to enable this.
+//    'contrib:multisite:build'
   ]);
 
   gulp.task('contrib:publish', [
@@ -32,10 +34,14 @@
   ]);
 
   gulp.task('contrib:tcp-ip', [
-    'contrib:multisite:tcp-ip'
+// Uncomment if you wish to enable this.
+//    'contrib:multisite:tcp-ip'
   ]);
 
   gulp.task('contrib:template', [
+// Uncomment if you wish to enable this.
+// Change "subsite1" to another subsite name or "all".
+//    'contrib:multisite:subsite1'
   ]);
 
   gulp.task('contrib:watch', [

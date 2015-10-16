@@ -8,16 +8,13 @@
   var gulp = require('gulp');
   var path = require('path');
 
+  var FpPln = require('../../core/fp-pln/fp-pln');
+  var Tasks = require('../../core/tasks/tasks');
   var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
-  var Tasks = require('../../core/tasks/tasks');
 
   var $;
-  var FpPln;
-  var fpPln;
-  var msPatternPaths = {};
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
-  var plnDir;
   var subsiteNameError = 'You cannot name a subsite "main"!';
   var subsites = require(multisiteDir + '/subsites.js');
   var version = '0_0_0';
@@ -78,7 +75,7 @@
     utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
   }
 
-  function subsiteTemplateTask(task) {
+  function subsiteTemplateTaskClosure(task) {
     return function (cb) {
       task.template(rootDir);
       cb();
@@ -89,12 +86,13 @@
   // End plugin-scoped variable and function definitions.
   // Begin Gulp task definitions.
   // ///////////////////////////////////////////////////////////////////////////
-  if (typeof subsites === 'object' && subsites instanceof Array) {
-    // Populate tasks object.
+  if (typeof subsites === 'object' && subsites instanceof Array && subsites.length) {
+    // Populate fpPlns array and tasks object.
+    var fpPlns = [];
     var subsiteDir;
     var tasks = {};
     for (var i = 0; i < subsites.length; i++) {
-      // Cannot have a subsite named "main". Error and quit if that's the case.
+      // Cannot have a subsite named "main". Error and exit if that's the case.
       if (subsites[i] === 'main') {
         utils.error(subsiteNameError);
         return;
@@ -102,10 +100,13 @@
 
       // Instantiate Fepper task objects for all subsites.
       subsiteDir = multisiteDir + '/' + subsites[i];
+      fpPlns[i] = new FpPln(subsiteDir, conf);
       tasks[subsites[i]] = new Tasks(subsiteDir, conf);
     }
 
     gulp.task('contrib:multisite:build', function (cb) {
+      var msPatternPaths = {};
+      var plnDir;
       var plOverriderFile = rootDir + '/' + conf.src + '/js/patternlab-overrider.js';
       var plOverriderContent = fs.readFileSync(plOverriderFile, conf.enc);
 
@@ -142,9 +143,7 @@
             patternNavOuter = '<div class="fp-nav-container sg-nav-container" id="fp-nav-container--' + subsites[i] + '">\\n';
             patternNavOuter += '<div class="fp-nav-label">' + subsites[i].toUpperCase() + '</div>\\n<ol class="sg-nav">\\n';
 
-            FpPln = require(rootDir + '/core/fp-pln/fp-pln');
-            fpPln = new FpPln(subsiteDir, conf);
-            fpPln.build();
+            fpPlns[i].build();
 
             resolve();
           })
@@ -324,6 +323,139 @@
       });
     });
 
+    gulp.task('contrib:multisite:clean', function (cb) {
+      Promise.resolve(0).then(function loop(i) {
+        if (i < subsites.length) {
+          var plnDir;
+          var subsiteDir;
+
+          return new Promise(function (resolve, reject) {
+            subsiteDir = multisiteDir + '/' + subsites[i];
+            plnDir = subsiteDir + '/patternlab-node';
+            process.chdir(plnDir);
+            fpPlns[i].clean();
+
+            resolve();
+          })
+          .then(function () {
+            process.chdir(rootDir);
+          })
+          .then(function () {
+            return i + 1;
+          })
+          .then(loop);
+        }
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    });
+
+    gulp.task('contrib:multisite:copy', function (cb) {
+      Promise.resolve(0).then(function loop(i) {
+        if (i < subsites.length) {
+          var plnDir;
+          var subsiteDir;
+
+          return new Promise(function (resolve, reject) {
+            subsiteDir = multisiteDir + '/' + subsites[i];
+            plnDir = subsiteDir + '/patternlab-node';
+            process.chdir(plnDir);
+            fpPlns[i].copy();
+
+            resolve();
+          })
+          .then(function () {
+            process.chdir(rootDir);
+          })
+          .then(function () {
+            return i + 1;
+          })
+          .then(loop);
+        }
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    });
+
+    gulp.task('contrib:multisite:copy-css', function (cb) {
+      Promise.resolve(0).then(function loop(i) {
+        if (i < subsites.length) {
+          var plnDir;
+          var subsiteDir;
+
+          return new Promise(function (resolve, reject) {
+            subsiteDir = multisiteDir + '/' + subsites[i];
+            plnDir = subsiteDir + '/patternlab-node';
+            process.chdir(plnDir);
+            fpPlns[i].copyCss();
+
+            resolve();
+          })
+          .then(function () {
+            process.chdir(rootDir);
+          })
+          .then(function () {
+            return i + 1;
+          })
+          .then(loop);
+        }
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    });
+
+    gulp.task('contrib:multisite:data', function (cb) {
+      var jsonCompileTaskClosure = function () {
+        return function (tasksObj) {
+          var p = new Promise(function (resolve, reject) {
+            tasksObj.jsonCompile();
+            resolve();
+          });
+          p.then(function () {
+            process.chdir(rootDir);
+          })
+          .catch(function (reason) {
+            utils.error(reason);
+          });
+        };
+      };
+
+      Promise.resolve(0).then(function loop(i) {
+        if (i < subsites.length) {
+          var jsonCompileTask;
+          var plnDir;
+          var subsiteDir;
+
+          return new Promise(function (resolve, reject) {
+            subsiteDir = multisiteDir + '/' + subsites[i];
+            plnDir = subsiteDir + '/patternlab-node';
+            process.chdir(plnDir);
+            tasks[subsites[i]].appendix();
+
+            resolve();
+          })
+          .then(function () {
+            jsonCompileTask = jsonCompileTaskClosure();
+            jsonCompileTask(tasks[subsites[i]]);
+          })
+          .then(function () {
+            return i + 1;
+          })
+          .then(loop);
+        }
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    });
+
     gulp.task('contrib:multisite:tcp-ip', function (cb) {
       var express = require('express');
       var subsiteDir;
@@ -336,6 +468,8 @@
     });
 
     /**
+     * This is normally to be run on the command line since it takes parameters.
+     *
      * @param --from
      * @param --to
      */
@@ -420,13 +554,35 @@
     });
 
     // Create Gulp tasks for templating individual subsites.
-    var aSubsiteTemplateTask;
+    var subsiteTemplateTask;
     var subsite;
     for (subsite in tasks) {
       if (tasks.hasOwnProperty(subsite)) {
-        aSubsiteTemplateTask = subsiteTemplateTask(tasks[subsite]);
-        gulp.task('contrib:multisite:template:' + subsite, aSubsiteTemplateTask);
+        subsiteTemplateTask = subsiteTemplateTaskClosure(tasks[subsite]);
+        gulp.task('contrib:multisite:template:' + subsite, subsiteTemplateTask);
       }
     }
+
+    gulp.task('contrib:multisite:watch', function () {
+      // Need delay in order for launch to succeed consistently.
+      setTimeout(function () {
+        for (var i = 0; i < subsites.length; i++) {
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_data/!(_)*.json', ['patternlab:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_data/annotations.js', ['patternlab:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/*.mustache', ['patternlab:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/_*.json', ['fepper:data']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/css/**', ['patternlab:copy-css']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/fonts/**', ['patternlab:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/images/**', ['patternlab:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/js/**', ['patternlab:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/static/**', ['patternlab:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(css|patterns|styleguide)/**', ['tcp-ip-reload:assets']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/**/*.css', ['tcp-ip-reload:inject']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/index.html', ['tcp-ip-reload:index']);
+        }
+      }, conf.timeout_main);
+    });
   }
 })();
