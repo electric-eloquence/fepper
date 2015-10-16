@@ -4,7 +4,9 @@
   var cheerio = require('cheerio');
   var conf = global.conf;
   var fs = require('fs-extra');
+  var glob = require('glob');
   var gulp = require('gulp');
+  var path = require('path');
 
   var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
@@ -12,16 +14,81 @@
   var $;
   var FpPln;
   var fpPln;
-  var i;
   var msPatternPaths = {};
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
   var plnDir;
   var subsiteDir;
+  var subsiteNameError = 'You cannot name a subsite "main"!';
   var subsites = require(multisiteDir + '/subsites.js');
   var version = '0_0_0';
 
   if (typeof subsites === 'object' && subsites instanceof Array) {
+    for (var i = 0; i < subsites.length; i++) {
+      if (subsites[i] === 'main') {
+        utils.error(subsiteNameError);
+        return;
+      }
+    }
+
+    function importMustache(from, to) {
+      var dest;
+      var destDir;
+      var i;
+      var j;
+      var src;
+      var siteIncorrectError = 'There doesn\'t appear to be a "' + from + '" site!';
+
+      if (from === 'main') {
+        src = glob.sync(rootDir + '/' + conf.src + '/_patterns/**/!(_)*.mustache');
+      }
+      else {
+        src = glob.sync(multisiteDir + '/' + from + '/' + conf.src + '/_patterns/**/!(_)*.mustache');
+      }
+      if (!src.length) {
+        utils.error(siteIncorrectError);
+      }
+
+      destDir = multisiteDir + '/' + to + '/' + conf.src + '/_patterns';
+      dest = glob.sync(destDir + '/**/!(_)*.mustache');
+      if (!dest.length) {
+        utils.error(siteIncorrectError);
+      }
+
+      for (i = 0; i < src.length; i++) {
+        var destTmp = '';
+        var srcBasename = path.basename(src[i]).replace(/^\d*\-/, '');
+        for (j = 0; j < dest.length; j++) {
+          var destBasename = path.basename(dest[j]).replace(/^\d*\-/, '');
+          if (srcBasename === destBasename &&
+              (from === 'main' &&
+              path.dirname(src[i]).replace(rootDir, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, '')) ||
+              (from !== 'main' &&
+              path.dirname(src[i]).replace(multisiteDir + '/' + from, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, '')))
+          {
+            destTmp = path.dirname(dest[j]) + '/_' + from + '-' + destBasename;
+            break;
+          }
+        }
+        if (!destTmp) {
+          if (from === 'main') {
+            destTmp = path.dirname(src[i]).replace(rootDir, multisiteDir + '/' + to) + '/_' + srcBasename;
+          }
+          else {
+            destTmp = path.dirname(src[i]).replace(multisiteDir + '/' + from, multisiteDir + '/' + to) + '/_' + srcBasename;
+          }
+        }
+        fs.copySync(src[i], destTmp);
+        utils.log('Copied \x1b[36m%s\x1b[0m', src[i]);
+        utils.log('to \x1b[36m%s\x1b[0m.', destTmp);
+      }
+    }
+
+    function logImportMessage(from, to) {
+      utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
+    }
+
     gulp.task('contrib:multisite:build', function (cb) {
+      var i;
       var plOverriderFile = rootDir + '/' + conf.src + '/js/patternlab-overrider.js';
       var plOverriderContent = fs.readFileSync(plOverriderFile, conf.enc);
 
@@ -248,6 +315,78 @@
         global.express.use('/' + subsites[i], express.static(subsiteDir + '/' + conf.pub));
       }
       cb();
+    });
+
+    /**
+     * @param --from
+     * @param --to
+     */
+    gulp.task('contrib:multisite:import', function (cb) {
+      var from;
+      var to;
+
+      for (var i = 2; i < process.argv.length; i++) {
+        switch (process.argv[i]) {
+          case '--from':
+            if (process.argv[i + 1]) {
+              from = process.argv[i + 1];
+            }
+            break;
+          case '--to':
+            if (process.argv[i + 1]) {
+              to = process.argv[i + 1];
+            }
+            break;
+        }
+      }
+
+      // If no args, import if only one active subsite. Import main.
+      if (!from && !to) {
+        if (subsites.length === 1) {
+          logImportMessage('main', subsites[0]);
+          importMustache('main', subsites[0]);
+        }
+        else {
+          utils.error('Please enter a "--to" parameter!');
+        }
+      }
+      // If only "from" arg, import if only one active subsite.
+      else if (from && !to) {
+        if (subsites.length === 1) {
+          if (from === subsites[0]) {
+            utils.error('Please enter a separate from and to!');
+          }
+          else {
+            logImportMessage(from, subsites[0]);
+            importMustache(from, subsites[0]);
+          }
+        }
+        else {
+          utils.error('Please enter a "--to" parameter!');
+        }
+      }
+      // If only "to" arg, import main to specified subsite.
+      else if (!from && to) {
+        if (to === 'main') {
+          utils.log(subsiteNameError);
+        }
+        else {
+          logImportMessage('main', to);
+          importMustache('main', to);
+        }
+      }
+      else {
+        if (to === 'main') {
+          utils.log(subsiteNameError);
+        }
+        else if (from === to) {
+          utils.error('Please enter a separate from and to!');
+        }
+        else {
+          logImportMessage(from, to);
+          importMustache(from, to);
+        }
+      }
     });
   }
 })();
