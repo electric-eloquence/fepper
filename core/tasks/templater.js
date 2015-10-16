@@ -138,7 +138,7 @@
     return code;
   };
 
-  exports.main = function (workDir, conf, dstDir) {
+  exports.main = function (workDir, conf, destDir) {
     var code;
     var dest;
     var files;
@@ -170,8 +170,8 @@
 
       // Only proceed if templatesDir exists.
       templatesDir = conf.backend.synced_dirs.templates_dir;
-      if (dstDir) {
-        templatesDir = dstDir + '/backend/' + templatesDir;
+      if (destDir) {
+        templatesDir = destDir + '/backend/' + templatesDir;
       }
       else {
         templatesDir = workDir + '/backend/' + templatesDir;
