@@ -10,6 +10,7 @@
 
   var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
+  var Tasks = require('../../core/tasks/tasks');
 
   var $;
   var FpPln;
@@ -17,7 +18,6 @@
   var msPatternPaths = {};
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
   var plnDir;
-  var subsiteDir;
   var subsiteNameError = 'You cannot name a subsite "main"!';
   var subsites = require(multisiteDir + '/subsites.js');
   var version = '0_0_0';
@@ -78,12 +78,23 @@
     utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
   }
 
+  // ///////////////////////////////////////////////////////////////////////////
+  // End plugin-scoped variable and function definitions.
+  // Begin Gulp task definitions.
+  // ///////////////////////////////////////////////////////////////////////////
   if (typeof subsites === 'object' && subsites instanceof Array) {
+    var tasks = {};
+
     for (var i = 0; i < subsites.length; i++) {
+      // Cannot have a subsite named "main". Error and quit if that's the case.
       if (subsites[i] === 'main') {
         utils.error(subsiteNameError);
         return;
       }
+
+      // Instantiate Fepper task objects for all subsites.
+      var subsiteDir = multisiteDir + '/' + subsites[i];
+      tasks[subsites[i]] = new Tasks(subsiteDir, conf);
     }
 
     gulp.task('contrib:multisite:build', function (cb) {
@@ -307,6 +318,7 @@
 
     gulp.task('contrib:multisite:tcp-ip', function (cb) {
       var express = require('express');
+      var subsiteDir;
 
       for (var i = 0; i < subsites.length; i++) {
         subsiteDir = multisiteDir + '/' + subsites[i];
@@ -386,5 +398,25 @@
         }
       }
     });
+
+    gulp.task('contrib:multisite:template:all', function (cb) {
+      // Run Fepper templater task for all subsites.
+      for (var i in tasks) {
+        if (tasks.hasOwnProperty(i)) {
+          tasks[i].template(rootDir);
+        }
+      }
+      cb();
+    });
+
+    // Create Gulp tasks for templating individual subsites.
+    for (var i in tasks) {
+      if (tasks.hasOwnProperty(i)) {
+        gulp.task('contrib:multisite:template:' + i, function (cb) {
+          tasks[i].template(rootDir);
+          cb();
+        });
+      }
+    }
   }
 })();

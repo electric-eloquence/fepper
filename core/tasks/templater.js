@@ -138,7 +138,7 @@
     return code;
   };
 
-  exports.main = function (workDir, conf) {
+  exports.main = function (workDir, conf, dstDir) {
     var code;
     var dest;
     var files;
@@ -170,7 +170,12 @@
 
       // Only proceed if templatesDir exists.
       templatesDir = conf.backend.synced_dirs.templates_dir;
-      templatesDir = workDir + '/backend/' + templatesDir;
+      if (dstDir) {
+        templatesDir = dstDir + '/backend/' + templatesDir;
+      }
+      else {
+        templatesDir = workDir + '/backend/' + templatesDir;
+      }
       stats = fs.statSync(templatesDir);
       if (!stats.isDirectory()) {
         return;
