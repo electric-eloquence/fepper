@@ -22,6 +22,62 @@
   var subsites = require(multisiteDir + '/subsites.js');
   var version = '0_0_0';
 
+  function importMustache(from, to) {
+    var dest;
+    var destDir;
+    var i;
+    var j;
+    var src;
+    var siteIncorrectError = 'There doesn\'t appear to be a "' + from + '" site!';
+
+    if (from === 'main') {
+      src = glob.sync(rootDir + '/' + conf.src + '/_patterns/**/!(_)*.mustache');
+    }
+    else {
+      src = glob.sync(multisiteDir + '/' + from + '/' + conf.src + '/_patterns/**/!(_)*.mustache');
+    }
+    if (!src.length) {
+      utils.error(siteIncorrectError);
+    }
+
+    destDir = multisiteDir + '/' + to + '/' + conf.src + '/_patterns';
+    dest = glob.sync(destDir + '/**/!(_)*.mustache');
+    if (!dest.length) {
+      utils.error(siteIncorrectError);
+    }
+
+    for (i = 0; i < src.length; i++) {
+      var destTmp = '';
+      var srcBasename = path.basename(src[i]).replace(/^\d*\-/, '');
+      for (j = 0; j < dest.length; j++) {
+        var destBasename = path.basename(dest[j]).replace(/^\d*\-/, '');
+        if (srcBasename === destBasename &&
+            (from === 'main' &&
+            path.dirname(src[i]).replace(rootDir, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, '')) ||
+            (from !== 'main' &&
+            path.dirname(src[i]).replace(multisiteDir + '/' + from, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, ''))) {
+          destTmp = path.dirname(dest[j]) + '/_' + from + '-' + destBasename;
+          break;
+        }
+      }
+      if (!destTmp) {
+        if (from === 'main') {
+          destTmp = path.dirname(src[i]).replace(rootDir, multisiteDir + '/' + to) + '/_' + srcBasename;
+        }
+        else {
+          destTmp = path.dirname(src[i]).replace(multisiteDir + '/' + from, multisiteDir + '/' + to) + '/_' + srcBasename;
+        }
+      }
+      fs.copySync(src[i], destTmp);
+      utils.log('Copied \x1b[36m%s\x1b[0m', src[i]);
+      utils.log('to \x1b[36m%s\x1b[0m.', destTmp);
+    }
+  }
+
+  function logImportMessage(from, to) {
+    utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
+  }
+
   if (typeof subsites === 'object' && subsites instanceof Array) {
     for (var i = 0; i < subsites.length; i++) {
       if (subsites[i] === 'main') {
@@ -30,65 +86,7 @@
       }
     }
 
-    function importMustache(from, to) {
-      var dest;
-      var destDir;
-      var i;
-      var j;
-      var src;
-      var siteIncorrectError = 'There doesn\'t appear to be a "' + from + '" site!';
-
-      if (from === 'main') {
-        src = glob.sync(rootDir + '/' + conf.src + '/_patterns/**/!(_)*.mustache');
-      }
-      else {
-        src = glob.sync(multisiteDir + '/' + from + '/' + conf.src + '/_patterns/**/!(_)*.mustache');
-      }
-      if (!src.length) {
-        utils.error(siteIncorrectError);
-      }
-
-      destDir = multisiteDir + '/' + to + '/' + conf.src + '/_patterns';
-      dest = glob.sync(destDir + '/**/!(_)*.mustache');
-      if (!dest.length) {
-        utils.error(siteIncorrectError);
-      }
-
-      for (i = 0; i < src.length; i++) {
-        var destTmp = '';
-        var srcBasename = path.basename(src[i]).replace(/^\d*\-/, '');
-        for (j = 0; j < dest.length; j++) {
-          var destBasename = path.basename(dest[j]).replace(/^\d*\-/, '');
-          if (srcBasename === destBasename &&
-              (from === 'main' &&
-              path.dirname(src[i]).replace(rootDir, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, '')) ||
-              (from !== 'main' &&
-              path.dirname(src[i]).replace(multisiteDir + '/' + from, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, '')))
-          {
-            destTmp = path.dirname(dest[j]) + '/_' + from + '-' + destBasename;
-            break;
-          }
-        }
-        if (!destTmp) {
-          if (from === 'main') {
-            destTmp = path.dirname(src[i]).replace(rootDir, multisiteDir + '/' + to) + '/_' + srcBasename;
-          }
-          else {
-            destTmp = path.dirname(src[i]).replace(multisiteDir + '/' + from, multisiteDir + '/' + to) + '/_' + srcBasename;
-          }
-        }
-        fs.copySync(src[i], destTmp);
-        utils.log('Copied \x1b[36m%s\x1b[0m', src[i]);
-        utils.log('to \x1b[36m%s\x1b[0m.', destTmp);
-      }
-    }
-
-    function logImportMessage(from, to) {
-      utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
-    }
-
     gulp.task('contrib:multisite:build', function (cb) {
-      var i;
       var plOverriderFile = rootDir + '/' + conf.src + '/js/patternlab-overrider.js';
       var plOverriderContent = fs.readFileSync(plOverriderFile, conf.enc);
 
@@ -310,7 +308,7 @@
     gulp.task('contrib:multisite:tcp-ip', function (cb) {
       var express = require('express');
 
-      for (i = 0; i < subsites.length; i++) {
+      for (var i = 0; i < subsites.length; i++) {
         subsiteDir = multisiteDir + '/' + subsites[i];
         global.express.use('/' + subsites[i], express.static(subsiteDir + '/' + conf.pub));
       }
