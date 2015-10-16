@@ -78,13 +78,21 @@
     utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
   }
 
+  function subsiteTemplateTask(task) {
+    return function (cb) {
+      task.template(rootDir);
+      cb();
+    };
+  }
+
   // ///////////////////////////////////////////////////////////////////////////
   // End plugin-scoped variable and function definitions.
   // Begin Gulp task definitions.
   // ///////////////////////////////////////////////////////////////////////////
   if (typeof subsites === 'object' && subsites instanceof Array) {
+    // Populate tasks object.
+    var subsiteDir;
     var tasks = {};
-
     for (var i = 0; i < subsites.length; i++) {
       // Cannot have a subsite named "main". Error and quit if that's the case.
       if (subsites[i] === 'main') {
@@ -93,7 +101,7 @@
       }
 
       // Instantiate Fepper task objects for all subsites.
-      var subsiteDir = multisiteDir + '/' + subsites[i];
+      subsiteDir = multisiteDir + '/' + subsites[i];
       tasks[subsites[i]] = new Tasks(subsiteDir, conf);
     }
 
@@ -400,22 +408,24 @@
     });
 
     gulp.task('contrib:multisite:template:all', function (cb) {
+      var subsite;
+
       // Run Fepper templater task for all subsites.
-      for (var i in tasks) {
-        if (tasks.hasOwnProperty(i)) {
-          tasks[i].template(rootDir);
+      for (subsite in tasks) {
+        if (tasks.hasOwnProperty(subsite)) {
+          tasks[subsite].template(rootDir);
         }
       }
       cb();
     });
 
     // Create Gulp tasks for templating individual subsites.
-    for (var i in tasks) {
-      if (tasks.hasOwnProperty(i)) {
-        gulp.task('contrib:multisite:template:' + i, function (cb) {
-          tasks[i].template(rootDir);
-          cb();
-        });
+    var aSubsiteTemplateTask;
+    var subsite;
+    for (subsite in tasks) {
+      if (tasks.hasOwnProperty(subsite)) {
+        aSubsiteTemplateTask = subsiteTemplateTask(tasks[subsite]);
+        gulp.task('contrib:multisite:template:' + subsite, aSubsiteTemplateTask);
       }
     }
   }
