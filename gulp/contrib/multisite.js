@@ -7,14 +7,16 @@
   var glob = require('glob');
   var gulp = require('gulp');
   var path = require('path');
+  var plugins = require('gulp-load-plugins')();
 
-  var FpPln = require('../../core/fp-pln/fp-pln');
-  var Tasks = require('../../core/tasks/tasks');
   var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
+  var FpPln = require(rootDir + '/core/fp-pln/fp-pln');
+  var Tasks = require(rootDir + '/core/tasks/tasks');
 
   var $;
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
+  var subsite;
   var subsiteNameError = 'You cannot name a subsite "main"!';
   var subsites = require(multisiteDir + '/subsites.js');
   var version = '0_0_0';
@@ -48,11 +50,15 @@
       var srcBasename = path.basename(src[i]).replace(/^\d*\-/, '');
       for (j = 0; j < dest.length; j++) {
         var destBasename = path.basename(dest[j]).replace(/^\d*\-/, '');
-        if (srcBasename === destBasename &&
-            (from === 'main' &&
-            path.dirname(src[i]).replace(rootDir, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, '')) ||
-            (from !== 'main' &&
-            path.dirname(src[i]).replace(multisiteDir + '/' + from, '') === path.dirname(dest[j]).replace(multisiteDir + '/' + to, ''))) {
+        var fromShortPath = path.dirname(src[i]).replace(multisiteDir + '/' + from, '');
+        var rootShortPath = path.dirname(src[i]).replace(rootDir, '');
+        var toShortPath = path.dirname(dest[j]).replace(multisiteDir + '/' + to, '');
+        if (
+          srcBasename === destBasename && (
+            (from === 'main' && rootShortPath === toShortPath) ||
+            (from !== 'main' && fromShortPath === toShortPath)
+          )
+        ) {
           destTmp = path.dirname(dest[j]) + '/_' + from + '-' + destBasename;
           break;
         }
@@ -75,10 +81,43 @@
     utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
   }
 
-  function subsiteTemplateTaskClosure(task) {
+  function subsiteTemplateTaskClosure(taskObj) {
     return function (cb) {
-      task.template(rootDir);
+      taskObj.template(rootDir);
       cb();
+    };
+  }
+
+  function subsitePublishTaskClosure(taskObj) {
+    return function (cb) {
+      if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() &&
+          typeof conf.gh_pages_dest === 'string' && conf.gh_pages_dest.trim()
+      ) {
+        var p = new Promise(function (resolve, reject) {
+          process.chdir(rootDir + '/core/tasks');
+          taskObj.ghPagesPrefix(rootDir + '/.publish');
+          resolve();
+        });
+        p.then(function () {
+          process.chdir(rootDir);
+          gulp.src(rootDir + '/' + conf.gh_pages_src + '/**/*')
+            .pipe(plugins.ghPages({
+              cacheDir: rootDir + '/' + conf.gh_pages_dest
+            }));
+          cb();
+        })
+        .catch(function (reason) {
+          utils.error(reason);
+        });
+      }
+      else {
+        if (typeof conf.gh_pages_src !== 'string' || !conf.gh_pages_src.trim()) {
+          utils.error('gh_pages_src not set.');
+        }
+        if (typeof conf.gh_pages_dest !== 'string' || !conf.gh_pages_dest.trim()) {
+          utils.error('gh_pages_dest not set.');
+        }
+      }
     };
   }
 
@@ -334,7 +373,6 @@
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
             fpPlns[i].clean();
-
             resolve();
           })
           .then(function () {
@@ -363,7 +401,6 @@
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
             fpPlns[i].copy();
-
             resolve();
           })
           .then(function () {
@@ -392,7 +429,6 @@
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
             fpPlns[i].copyCss();
-
             resolve();
           })
           .then(function () {
@@ -411,10 +447,10 @@
     });
 
     gulp.task('contrib:multisite:data', function (cb) {
-      var jsonCompileTaskClosure = function () {
-        return function (tasksObj) {
+      function jsonCompileTaskClosure() {
+        return function (taskObj) {
           var p = new Promise(function (resolve, reject) {
-            tasksObj.jsonCompile();
+            taskObj.jsonCompile();
             resolve();
           });
           p.then(function () {
@@ -424,7 +460,7 @@
             utils.error(reason);
           });
         };
-      };
+      }
 
       Promise.resolve(0).then(function loop(i) {
         if (i < subsites.length) {
@@ -437,7 +473,6 @@
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
             tasks[subsites[i]].appendix();
-
             resolve();
           })
           .then(function () {
@@ -456,13 +491,42 @@
       });
     });
 
-    gulp.task('contrib:multisite:tcp-ip', function (cb) {
-      var express = require('express');
-      var subsiteDir;
+    gulp.task('contrib:multisite:frontend-copy-css', function (cb) {
+      if (typeof conf.backend.synced_dirs.css_dir === 'string' && conf.backend.synced_dirs.css_dir.match(/^[\w.\/-]+$/)) {
+        for (var i = 0; i < subsites.length; i++) {
+          gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/css/*')
+            .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.css_dir));
+        }
+      }
+      cb();
+    });
 
-      for (var i = 0; i < subsites.length; i++) {
-        subsiteDir = multisiteDir + '/' + subsites[i];
-        global.express.use('/' + subsites[i], express.static(subsiteDir + '/' + conf.pub));
+    gulp.task('contrib:multisite:frontend-copy-fonts', function (cb) {
+      if (typeof conf.backend.synced_dirs.fonts_dir === 'string' && conf.backend.synced_dirs.fonts_dir.match(/^[\w.\/-]+$/)) {
+        for (var i = 0; i < subsites.length; i++) {
+          gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/fonts/*')
+            .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.fonts_dir));
+        }
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:frontend-copy-images', function (cb) {
+      if (typeof conf.backend.synced_dirs.images_dir === 'string' && conf.backend.synced_dirs.images_dir.match(/^[\w.\/-]+$/)) {
+        for (var i = 0; i < subsites.length; i++) {
+          gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/images/*')
+            .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.images_dir));
+        }
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:frontend-copy-js', function (cb) {
+      if (typeof conf.backend.synced_dirs.js_dir === 'string' && conf.backend.synced_dirs.js_dir.match(/^[\w.\/-]+$/)) {
+        for (var i = 0; i < subsites.length; i++) {
+          gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/js/*/**/*')
+            .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.js_dir));
+        }
       }
       cb();
     });
@@ -541,6 +605,96 @@
       }
     });
 
+    gulp.task('contrib:multisite:lint:htmlhint', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/patterns/*/!(index|*escaped).html')
+          .pipe(plugins.htmlhint('.htmlhintrc'))
+          .pipe(plugins.htmlhint.reporter());
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:lint:htmllint', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/patterns/*/!(index|*escaped).html')
+          .pipe(plugins.htmllint());
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:lint:eslint', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/js/src/**/*.js')
+          .pipe(plugins.eslint())
+          .pipe(plugins.eslint.format())
+          .pipe(plugins.eslint.failAfterError());
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:lint:jsonlint', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src([multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_data/**/*.json', multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/*.json'])
+          .pipe(plugins.jsonlint())
+          .pipe(plugins.jsonlint.reporter());
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:minify', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/js/src/**/*.js')
+          .pipe(plugins.uglify())
+          .pipe(plugins.rename({extname: '.min.js'}))
+          .pipe(gulp.dest(conf.src + '/js/min'));
+      }
+      cb();
+    });
+
+    // Create Gulp tasks for publishing individual subsites.
+    var subsitePublishTask;
+    for (subsite in tasks) {
+      if (tasks.hasOwnProperty(subsite)) {
+        subsitePublishTask = subsitePublishTaskClosure(tasks[subsite]);
+        gulp.task('contrib:multisite:publish:' + subsite, subsitePublishTask);
+      }
+    }
+
+    gulp.task('contrib:multisite:tcp-ip-load:extend', function (cb) {
+      var express = require('express');
+      var subsiteDir;
+
+      for (var i = 0; i < subsites.length; i++) {
+        subsiteDir = multisiteDir + '/' + subsites[i];
+        global.express.use('/' + subsites[i], express.static(subsiteDir + '/' + conf.pub));
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:tcp-ip-reload:assets', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(css|patterns|styleguide)/**')
+          .pipe(plugins.livereload());
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:tcp-ip-reload:index', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/index.html')
+          .pipe(plugins.livereload());
+      }
+      cb();
+    });
+
+    gulp.task('contrib:multisite:tcp-ip-reload:inject', function (cb) {
+      for (var i = 0; i < subsites.length; i++) {
+        gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/**/*.css')
+          .pipe(plugins.livereload());
+      }
+      cb();
+    });
+
     gulp.task('contrib:multisite:template:all', function (cb) {
       var subsite;
 
@@ -555,7 +709,6 @@
 
     // Create Gulp tasks for templating individual subsites.
     var subsiteTemplateTask;
-    var subsite;
     for (subsite in tasks) {
       if (tasks.hasOwnProperty(subsite)) {
         subsiteTemplateTask = subsiteTemplateTaskClosure(tasks[subsite]);
@@ -567,18 +720,18 @@
       // Need delay in order for launch to succeed consistently.
       setTimeout(function () {
         for (var i = 0; i < subsites.length; i++) {
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_data/!(_)*.json', ['patternlab:build']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_data/annotations.js', ['patternlab:copy']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patternlab-files/**/*.mustache', ['patternlab:build']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/*.mustache', ['patternlab:build']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/_*.json', ['fepper:data']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/css/**', ['patternlab:copy-css']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/fonts/**', ['patternlab:copy']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/images/**', ['patternlab:copy']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/js/**', ['patternlab:copy']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/static/**', ['patternlab:copy']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(css|patterns|styleguide)/**', ['tcp-ip-reload:assets']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_data/!(_)*.json', ['contrib:multisite:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_data/annotations.js', ['contrib:multisite:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patternlab-files/**/*.mustache', ['contrib:multisite:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/!(_)*.json', ['contrib:multisite:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/*.mustache', ['contrib:multisite:build']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns/**/_*.json', ['contrib:multisite:data']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/css/**', ['contrib:multisite:copy-css']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/fonts/**', ['contrib:multisite:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/images/**', ['contrib:multisite:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/js/**', ['contrib:multisite:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/static/**', ['contrib:multisite:copy']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(css|patterns|styleguide)/**', ['contrib:multisite:tcp-ip-reload:assets']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/**/*.css', ['tcp-ip-reload:inject']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/index.html', ['tcp-ip-reload:index']);
         }

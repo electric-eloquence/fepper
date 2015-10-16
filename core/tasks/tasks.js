@@ -11,8 +11,8 @@
       require('./appendixer.js').main(this.workDir, this.conf);
     }
 
-    ghPagesPrefix() {
-      require('./gh-pages-prefixer.js').main(this.workDir, this.conf);
+    ghPagesPrefix(publishDir) {
+      require('./gh-pages-prefixer.js').main(this.workDir, this.conf, publishDir);
     }
 
     jsonCompile() {

@@ -42,24 +42,24 @@
 
   gulp.task('fepper:data', function (cb) {
     var p1 = new Promise(function (resolve, reject) {
-      process.chdir(rootDir + '/core/tasks');
+      process.chdir(pathIn);
       tasks.appendix();
       resolve();
     });
     p1.then(function () {
-      f2();
+      p2();
     })
     .catch(function (reason) {
       utils.error(reason);
     });
 
-    var f2 = function () {
-      var p2 = new Promise(function (resolve, reject) {
+    var p2 = function () {
+      var p = new Promise(function (resolve, reject) {
         tasks.jsonCompile();
         resolve();
       });
-      p2.then(function () {
-        process.chdir(rootDir);
+      p.then(function () {
+        process.chdir(pathOut);
         cb();
       })
       .catch(function (reason) {
@@ -69,10 +69,10 @@
   });
 
   gulp.task('fepper:gh-pages', function (cb) {
-    if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() !== '') {
+    if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
       var p = new Promise(function (resolve, reject) {
         process.chdir(pathIn);
-        tasks.ghPagesPrefix();
+        tasks.ghPagesPrefix(rootDir + '/.publish');
         resolve();
       });
       p.then(function () {
@@ -84,7 +84,6 @@
       });
     }
     else {
-      // Quit if gh_pages_src not set.
       utils.error('gh_pages_src not set.');
     }
   });

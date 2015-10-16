@@ -11,6 +11,7 @@
 
   var fs = require('fs-extra');
   var glob = require('glob');
+  var path = require('path');
 
   var utils = require('../lib/utils');
 
@@ -29,7 +30,7 @@
    *
    * @param {array} files The files to process.
    */
-  exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, workDir) {
+  exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc) {
     var code;
     var codeSplit;
     var publicFile;
@@ -71,16 +72,17 @@
         code += codeSplit[j] + '\n';
       }
 
-      ghPagesSrcFile = publicFiles[i].replace(workDir + '/' + conf.pub, workDir + '/' + conf.gh_pages_src);
-      fs.writeFileSync(ghPagesSrcFile, code);
+      ghPagesSrcFile = publicFiles[i].replace(workDir + '/' + conf.pub, ghPagesSrc);
+      fs.outputFileSync(ghPagesSrcFile, code);
     }
   };
 
-  exports.main = function (workDir, conf) {
+  exports.main = function (workDir, conf, publishDir) {
     var dataJson = utils.data(workDir, conf);
-    var files;
-    var ghPagesSrc;
+    var ghPagesSrc = path.normalize(publishDir + '/../' + conf.gh_pages_src);
+    var publicDir = workDir + '/' + conf.pub;
     var prefix;
+    var publicFiles;
     var webservedDirsShort;
     var webservedDirsFull;
 
@@ -104,9 +106,6 @@
     else if (dataJson && typeof dataJson.gh_pages_prefix === 'string') {
       prefix = dataJson.gh_pages_prefix;
     }
-    if (!prefix) {
-      return;
-    }
 
     // Similar to gh_pages_prefix, conf.yml takes priority over data.json.
     if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs instanceof Array) {
@@ -115,29 +114,30 @@
     else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs instanceof Array) {
       webservedDirsFull = dataJson.backend_webserved_dirs;
     }
-    if (!webservedDirsFull) {
-      return;
-    }
 
     // Before checking for any gh_pages_prefix to insert, clean up any old
     // destination files before copying.
     utils.log('Preparing gh_pages_src...');
-    ghPagesSrc = workDir + '/' + conf.gh_pages_src;
     fs.removeSync(ghPagesSrc);
 
     // Get array of truncated dirnames for processing.
     webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
 
-    if (webservedDirsShort.length) {
+    if (prefix) {
       utils.log('Prepending gh_pages_prefix...');
-      // Recursively glob pattern files, and then iterate through them.
-      files = exports.filesGet(ghPagesSrc);
-      // Read files, token replace path prefix tags, and write output.
-      exports.filesProcess(files, conf, webservedDirsShort, prefix, workDir);
-      // Copy webserved_dirs to gh_pages_src.
+    }
+
+    // Recursively glob pattern files, and then iterate through them.
+    publicFiles = exports.filesGet(publicDir);
+    // Read files, token replace path prefix tags, and write output.
+    exports.filesProcess(publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc);
+
+    // Copy webserved_dirs to gh_pages_src.
+    if (webservedDirsShort.length) {
       utils.log('Copying webserved_dirs to gh_pages_src...');
       utils.webservedDirsCopy(webservedDirsFull, workDir, webservedDirsShort, ghPagesSrc);
     }
+
     utils.log('Finished preprocessing GitHub Pages files.');
   };
 })();

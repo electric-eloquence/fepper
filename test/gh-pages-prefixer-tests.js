@@ -25,7 +25,7 @@
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    tasks.ghPagesPrefix();
+    tasks.ghPagesPrefix(testDir + '/.publish');
 
     it('should read a valid .gh_pages_src config', function () {
       expect(conf.gh_pages_src).to.be.a('string');
@@ -50,7 +50,7 @@
       var fileAfterPath = ghPagesDir + '/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
 
       fs.copySync(fileBeforePath, fileAfterPath);
-      ghPagesPrefixer.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix, testDir);
+      ghPagesPrefixer.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix, testDir, testDir);
       var fileAfter = fs.readFileSync(fileAfterPath);
 
       expect(fileAfter).to.not.equal('');
