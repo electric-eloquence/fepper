@@ -18,7 +18,7 @@
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
   var subsite;
   var subsiteNameError = 'You cannot name a subsite "main"!';
-  var subsites = require(multisiteDir + '/subsites.js');
+  var subsites = require(multisiteDir + '/subsites');
   var version = '0_0_0';
 
   function importMustache(from, to) {

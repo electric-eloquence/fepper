@@ -6,7 +6,7 @@
   'use strict';
 
   var gulp = require('gulp');
-  var runSequence = require('run-sequence');
+//  var runSequence = require('run-sequence');
 
   gulp.task('contrib:data', [
 // Uncomment if you wish to enable this.
@@ -35,12 +35,15 @@
   ]);
 
   gulp.task('contrib:once', function (cb) {
-    runSequence(
 // Uncomment if you wish to enable this.
+//    runSequence(
 //      'contrib:multisite:clean'
 //      ['contrib:multisite:build', 'contrib:multisite:copy']
 //      cb
-    );
+//    );
+// If using run-sequence, delete the following cb() and make sure there's a cb
+// entered as a parameter.
+    cb();
   });
 
   gulp.task('contrib:publish', [

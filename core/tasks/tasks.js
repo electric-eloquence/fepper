@@ -19,6 +19,10 @@
       require('./json-compiler.js').main(this.workDir, this.conf);
     }
 
+    open() {
+      require('./open.js').main(this.workDir, this.conf);
+    }
+
     patternOverride() {
       require('./pattern-overrider.js').main(this.workDir, this.conf);
     }

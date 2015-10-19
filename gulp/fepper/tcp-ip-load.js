@@ -1,15 +1,18 @@
 (function () {
   'use strict';
 
-  var fs = require('fs-extra');
-
   var conf = global.conf;
+  var fs = require('fs-extra');
   var gulp = require('gulp');
   var plugins = require('gulp-load-plugins')();
 
   var port = conf.express_port;
   var host = 'http://localhost:' + port;
-  var TcpIp = require('../../core/tcp-ip/tcp-ip.js');
+  var utils = require('../../core/lib/utils');
+  var rootDir = utils.rootDir();
+  var Tasks = require('../../core/tasks/tasks');
+  var tasks = new Tasks(rootDir, conf);
+  var TcpIp = require('../../core/tcp-ip/tcp-ip');
 
   function open(time, path) {
     path = path ? path : '';
@@ -33,24 +36,7 @@
   });
 
   gulp.task('tcp-ip-load:open', function (cb) {
-    var log = './install.log';
-    var stats;
-
-    try {
-      stats = fs.statSync(log);
-    }
-    catch (err) {
-      // Fail gracefully.
-    }
-    if (stats && stats.isFile()) {
-      setTimeout(function () {
-        fs.unlink(log);
-        return open(0, '/success');
-      }, conf.timeout_main * 2);
-    }
-    else {
-      return open(conf.timeout_main);
-    }
+    tasks.open();
     cb();
   });
 })();
