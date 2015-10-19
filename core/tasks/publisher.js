@@ -87,13 +87,9 @@
     var webservedDirsShort;
     var webservedDirsFull;
 
-    // First, make sure conf.gh_pages_src and conf.gh_pages_dest are set.
+    // First, make sure conf.gh_pages_src is set.
     if (!conf.gh_pages_src) {
       utils.warn('gh_pages_src not set for ' + workDir + '. Skipping...');
-      return;
-    }
-    if (!conf.gh_pages_dest) {
-      utils.warn('gh_pages_dest not set for ' + workDir + '. Skipping...');
       return;
     }
 

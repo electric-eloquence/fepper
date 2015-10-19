@@ -26,7 +26,6 @@
     }
 
     defaults.gh_pages_src = null;
-    defaults.gh_pages_dest = null;
 
     if (!global.conf) {
       // Try getting conf from global process object.
