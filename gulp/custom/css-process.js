@@ -15,7 +15,7 @@
 //        linenos: true
 //      }))
 //      .on('error', utilsGulp.handleError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
 // Uncomment if you want to use SCSS. Replace if you want to use something else.
 //    return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
 //      .pipe(plugins.sass({
@@ -23,7 +23,7 @@
 //        sourceComments: true
 //      }))
 //      .on('error', plugins.sass.logError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
   });
 
   gulp.task('custom:css-process:no-comments', function () {
@@ -33,7 +33,7 @@
 //        linenos: false
 //      }))
 //      .on('error', utilsGulp.handleError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
 // Uncomment if you want to use SCSS. Replace if you want to use something else.
 //    return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
 //      .pipe(plugins.sass({
@@ -41,7 +41,7 @@
 //        sourceComments: false
 //      }))
 //      .on('error', plugins.sass.logError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
   });
 
   gulp.task('custom:css-process:watch', function () {

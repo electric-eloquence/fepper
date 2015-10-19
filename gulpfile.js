@@ -39,10 +39,9 @@
   });
 
   gulp.task('frontend-copy', [
-    'fepper:copy-css',
-    'fepper:copy-fonts',
-    'fepper:copy-images',
-    'fepper:copy-js',
+    'fepper:copy-assets',
+    'fepper:copy-scripts',
+    'fepper:copy-styles',
     'contrib:frontend-copy',
     'custom:frontend-copy'
   ]);

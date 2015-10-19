@@ -33,7 +33,7 @@
 // Uncomment if you wish to enable this.
 //    runSequence(
 //      'custom:css-process:compile-no-comments',
-//      'patternlab:copy-css',
+//      'patternlab:copy-styles',
 //      cb
 //    );
   });

@@ -15,10 +15,9 @@
 
   gulp.task('contrib:frontend-copy', [
 // Uncomment if you wish to enable this.
-//    'contrib:multisite:frontend-copy-css',
-//    'contrib:multisite:frontend-copy-fonts',
-//    'contrib:multisite:frontend-copy-images',
-//    'contrib:multisite:frontend-copy-js'
+//    'contrib:multisite:frontend-copy-assets',
+//    'contrib:multisite:frontend-copy-scripts',
+//    'contrib:multisite:frontend-copy-styles',
   ]);
 
   gulp.task('contrib:lint', [
