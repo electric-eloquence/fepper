@@ -4,11 +4,8 @@
   var fs = require('fs-extra');
   var open = require('open');
 
-  var utils = require('../lib/utils');
-
   exports.main = function (workDir, conf) {
     var baseUrl = 'http://localhost:' + conf.express_port;
-    var rootDir = utils.rootDir();
     var log = './install.log';
     var stats;
 
