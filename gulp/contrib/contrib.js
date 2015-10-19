@@ -15,17 +15,13 @@
 
   gulp.task('contrib:frontend-copy', [
 // Uncomment if you wish to enable this.
-//    'contrib:multisite:frontend-copy-assets',
-//    'contrib:multisite:frontend-copy-scripts',
-//    'contrib:multisite:frontend-copy-styles',
+// Change "subsite1" to use another subsite name or "all" for all subsites.
+//    'contrib:multisite:frontend-copy:subsite1',
   ]);
 
   gulp.task('contrib:lint', [
 // Uncomment if you wish to enable this.
-//    'contrib:multisite:lint:htmlhint',
-//    'contrib:multisite:lint:htmllint',
-//    'contrib:multisite:lint:eslint',
-//    'contrib:multisite:lint:jsonlint'
+//    'contrib:multisite:lint',
   ]);
 
   gulp.task('contrib:minify', [
@@ -47,19 +43,30 @@
 
   gulp.task('contrib:publish', [
 // Uncomment if you wish to enable this.
-// You can only specify one site at a time, and if this is the case, the main
+// You can only specify one site at a time, and if this is enabled, the main
 // fp fepper:publish task must be disabled in conf.yml.
 //    'contrib:multisite:publish:subsite1',
   ]);
 
   gulp.task('contrib:static', [
 // Uncomment if you wish to enable this.
-// Generates static sites for all subsites.
 //    'contrib:multisite:static',
   ]);
 
-  gulp.task('contrib:syncback', [
-  ]);
+  gulp.task('contrib:syncback', function (cb) {
+// Uncomment if you wish to enable this.
+//    runSequence(
+//      'contrib:multisite:lint',
+//      'contrib:multisite:minify',
+// Change "subsite1" to use another subsite name or "all" for all subsites.
+//      'contrib:multisite:frontend-copy:subsite1',
+//      'contrib:multisite:template:subsite1',
+//      cb
+//    );
+// If using run-sequence, delete the following cb() and make sure there's a cb
+// entered as a parameter.
+    cb();
+  });
 
   gulp.task('contrib:tcp-ip', [
 // Uncomment if you wish to enable this.
@@ -73,5 +80,7 @@
   ]);
 
   gulp.task('contrib:watch', [
+// Uncomment if you wish to enable this.
+//    'contrib:multisite:watch',
   ]);
 })();

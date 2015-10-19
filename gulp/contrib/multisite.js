@@ -82,6 +82,13 @@
     utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
   }
 
+  function subsiteCopyTaskClosure(subsite, frontendDir) {
+    return function () {
+      return gulp.src(multisiteDir + '/' + subsite + '/' + conf.src + '/' + frontendDir + '/*')
+        .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.assets_dir));
+    };
+  }
+
   function subsiteTemplateTaskClosure(taskObj) {
     return function (cb) {
       taskObj.template(rootDir);
@@ -481,35 +488,76 @@
       });
     });
 
-    gulp.task('contrib:multisite:frontend-copy-assets', function (cb) {
-      if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.match(/^[\w.\/-]+$/)) {
+    var subsiteCopyTask;
+    if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()) {
+      // Create Gulp tasks for copying individual subsite assets.
+      for (var i = 0; i < subsites.length; i++) {
+        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i], 'assets');
+        gulp.task('contrib:multisite:frontend-copy-assets:' + subsites[i], subsiteCopyTask);
+      }
+
+      // Create Gulp task for copying all subsite assets.
+      gulp.task('contrib:multisite:frontend-copy-assets:all', function (cb) {
         for (var i = 0; i < subsites.length; i++) {
           gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/assets/*')
             .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.assets_dir));
         }
-      }
-      cb();
-    });
+        cb();
+      });
+    }
 
-    gulp.task('contrib:multisite:frontend-copy-scripts', function (cb) {
-      if (typeof conf.backend.synced_dirs.scripts_dir === 'string' && conf.backend.synced_dirs.scripts_dir.match(/^[\w.\/-]+$/)) {
-        for (var i = 0; i < subsites.length; i++) {
-          gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/scripts/*/**/*')
-            .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.scripts_dir));
-        }
+    if (typeof conf.backend.synced_dirs.scripts_dir === 'string' && conf.backend.synced_dirs.scripts_dir.trim()) {
+      // Create Gulp tasks for copying individual subsite scripts.
+      for (var i = 0; i < subsites.length; i++) {
+        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i], 'scripts');
+        gulp.task('contrib:multisite:frontend-copy-scripts:' + subsites[i], subsiteCopyTask);
       }
-      cb();
-    });
 
-    gulp.task('contrib:multisite:frontend-copy-styles', function (cb) {
-      if (typeof conf.backend.synced_dirs.styles_dir === 'string' && conf.backend.synced_dirs.styles_dir.match(/^[\w.\/-]+$/)) {
-        for (var i = 0; i < subsites.length; i++) {
-          gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/styles/*')
-            .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.styles_dir));
+      // Create Gulp task for copying all subsite scripts.
+      gulp.task('contrib:multisite:frontend-copy-scripts:all', function (cb) {
+        if (typeof conf.backend.synced_dirs.scripts_dir === 'string' && conf.backend.synced_dirs.scripts_dir.trim()) {
+          for (var i = 0; i < subsites.length; i++) {
+            gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/scripts/*/**/*')
+              .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.scripts_dir));
+          }
         }
+        cb();
+      });
+    }
+
+    if (typeof conf.backend.synced_dirs.styles_dir === 'string' && conf.backend.synced_dirs.styles_dir.trim()) {
+      // Create Gulp tasks for copying individual subsite styles.
+      for (var i = 0; i < subsites.length; i++) {
+        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i], 'styles');
+        gulp.task('contrib:multisite:frontend-copy-styles:' + subsites[i], subsiteCopyTask);
       }
-      cb();
-    });
+
+      // Create Gulp task for copying all subsite styles.
+      gulp.task('contrib:multisite:frontend-copy-styles:all', function (cb) {
+        if (typeof conf.backend.synced_dirs.styles_dir === 'string' && conf.backend.synced_dirs.styles_dir.trim()) {
+          for (var i = 0; i < subsites.length; i++) {
+            gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/styles/*')
+              .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.styles_dir));
+          }
+        }
+        cb();
+      });
+    }
+
+    var frontendCopyTasksArray = [];
+    for (var i = 0; i < subsites.length; i++) {
+      if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim() &&
+          typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim() &&
+          typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()
+      ) {
+        frontendCopyTasksArray = [
+          'contrib:multisite:frontend-copy-assets:' + subsites[i],
+          'contrib:multisite:frontend-copy-scripts:' + subsites[i],
+          'contrib:multisite:frontend-copy-styles:' + subsites[i]
+        ];
+      }
+      gulp.task('contrib:multisite:frontend-copy:' + subsites[i], frontendCopyTasksArray);
+    }
 
     /**
      * This is normally to be run on the command line since it takes parameters.
@@ -621,6 +669,13 @@
       cb();
     });
 
+    gulp.task('contrib:multisite:lint', [
+      'contrib:multisite:lint:htmlhint',
+      'contrib:multisite:lint:htmllint',
+      'contrib:multisite:lint:eslint',
+      'contrib:multisite:lint:jsonlint'
+    ]);
+
     gulp.task('contrib:multisite:minify', function (cb) {
       for (var i = 0; i < subsites.length; i++) {
         gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/scripts/src/**/*.js')
@@ -670,7 +725,7 @@
       cb();
     });
 
-    gulp.task('contrib:multisite:tcp-ip-reload:assets', function (cb) {
+    gulp.task('contrib:multisite:tcp-ip-reload:assetsScripts', function (cb) {
       for (var i = 0; i < subsites.length; i++) {
         gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(styles|patterns|styleguide)/**')
           .pipe(plugins.livereload());
@@ -686,22 +741,10 @@
       cb();
     });
 
-    gulp.task('contrib:multisite:tcp-ip-reload:inject', function (cb) {
+    gulp.task('contrib:multisite:tcp-ip-reload:injectStyles', function (cb) {
       for (var i = 0; i < subsites.length; i++) {
         gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/**/*.css')
           .pipe(plugins.livereload());
-      }
-      cb();
-    });
-
-    gulp.task('contrib:multisite:template:all', function (cb) {
-      var subsite;
-
-      // Run Fepper templater task for all subsites.
-      for (subsite in tasks) {
-        if (tasks.hasOwnProperty(subsite)) {
-          tasks[subsite].template(rootDir);
-        }
       }
       cb();
     });
@@ -714,6 +757,18 @@
         gulp.task('contrib:multisite:template:' + subsite, subsiteTemplateTask);
       }
     }
+
+    gulp.task('contrib:multisite:template:all', function (cb) {
+      var subsite;
+
+      // Run Fepper templater task for all subsites.
+      for (subsite in tasks) {
+        if (tasks.hasOwnProperty(subsite)) {
+          tasks[subsite].template(rootDir);
+        }
+      }
+      cb();
+    });
 
     gulp.task('contrib:multisite:watch', function () {
       // Need delay in order for launch to succeed consistently.
@@ -729,7 +784,7 @@
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/scripts/**', ['contrib:multisite:copy']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/static/**', ['contrib:multisite:copy']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/styles/**', ['contrib:multisite:copy-styles']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(styles|patterns|styleguide)/**', ['contrib:multisite:tcp-ip-reload:assets']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(styles|patterns|styleguide)/**', ['contrib:multisite:tcp-ip-reload:assetsScripts']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/**/*.css', ['tcp-ip-reload:inject']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/index.html', ['tcp-ip-reload:index']);
         }
