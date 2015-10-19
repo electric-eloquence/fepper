@@ -12,7 +12,8 @@
   var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
   var FpPln = require(rootDir + '/core/fp-pln/fp-pln');
-  var Tasks = require(rootDir + '/core/tasks/tasks');
+  var fpDir = rootDir + '/core/tasks';
+  var Tasks = require(fpDir + '/tasks');
 
   var $;
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
@@ -92,7 +93,7 @@
     return function (cb) {
       if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
         var p = new Promise(function (resolve, reject) {
-          process.chdir(rootDir + '/core/tasks');
+          process.chdir(fpDir);
           taskObj.publish(rootDir + '/.publish');
           resolve();
         });
@@ -648,6 +649,25 @@
         gulp.task('contrib:multisite:publish:' + subsite, subsitePublishTask);
       }
     }
+
+    gulp.task('contrib:multisite:static', function (cb) {
+      var p = new Promise(function (resolve, reject) {
+        process.chdir(fpDir);
+        for (subsite in tasks) {
+          if (tasks.hasOwnProperty(subsite)) {
+            tasks[subsite].staticGenerate();
+          }
+        }
+        resolve();
+      });
+      p.then(function () {
+        process.chdir(rootDir);
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    });
 
     gulp.task('contrib:multisite:tcp-ip-load:extend', function (cb) {
       var express = require('express');

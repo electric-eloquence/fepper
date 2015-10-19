@@ -53,6 +53,9 @@
   ]);
 
   gulp.task('contrib:static', [
+// Uncomment if you wish to enable this.
+// Generates static sites for all subsites.
+//    'contrib:multisite:static',
   ]);
 
   gulp.task('contrib:syncback', [
