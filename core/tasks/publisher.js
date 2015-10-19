@@ -10,6 +10,7 @@
   'use strict';
 
   var fs = require('fs-extra');
+  var ghpages = require('gh-pages');
   var glob = require('glob');
   var path = require('path');
 
@@ -77,7 +78,7 @@
     }
   };
 
-  exports.main = function (workDir, conf, publishDir) {
+  exports.main = function (workDir, conf, publishDir, test) {
     var dataJson = utils.data(workDir, conf);
     var ghPagesSrc = path.normalize(publishDir + '/../' + conf.gh_pages_src);
     var publicDir = workDir + '/' + conf.pub;
@@ -115,29 +116,50 @@
       webservedDirsFull = dataJson.backend_webserved_dirs;
     }
 
-    // Before checking for any gh_pages_prefix to insert, clean up any old
-    // destination files before copying.
-    utils.log('Preparing gh_pages_src...');
-    fs.removeSync(ghPagesSrc);
+    var p = new Promise(function (resolve, reject) {
+      // Before checking for any gh_pages_prefix to insert, clean up any old
+      // destination files before copying.
+      utils.log('Preparing gh_pages_src...');
+      fs.removeSync(ghPagesSrc);
 
-    // Get array of truncated dirnames for processing.
-    webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
+      // Get array of truncated dirnames for processing.
+      webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
 
-    if (prefix) {
-      utils.log('Prepending gh_pages_prefix...');
-    }
+      if (prefix) {
+        utils.log('Prepending gh_pages_prefix...');
+      }
 
-    // Recursively glob pattern files, and then iterate through them.
-    publicFiles = exports.filesGet(publicDir);
-    // Read files, token replace path prefix tags, and write output.
-    exports.filesProcess(publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc);
+      // Recursively glob pattern files, and then iterate through them.
+      publicFiles = exports.filesGet(publicDir);
+      // Read files, token replace path prefix tags, and write output.
+      exports.filesProcess(publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc);
 
-    // Copy webserved_dirs to gh_pages_src.
-    if (webservedDirsShort.length) {
-      utils.log('Copying webserved_dirs to gh_pages_src...');
-      utils.webservedDirsCopy(webservedDirsFull, workDir, webservedDirsShort, ghPagesSrc);
-    }
+      // Copy webserved_dirs to gh_pages_src.
+      if (webservedDirsShort.length) {
+        utils.log('Copying webserved_dirs to gh_pages_src...');
+        utils.webservedDirsCopy(webservedDirsFull, workDir, webservedDirsShort, ghPagesSrc);
+      }
 
-    utils.log('Finished preprocessing GitHub Pages files.');
+      resolve();
+    });
+    p.then(function () {
+      utils.log('Finished preprocessing GitHub Pages files.');
+
+      if (!test) {
+        utils.log('Publishing gh_pages_src to GitHub Pages...');
+
+        ghpages.publish(ghPagesSrc, function (err) {
+          if (err) {
+            utils.error(err);
+          }
+          else {
+            utils.log('Finished publishing gh_pages_src to GitHub Pages.');
+          }
+        });
+      }
+    })
+    .catch(function (reason) {
+      utils.error(reason);
+    });
   };
 })();

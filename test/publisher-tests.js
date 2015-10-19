@@ -14,18 +14,18 @@
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;
   var ghPagesDir = testDir + '/' + conf.gh_pages_src;
-  var ghPagesPrefixer = require(rootDir + '/core/tasks/gh-pages-prefixer');
+  var publisher = require(rootDir + '/core/tasks/publisher');
   var Tasks = require(rootDir + '/core/tasks/tasks');
   var tasks = new Tasks(testDir, conf);
 
-  describe('GitHub Pages Prefixer', function () {
+  describe('Publisher', function () {
     // Get array of truncated dirnames.
     var webservedDirs = utils.webservedDirnamesTruncate(conf.backend.webserved_dirs);
 
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    tasks.ghPagesPrefix(testDir + '/.publish');
+    tasks.publish(testDir + '/.publish', true);
 
     it('should read a valid .gh_pages_src config', function () {
       expect(conf.gh_pages_src).to.be.a('string');
@@ -33,7 +33,7 @@
     });
 
     it('should glob the specified patterns directory', function () {
-      var files = ghPagesPrefixer.filesGet(testDir + '/' + conf.pub + '/patterns');
+      var files = publisher.filesGet(testDir + '/' + conf.pub + '/patterns');
 
       expect(files).to.not.be.empty;
     });
@@ -50,7 +50,7 @@
       var fileAfterPath = ghPagesDir + '/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
 
       fs.copySync(fileBeforePath, fileAfterPath);
-      ghPagesPrefixer.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix, testDir, testDir);
+      publisher.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix, testDir, testDir);
       var fileAfter = fs.readFileSync(fileAfterPath);
 
       expect(fileAfter).to.not.equal('');

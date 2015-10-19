@@ -82,8 +82,7 @@
 
   gulp.task('publish', function (cb) {
     runSequence(
-      'fepper:gh-pages',
-      'publish:gh-pages',
+      'fepper:publish',
       ['contrib:publish', 'custom:publish'],
       cb
     );

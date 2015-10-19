@@ -68,26 +68,6 @@
     };
   });
 
-  gulp.task('fepper:gh-pages', function (cb) {
-    if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
-      var p = new Promise(function (resolve, reject) {
-        process.chdir(pathIn);
-        tasks.ghPagesPrefix(rootDir + '/.publish');
-        resolve();
-      });
-      p.then(function () {
-        process.chdir(pathOut);
-        cb();
-      })
-      .catch(function (reason) {
-        utils.error(reason);
-      });
-    }
-    else {
-      utils.error('gh_pages_src not set.');
-    }
-  });
-
   gulp.task('fepper:pattern-override', function (cb) {
     var p = new Promise(function (resolve, reject) {
       process.chdir(pathIn);
@@ -101,6 +81,26 @@
     .catch(function (reason) {
       utils.error(reason);
     });
+  });
+
+  gulp.task('fepper:publish', function (cb) {
+    if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
+      var p = new Promise(function (resolve, reject) {
+        process.chdir(pathIn);
+        tasks.publish(rootDir + '/.publish');
+        resolve();
+      });
+      p.then(function () {
+        process.chdir(pathOut);
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+      });
+    }
+    else {
+      utils.error('gh_pages_src not set.');
+    }
   });
 
   gulp.task('fepper:static-generate', function (cb) {

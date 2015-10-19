@@ -11,20 +11,20 @@
       require('./appendixer.js').main(this.workDir, this.conf);
     }
 
-    ghPagesPrefix(publishDir) {
-      require('./gh-pages-prefixer.js').main(this.workDir, this.conf, publishDir);
-    }
-
     jsonCompile() {
       require('./json-compiler.js').main(this.workDir, this.conf);
     }
 
     open() {
-      require('./open.js').main(this.workDir, this.conf);
+      require('./opener.js').main(this.workDir, this.conf);
     }
 
     patternOverride() {
       require('./pattern-overrider.js').main(this.workDir, this.conf);
+    }
+
+    publish(publishDir, test) {
+      require('./publisher.js').main(this.workDir, this.conf, publishDir, test);
     }
 
     staticGenerate() {
