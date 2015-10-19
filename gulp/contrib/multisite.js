@@ -16,6 +16,7 @@
   var Tasks = require(fpDir + '/tasks');
 
   var $;
+  var i;
   var multisiteDir = rootDir + '/plugins/contrib/multisite';
   var subsite;
   var subsiteNameError = 'You cannot name a subsite "main"!';
@@ -127,7 +128,7 @@
     var fpPlns = [];
     var subsiteDir;
     var tasks = {};
-    for (var i = 0; i < subsites.length; i++) {
+    for (i = 0; i < subsites.length; i++) {
       // Cannot have a subsite named "main". Error and exit if that's the case.
       if (subsites[i] === 'main') {
         utils.error(subsiteNameError);
@@ -491,7 +492,7 @@
     var subsiteCopyTask;
     if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()) {
       // Create Gulp tasks for copying individual subsite assets.
-      for (var i = 0; i < subsites.length; i++) {
+      for (i = 0; i < subsites.length; i++) {
         subsiteCopyTask = subsiteCopyTaskClosure(subsites[i], 'assets');
         gulp.task('contrib:multisite:frontend-copy-assets:' + subsites[i], subsiteCopyTask);
       }
@@ -508,7 +509,7 @@
 
     if (typeof conf.backend.synced_dirs.scripts_dir === 'string' && conf.backend.synced_dirs.scripts_dir.trim()) {
       // Create Gulp tasks for copying individual subsite scripts.
-      for (var i = 0; i < subsites.length; i++) {
+      for (i = 0; i < subsites.length; i++) {
         subsiteCopyTask = subsiteCopyTaskClosure(subsites[i], 'scripts');
         gulp.task('contrib:multisite:frontend-copy-scripts:' + subsites[i], subsiteCopyTask);
       }
@@ -527,7 +528,7 @@
 
     if (typeof conf.backend.synced_dirs.styles_dir === 'string' && conf.backend.synced_dirs.styles_dir.trim()) {
       // Create Gulp tasks for copying individual subsite styles.
-      for (var i = 0; i < subsites.length; i++) {
+      for (i = 0; i < subsites.length; i++) {
         subsiteCopyTask = subsiteCopyTaskClosure(subsites[i], 'styles');
         gulp.task('contrib:multisite:frontend-copy-styles:' + subsites[i], subsiteCopyTask);
       }
@@ -545,7 +546,7 @@
     }
 
     var frontendCopyTasksArray = [];
-    for (var i = 0; i < subsites.length; i++) {
+    for (i = 0; i < subsites.length; i++) {
       if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim() &&
           typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim() &&
           typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()
