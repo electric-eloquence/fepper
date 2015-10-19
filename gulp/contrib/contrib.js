@@ -47,6 +47,10 @@
   });
 
   gulp.task('contrib:publish', [
+// Uncomment if you wish to enable this.
+// You can only specify one site at a time, and if this is the case, the main
+// fp fepper:publish task must be disabled in conf.yml.
+//    'contrib:multisite:publish:subsite1',
   ]);
 
   gulp.task('contrib:static', [

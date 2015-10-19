@@ -88,22 +88,16 @@
     };
   }
 
-  function subsitePublishTaskClosure(taskObj) {
+  function subsitePublishTaskClosure(taskObj, subsite) {
     return function (cb) {
-      if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim() &&
-          typeof conf.gh_pages_dest === 'string' && conf.gh_pages_dest.trim()
-      ) {
+      if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
         var p = new Promise(function (resolve, reject) {
           process.chdir(rootDir + '/core/tasks');
-          taskObj.ghPagesPrefix(rootDir + '/.publish');
+          taskObj.publish(rootDir + '/.publish');
           resolve();
         });
         p.then(function () {
           process.chdir(rootDir);
-          gulp.src(rootDir + '/' + conf.gh_pages_src + '/**/*')
-            .pipe(plugins.ghPages({
-              cacheDir: rootDir + '/' + conf.gh_pages_dest
-            }));
           cb();
         })
         .catch(function (reason) {
@@ -111,12 +105,7 @@
         });
       }
       else {
-        if (typeof conf.gh_pages_src !== 'string' || !conf.gh_pages_src.trim()) {
-          utils.error('gh_pages_src not set.');
-        }
-        if (typeof conf.gh_pages_dest !== 'string' || !conf.gh_pages_dest.trim()) {
-          utils.error('gh_pages_dest not set.');
-        }
+        utils.error('gh_pages_src not set for ' + subsite + '!');
       }
     };
   }
@@ -655,7 +644,7 @@
     var subsitePublishTask;
     for (subsite in tasks) {
       if (tasks.hasOwnProperty(subsite)) {
-        subsitePublishTask = subsitePublishTaskClosure(tasks[subsite]);
+        subsitePublishTask = subsitePublishTaskClosure(tasks[subsite], subsite);
         gulp.task('contrib:multisite:publish:' + subsite, subsitePublishTask);
       }
     }
