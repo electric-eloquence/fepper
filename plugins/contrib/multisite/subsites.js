@@ -2,7 +2,7 @@
   'use strict';
 
   module.exports = [
-// Uncomment to use the default subsite.
+    // To activate subsites, list them here.
     'subsite1'
   ];
 })();
