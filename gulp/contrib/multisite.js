@@ -634,6 +634,9 @@
       }
     });
 
+    // Run once to install.
+    gulp.task('contrib:multisite:install', ['contrib:multisite:data']);
+
     gulp.task('contrib:multisite:lint:htmlhint', function (cb) {
       for (var i = 0; i < subsites.length; i++) {
         gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/patterns/*/!(index|*escaped).html')

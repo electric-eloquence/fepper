@@ -1,0 +1,28 @@
+{
+  "img": {
+    "landscape_4x3": {
+      "src": "../../assets/fpo_4x3.png",
+      "alt": "4x3 Image"
+    },
+    "landscape_16x9": {
+      "src": "../../assets/fpo_16x9.png",
+      "alt": "16x9 Image"
+    },
+    "square": {
+      "src": "../../assets/fpo_square.png",
+      "alt": "Square Thumbnail"
+    },
+    "avatar" : {
+      "src" : "../../assets/fpo_avatar.png",
+      "alt" : "Person Name"
+    },
+    "rectangle": {
+      "src": "http://placeimg.com/400/300/tech",
+      "alt": "Rectangle"
+    }
+  },
+  "logo": {
+    "href": "../04-pages-00-homepage/04-pages-00-homepage.html",
+    "src": "../../assets/logo.png"
+  }
+}

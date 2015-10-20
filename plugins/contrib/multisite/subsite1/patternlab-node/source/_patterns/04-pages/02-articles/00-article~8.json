@@ -1,0 +1,9 @@
+{
+  "article_title" : "How to build a campfire",
+  "img": {
+    "landscape_16x9": {
+      "src": "../../assets/sample/thumb-square-fire.jpg",
+      "alt": "Fire"
+    }
+  }
+}
