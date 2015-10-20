@@ -40,7 +40,6 @@
       fs.copySync(this.plnDir + '/source/assets', this.plnDir + '/public/assets');
       fs.copySync(this.plnDir + '/source/scripts', this.plnDir + '/public/scripts');
       fs.copySync(this.plnDir + '/source/static', this.plnDir + '/public/static/');
-      fs.copySync(this.plnDir + '/source/styles', this.plnDir + '/public/styles');
     }
 
     copyStyles() {
