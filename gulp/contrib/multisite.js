@@ -8,6 +8,7 @@
   var gulp = require('gulp');
   var path = require('path');
   var plugins = require('gulp-load-plugins')();
+  var runSequence = require('run-sequence');
 
   var utils = require('../../core/lib/utils');
   var rootDir = utils.rootDir();
@@ -545,17 +546,17 @@
       });
     }
 
-    var frontendCopyTasksArray = [];
+    var frontendCopyTasksArray;
     for (i = 0; i < subsites.length; i++) {
-      if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim() &&
-          typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim() &&
-          typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()
-      ) {
-        frontendCopyTasksArray = [
-          'contrib:multisite:frontend-copy-assets:' + subsites[i],
-          'contrib:multisite:frontend-copy-scripts:' + subsites[i],
-          'contrib:multisite:frontend-copy-styles:' + subsites[i]
-        ];
+      frontendCopyTasksArray = [];
+      if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()) {
+        frontendCopyTasksArray.push('contrib:multisite:frontend-copy-assets:' + subsites[i]);
+      }
+      if (typeof conf.backend.synced_dirs.scripts_dir === 'string' && conf.backend.synced_dirs.scripts_dir.trim()) {
+        frontendCopyTasksArray.push('contrib:multisite:frontend-copy-scripts:' + subsites[i]);
+      }
+      if (typeof conf.backend.synced_dirs.styles_dir === 'string' && conf.backend.synced_dirs.styles_dir.trim()) {
+        frontendCopyTasksArray.push('contrib:multisite:frontend-copy-styles:' + subsites[i]);
       }
       gulp.task('contrib:multisite:frontend-copy:' + subsites[i], frontendCopyTasksArray);
     }
@@ -690,6 +691,14 @@
       cb();
     });
 
+    gulp.task('contrib:multisite:once', function (cb) {
+      runSequence(
+        'contrib:multisite:clean',
+        ['contrib:multisite:build', 'contrib:multisite:copy'],
+        cb
+      );
+    });
+
     // Create Gulp tasks for publishing individual subsites.
     var subsitePublishTask;
     for (subsite in tasks) {
@@ -717,6 +726,26 @@
         utils.error(reason);
       });
     });
+
+    for (i = 0; i < subsites.length; i++) {
+      gulp.task('contrib:multisite:syncback:' + subsites[i], function (cb) {
+        runSequence(
+          'contrib:multisite:lint',
+          'contrib:multisite:minify',
+          'contrib:multisite:frontend-copy:' + subsites[i],
+          'contrib:multisite:template:' + subsites[i],
+          cb
+        );
+      });
+    }
+
+    var syncbackTasksArray = [];
+    for (i = 0; i < subsites.length; i++) {
+      syncbackTasksArray[i] = 'contrib:multisite:syncback:' + subsites[i];
+    }
+    gulp.task('contrib:multisite:syncback:all', syncbackTasksArray);
+
+    gulp.task('contrib:multisite:tcp-ip', ['contrib:multisite:tcp-ip-load:extend']);
 
     gulp.task('contrib:multisite:tcp-ip-load:extend', function (cb) {
       var express = require('express');
