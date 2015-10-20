@@ -74,8 +74,8 @@
         }
       }
       fs.copySync(src[i], destTmp);
-      utils.log('Copied \x1b[36m%s\x1b[0m', src[i]);
-      utils.log('to \x1b[36m%s\x1b[0m.', destTmp);
+      utils.log('Copied \x1b[36m%s\x1b[0m', src[i].replace(rootDir + '/', ''));
+      utils.log('to \x1b[36m%s\x1b[0m.', destTmp.replace(rootDir + '/', ''));
     }
   }
 
@@ -786,8 +786,8 @@
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/static/**', ['contrib:multisite:copy']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/styles/**', ['contrib:multisite:copy-styles']);
           gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/!(styles|patterns|styleguide)/**', ['contrib:multisite:tcp-ip-reload:assetsScripts']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/**/*.css', ['tcp-ip-reload:inject']);
-          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/index.html', ['tcp-ip-reload:index']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/**/*.css', ['contrib:multisite:tcp-ip-reload:injectStyles']);
+          gulp.watch(multisiteDir + '/' + subsites[i] + '/' + conf.pub + '/index.html', ['contrib:multisite:tcp-ip-reload:index']);
         }
       }, conf.timeout_main);
     });

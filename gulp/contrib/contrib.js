@@ -6,11 +6,11 @@
   'use strict';
 
   var gulp = require('gulp');
-//  var runSequence = require('run-sequence');
+  var runSequence = require('run-sequence');
 
   gulp.task('contrib:data', [
 // Uncomment if you wish to enable this.
-//    'contrib:multisite:data'
+    'contrib:multisite:data'
   ]);
 
   gulp.task('contrib:frontend-copy', [
@@ -31,14 +31,14 @@
 
   gulp.task('contrib:once', function (cb) {
 // Uncomment if you wish to enable this.
-//    runSequence(
-//      'contrib:multisite:clean'
-//      ['contrib:multisite:build', 'contrib:multisite:copy']
-//      cb
-//    );
+    runSequence(
+      'contrib:multisite:clean',
+      ['contrib:multisite:build', 'contrib:multisite:copy'],
+      cb
+    );
 // If using run-sequence, delete the following cb() and make sure there's a cb
 // entered as a parameter.
-    cb();
+//    cb();
   });
 
   gulp.task('contrib:publish', [
@@ -70,7 +70,7 @@
 
   gulp.task('contrib:tcp-ip', [
 // Uncomment if you wish to enable this.
-//    'contrib:multisite:tcp-ip-load:extend'
+    'contrib:multisite:tcp-ip-load:extend'
   ]);
 
   gulp.task('contrib:template', [
@@ -81,6 +81,6 @@
 
   gulp.task('contrib:watch', [
 // Uncomment if you wish to enable this.
-//    'contrib:multisite:watch',
+    'contrib:multisite:watch',
   ]);
 })();
