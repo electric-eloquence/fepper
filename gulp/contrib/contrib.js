@@ -9,7 +9,7 @@
 
   gulp.task('contrib:data', [
 // Uncomment if you wish to enable this.
-    'contrib:multisite:data'
+//    'contrib:multisite:data'
   ]);
 
   gulp.task('contrib:frontend-copy', [
@@ -30,13 +30,14 @@
 
   gulp.task('contrib:once', [
 // Uncomment if you wish to enable this.
-    'contrib:multisite:once'
+//    'contrib:multisite:once'
   ]);
 
   gulp.task('contrib:publish', [
 // Uncomment if you wish to enable this.
-// You can only specify one site at a time, and if this is enabled, the main
-// fp fepper:publish task must be disabled in conf.yml.
+// You can only publish one site at a time. If the multisite publish task is to
+// be enabled, the main fp fepper:publish task must be disabled by unsetting the
+// gh_pages_src setting in conf.yml.
 //    'contrib:multisite:publish:subsite1'
   ]);
 
@@ -53,7 +54,7 @@
 
   gulp.task('contrib:tcp-ip', [
 // Uncomment if you wish to enable this.
-    'contrib:multisite:tcp-ip'
+//    'contrib:multisite:tcp-ip'
   ]);
 
   gulp.task('contrib:template', [
@@ -64,6 +65,6 @@
 
   gulp.task('contrib:watch', [
 // Uncomment if you wish to enable this.
-    'contrib:multisite:watch'
+//    'contrib:multisite:watch'
   ]);
 })();

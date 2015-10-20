@@ -25,7 +25,7 @@
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    tasks.publish(testDir + '/.publish', true);
+    tasks.publish(conf, testDir + '/.publish', true);
 
     it('should read a valid .gh_pages_src config', function () {
       expect(conf.gh_pages_src).to.be.a('string');

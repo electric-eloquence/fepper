@@ -44,6 +44,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
 
     var p2 = function () {
@@ -57,6 +58,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     };
   });
@@ -73,6 +75,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -80,7 +83,7 @@
     if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
       var p = new Promise(function (resolve, reject) {
         process.chdir(pathIn);
-        tasks.publish(rootDir + '/.publish');
+        tasks.publish(conf, rootDir + '/.publish');
         resolve();
       });
       p.then(function () {
@@ -89,6 +92,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     }
     else {
@@ -108,6 +112,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -124,6 +129,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     }
     else {

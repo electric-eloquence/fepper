@@ -101,10 +101,13 @@
 
   function subsitePublishTaskClosure(taskObj, subsite) {
     return function (cb) {
-      if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
+      // Only publish subsite if gh_pages_src is not set in conf.yml.
+      if (typeof conf.gh_pages_src !== 'string' || !conf.gh_pages_src.trim()) {
+        conf.gh_pages_src = '.publish/fepper-gh-pages';
+
         var p = new Promise(function (resolve, reject) {
           process.chdir(fpDir);
-          taskObj.publish(rootDir + '/.publish');
+          taskObj.publish(conf, rootDir + '/.publish');
           resolve();
         });
         p.then(function () {
@@ -113,10 +116,11 @@
         })
         .catch(function (reason) {
           utils.error(reason);
+          cb();
         });
       }
       else {
-        utils.error('gh_pages_src not set for ' + subsite + '!');
+        cb();
       }
     };
   }
@@ -154,6 +158,16 @@
       fpPlns[i] = new FpPln(subsiteDir, conf);
       tasks[subsites[i]] = new Tasks(subsiteDir, conf);
     }
+
+    // Run once on the command line to install.
+    gulp.task('contrib:multisite:install', ['contrib:multisite:data']);
+
+    // Run once on the command line to uninstall.
+    // Be sure to remove all references to contrib:multisite in contrib.js.
+    gulp.task('contrib:multisite:uninstall', function () {
+      return gulp.src(rootDir + '/_source/scripts/patternlab-overrider.js')
+        .pipe(gulp.dest(rootDir + '/patternlab-node/source/scripts'));
+    });
 
     gulp.task('contrib:multisite:build', function (cb) {
       var msPatternPaths = {};
@@ -371,6 +385,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     });
 
@@ -399,6 +414,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     });
 
@@ -427,6 +443,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     });
 
@@ -455,6 +472,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     });
 
@@ -500,6 +518,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     });
 
@@ -659,9 +678,6 @@
       }
     });
 
-    // Run once to install.
-    gulp.task('contrib:multisite:install', ['contrib:multisite:data']);
-
     gulp.task('contrib:multisite:lint:htmlhint', function () {
       var allsitesLintTask;
       var merged = mergeStream();
@@ -743,9 +759,31 @@
     gulp.task('contrib:multisite:once', function (cb) {
       runSequence(
         'contrib:multisite:clean',
-        ['contrib:multisite:build', 'contrib:multisite:copy'],
+        'contrib:multisite:build',
+        'contrib:multisite:copy',
+        'contrib:multisite:pattern-override',
         cb
       );
+    });
+
+    gulp.task('contrib:multisite:pattern-override', function (cb) {
+      var p = new Promise(function (resolve, reject) {
+        process.chdir(fpDir);
+        for (subsite in tasks) {
+          if (tasks.hasOwnProperty(subsite)) {
+            tasks[subsite].patternOverride(multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js');
+          }
+        }
+        resolve();
+      });
+      p.then(function () {
+        process.chdir(rootDir);
+        cb();
+      })
+      .catch(function (reason) {
+        utils.error(reason);
+        cb();
+      });
     });
 
     // Create Gulp tasks for publishing individual subsites.
@@ -773,6 +811,7 @@
       })
       .catch(function (reason) {
         utils.error(reason);
+        cb();
       });
     });
 

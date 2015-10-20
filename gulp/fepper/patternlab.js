@@ -24,6 +24,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -39,6 +40,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -54,6 +56,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -69,6 +72,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -84,6 +88,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -99,6 +104,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -114,6 +120,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 })();
