@@ -426,7 +426,7 @@
             subsiteDir = multisiteDir + '/' + subsites[i];
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
-            fpPlns[i].copyCss();
+            fpPlns[i].copyStyles();
             resolve();
           })
           .then(function () {
