@@ -120,6 +120,18 @@
     };
   }
 
+  function subsiteSyncbackTaskClosure(subsite) {
+    return function (cb) {
+      runSequence(
+        'contrib:multisite:lint',
+        'contrib:multisite:minify',
+        'contrib:multisite:frontend-copy:' + subsite,
+        'contrib:multisite:template:' + subsite,
+        cb
+      );
+    };
+  }
+
   // ///////////////////////////////////////////////////////////////////////////
   // End plugin-scoped variable and function definitions.
   // Begin Gulp task definitions.
@@ -727,16 +739,10 @@
       });
     });
 
+    var subsiteSyncbackTask;
     for (i = 0; i < subsites.length; i++) {
-      gulp.task('contrib:multisite:syncback:' + subsites[i], function (cb) {
-        runSequence(
-          'contrib:multisite:lint',
-          'contrib:multisite:minify',
-          'contrib:multisite:frontend-copy:' + subsites[i],
-          'contrib:multisite:template:' + subsites[i],
-          cb
-        );
-      });
+      subsiteSyncbackTask = subsiteSyncbackTaskClosure(subsites[i]);
+      gulp.task('contrib:multisite:syncback:' + subsites[i], subsiteSyncbackTask);
     }
 
     var syncbackTasksArray = [];
