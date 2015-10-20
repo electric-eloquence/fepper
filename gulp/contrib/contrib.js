@@ -59,7 +59,7 @@
   gulp.task('contrib:template', [
 // Uncomment if you wish to enable this.
 // Change "subsite1" to use another subsite name or "all" for all subsites.
-//    'contrib:multisite:subsite1'
+//    'contrib:multisite:template:subsite1'
   ]);
 
   gulp.task('contrib:watch', [
