@@ -81,6 +81,6 @@
 
   gulp.task('contrib:watch', [
 // Uncomment if you wish to enable this.
-    'contrib:multisite:watch',
+    'contrib:multisite:watch'
   ]);
 })();
