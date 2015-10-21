@@ -315,7 +315,7 @@
           (pathParts[1] !== "patterns" && pathParts[2] === "patterns") ||
           (pathParts[1] !== "styleguide" && pathParts[2] === "styleguide")))
       {
-        addressReplacement += "&subsite="+pathParts[1];
+        addressReplacement += "&subsite=" + pathParts[1];
         href = sgViewportPathname.substr(1);
       } else {
         href = urlHandler.getFileName(pattern);
@@ -370,7 +370,7 @@
   // update the iframe with the source from clicked element in pull down menu. also close the menu
   // having it outside fixes an auto-close bug i ran into
   // replacing the default listener
-  $(".sg-nav a").not(".sg-acc-handle").off("click", "**");
+  $(".sg-nav a").not(".sg-acc-handle").off("click");
   $(".sg-nav a").not(".sg-acc-handle").on("click", function(e){
 
     e.preventDefault();
@@ -809,6 +809,7 @@
     gulp.task('multisite:mustache-browser', function (cb) {
       var url = require('url');
 
+      var i;
       var MustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
       var mustacheBrowser;
 
@@ -830,6 +831,9 @@
       }
 
       // Unset and reset default mustache-browser get.
+      // This is hacky because ._router.stack may change in a future version of
+      // Express.
+      // http://stackoverflow.com/questions/10378690/remove-route-mappings-in-nodejs-express
       for (i = 0; i < global.express._router.stack.length; i++) {
         if (typeof global.express._router.stack[i].route === 'object' && global.express._router.stack[i].route.path === '/mustache-browser') {
           global.express._router.stack.splice(i, 1);
