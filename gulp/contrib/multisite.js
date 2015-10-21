@@ -289,9 +289,9 @@
       fileName = baseDir+"/"+fileName.replace(regex,"-")+"/"+fileName.replace(regex,"-")+".html";
     }
 
-    var queryStringVars = urlHandler.getRequestVars();
-    if (typeof queryStringVars.subsite === 'string' && queryStringVars.subsite.trim()) {
-      fileName = queryStringVars.subsite + '/' + fileName;
+    var oGetVars = urlHandler.getRequestVars();
+    if (typeof oGetVars.subsite === 'string' && oGetVars.subsite.trim()) {
+      fileName = oGetVars.subsite + '/' + fileName;
     }
 
     return fileName;
@@ -806,6 +806,46 @@
       return merged;
     });
 
+    gulp.task('multisite:mustache-browser', function (cb) {
+      var url = require('url');
+
+      var MustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
+      var mustacheBrowser;
+
+      function mustacheBrowserExtendClosure() {
+        return function (req, res) {
+          var refObj = url.parse(typeof req.headers.referer === 'string' ? req.headers.referer : '');
+          var refPathname = typeof refObj.pathname === 'string' ? refObj.pathname : '';
+          var refPathnameParts = refPathname.split('/');
+
+          if (req._parsedUrl.pathname === '/mustache-browser/' && refPathnameParts[1] !== 'patterns' && refPathnameParts[2] === 'patterns') {
+            res.writeHead(302, {
+              Location: '/mustache-browser/' + refPathnameParts[1] + '/' + req._parsedUrl.search
+            });
+            res.end();
+          }
+
+          mustacheBrowser.main()(req, res);
+        };
+      }
+
+      // Unset and reset default mustache-browser get.
+      for (i = 0; i < global.express._router.stack.length; i++) {
+        if (typeof global.express._router.stack[i].route === 'object' && global.express._router.stack[i].route.path === '/mustache-browser') {
+          global.express._router.stack.splice(i, 1);
+          break;
+        }
+      }
+      global.express.get('/mustache-browser', mustacheBrowserExtendClosure());
+
+      // Set up subsite mustache-browser gets.
+      for (i = 0; i < subsites.length; i++) {
+        mustacheBrowser = new MustacheBrowser(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/_patterns', conf);
+        global.express.get('/mustache-browser/' + subsites[i], mustacheBrowser.main());
+      }
+      cb();
+    });
+
     gulp.task('multisite:once', function (cb) {
       runSequence(
         'multisite:pattern-override',
@@ -877,7 +917,7 @@
     }
     gulp.task('multisite:syncback:all', syncbackTasksArray);
 
-    gulp.task('multisite:tcp-ip', ['multisite:tcp-ip-load:extend']);
+    gulp.task('multisite:tcp-ip', ['multisite:mustache-browser', 'multisite:tcp-ip-load:extend']);
 
     gulp.task('multisite:tcp-ip-load:extend', function (cb) {
       var express = require('express');

@@ -18,7 +18,7 @@
       data = data.replace(/\n/g, '<br>');
 
       return data;
-    };
+    }
 
     partialTagToPath(partial) {
       partial = partial.replace(/{{+[^\w]?\s*/, '');
@@ -29,7 +29,7 @@
       }
 
       return partial;
-    };
+    }
 
     noResult(res, err) {
       var output = '';
@@ -43,7 +43,7 @@
       output += htmlObj.foot;
       output = output.replace('{{ title }}', 'Fepper Mustache Browser');
       res.end(output);
-    };
+    }
 
     main() {
       return function (req, res) {

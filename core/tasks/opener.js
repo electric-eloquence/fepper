@@ -5,7 +5,7 @@
   var open = require('open');
 
   exports.main = function (workDir, conf) {
-    var baseUrl = 'http://localhost:' + conf.express_port;
+    var origin = 'http://localhost:' + conf.express_port;
     var log = './install.log';
     var stats;
 
@@ -18,12 +18,12 @@
     if (stats && stats.isFile()) {
       setTimeout(function () {
         fs.unlink(log);
-        open(baseUrl + '/success');
+        open(origin + '/success');
       }, conf.timeout_main * 2);
     }
     else {
       setTimeout(function () {
-        return open(baseUrl);
+        return open(origin);
       }, conf.timeout_main);
     }
   };

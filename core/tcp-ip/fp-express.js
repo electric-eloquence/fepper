@@ -16,11 +16,6 @@
   var mustacheBrowser = new MustacheBrowser(rootDir + '/' + conf.src + '/_patterns', conf);
   var success = require('./success');
 
-  var utils = require('../lib/utils');
-  var conf = utils.conf();
-  var rootDir = utils.rootDir();
-  var dataJson = utils.data(rootDir, conf);
-
   exports.main = function () {
     var app = express();
     var i;
