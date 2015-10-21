@@ -247,6 +247,58 @@
         // /////////////////////////////////////////////////////////////////////
         // Begin backticked multi-line string.
         plOverriderContent += `
+  urlHandler.getFileName = function (name) {
+    var baseDir     = "patterns";
+    var fileName    = "";
+
+    if (name == undefined) {
+      return fileName;
+    }
+
+    if (name == "all") {
+      return "styleguide/html/styleguide.html";
+    }
+
+    var paths = (name.indexOf("viewall-") != -1) ? viewAllPaths : patternPaths;
+    nameClean = name.replace("viewall-","");
+
+    // look at this as a regular pattern
+    var bits        = this.getPatternInfo(nameClean, paths);
+    var patternType = bits[0];
+    var pattern     = bits[1];
+
+    if ((paths[patternType] != undefined) && (paths[patternType][pattern] != undefined)) {
+      fileName = paths[patternType][pattern];
+    }
+    else if (paths[patternType] != undefined) {
+      for (patternMatchKey in paths[patternType]) {
+        if (patternMatchKey.indexOf(pattern) != -1) {
+          fileName = paths[patternType][patternMatchKey];
+          break;
+        }
+      }
+    }
+
+    if (fileName == "") {
+      return fileName;
+    }
+
+    var regex = /\\//g;
+    if ((name.indexOf("viewall-") != -1) && (fileName != "")) {
+      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/index.html";
+    }
+    else if (fileName != "") {
+      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/"+fileName.replace(regex,"-")+".html";
+    }
+
+    var queryStringVars = urlHandler.getRequestVars();
+    if (typeof queryStringVars.subsite === 'string' && queryStringVars.subsite.trim()) {
+      fileName = queryStringVars.subsite + '/' + fileName;
+    }
+
+    return fileName;
+  };
+
   urlHandler.pushPattern = function (pattern, givenPath) {
     var data         = { "pattern": pattern };
     var fileName     = urlHandler.getFileName(pattern);

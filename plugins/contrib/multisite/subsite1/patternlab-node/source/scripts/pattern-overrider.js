@@ -1,16 +1,24 @@
 // Mustache code browser.
 var pd = parent.document;
 var codeFill = pd.getElementById('sg-code-fill');
+var codeTitle = pd.getElementById('sg-code-title-mustache');
 if (codeFill) {
   // Give the PL Mustache code viewer the appearance of being linked.
   codeFill.addEventListener('mouseover', function () {
-    this.style.cursor = 'pointer';
+    if (codeTitle.className.indexOf('sg-code-title-active') > -1) {
+      this.style.cursor = 'pointer';
+    }
+    else {
+      this.style.cursor = 'default';
+    }
   });
   // Send to Fepper's Mustache browser when clicking the viewer's Mustache code.
   codeFill.addEventListener('click', function () {
-    var code = encodeURIComponent(this.innerHTML);
-    var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
-    window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
+    if (codeTitle.className.indexOf('sg-code-title-active') > -1) {
+      var code = encodeURIComponent(this.innerHTML);
+      var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
+      window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
+    }
   });
 }
 
