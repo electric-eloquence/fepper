@@ -59,7 +59,7 @@
     app.get('/html-scraper-xhr', htmlScraperXhr.main);
 
     // Mustache browser.
-    app.get('/mustache-browser', mustacheBrowser.main);
+    app.get('/mustache-browser', mustacheBrowser.main());
 
     // Success page.
     app.get('/success', success.main);
