@@ -2,10 +2,18 @@
   'use strict';
 
   var expect = require('chai').expect;
+  var fs = require('fs-extra');
+  var yaml = require('js-yaml');
+
   var utils = require('../core/lib/utils');
+  var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var mustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
+  var MustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
+  var mustacheBrowser = new MustacheBrowser(testDir + '/' + conf.src + '/_patterns', conf);
 
   var mustache = '<section id="one" class="test">{{> 02-organisms/00-global/00-header(\'partial?\': true) }}</section><section id="two" class="test">{{> 02-organisms/00-global/01-footer.mustache }}</section><script></script><textarea></textarea></body></html>';
   var htmlEntitiesAndLinks = mustacheBrowser.toHtmlEntitiesAndLinks(mustache);
