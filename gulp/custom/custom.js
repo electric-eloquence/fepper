@@ -30,7 +30,7 @@
 
   gulp.task('custom:syncback', function (cb) {
 // Uncomment if you wish to enable this.
-//    'custom:css-process:syncback'
+//    'css-process:syncback'
   });
 
   gulp.task('custom:tcp-ip', [
@@ -41,6 +41,6 @@
 
   gulp.task('custom:watch', [
 // Uncomment if you wish to enable this.
-//    'custom:css-process:watch'
+//    'css-process:watch'
   ]);
 })();
