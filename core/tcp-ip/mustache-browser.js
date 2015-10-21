@@ -3,12 +3,7 @@
 
   var fs = require('fs');
 
-  var utils = require('../lib/utils');
-  var conf = utils.conf();
-  var rootDir = utils.rootDir();
-
   var htmlObj = require('../lib/html');
-  var patternDir = rootDir + '/' + conf.src + '/_patterns';
 
   module.exports = class {
     constructor(workDir, conf) {
@@ -79,9 +74,9 @@
           partial = this.partialTagToPath(req.query.partial);
 
           // Check if query string correlates to actual Mustache file.
-          var stats = fs.statSync(patternDir + '/' + partial);
+          var stats = fs.statSync(workDir + '/' + partial);
           if (stats.isFile()) {
-            fs.readFile(patternDir + '/' + partial, conf.enc, function (err, data) {
+            fs.readFile(workDir + '/' + partial, this.conf.enc, function (err, data) {
               // Render the Mustache code if it does.
               // First, link the Mustache tags.
               data = this.toHtmlEntitiesAndLinks(data);

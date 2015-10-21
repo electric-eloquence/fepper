@@ -186,8 +186,6 @@
       // Begin backticked multi-line string.
       plOverriderContent += `
 (function multisite_` + version + ` () {
-  "use strict";
-
   var sgNavContainer = document.getElementById("sg-nav-container");
 `;    // End backticked multi-line string.
       // ///////////////////////////////////////////////////////////////////////
@@ -810,10 +808,10 @@
 
     gulp.task('multisite:once', function (cb) {
       runSequence(
+        'multisite:pattern-override',
         'multisite:clean',
         'multisite:build',
         'multisite:copy',
-        'multisite:pattern-override',
         cb
       );
     });

@@ -4,10 +4,16 @@
   var bodyParser = require('body-parser');
   var express = require('express');
 
+  var utils = require('../lib/utils');
+  var conf = utils.conf();
+  var rootDir = utils.rootDir();
+  var dataJson = utils.data(rootDir, conf);
+
   var htmlScraper = require('./html-scraper');
   var htmlScraperPost = require('./html-scraper-post');
   var htmlScraperXhr = require('./html-scraper-xhr');
-  var mustacheBrowser = require('./mustache-browser');
+  var MustacheBrowser = require('./mustache-browser');
+  var mustacheBrowser = new MustacheBrowser(rootDir + '/' + conf.src + '/_patterns', conf);
   var success = require('./success');
 
   var utils = require('../lib/utils');
