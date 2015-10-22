@@ -101,7 +101,7 @@
     list-style: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
   .sg-header a {
-    font-size: 70%;
+    font-size: 68.75%;
     color: gray;
     text-decoration: none;
     display: block;
@@ -151,6 +151,15 @@
     .sg-nav-container.active {
       max-height: 50em; } }
 
+.fp-nav-container {
+  clear: both; }
+
+.fp-nav-label {
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  float: left;
+  font-size: 68.75%;
+  padding: 1em 1em 0 1em; }
+
 .sg-nav {
   z-index: 1;
   margin: 0;
@@ -167,7 +176,8 @@
         .sg-nav > li > ol {
           position: absolute;
           top: 2em;
-          left: 0; } }
+          left: 0;
+          z-index: 1; } }
 
 /* Accordion */
 .sg-acc-handle:after {

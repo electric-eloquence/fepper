@@ -8,7 +8,7 @@ conf.yml
 node_modules/
 npm-debug.log
 patternlab-node/config.json
-patternlab-node/npm-install.log
-patternlab-node/public/
+patternlab-node/public/*
+!patternlab-node/public/styleguide
 patternlab-node/source/
 Thumbs.db

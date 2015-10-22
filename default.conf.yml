@@ -29,16 +29,14 @@ backend:
     # - Use the node . syncback task to perform the sync.
     #
     # - Examples:
-    #css_dir: docroot/themes/theme/css
-    #fonts_dir: docroot/themes/theme/fonts
-    #images_dir: docroot/themes/theme/images
-    #js_dir: docroot/themes/theme/js
+    #assets_dir: docroot/themes/theme/assets
+    #scripts_dir: docroot/themes/theme/scripts
+    #styles_dir: docroot/themes/theme/styles
     #templates_dir: docroot/themes/theme/templates
     #templates_ext: tpl.php
-    css_dir:
-    fonts_dir:
-    images_dir:
-    js_dir:
+    assets_dir:
+    scripts_dir:
+    styles_dir:
     templates_dir:
     templates_ext:
 
@@ -46,7 +44,7 @@ backend:
     # Relative paths to the backend directories that will be served by Fepper's
     # webserver.
     # - These directories will just be served; no syncing will occur with them
-    #   unless they are also listed in synced_dirs. The assets in webserved_dirs
+    #   unless they are also listed in synced_dirs. The files in webserved_dirs
     #   can be browsed (or included) without having to copy them over into
     #   Pattern Lab.
     # - Be sure a backend is plugged into Fepper.
@@ -54,28 +52,29 @@ backend:
     #   contain the document root and the path from the document root to the
     #   target directory.
     # - Do not include "backend" or a leading slash.
-    # - To include the directories' assets in your code (or to view them in a
+    # - To include the directories' files in your code (or to view them in a
     # - browser), enter the path without the document root. For example, if the
-    #   setting is docroot/assets, enter /assets without docroot.
+    #   setting is docroot/css, enter /css without docroot.
     # - A version-controlled instance of these settings can be set in data.json
     #   under backend_webserved_dirs. Be sure they are entered in array syntax!
     # - The backend_webserved_dirs settings in data.json takes precedence over
     #   these settings in conf.yml.
     # - Assuming a host on the web is serving an instance of the backend, a
-    #   GitHub Page of this Fepper instance can access those assets if the
+    #   GitHub Page of this Fepper instance can access those files if the
     #   gh_pages_prefix setting is set in data.json and points correctly to that
     #   host.
     # - Do not include a trailing slash in gh_pages_prefix.
     # - Do not use names that will collide with what's in Pattern Lab, i.e.
-    #   docroot/images, docroot/css, etc.
+    #   docroot/assets, docroot/scripts, etc.
     # - DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER
     #   PUBLIC HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO
     #   ANY PUBLISHED SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE
     #   PUBLIC ANY SENSITIVE INFORMATION CONTAINED WITHIN THE SOURCE CODE!
     #
     # - Examples:
-    #- docroot/assets
-    #- docroot/media
+    #- docroot/css
+    #- docroot/img
+    #- docroot/js
 
 templater:
   # By default, the Templater will not retain untranslated Mustache tags when
@@ -83,18 +82,17 @@ templater:
   # templating language happens to be Mustache, set this value to true.
   retain_mustache: false
 
-# It is not a good idea to change the following values, but you can comment out
-# gh_pages_src and gh_pages_dest to surpress publishing the Fepper public dir to
-# GitHub Pages. This may be desired if you only wish to publish a Fepper subsite
-# and not the global site.
+# It is not a good idea to change the following value, but you can comment out
+# gh_pages_src to surpress publishing the Fepper public dir to GitHub Pages.
+# This may be desired if you only wish to publish a Fepper subsite and not the
+# global site.
 gh_pages_src: .publish/fepper-gh-pages
-gh_pages_dest: .publish/gulp-gh-pages
 
 # If using webserved_dirs and publishing to GitHub Pages, the repository name
-# must be prefixed to the src of images and other assets in webserved_dirs. This
-# value can also be set in data.json and be saved in version control. If both
-# are set, the setting in this file will take priority. Be sure to include the
-# leading slash in this setting.
+# must be prefixed to the src of the files in webserved_dirs. This value can
+# also be set in data.json and be saved in version control. If both are set, the
+# setting in this file will take priority. Be sure to include the leading slash
+# in this setting.
 #gh_pages_prefix: /github-repository-name
 
 # It is not a good idea to change the following values.

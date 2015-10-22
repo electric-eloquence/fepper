@@ -1,0 +1,25 @@
+<div class="page" id="page">
+  {{> 02-organisms/00-global/_main-header }}
+  <div role="main">
+    <div class="l-two-col">
+      <div class="l-main">
+        <article class="article">
+          <header class="article-header">
+            <h1>{{ article_title }}</h1>
+            {{> 01-molecules/00-text/_main-byline-author-time }}
+          </header>
+          {{> 02-organisms/01-article/_main-article-body }}
+        </article><!--end .article-->
+        {{> 01-molecules/06-components/_main-social-share }}
+        {{> 02-organisms/02-comments/_main-sticky-comment }}
+        {{> 02-organisms/02-comments/_main-comment-thread }}
+      </div><!--end l-main-->
+
+      <div class="l-sidebar">
+        {{> 02-organisms/04-sections/_main-related-posts }}
+        {{> 02-organisms/04-sections/_main-recent-tweets }}
+      </div><!--end l-sidebar-->
+    </div><!--end l-two-col-->
+  </div><!--End role=main-->
+  {{> 02-organisms/00-global/_main-footer }}
+</div>

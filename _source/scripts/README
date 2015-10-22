@@ -1,0 +1,3 @@
+Put custom JavaScripts in patternlab-node/source/scripts/src. Include these js files at the bottom of patternlab-node/source/_patternlab-files/pattern-header-footer/footer.html.
+
+Note: files placed in the top level of patternlab-node/source/js will be ignored by `gulp syncback`. In order to sync js files, they must be placed at least one directory beneath patternlab-node/source/js.

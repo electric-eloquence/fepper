@@ -13,7 +13,7 @@
   var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
   var conf = yaml.safeLoad(yml);
   var testDir = rootDir + '/' + conf.test_dir;
-  var poFile = testDir + '/' + conf.src + '/js/pattern-overrider.js';
+  var poFile = testDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
   var Tasks = require(rootDir + '/core/tasks/tasks');
   var tasks = new Tasks(testDir, conf);
 

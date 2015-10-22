@@ -1,1 +1,3 @@
-subsites.js
+**/patternlab-node/config.json
+**/patternlab-node/public/*
+!**/patternlab-node/public/styleguide

@@ -37,15 +37,13 @@
 
     copy() {
       fs.copySync(this.plnDir + '/source/_data/annotations.js', this.plnDir + '/public/data/annotations.js');
-      fs.copySync(this.plnDir + '/source/css', this.plnDir + '/public/css');
-      fs.copySync(this.plnDir + '/source/fonts', this.plnDir + '/public/fonts');
-      fs.copySync(this.plnDir + '/source/images', this.plnDir + '/public/images');
-      fs.copySync(this.plnDir + '/source/js', this.plnDir + '/public/js');
+      fs.copySync(this.plnDir + '/source/assets', this.plnDir + '/public/assets');
+      fs.copySync(this.plnDir + '/source/scripts', this.plnDir + '/public/scripts');
       fs.copySync(this.plnDir + '/source/static', this.plnDir + '/public/static/');
     }
 
-    copyCss() {
-      fs.copySync(this.plnDir + '/source/css', this.plnDir + '/public/css');
+    copyStyles() {
+      fs.copySync(this.plnDir + '/source/styles', this.plnDir + '/public/styles');
     }
   };
 })();

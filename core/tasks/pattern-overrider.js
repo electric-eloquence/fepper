@@ -16,22 +16,34 @@
   exports.main = function (workDir, conf) {
     var dataJson = utils.data(workDir, conf);
     var defaultPort = 35729;
-    var dest = workDir + '/' + conf.src + '/js/pattern-overrider.js';
+    var dest = workDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
 
     // Backticked multi-line string.
     var output = `// Mustache code browser.
 var pd = parent.document;
 var codeFill = pd.getElementById('sg-code-fill');
+var codeTitle = pd.getElementById('sg-code-title-mustache');
 if (codeFill) {
   // Give the PL Mustache code viewer the appearance of being linked.
   codeFill.addEventListener('mouseover', function () {
-    this.style.cursor = 'pointer';
+    if (codeTitle.className.indexOf('sg-code-title-active') > -1) {
+      this.style.cursor = 'pointer';
+    }
+    else {
+      this.style.cursor = 'default';
+    }
   });
   // Send to Fepper's Mustache browser when clicking the viewer's Mustache code.
   codeFill.addEventListener('click', function () {
-    var code = encodeURIComponent(this.innerHTML);
-    var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
-    window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
+    if (codeTitle.className.indexOf('sg-code-title-active') > -1) {
+      var code = encodeURIComponent(this.innerHTML);
+      // HTML entities where necessary.
+      code = code.replace(/><</g, '>&lt;<');
+      code = code.replace(/><\\/</g, '>&lt;/<');
+      code = code.replace(/><!--/g, '>&lt;!--');
+      var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
+      window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
+    }
   });
 }
 

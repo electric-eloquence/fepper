@@ -4,18 +4,20 @@
 (function () {
   'use strict';
 
-  var gulp = require('gulp');
+//  var gulp = require('gulp');
 //  var plugins = require('gulp-load-plugins')();
+//  var runSequence = require('run-sequence');
+
 //  var utilsGulp = require('../lib/utils');
 
-  gulp.task('custom:css-process', function () {
 // Uncomment if you want to use Stylus.
+//  gulp.task('css-process', function () {
 //    return gulp.src('./' + conf.src + '/css-processors/stylus/*.styl')
 //      .pipe(plugins.stylus({
 //        linenos: true
 //      }))
 //      .on('error', utilsGulp.handleError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
 // Uncomment if you want to use SCSS. Replace if you want to use something else.
 //    return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
 //      .pipe(plugins.sass({
@@ -23,17 +25,17 @@
 //        sourceComments: true
 //      }))
 //      .on('error', plugins.sass.logError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
-  });
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
+//  });
 
-  gulp.task('custom:css-process:no-comments', function () {
-// Uncomment if you want to use node . syncback without Stylus line comments.
+// Uncomment if you want to use fp syncback without Stylus line comments.
+//  gulp.task('css-process:no-comments', function () {
 //    return gulp.src('./' + conf.src + '/css-processors/stylus/*.styl')
 //      .pipe(plugins.stylus({
 //        linenos: false
 //      }))
 //      .on('error', utilsGulp.handleError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
 // Uncomment if you want to use SCSS. Replace if you want to use something else.
 //    return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
 //      .pipe(plugins.sass({
@@ -41,13 +43,22 @@
 //        sourceComments: false
 //      }))
 //      .on('error', plugins.sass.logError)
-//      .pipe(gulp.dest('./' + conf.src + '/css'));
-  });
+//      .pipe(gulp.dest('./' + conf.src + '/styles'));
+//  });
 
-  gulp.task('custom:css-process:watch', function () {
+// Uncomment to process css during fp syncback.
+//  gulp.task('css-process:syncback', function (cb) {
+//    runSequence(
+//      'css-process:compile-no-comments',
+//      'patternlab:copy-styles',
+//      cb
+//    );
+//  });
+
 // Uncomment if you want to use Stylus.
-//    gulp.watch('./' + conf.src + '/css-processors/stylus/**/*.styl', ['custom:css-process']);
+//  gulp.task('css-process:watch', function () {
+//    gulp.watch('./' + conf.src + '/css-processors/stylus/**/*.styl', ['css-process']);
 // Uncomment if you want to use SCSS. Replace if you want to use something else.
-//    gulp.watch('./' + conf.src + '/css-processors/scss/**/*.scss', ['custom:css-process']);
-  });
+//    gulp.watch('./' + conf.src + '/css-processors/scss/**/*.scss', ['css-process']);
+//  });
 })();
