@@ -16,6 +16,10 @@ if (codeFill) {
   codeFill.addEventListener('click', function () {
     if (codeTitle.className.indexOf('sg-code-title-active') > -1) {
       var code = encodeURIComponent(this.innerHTML);
+      // HTML entities where necessary.
+      code = code.replace(/><</g, '>&lt;<');
+      code = code.replace(/><\/</g, '>&lt;/<');
+      code = code.replace(/><!--/g, '>&lt;!--');
       var title = pd.getElementById('title').innerHTML.replace('Pattern Lab - ', '');
       window.location = window.location.origin + '/mustache-browser/?title=' + title + '&code=' + code;
     }

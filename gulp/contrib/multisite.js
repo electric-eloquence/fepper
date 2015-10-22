@@ -315,10 +315,12 @@
       var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
       pathParts = sgViewportPathname.split("/");
 
-      if (pathParts.length > 3 && (
+      if (
+        pathParts.length > 2 && (
           (pathParts[1] !== "patterns" && pathParts[2] === "patterns") ||
-          (pathParts[1] !== "styleguide" && pathParts[2] === "styleguide")))
-      {
+          (pathParts[1] !== "styleguide" && pathParts[2] === "styleguide")
+        )
+      ) {
         addressReplacement += "&subsite=" + pathParts[1];
         href = sgViewportPathname.substr(1);
       } else {
@@ -387,14 +389,18 @@
     var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
     var pathnameParts = sgViewportPathname.split("/");
 
-    if (pathnameParts.length > 3 && (
+    if (
+      pathnameParts.length > 2 && (
         (pathnameParts[1] !== "patterns" && pathnameParts[2] === "patterns") ||
-        (pathnameParts[1] !== "styleguide" && pathnameParts[2] === "styleguide")))
-    {
-      if (hrefParts.length > 2 && (
+        (pathnameParts[1] !== "styleguide" && pathnameParts[2] === "styleguide")
+      )
+    ) {
+      if (
+        hrefParts.length > 2 && (
           (hrefParts[0] !== "patterns" && hrefParts[1] === "patterns") ||
-          (hrefParts[0] !== "styleguide" && hrefParts[1] === "styleguide")))
-      {
+          (hrefParts[0] !== "styleguide" && hrefParts[1] === "styleguide")
+        )
+      ) {
         navLinkHref = hrefParts.splice(1).join("/");
       } else {
         navLinkHref = "../" + navLinkHref;
@@ -831,13 +837,20 @@
           var refPathname = typeof refObj.pathname === 'string' ? refObj.pathname : '';
           var refPathnameParts = refPathname.split('/');
 
-          if (req._parsedUrl.pathname === '/mustache-browser/' && refPathnameParts[1] !== 'patterns' && refPathnameParts[2] === 'patterns') {
+          if (
+            req._parsedUrl.pathname === '/mustache-browser/' &&
+            refPathnameParts.length > 2 &&
+            refPathnameParts[1] !== 'patterns' &&
+            refPathnameParts[2] === 'patterns'
+          ) {
             res.writeHead(302, {
               Location: '/mustache-browser/' + refPathnameParts[1] + '/' + req._parsedUrl.search
             });
             res.end();
           }
 
+          var MustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
+          var mustacheBrowser = new MustacheBrowser(rootDir + '/' + conf.src + '/_patterns', conf);
           mustacheBrowser.main()(req, res);
         };
       }
