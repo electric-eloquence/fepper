@@ -9,7 +9,7 @@
 
   gulp.task('contrib:data', [
 // Uncomment if you wish to enable this.
-    'multisite:data'
+//    'multisite:data'
   ]);
 
   gulp.task('contrib:frontend-copy', [
@@ -30,7 +30,7 @@
 
   gulp.task('contrib:once', [
 // Uncomment if you wish to enable this.
-    'multisite:once'
+//    'multisite:once'
   ]);
 
   gulp.task('contrib:publish', [
@@ -54,7 +54,7 @@
 
   gulp.task('contrib:tcp-ip', [
 // Uncomment if you wish to enable this.
-    'multisite:tcp-ip'
+//    'multisite:tcp-ip'
   ]);
 
   gulp.task('contrib:template', [
@@ -65,6 +65,6 @@
 
   gulp.task('contrib:watch', [
 // Uncomment if you wish to enable this.
-    'multisite:watch'
+//    'multisite:watch'
   ]);
 })();
