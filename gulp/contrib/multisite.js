@@ -873,28 +873,16 @@
     });
 
     gulp.task('multisite:pattern-override', function (cb) {
-      var filename;
       var p = new Promise(function (resolve, reject) {
         process.chdir(fpDir);
         for (subsite in tasks) {
           if (tasks.hasOwnProperty(subsite)) {
-            filename = multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js';
-            tasks[subsite].patternOverride(filename);
+            tasks[subsite].patternOverride(multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js');
           }
         }
         resolve();
       });
       p.then(function () {
-        for (subsite in tasks) {
-          if (tasks.hasOwnProperty(subsite)) {
-            filename = multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js';
-            fs.appendFileSync(filename, `
-// Need to unset this for multiple navbars to redirect correctly.
-window.onbeforeunload = function () {
-};
-`           );
-          }
-        }
         process.chdir(rootDir);
         cb();
       })
