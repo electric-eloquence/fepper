@@ -418,8 +418,8 @@
     document.getElementById("sg-viewport").contentWindow.postMessage( { "path": navLinkHref }, targetOrigin);
 
     // close up the menu
-    $this.closest(".sg-nav-container .sg-acc-panel").toggleClass("active");
-    $this.closest(".sg-nav-container .sg-acc-panel").siblings(".sg-acc-handle").toggleClass("active");
+    $this.parents("li").children(".sg-acc-panel").toggleClass("active");
+    $this.parents("li").children(".sg-acc-handle").toggleClass("active");
 
     return false;
 
