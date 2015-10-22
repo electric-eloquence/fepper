@@ -48,12 +48,18 @@
     main() {
       return function (req, res) {
         var code = '';
+        var i;
         var output = '';
         var partial;
 
         if (typeof req.query.code === 'string') {
           try {
             code += req.query.code;
+            // Strip Pattern Lab's token span tags. Iterate 3 times since they
+            // are nested a maximum depth of 3.
+            for (i = 0; i < 3; i++) {
+              code = code.replace(/<span class="token [^>]*>([^<]*)<\/span>/g, '$1');
+            }
             code = this.toHtmlEntitiesAndLinks(code);
             if (typeof req.query.title === 'string') {
               code = '<h1>' + req.query.title + '</h1>\n' + code;

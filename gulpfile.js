@@ -72,6 +72,7 @@
 
   gulp.task('once', function (cb) {
     runSequence(
+      'fepper:pattern-override',
       'patternlab:clean',
       'patternlab:build',
       'patternlab:copy',
