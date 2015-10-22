@@ -4,16 +4,17 @@
   var bodyParser = require('body-parser');
   var express = require('express');
 
-  var htmlScraper = require('./html-scraper');
-  var htmlScraperPost = require('./html-scraper-post');
-  var htmlScraperXhr = require('./html-scraper-xhr');
-  var mustacheBrowser = require('./mustache-browser');
-  var success = require('./success');
-
   var utils = require('../lib/utils');
   var conf = utils.conf();
   var rootDir = utils.rootDir();
   var dataJson = utils.data(rootDir, conf);
+
+  var htmlScraper = require('./html-scraper');
+  var htmlScraperPost = require('./html-scraper-post');
+  var htmlScraperXhr = require('./html-scraper-xhr');
+  var MustacheBrowser = require('./mustache-browser');
+  var mustacheBrowser = new MustacheBrowser(rootDir + '/' + conf.src + '/_patterns', conf);
+  var success = require('./success');
 
   exports.main = function () {
     var app = express();
@@ -53,7 +54,7 @@
     app.get('/html-scraper-xhr', htmlScraperXhr.main);
 
     // Mustache browser.
-    app.get('/mustache-browser', mustacheBrowser.main);
+    app.get('/mustache-browser', mustacheBrowser.main());
 
     // Success page.
     app.get('/success', success.main);

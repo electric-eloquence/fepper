@@ -6,7 +6,6 @@
   'use strict';
 
   var gulp = require('gulp');
-//  var runSequence = require('run-sequence');
 
   gulp.task('custom:data', [
   ]);
@@ -31,11 +30,7 @@
 
   gulp.task('custom:syncback', function (cb) {
 // Uncomment if you wish to enable this.
-//    runSequence(
-//      'custom:css-process:compile-no-comments',
-//      'patternlab:copy-css',
-//      cb
-//    );
+//    'css-process:syncback'
   });
 
   gulp.task('custom:tcp-ip', [
@@ -46,6 +41,6 @@
 
   gulp.task('custom:watch', [
 // Uncomment if you wish to enable this.
-//    'custom:css-process:watch'
+//    'css-process:watch'
   ]);
 })();

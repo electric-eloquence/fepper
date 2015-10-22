@@ -74,7 +74,7 @@ If using Git for version control, directories named "ignore" will be ignored.
   * `fp`
 * These other utility tasks are runnable on the command line:
   * `fp data` to force compile data.json.
-  * `fp frontend-copy` to copy css, fonts, images, and js to backend.
+  * `fp frontend-copy` to copy assets, scripts, and styles to backend.
   * `fp lint` to lint HTML, JavaScripts, and JSON.
   * `fp minify` to minify JavaScripts.
   * `fp once` to clean the public folder and do a one-off Fepper build.
@@ -192,7 +192,7 @@ conversion from HTML to XHTML, so don't expect an exact copy of the HTML
 structure of the source HTML.
 
 ###<a id="variables.styl"></a>variables.styl###
-`patternlab-node/source/js/src/variables.styl` is a file containing variables 
+`patternlab-node/source/scripts/src/variables.styl` is a file containing variables 
 that can be shared across the Stylus CSS preprocessor, browser JavaScripts, and 
 PHP backends (and possibly other language backends as well). It ships with these 
 values:

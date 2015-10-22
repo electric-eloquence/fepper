@@ -1,0 +1,2 @@
+Place templates you wish the templater to ignore in this directory or prefix 
+them with "__".

@@ -1,0 +1,40 @@
+<div class="page" id="page">
+  {{> 02-organisms/00-global/_main-header }}
+  <div role="main">
+    {{# emergency }}
+      {{> 01-molecules/07-messaging/_main-alert }}
+    {{/ emergency }}
+    {{# hero }}
+      {{> 01-molecules/02-blocks/_main-block-hero }}
+    {{/ hero }}
+
+    <div class="g g-3up">
+      {{# touts }}
+        <div class="gi">
+          {{> 01-molecules/02-blocks/_main-inset-block }}
+        </div>
+      {{/ touts }}
+    </div><!--end 3up-->
+
+    <hr />
+
+    <div class="l-two-col">
+      <div class="l-main">
+        <section class="section latest-posts">
+          <h2 class="section-title">Latest Posts</h2>
+          <ul class="post-list">
+            {{# latest-posts }}
+              <li>{{> 01-molecules/02-blocks/_main-media-block }}</li>
+            {{/ latest-posts }}
+          </ul>
+          <a href="#" class="text-btn">View more posts</a>
+        </section>
+      </div><!--end .l-main-->
+
+      <div class="l-sidebar">
+        {{> 02-organisms/04-sections/_main-recent-tweets }}
+      </div><!--end .l-sidebar-->
+    </div><!--end .l-two-col-->
+  </div><!--End role=main-->
+  {{> 02-organisms/00-global/_main-footer }}
+</div>

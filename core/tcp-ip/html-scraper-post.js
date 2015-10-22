@@ -281,7 +281,7 @@
     var xhtml = '';
 
     // HTML scraper action on submission of URL.
-    if (typeof req.body.url === 'string' && req.body.url !== '' && typeof req.body.target === 'string') {
+    if (typeof req.body.url === 'string' && req.body.url.trim() && typeof req.body.target === 'string') {
       try {
         request(req.body.url, function (error, response, body) {
           if (error || response.statusCode !== 200) {

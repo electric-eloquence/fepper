@@ -24,6 +24,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -39,6 +40,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -54,13 +56,14 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
-  gulp.task('patternlab:copy-css', function (cb) {
+  gulp.task('patternlab:copy-styles', function (cb) {
     var p = new Promise(function (resolve, reject) {
       process.chdir(pathIn);
-      fpPln.copyCss();
+      fpPln.copyStyles();
       resolve();
     });
     p.then(function () {
@@ -69,6 +72,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -84,6 +88,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -99,6 +104,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 
@@ -114,6 +120,7 @@
     })
     .catch(function (reason) {
       utils.error(reason);
+      cb();
     });
   });
 })();

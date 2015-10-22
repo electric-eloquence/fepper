@@ -39,10 +39,9 @@
   });
 
   gulp.task('frontend-copy', [
-    'fepper:copy-css',
-    'fepper:copy-fonts',
-    'fepper:copy-images',
-    'fepper:copy-js',
+    'fepper:copy-assets',
+    'fepper:copy-scripts',
+    'fepper:copy-styles',
     'contrib:frontend-copy',
     'custom:frontend-copy'
   ]);
@@ -73,8 +72,10 @@
 
   gulp.task('once', function (cb) {
     runSequence(
+      'fepper:pattern-override',
       'patternlab:clean',
-      ['patternlab:build', 'patternlab:copy'],
+      'patternlab:build',
+      'patternlab:copy',
       ['contrib:once', 'custom:once'],
       cb
     );
@@ -82,8 +83,7 @@
 
   gulp.task('publish', function (cb) {
     runSequence(
-      'fepper:gh-pages',
-      'publish:gh-pages',
+      'fepper:publish',
       ['contrib:publish', 'custom:publish'],
       cb
     );

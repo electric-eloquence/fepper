@@ -17,90 +17,68 @@
   var staticDir = testDir + '/static';
 
   describe('Static Generator', function () {
-    it('should copy css to the static dir', function () {
-      var cssDir = staticDir + '/css';
+    it('should copy assets to the static dir', function () {
+      var assetsDir = staticDir + '/assets';
 
-      // Clear out css dir.
-      fs.removeSync(cssDir);
+      // Clear out assets dir.
+      fs.removeSync(assetsDir);
       // Get empty stat for comparison.
       var dirExistsBefore = false;
       try {
-        dirExistsBefore = fs.statSync(cssDir).isDirectory();
+        dirExistsBefore = fs.statSync(assetsDir).isDirectory();
       }
       catch (err) {
         // Fail gracefully.
       }
-      // Copy css dir.
-      staticGenerator.cssDirCopy(publicDir, staticDir);
+      // Copy assets dir.
+      staticGenerator.assetsDirCopy(publicDir, staticDir);
       // Stat copied dir.
-      var dirExistsAfter = fs.statSync(cssDir).isDirectory();
+      var dirExistsAfter = fs.statSync(assetsDir).isDirectory();
 
       expect(dirExistsBefore).to.equal(false);
       expect(dirExistsAfter).to.not.equal(dirExistsBefore);
     });
 
-    it('should copy fonts to the static dir', function () {
-      var fontsDir = staticDir + '/fonts';
+    it('should copy scripts to the static dir', function () {
+      var scriptsDir = staticDir + '/scripts';
 
-      // Clear out fonts dir.
-      fs.removeSync(fontsDir);
+      // Clear out scripts dir.
+      fs.removeSync(scriptsDir);
       // Get empty stat for comparison.
       var dirExistsBefore = false;
       try {
-        dirExistsBefore = fs.statSync(fontsDir).isDirectory();
+        dirExistsBefore = fs.statSync(scriptsDir).isDirectory();
       }
       catch (err) {
         // Fail gracefully.
       }
-      // Copy fonts dir.
-      staticGenerator.fontsDirCopy(publicDir, staticDir);
+      // Copy scripts dir.
+      staticGenerator.scriptsDirCopy(publicDir, staticDir);
       // Stat copied dir.
-      var dirExistsAfter = fs.statSync(fontsDir).isDirectory();
+      var dirExistsAfter = fs.statSync(scriptsDir).isDirectory();
 
       expect(dirExistsBefore).to.equal(false);
       expect(dirExistsAfter).to.not.equal(dirExistsBefore);
     });
 
-    it('should copy images to the static dir', function () {
-      var imagesDir = staticDir + '/images';
+    it('should copy styles to the static dir', function () {
+      var stylesDir = staticDir + '/styles';
 
-      // Clear out images dir.
-      fs.removeSync(imagesDir);
+      // Clear out styles dir.
+      fs.removeSync(stylesDir);
       // Get empty stat for comparison.
       var dirExistsBefore = false;
       try {
-        dirExistsBefore = fs.statSync(imagesDir).isDirectory();
+        dirExistsBefore = fs.statSync(stylesDir).isDirectory();
       }
       catch (err) {
         // Fail gracefully.
       }
-      // Copy images dir.
+      // Copy styles dir.
       // Run pattern-overrider.js.
-      staticGenerator.imagesDirCopy(publicDir, staticDir);
+      staticGenerator.stylesDirCopy(publicDir, staticDir);
       // Stat copied dir.
-      var dirExistsAfter = fs.statSync(imagesDir).isDirectory();
-
-      expect(dirExistsBefore).to.equal(false);
-      expect(dirExistsAfter).to.not.equal(dirExistsBefore);
-    });
-
-    it('should copy js to the static dir', function () {
-      var jsDir = staticDir + '/js';
-
-      // Clear out js dir.
-      fs.removeSync(jsDir);
-      // Get empty stat for comparison.
-      var dirExistsBefore = false;
-      try {
-        dirExistsBefore = fs.statSync(jsDir).isDirectory();
-      }
-      catch (err) {
-        // Fail gracefully.
-      }
-      // Copy js dir.
-      staticGenerator.jsDirCopy(publicDir, staticDir);
-      // Stat copied dir.
-      var dirExistsAfter = fs.statSync(jsDir).isDirectory();
+      var dirExistsAfter = fs.statSync(stylesDir).isDirectory();
 
       expect(dirExistsBefore).to.equal(false);
       expect(dirExistsAfter).to.not.equal(dirExistsBefore);

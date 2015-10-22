@@ -26,7 +26,6 @@
     }
 
     defaults.gh_pages_src = null;
-    defaults.gh_pages_dest = null;
 
     if (!global.conf) {
       // Try getting conf from global process object.
@@ -161,6 +160,10 @@
    * @return {array} The webserved directories stripped of configuration prefix.
    */
   exports.webservedDirnamesTruncate = function (webservedDirsFull) {
+    if (!webservedDirsFull || !webservedDirsFull.length) {
+      return [];
+    }
+
     var i;
     var webservedDirSplit;
     var webservedDirsShort = [];
@@ -177,11 +180,11 @@
   /**
    * Copy webserved_dirs to gh_pages_src.
    */
-  exports.webservedDirsCopy = function (webservedDirsFull, rootDir, webservedDirsShort, ghPagesDir) {
+  exports.webservedDirsCopy = function (webservedDirsFull, rootDir, webservedDirsShort, ghPagesSrc) {
     var i;
 
     for (i = 0; i < webservedDirsFull.length; i++) {
-      fs.copySync(rootDir + '/backend/' + webservedDirsFull[i], ghPagesDir + '/' + webservedDirsShort[i]);
+      fs.copySync(rootDir + '/backend/' + webservedDirsFull[i], ghPagesSrc + '/' + webservedDirsShort[i]);
     }
   };
 })();

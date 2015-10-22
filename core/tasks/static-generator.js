@@ -7,20 +7,16 @@
 
   var utils = require('../lib/utils');
 
-  exports.cssDirCopy = function (publicDir, staticDir) {
-    fs.copySync(publicDir + '/css', staticDir + '/css');
+  exports.assetsDirCopy = function (publicDir, staticDir) {
+    fs.copySync(publicDir + '/assets', staticDir + '/assets');
   };
 
-  exports.fontsDirCopy = function (publicDir, staticDir) {
-    fs.copySync(publicDir + '/fonts', staticDir + '/fonts');
+  exports.scriptsDirCopy = function (publicDir, staticDir) {
+    fs.copySync(publicDir + '/scripts', staticDir + '/scripts');
   };
 
-  exports.imagesDirCopy = function (publicDir, staticDir) {
-    fs.copySync(publicDir + '/images', staticDir + '/images');
-  };
-
-  exports.jsDirCopy = function (publicDir, staticDir) {
-    fs.copySync(publicDir + '/js', staticDir + '/js');
+  exports.stylesDirCopy = function (publicDir, staticDir) {
+    fs.copySync(publicDir + '/styles', staticDir + '/styles');
   };
 
   exports.pagesDirCompile = function (workDir, conf, patternDir, staticDir) {
@@ -68,10 +64,9 @@
     var webservedDirsShort;
 
     // Copy asset directories.
-    exports.cssDirCopy(publicDir, staticDir);
-    exports.fontsDirCopy(publicDir, staticDir);
-    exports.imagesDirCopy(publicDir, staticDir);
-    exports.jsDirCopy(publicDir, staticDir);
+    exports.assetsDirCopy(publicDir, staticDir);
+    exports.scriptsDirCopy(publicDir, staticDir);
+    exports.stylesDirCopy(publicDir, staticDir);
 
     // Copy pages directory.
     exports.pagesDirCompile(workDir, conf, publicDir + '/patterns', staticDir);

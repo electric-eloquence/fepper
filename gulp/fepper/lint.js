@@ -17,7 +17,7 @@
   });
 
   gulp.task('lint:eslint', function () {
-    return gulp.src(conf.src + '/js/src/**/*.js')
+    return gulp.src(conf.src + '/scripts/src/**/*.js')
       .pipe(plugins.eslint())
       .pipe(plugins.eslint.format())
       .pipe(plugins.eslint.failAfterError());
