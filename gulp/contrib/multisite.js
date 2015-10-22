@@ -301,15 +301,19 @@
     var data         = { "pattern": pattern };
     var fileName     = urlHandler.getFileName(pattern);
     var expectedPath = window.location.pathname.replace("public/index.html","public/")+fileName;
+    var pathParts;
 
     if (givenPath.indexOf(expectedPath) === -1) {
-      // make sure to update the iframe because there was a click
-      document.getElementById("sg-viewport").contentWindow.postMessage( { "path": fileName }, urlHandler.targetOrigin);
+      pathParts = expectedPath.split("/");
+      if (pathParts.length > 2 && pathParts[2] !== "patterns" && pathParts[2] !== "styleguide") {
+        // make sure to update the iframe because there was a click
+        document.getElementById("sg-viewport").contentWindow.postMessage( { "path": fileName }, urlHandler.targetOrigin);
+      }
     } else {
       var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
       var href;
       var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
-      var pathParts = sgViewportPathname.split("/");
+      pathParts = sgViewportPathname.split("/");
 
       if (pathParts.length > 3 && (
           (pathParts[1] !== "patterns" && pathParts[2] === "patterns") ||
@@ -397,11 +401,19 @@
       }
     }
 
+    // update address bar if going from subsite to main
+    if (navLinkHref.indexOf("../") === 0) {
+      var pattern = $this.attr("data-patternpartial");
+      var data = {pattern: pattern};
+      var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
+      window.history.pushState(data, null, addressReplacement);
+    }
+
     document.getElementById("sg-viewport").contentWindow.postMessage( { "path": navLinkHref }, targetOrigin);
 
     // close up the menu
-    $this.parents(".fp-nav-container .sg-acc-panel").toggleClass("active");
-    $this.parents(".fp-nav-container .sg-acc-panel").siblings(".sg-acc-handle").toggleClass("active");
+    $this.closest(".sg-nav-container .sg-acc-panel").toggleClass("active");
+    $this.closest(".sg-nav-container .sg-acc-panel").siblings(".sg-acc-handle").toggleClass("active");
 
     return false;
 
@@ -861,16 +873,28 @@
     });
 
     gulp.task('multisite:pattern-override', function (cb) {
+      var filename;
       var p = new Promise(function (resolve, reject) {
         process.chdir(fpDir);
         for (subsite in tasks) {
           if (tasks.hasOwnProperty(subsite)) {
-            tasks[subsite].patternOverride(multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js');
+            filename = multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js';
+            tasks[subsite].patternOverride(filename);
           }
         }
         resolve();
       });
       p.then(function () {
+        for (subsite in tasks) {
+          if (tasks.hasOwnProperty(subsite)) {
+            filename = multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js';
+            fs.appendFileSync(filename, `
+// Need to unset this for multiple navbars to redirect correctly.
+window.onbeforeunload = function () {
+};
+`           );
+          }
+        }
         process.chdir(rootDir);
         cb();
       })

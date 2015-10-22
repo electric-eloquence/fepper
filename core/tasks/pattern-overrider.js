@@ -16,7 +16,7 @@
   exports.main = function (workDir, conf) {
     var dataJson = utils.data(workDir, conf);
     var defaultPort = 35729;
-    var dest = workDir + '/' + conf.src + '/scripts/pattern-overrider.js';
+    var dest = workDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
 
     // Backticked multi-line string.
     var output = `// Mustache code browser.
