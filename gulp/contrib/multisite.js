@@ -85,9 +85,16 @@
     utils.log('Importing Mustache templates from "' + from + '" to "' + to + '"...');
   }
 
+  function subsiteCopyScriptsClosure(subsite) {
+    return function () {
+      return gulp.src(multisiteDir + '/' + subsite + '/' + conf.src + '/scripts/*/**')
+        .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.scripts_dir));
+    };
+  }
+
   function subsiteCopyTaskClosure(subsite, frontendDir) {
     return function () {
-      return gulp.src(multisiteDir + '/' + subsite + '/' + conf.src + '/' + frontendDir + '/*')
+      return gulp.src(multisiteDir + '/' + subsite + '/' + conf.src + '/' + frontendDir + '/**')
         .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.assets_dir));
     };
   }
@@ -604,7 +611,7 @@
         var merged = mergeStream();
 
         for (var i = 0; i < subsites.length; i++) {
-          allsitesCopyTask = gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/assets/*')
+          allsitesCopyTask = gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/assets/**')
             .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.assets_dir));
           merged.add(allsitesCopyTask);
         }
@@ -616,8 +623,8 @@
     if (typeof conf.backend.synced_dirs.scripts_dir === 'string' && conf.backend.synced_dirs.scripts_dir.trim()) {
       // Create Gulp tasks for copying individual subsite scripts.
       for (i = 0; i < subsites.length; i++) {
-        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i], 'scripts');
-        gulp.task('multisite:frontend-copy-scripts:' + subsites[i], subsiteCopyTask);
+        subsiteCopyTask = subsiteCopyScriptsClosure(subsites[i]);
+        gulp.task('multisite:frontend-copy-assets:' + subsites[i], subsiteCopyTask);
       }
 
       // Create Gulp task for copying all subsite scripts.
@@ -626,7 +633,7 @@
         var merged = mergeStream();
 
         for (var i = 0; i < subsites.length; i++) {
-          allsitesCopyTask = gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/scripts/*/**/*')
+          allsitesCopyTask = gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/scripts/*/**')
             .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.scripts_dir));
           merged.add(allsitesCopyTask);
         }
@@ -648,7 +655,7 @@
         var merged = mergeStream();
 
         for (var i = 0; i < subsites.length; i++) {
-          allsitesCopyTask = gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/styles/*')
+          allsitesCopyTask = gulp.src(multisiteDir + '/' + subsites[i] + '/' + conf.src + '/styles/**')
             .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.styles_dir));
           merged.add(allsitesCopyTask);
         }
