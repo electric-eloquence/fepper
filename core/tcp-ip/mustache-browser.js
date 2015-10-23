@@ -11,26 +11,9 @@
       this.conf = conf;
     }
 
-    toHtmlEntitiesAndLinks(data) {
-      data = data.replace(/</g, '&lt;');
-      data = data.replace(/>/g, '&gt;');
-      data = data.replace(/{{&gt;[^}]*}}/g, '<a href="?partial=$&">$&</a>');
-      data = data.replace(/\n/g, '<br>');
-
-      return data;
-    }
-
-    partialTagToPath(partial) {
-      partial = partial.replace(/{{+[^\w]?\s*/, '');
-      partial = partial.replace(/\s*}+}/, '');
-      partial = partial.replace(/\(.*\)/, '');
-      if (partial.indexOf('.mustache') !== partial.length - 9) {
-        partial = partial + '.mustache';
-      }
-
-      return partial;
-    }
-
+    /**
+     * Message indicating inability to match a partial to a Mustache file.
+     */
     noResult(res, err) {
       var output = '';
       output += htmlObj.headNoStyles;
@@ -45,6 +28,45 @@
       res.end(output);
     }
 
+    /**
+     * Strip Mustache tag to only the partial path.
+     */
+    partialTagToPath(partial) {
+      partial = partial.replace(/{{+[^\w]?\s*/, '');
+      partial = partial.replace(/\s*}+}/, '');
+      partial = partial.replace(/\(.*\)/, '');
+      if (partial.indexOf('.mustache') !== partial.length - 9) {
+        partial = partial + '.mustache';
+      }
+
+      return partial;
+    }
+
+    /**
+     * Recursively strip token span tags output by the Pattern Lab code viewer.
+     */
+    spanTokensStrip(code) {
+console.log(Date.now());
+      code = code.replace(/<span class="token [^>]*>([^<]*)<\/span>/g, '$1');
+      if (code.match(/<span class="token [^>]*>([^<]*)<\/span>/)) {
+        code = this.spanTokensStrip(code);
+      }
+
+      return code;
+    }
+
+    /**
+     * Make angle brackets and newlines viewable as HTML and hotlink partials.
+     */
+    toHtmlEntitiesAndLinks(data) {
+      data = data.replace(/</g, '&lt;');
+      data = data.replace(/>/g, '&gt;');
+      data = data.replace(/{{&gt;[^}]*}}/g, '<a href="?partial=$&">$&</a>');
+      data = data.replace(/\n/g, '<br>');
+
+      return data;
+    }
+
     main() {
       return function (req, res) {
         var code = '';
@@ -55,11 +77,9 @@
         if (typeof req.query.code === 'string') {
           try {
             code += req.query.code;
-            // Strip Pattern Lab's token span tags. Iterate 3 times since they
-            // are nested a maximum depth of 3.
-            for (i = 0; i < 3; i++) {
-              code = code.replace(/<span class="token [^>]*>([^<]*)<\/span>/g, '$1');
-            }
+            // Strip Pattern Lab's token span tags.
+            code = this.spanTokensStrip(code);
+            // HTML entities and links.
             code = this.toHtmlEntitiesAndLinks(code);
             if (typeof req.query.title === 'string') {
               code = '<h1>' + req.query.title + '</h1>\n' + code;
