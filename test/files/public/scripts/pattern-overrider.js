@@ -16,7 +16,7 @@ if (codeFill) {
   codeFill.addEventListener('click', function () {
     if (codeTitle.className.indexOf('sg-code-title-active') > -1) {
       var code = encodeURIComponent(this.innerHTML);
-      // HTML entities where necessary.
+      // HTML entities for mustacheBrowser.spanTokensStrip() to work.
       code = code.replace(/><</g, '>&lt;<');
       code = code.replace(/><\/</g, '>&lt;/<');
       code = code.replace(/><!--/g, '>&lt;!--');

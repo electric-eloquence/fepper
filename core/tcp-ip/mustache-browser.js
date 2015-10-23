@@ -46,7 +46,6 @@
      * Recursively strip token span tags output by the Pattern Lab code viewer.
      */
     spanTokensStrip(code) {
-console.log(Date.now());
       code = code.replace(/<span class="token [^>]*>([^<]*)<\/span>/g, '$1');
       if (code.match(/<span class="token [^>]*>([^<]*)<\/span>/)) {
         code = this.spanTokensStrip(code);
@@ -70,7 +69,6 @@ console.log(Date.now());
     main() {
       return function (req, res) {
         var code = '';
-        var i;
         var output = '';
         var partial;
 
