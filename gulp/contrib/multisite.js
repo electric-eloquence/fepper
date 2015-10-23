@@ -881,6 +881,7 @@
         'multisite:clean',
         'multisite:build',
         'multisite:copy',
+        'multisite:copy-styles',
         cb
       );
     });

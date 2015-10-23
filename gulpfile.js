@@ -76,6 +76,7 @@
       'patternlab:clean',
       'patternlab:build',
       'patternlab:copy',
+      'patternlab:copy-styles',
       ['contrib:once', 'custom:once'],
       cb
     );
