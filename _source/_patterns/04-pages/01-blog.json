@@ -5,7 +5,7 @@
       "img": {
         "square": {
           "src": "../../assets/sample/thumb-square-river.jpg",
-          "alt": "Post Thumbnail"  
+          "alt": "Post Thumbnail"
         }
       },
       "headline" : {
@@ -20,7 +20,7 @@
       "img": {
         "square": {
           "src": "../../assets/sample/thumb-square-ivy.jpg",
-          "alt": "Ivy"  
+          "alt": "Ivy"
         }
       },
       "headline" : {
@@ -35,7 +35,7 @@
       "img": {
         "square": {
           "src": "../../assets/sample/thumb-square-yosemite.jpg",
-          "alt": "Yosemite"  
+          "alt": "Yosemite"
         }
       },
       "headline" : {
@@ -50,7 +50,7 @@
       "img": {
         "square": {
           "src": "../../assets/sample/thumb-square-fire.jpg",
-          "alt": "Fire"  
+          "alt": "Fire"
         }
       },
       "headline" : {
@@ -65,7 +65,7 @@
       "img": {
         "square": {
           "src": "../../assets/sample/thumb-square-gear.jpg",
-          "alt": "Camping Gear"  
+          "alt": "Camping Gear"
         }
       },
       "headline" : {
