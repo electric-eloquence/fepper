@@ -4,13 +4,13 @@
 /* Clearfix */
 .cf
   *zoom: 1
-.cf:before, .cf:after
-  content: " "
-  /* 1 */
-  display: table
-  /* 2 */
-.cf:after
-  clear: both
+  &:before, &:after
+    content: " "
+    /* 1 */
+    display: table
+    /* 2 */
+  &:after
+    clear: both
 /* Completely remove from the flow and screen readers. */
 .is-hidden
   display: none !important
