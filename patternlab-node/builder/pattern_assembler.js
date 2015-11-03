@@ -133,6 +133,7 @@
 
       //add the raw template to memory
       currentPattern.template = fs.readFileSync(file, 'utf8');
+      currentPattern.extendedTemplate = currentPattern.template;
 
       //add currentPattern to patternlab.patterns array
       addPattern(currentPattern, patternlab);
