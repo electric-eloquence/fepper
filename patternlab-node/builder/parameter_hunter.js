@@ -41,16 +41,30 @@
 					var paramData = eval(paramString);
 
 					var partialPattern = pattern_assembler.get_pattern_by_key(partialName, patternlab);
-					var globalData = JSON.parse(JSON.stringify(patternlab.data));
-					var localData = JSON.parse(JSON.stringify(pattern.jsonFileData));
 
-					var allData = pattern_assembler.merge_data(globalData, localData);
-					allData = pattern_assembler.merge_data(allData, paramData);
+					//in order to only token-replace parameterized tags, we'll switch them to ERB-style tags
+					//as per the Mustache docs https://mustache.github.io/mustache.5.html.
+					var escapedKey;
+					var regex;
+					for(var i in paramData){
+						if(paramData.hasOwnProperty(i) && (typeof paramData[i] === 'boolean' || typeof paramData[i] === 'number' || typeof paramData[i] === 'string')){
+							//escape regex special characters as per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
+							escapedKey = i.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+							//apply replacement based on allowable characters from lines 78 and 79 of mustache.js
+							//of the Mustache for JS project.
+							regex = new RegExp('{{([{#\\^\\/&]?\\s*' + escapedKey + '\\s*}?)}}', 'g');
+							partialPattern.extendedTemplate = partialPattern.extendedTemplate.replace(regex, '<%$1%>');
+						}
+					}
 
-					//extend pattern data links into link for pattern link shortcuts to work. we do this locally and globally
-					allData.link = extend({}, patternlab.data.link);
+					//then set the new delimiter at the beginning of the extended template
+					partialPattern.extendedTemplate = '{{=<% %>=}}' + partialPattern.extendedTemplate;
 
-					var renderedPartial = pattern_assembler.renderPattern(partialPattern.extendedTemplate, allData, patternlab.partials);
+					//render the newly delimited partial
+					var renderedPartial = pattern_assembler.renderPattern(partialPattern.extendedTemplate, paramData);
+
+					//unset the delimiter artifact
+					renderedPartial = renderedPartial.replace(/{{==}}/g, '');
 
 					//remove the parameter from the partial and replace it with the rendered partial + paramData
 					pattern.extendedTemplate = pattern.extendedTemplate.replace(pMatch, renderedPartial);
