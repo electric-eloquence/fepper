@@ -29,6 +29,13 @@
       return matches;
     }
 
+    function findPartialsExtended(pattern){
+      var extended = {};
+      extended.template = pattern.extendedTemplate;
+      var matches = findPartials(extended);
+      return matches;
+    }
+
     function findListItems(pattern){
       var matches = pattern.template.match(/({{#( )?)(listItems.)(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)( )?}}/g);
       return matches;
@@ -186,6 +193,13 @@
         //determine if the template contains any pattern parameters. if so they must be immediately consumed
         parameter_hunter.find_parameters(currentPattern, patternlab);
 
+        //need to reevaluate partials if they are eliminated by parameter submissions
+        foundPatternPartials = findPartialsExtended(currentPattern);
+
+        if(foundPatternPartials === null){
+          return;
+        }
+
         //do something with the regular old partials
         for(i = 0; i < foundPatternPartials.length; i++){
           var partialKey = foundPatternPartials[i].replace(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\(.*)?([ ])?}}/g, '$2');
@@ -300,6 +314,9 @@
     return {
       find_pattern_partials: function(pattern){
         return findPartials(pattern);
+      },
+      find_pattern_partials_extended: function(pattern){
+        return findPartialsExtended(pattern);
       },
       find_list_items: function(pattern){
         return findListItems(pattern)
