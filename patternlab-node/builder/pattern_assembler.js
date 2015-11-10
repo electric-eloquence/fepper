@@ -29,9 +29,9 @@
       return matches;
     }
 
-    function findPartialsExtended(pattern){
+    function findPartialsExtended(template){
       var extended = {};
-      extended.template = pattern.extendedTemplate;
+      extended.template = template;
       var matches = findPartials(extended);
       return matches;
     }
@@ -120,6 +120,7 @@
       try {
         var jsonFilename = patternlab.config.patterns.source + currentPattern.subdir + '/' + currentPattern.fileName  + ".json";
         currentPattern.jsonFileData = fs.readJSONSync(jsonFilename.substring(2));
+//        currentPattern.parameterizedData = currentPattern.jsonFileData;
         if(patternlab.config.debug){
           console.log('found pattern-specific data.json for ' + currentPattern.key);
         }
@@ -140,13 +141,14 @@
 
       //add the raw template to memory
       currentPattern.template = fs.readFileSync(file, 'utf8');
-      currentPattern.extendedTemplate = currentPattern.template;
+//      currentPattern.extendedTemplate = currentPattern.template;
+      currentPattern.parameterizedTemplate = currentPattern.template;
 
       //add currentPattern to patternlab.patterns array
       addPattern(currentPattern, patternlab);
     }
 
-    function processPatternRecursive(file, patternlab, additionalData){
+    function processPatternRecursive(file, patternlab, originalData){
 
       var fs = require('fs-extra'),
       mustache = require('mustache'),
@@ -165,18 +167,12 @@
       var currentPattern,
       i;
 
-      for(i = 0; i < patternlab.patterns.length; i++){
-        if(patternlab.patterns[i].abspath === file){
-          currentPattern = patternlab.patterns[i];
-        }
-      }
+      currentPattern = getpatternbykey(file, patternlab);
 
       //return if processing an ignored file
-      if(typeof currentPattern === 'undefined'){
+      if(!currentPattern){
         return;
       }
-
-      currentPattern.extendedTemplate = currentPattern.template;
 
       //find how many partials there may be for the given pattern
       var foundPatternPartials = findPartials(currentPattern);
@@ -190,12 +186,13 @@
         //find any listItem partials
         list_item_hunter.process_list_item_partials(currentPattern, patternlab);
 
+
         //determine if the template contains any pattern parameters. if so they must be immediately consumed
-        parameter_hunter.find_parameters(currentPattern, patternlab);
+//        parameter_hunter.find_parameters(currentPattern, patternlab);
+//        currentPattern.parameterizedTemplate = parameter_hunter.find_parameters(currentPattern, patternlab);
 
         //need to reevaluate partials if they are eliminated by parameter submissions
-        foundPatternPartials = findPartialsExtended(currentPattern);
-
+        foundPatternPartials = findPartialsExtended(currentPattern.extendedTemplate);
         if(foundPatternPartials === null){
           return;
         }
@@ -206,6 +203,8 @@
           var partialPath;
 
           //identify which pattern this partial corresponds to
+          var partialPattern = getpatternbykey(partialKey, patternlab);
+/*
           for(var j = 0; j < patternlab.patterns.length; j++){
             if(patternlab.patterns[j].key === partialKey ||
               patternlab.patterns[j].abspath.indexOf(partialKey) > -1)
@@ -213,15 +212,15 @@
               partialPath = patternlab.patterns[j].abspath;
             }
           }
+*/
 
           //recurse through nested partials to fill out this extended template.
-          processPatternRecursive(partialPath, patternlab);
+          processPatternRecursive(partialPattern.abspath, patternlab);
 
           //complete assembly of extended template
-          var partialPattern = getpatternbykey(partialKey, patternlab);
           currentPattern.extendedTemplate = currentPattern.extendedTemplate.replace(foundPatternPartials[i], partialPattern.extendedTemplate);
-        }
 
+        }
       }
 
       //find pattern lineage
@@ -240,10 +239,15 @@
           case patternlab.patterns[i].key:
           case patternlab.patterns[i].subdir + '/' + patternlab.patterns[i].fileName:
           case patternlab.patterns[i].subdir + '/' + patternlab.patterns[i].fileName + '.mustache':
+          case patternlab.patterns[i].abspath:
+          case './' + patternlab.patterns[i].abspath:
             return patternlab.patterns[i];
         }
       }
-      throw 'Could not find pattern with key ' + key;
+      if(patternlab.config.debug){
+        throw 'Could not find pattern with key ' + key;
+      }
+      return null;
     }
 
     /**
@@ -315,8 +319,8 @@
       find_pattern_partials: function(pattern){
         return findPartials(pattern);
       },
-      find_pattern_partials_extended: function(pattern){
-        return findPartialsExtended(pattern);
+      find_pattern_partials_extended: function(template){
+        return findPartialsExtended(template);
       },
       find_list_items: function(pattern){
         return findListItems(pattern)
@@ -333,8 +337,8 @@
       process_pattern_iterative: function(file, patternlab){
         processPatternIterative(file, patternlab);
       },
-      process_pattern_recursive: function(file, patternlab, additionalData){
-        processPatternRecursive(file, patternlab, additionalData);
+      process_pattern_recursive: function(file, patternlab, originalData){
+        processPatternRecursive(file, patternlab, originalData);
       },
       get_pattern_by_key: function(key, patternlab){
         return getpatternbykey(key, patternlab);
