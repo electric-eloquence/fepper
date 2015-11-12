@@ -192,6 +192,7 @@
         return extendedTemplate;
       }
 
+      //iterate through foundPatternPartials
       var i,
       parameterizedPartial,
       partialKey,
@@ -206,14 +207,15 @@
         partialPattern = getpatternbykey(partialKey, patternlab);
         partialPattern.extendedTemplate = partialPattern.template;
 
+        //determine if the partial is parameterized or not
         parameterizedPartial = foundPatternPartials[i].match(/{{>([ ]+)?([\w\-\.\/~]+)(\()(.+)(\))([ ]+)?}}/g);
 
         if (!parameterizedPartial) {
-          //regular old partials
+          //regular old partials just recurse
           partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
           currentPattern.extendedTemplate = extendedTemplate = extendedTemplate.replace(foundPatternPartials[i], partialTemplateTmp);
         } else{
-          //parameterized partials
+          //parameterized partials run find_parameters() method and then recurse
           partialPattern.parameterizedTemplate = parameter_hunter.find_parameters(currentPattern, patternlab, foundPatternPartials[i], startPattern);
           partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
           currentPattern.extendedTemplate = extendedTemplate = extendedTemplate.replace(foundPatternPartials[i], partialTemplateTmp);

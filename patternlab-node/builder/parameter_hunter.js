@@ -19,18 +19,16 @@
 		pattern_assembler = new pa();
 
 		function findparameters(pattern, patternlab, partialMatch, startPattern){
-			//find the {{> template-name(*) }} within patterns
-			var parameterizedPartial;
-			var partialName;
-			var partialPattern;
-			var partialTemplateTmp;
-
 			//find the partial's name
 			var partialName = partialMatch.match(/([\w\-\.\/~]+)/g)[0];
+
 			if(patternlab.config.debug){
 				console.log('found patternParameters for ' + partialName);
 			}
-			partialPattern = pattern_assembler.get_pattern_by_key(partialName, patternlab);
+
+			//get the partial's pattern object
+			var partialPattern = pattern_assembler.get_pattern_by_key(partialName, patternlab);
+
 			//strip out the additional data and eval
 			var leftParen = partialMatch.indexOf('(');
 			var rightParen = partialMatch.indexOf(')');
@@ -38,12 +36,13 @@
 
 			//do no evil. there is no good way to do this that I can think of without using a split, which then makes commas and colons special characters and unusable within the pattern params
 			var paramData = eval(paramString);
-			partialTemplateTmp = partialPattern.extendedTemplate;
 
 			//in order to only token-replace parameterized tags, switch them to ERB-style tags
 			//as per the Mustache docs https://mustache.github.io/mustache.5.html.
 			var escapedKey;
+			var partialTemplateTmp = partialPattern.extendedTemplate;
 			var regex;
+
 			for(var i in paramData){
 				if(paramData.hasOwnProperty(i) && (typeof paramData[i] === 'boolean' || typeof paramData[i] === 'number' || typeof paramData[i] === 'string')){
 					//escape regex special characters as per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
@@ -61,14 +60,16 @@
 			//render the newly delimited partial
 			var renderedPartial = pattern_assembler.renderPattern(partialTemplateTmp, paramData);
 
+			//allData object includes global data, startPattern data, and param data
 			var globalData = JSON.parse(JSON.stringify(patternlab.data));
 			var allData = pattern_assembler.merge_data(globalData, startPattern.jsonFileData);
 			allData = pattern_assembler.merge_data(allData, paramData);
 
-			//render all mustache except partial includes
+			//render all Mustache tags except partial includes
 			//in order to do so, escape the partials by switching them to ERB
 			renderedPartial = renderedPartial.replace(/{{> ([^}]+)}}/g, '<%> $1%>');
 			renderedPartial = pattern_assembler.renderPattern(renderedPartial, allData);
+			//after that's done, switch them back to standard Mustache tags
 			renderedPartial = renderedPartial.replace(/<%> ([^%]+)%>/g, '{{> $1}}');
 
 			return renderedPartial;
