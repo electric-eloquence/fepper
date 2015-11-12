@@ -120,7 +120,6 @@
       try {
         var jsonFilename = patternlab.config.patterns.source + currentPattern.subdir + '/' + currentPattern.fileName  + ".json";
         currentPattern.jsonFileData = fs.readJSONSync(jsonFilename.substring(2));
-//        currentPattern.parameterizedData = currentPattern.jsonFileData;
         if(patternlab.config.debug){
           console.log('found pattern-specific data.json for ' + currentPattern.key);
         }
@@ -141,14 +140,13 @@
 
       //add the raw template to memory
       currentPattern.template = fs.readFileSync(file, 'utf8');
-//      currentPattern.extendedTemplate = currentPattern.template;
-      currentPattern.parameterizedTemplate = currentPattern.template;
+      currentPattern.extendedTemplate = currentPattern.template;
 
       //add currentPattern to patternlab.patterns array
       addPattern(currentPattern, patternlab);
     }
 
-    function processPatternRecursive(file, patternlab, originalData){
+    function processPatternRecursive(currentPattern, patternlab, startFile){
 
       var fs = require('fs-extra'),
       mustache = require('mustache'),
@@ -163,63 +161,62 @@
       list_item_hunter = new lih(),
       pseudopattern_hunter = new pph();
 
-      //find current pattern in patternlab object using var file as a key
-      var currentPattern,
-      i;
+      var extendedTemplate;
 
-      currentPattern = getpatternbykey(file, patternlab);
-
-      //return if processing an ignored file
-      if(!currentPattern){
-        return;
+      if(currentPattern.parameterizedTemplate){
+        extendedTemplate = currentPattern.parameterizedTemplate;
+        //for each recursion, unset parameterizedTemplate property
+        currentPattern.parameterizedTemplate = null;
+      } else{
+        extendedTemplate = currentPattern.template;
+        //for each recursion, reset extendedTemplate property
+        currentPattern.extendedTemplate = currentPattern.template;
       }
 
+      //return if processing an empty template
+      if(!extendedTemplate){
+        return '';
+      }
+
+      if(patternlab.config.debug){
+        console.log('found partials for ' + currentPattern.key);
+      }
+
+      //find any listItem partials
+      list_item_hunter.process_list_item_partials(currentPattern, patternlab);
+
       //find how many partials there may be for the given pattern
-      var foundPatternPartials = findPartials(currentPattern);
+      var foundPatternPartials = findPartialsExtended(extendedTemplate);
 
-      if(foundPatternPartials !== null && foundPatternPartials.length > 0){
+      if(foundPatternPartials === null){
+        return extendedTemplate;
+      }
 
-        if(patternlab.config.debug){
-          console.log('found partials for ' + currentPattern.key);
-        }
+      var i,
+      parameterizedPartial,
+      partialKey,
+      partialPattern,
+      partialTemplateTmp,
+      startPattern = getpatternbykey(startFile, patternlab);
 
-        //find any listItem partials
-        list_item_hunter.process_list_item_partials(currentPattern, patternlab);
+      for(i = 0; i < foundPatternPartials.length; i++){
+        partialKey = foundPatternPartials[i].replace(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\(.*)?([ ])?}}/g, '$2');
 
+        //identify which pattern this partial corresponds to
+        partialPattern = getpatternbykey(partialKey, patternlab);
+        partialPattern.extendedTemplate = partialPattern.template;
 
-        //determine if the template contains any pattern parameters. if so they must be immediately consumed
-//        parameter_hunter.find_parameters(currentPattern, patternlab);
-//        currentPattern.parameterizedTemplate = parameter_hunter.find_parameters(currentPattern, patternlab);
+        parameterizedPartial = foundPatternPartials[i].match(/{{>([ ]+)?([\w\-\.\/~]+)(\()(.+)(\))([ ]+)?}}/g);
 
-        //need to reevaluate partials if they are eliminated by parameter submissions
-        foundPatternPartials = findPartialsExtended(currentPattern.extendedTemplate);
-        if(foundPatternPartials === null){
-          return;
-        }
-
-        //do something with the regular old partials
-        for(i = 0; i < foundPatternPartials.length; i++){
-          var partialKey = foundPatternPartials[i].replace(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\(.*)?([ ])?}}/g, '$2');
-          var partialPath;
-
-          //identify which pattern this partial corresponds to
-          var partialPattern = getpatternbykey(partialKey, patternlab);
-/*
-          for(var j = 0; j < patternlab.patterns.length; j++){
-            if(patternlab.patterns[j].key === partialKey ||
-              patternlab.patterns[j].abspath.indexOf(partialKey) > -1)
-            {
-              partialPath = patternlab.patterns[j].abspath;
-            }
-          }
-*/
-
-          //recurse through nested partials to fill out this extended template.
-          processPatternRecursive(partialPattern.abspath, patternlab);
-
-          //complete assembly of extended template
-          currentPattern.extendedTemplate = currentPattern.extendedTemplate.replace(foundPatternPartials[i], partialPattern.extendedTemplate);
-
+        if (!parameterizedPartial) {
+          //regular old partials
+          partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
+          currentPattern.extendedTemplate = extendedTemplate = extendedTemplate.replace(foundPatternPartials[i], partialTemplateTmp);
+        } else{
+          //parameterized partials
+          partialPattern.parameterizedTemplate = parameter_hunter.find_parameters(currentPattern, patternlab, foundPatternPartials[i], startPattern);
+          partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
+          currentPattern.extendedTemplate = extendedTemplate = extendedTemplate.replace(foundPatternPartials[i], partialTemplateTmp);
         }
       }
 
@@ -231,6 +228,8 @@
 
       //look for a pseudo pattern by checking if there is a file containing same name, with ~ in it, ending in .json
       pseudopattern_hunter.find_pseudopatterns(currentPattern, patternlab);
+
+      return currentPattern.extendedTemplate;
     }
 
     function getpatternbykey(key, patternlab){
@@ -337,8 +336,8 @@
       process_pattern_iterative: function(file, patternlab){
         processPatternIterative(file, patternlab);
       },
-      process_pattern_recursive: function(file, patternlab, originalData){
-        processPatternRecursive(file, patternlab, originalData);
+      process_pattern_recursive: function(file, patternlab, startFile){
+        return processPatternRecursive(file, patternlab, startFile);
       },
       get_pattern_by_key: function(key, patternlab){
         return getpatternbykey(key, patternlab);

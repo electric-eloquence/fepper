@@ -93,51 +93,6 @@ var patternlab_engine = function () {
         pattern_assembler.process_pattern_iterative(file.substring(2), patternlab);
     });
 
-    //diveSync again to recursively fill out parameterized partial includes.
-    diveSync(patterns_dir, {
-      filter: function(path, dir) {
-        if(dir){
-          var remainingPath = path.replace(patterns_dir, '');
-          var isValidPath = remainingPath.indexOf('/_') === -1;
-          return isValidPath;
-        }
-          return true;
-        }
-      },
-      function(err, file){
-        //log any errors
-        if(err){
-          console.log(err);
-          return;
-        }
-
-        var currentPattern;
-        var params = null;
-//console.log(file);
-/*
-        for(var i = 0; i < patternlab.patterns.length; i++){
-//console.log(patternlab.patterns[i].abspath);
-          if(patternlab.patterns[i].abspath === file.substring(2)){
-*/
-            currentPattern = pattern_assembler.get_pattern_by_key(file, patternlab);
-            if (!currentPattern) {
-              return;
-            }
-            currentPattern.parameterizedTemplate = parameter_hunter.find_parameters(currentPattern, patternlab, file);
-            if (currentPattern.parameterizedTemplate === currentPattern.template) {
-////currentPattern.parameterizedTemplate = '';
-            }
-//console.log(currentPattern.parameterizedTemplate);
-if (currentPattern.fileName === '00-article') {
-//console.log(patternlab.patterns[i]);
-}
-/*
-            break;
-          }
-        }
-*/
-    });
-
     //diveSync again to recursively include partials, filling out the
     //extendedTemplate property of the patternlab.patterns elements
     diveSync(patterns_dir, {
@@ -157,16 +112,16 @@ if (currentPattern.fileName === '00-article') {
           return;
         }
 
-//        pattern_assembler.process_pattern_recursive(file.substring(2), patternlab);
+        var pattern = pattern_assembler.get_pattern_by_key(file, patternlab);
+        if(pattern){
+          pattern.extendedTemplate = pattern_assembler.process_pattern_recursive(pattern, patternlab, file);
+        }
     });
 
     //delete the contents of config.patterns.public before writing
     if(deletePatternDir){
       fs.emptyDirSync(patternlab.config.patterns.public);
     }
-var currentPattern = pattern_assembler.get_pattern_by_key('./source/_patterns/04-pages/02-articles/00-article.mustache', patternlab);
-//console.log(currentPattern.fileName);
-fs.writeFileSync('patternlab.txt', currentPattern.parameterizedTemplate);
 
     //render all patterns last, so lineageR works
     patternlab.patterns.forEach(function(pattern, index, patterns){
@@ -174,8 +129,7 @@ fs.writeFileSync('patternlab.txt', currentPattern.parameterizedTemplate);
       var allData =  JSON.parse(JSON.stringify(patternlab.data));
       allData = pattern_assembler.merge_data(allData, pattern.jsonFileData);
 
-//      pattern.patternPartial = pattern_assembler.renderPattern(pattern.extendedTemplate, allData);
-      pattern.patternPartial = pattern_assembler.renderPattern(pattern.parameterizedTemplate, allData);
+      pattern.patternPartial = pattern_assembler.renderPattern(pattern.extendedTemplate, allData);
 
       //add footer info before writing
       var patternFooter = pattern_assembler.renderPattern(patternlab.footer, pattern);
