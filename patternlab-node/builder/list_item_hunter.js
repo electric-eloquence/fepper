@@ -15,14 +15,19 @@
 
     var extend = require('util')._extend,
     pa = require('./pattern_assembler'),
+    ph = require('./parameter_hunter'),
     mustache = require('mustache'),
     pattern_assembler = new pa(),
+    parameter_hunter = new ph(),
     items = [ 'zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
 
-    function processListItemPartials(pattern, patternlab, extendedTemplate){
+    function processListItemPartials(pattern, patternlab, extendedTemplate, startFile){
       if (!extendedTemplate) {
         extendedTemplate = pattern.extendedTemplate;
       }
+
+      //need a reference to the beginning of recursion
+      var startPattern = pattern_assembler.get_pattern_by_key(startFile, patternlab);
 
       //find any listitem blocks
       var matches = pattern_assembler.find_list_items(pattern, patternlab);
@@ -75,8 +80,10 @@
                 var partialName = foundPartials[j].match(/([\w\-\.\/~]+)/g)[0];
                 var partialPattern = pattern_assembler.get_pattern_by_key(partialName, patternlab);
 
-                //replace its reference within the block with the extended template
-                thisBlockTemplate = thisBlockTemplate.replace(foundPartials[j], partialPattern.extendedTemplate);
+                //find and render any parameterized partials
+                var partialTemplateTmp = parameter_hunter.find_parameters(partialPattern, patternlab, foundPartials[j], startPattern);
+                //replace its reference within the block within this pattern's template
+                thisBlockTemplate = thisBlockTemplate.replace(foundPartials[j], partialTemplateTmp);
               }
 
               //render with data
@@ -101,8 +108,8 @@
     }
 
     return {
-      process_list_item_partials: function(pattern, patternlab, extendedTemplate){
-        return processListItemPartials(pattern, patternlab, extendedTemplate);
+      process_list_item_partials: function(pattern, patternlab, extendedTemplate, startFile){
+        return processListItemPartials(pattern, patternlab, extendedTemplate, startFile);
       }
     };
 

@@ -184,7 +184,7 @@
       }
 
       //find any listItem partials
-      extendedTemplate = list_item_hunter.process_list_item_partials(currentPattern, patternlab, extendedTemplate);
+      extendedTemplate = list_item_hunter.process_list_item_partials(currentPattern, patternlab, extendedTemplate, startFile);
 
       //find how many partials there may be for the given pattern
       var foundPatternPartials = findPartialsExtended(extendedTemplate);
@@ -193,23 +193,21 @@
         return extendedTemplate;
       }
 
-      //iterate through foundPatternPartials
-      var i,
-      parameterizedPartial,
-      partialKey,
-      partialPattern,
-      partialTemplateTmp,
-      startPattern = getpatternbykey(startFile, patternlab);
+      var startPattern = getpatternbykey(startFile, patternlab);
 
-      for(i = 0; i < foundPatternPartials.length; i++){
-        partialKey = foundPatternPartials[i].replace(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\(.*)?([ ])?}}/g, '$2');
+      //iterate through foundPatternPartials
+      for(var i = 0; i < foundPatternPartials.length; i++){
+        var partialKey = foundPatternPartials[i].replace(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\(.*)?([ ])?}}/g, '$2');
 
         //identify which pattern this partial corresponds to
-        partialPattern = getpatternbykey(partialKey, patternlab);
+        var partialPattern = getpatternbykey(partialKey, patternlab);
         partialPattern.extendedTemplate = partialPattern.template;
 
         //determine if the partial is parameterized or not
-        parameterizedPartial = foundPatternPartials[i].match(/{{>([ ]+)?([\w\-\.\/~]+)(\()(.+)(\))([ ]+)?}}/g);
+        var parameterizedPartial = foundPatternPartials[i].match(/{{>([ ]+)?([\w\-\.\/~]+)(\()(.+)(\))([ ]+)?}}/g);
+
+        //build out extendedTemplate
+        var partialTemplateTmp;
 
         if(!parameterizedPartial){
           //regular old partials just recurse
@@ -219,7 +217,7 @@
         } else{
           //parameterized partials run find_parameters(), process_list_item_partials, and then recurse
           partialTemplateTmp = parameter_hunter.find_parameters(currentPattern, patternlab, foundPatternPartials[i], startPattern);
-          partialTemplateTmp = list_item_hunter.process_list_item_partials(partialPattern, patternlab, partialTemplateTmp);
+          partialTemplateTmp = list_item_hunter.process_list_item_partials(partialPattern, patternlab, partialTemplateTmp, startFile);
           partialPattern.parameterizedTemplate = partialTemplateTmp;
           partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
 
