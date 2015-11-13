@@ -25,7 +25,7 @@
 
     //find and return any {{> template-name }} within pattern
     function findPartials(pattern){
-      var matches = pattern.template.match(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\(.*)?([ ])?}}/g);
+      var matches = pattern.template.match(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\([^\)]*\))?([\s])*}}/g);
       return matches;
     }
 
@@ -197,14 +197,14 @@
 
       //iterate through foundPatternPartials
       for(var i = 0; i < foundPatternPartials.length; i++){
-        var partialKey = foundPatternPartials[i].replace(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\(.*)?([ ])?}}/g, '$2');
+        var partialKey = foundPatternPartials[i].replace(/{{>([ ])?([\w\-\.\/~]+)(?:\:[A-Za-z0-9-]+)?(?:(| )\([^\)]*\))?([\s])*}}/g, '$2');
 
         //identify which pattern this partial corresponds to
         var partialPattern = getpatternbykey(partialKey, patternlab);
         partialPattern.extendedTemplate = partialPattern.template;
 
         //determine if the partial is parameterized or not
-        var parameterizedPartial = foundPatternPartials[i].match(/{{>([ ]+)?([\w\-\.\/~]+)(\()(.+)(\))([ ]+)?}}/g);
+        var parameterizedPartial = foundPatternPartials[i].match(/{{>([ ])?([\w\-\.\/~]+)(\()([^)]+)(\))([\s])*}}/);
 
         //build out extendedTemplate
         var partialTemplateTmp;
