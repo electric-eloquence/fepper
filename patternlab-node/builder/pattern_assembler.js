@@ -167,6 +167,7 @@
         extendedTemplate = currentPattern.parameterizedTemplate;
         //for each recursion, unset parameterizedTemplate property
         currentPattern.parameterizedTemplate = null;
+
       } else{
         extendedTemplate = currentPattern.template;
         //for each recursion, reset extendedTemplate property
@@ -183,7 +184,7 @@
       }
 
       //find any listItem partials
-      list_item_hunter.process_list_item_partials(currentPattern, patternlab);
+      extendedTemplate = list_item_hunter.process_list_item_partials(currentPattern, patternlab, extendedTemplate);
 
       //find how many partials there may be for the given pattern
       var foundPatternPartials = findPartialsExtended(extendedTemplate);
@@ -210,14 +211,19 @@
         //determine if the partial is parameterized or not
         parameterizedPartial = foundPatternPartials[i].match(/{{>([ ]+)?([\w\-\.\/~]+)(\()(.+)(\))([ ]+)?}}/g);
 
-        if (!parameterizedPartial) {
+        if(!parameterizedPartial){
           //regular old partials just recurse
           partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
           currentPattern.extendedTemplate = extendedTemplate = extendedTemplate.replace(foundPatternPartials[i], partialTemplateTmp);
+
         } else{
-          //parameterized partials run find_parameters() method and then recurse
-          partialPattern.parameterizedTemplate = parameter_hunter.find_parameters(currentPattern, patternlab, foundPatternPartials[i], startPattern);
+          //parameterized partials run find_parameters(), process_list_item_partials, and then recurse
+          partialTemplateTmp = parameter_hunter.find_parameters(currentPattern, patternlab, foundPatternPartials[i], startPattern);
+          partialTemplateTmp = list_item_hunter.process_list_item_partials(partialPattern, patternlab, partialTemplateTmp);
+          partialPattern.parameterizedTemplate = partialTemplateTmp;
           partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
+
+          // after all those operations, set extendedTemplate property on currentPattern
           currentPattern.extendedTemplate = extendedTemplate = extendedTemplate.replace(foundPatternPartials[i], partialTemplateTmp);
         }
       }

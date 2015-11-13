@@ -9,21 +9,25 @@
  */
 
 (function () {
-	"use strict";
+  "use strict";
 
-	var list_item_hunter = function(){
+  var list_item_hunter = function(){
 
-		var extend = require('util')._extend,
-		pa = require('./pattern_assembler'),
-		mustache = require('mustache'),
-		pattern_assembler = new pa(),
+    var extend = require('util')._extend,
+    pa = require('./pattern_assembler'),
+    mustache = require('mustache'),
+    pattern_assembler = new pa(),
     items = [ 'zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
 
-		function processListItemPartials(pattern, patternlab){
+    function processListItemPartials(pattern, patternlab, extendedTemplate){
+      if (!extendedTemplate) {
+        extendedTemplate = pattern.extendedTemplate;
+      }
+
       //find any listitem blocks
       var matches = pattern_assembler.find_list_items(pattern, patternlab);
-			if(matches !== null){
-				matches.forEach(function(liMatch, index, matches){
+      if(matches !== null){
+        matches.forEach(function(liMatch, index, matches){
 
           if(patternlab.config.debug){
             console.log('found listItem of size ' + liMatch + ' inside ' + pattern.key);
@@ -87,22 +91,23 @@
             repeatedBlockHtml = repeatedBlockHtml + thisBlockHTML;
           }
 
-          //replace the block with our generated HTML 
-          var repeatingBlock = pattern.extendedTemplate.substring(pattern.extendedTemplate.indexOf(liMatch), pattern.extendedTemplate.indexOf(end) + end.length);
-          pattern.extendedTemplate = pattern.extendedTemplate.replace(repeatingBlock, repeatedBlockHtml);
+          //replace the block with our generated HTML
+          var repeatingBlock = extendedTemplate.substring(extendedTemplate.indexOf(liMatch), extendedTemplate.indexOf(end) + end.length);
+          extendedTemplate = pattern.extendedTemplate.replace(repeatingBlock, repeatedBlockHtml);
+        });
+      }
 
-				});
-			}
-		}
+      return extendedTemplate;
+    }
 
-		return {
-			process_list_item_partials: function(pattern, patternlab){
-				processListItemPartials(pattern, patternlab);
-			}
-		};
+    return {
+      process_list_item_partials: function(pattern, patternlab, extendedTemplate){
+        return processListItemPartials(pattern, patternlab, extendedTemplate);
+      }
+    };
 
-	};
+  };
 
-	module.exports = list_item_hunter;
+  module.exports = list_item_hunter;
 
 }());
