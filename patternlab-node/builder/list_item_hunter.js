@@ -70,7 +70,7 @@
             allData.link = extend({}, patternlab.data.link);
 
             //check for partials within the repeated block
-            var foundPartials = pattern_assembler.find_pattern_partials({ 'template' : thisBlockTemplate });
+            var foundPartials = pattern_assembler.find_pattern_partials_extended(thisBlockTemplate);
 
             if(foundPartials && foundPartials.length > 0){
 
@@ -93,6 +93,7 @@
 
                 } else{
                   //parameterized partials run find_parameters(), process_list_item_partials, and then recurse
+                  partialPattern.extendedTemplate = partialPattern.template;
                   partialTemplateTmp = parameter_hunter.find_parameters(pattern, patternlab, foundPartials[j], startPattern);
                   partialTemplateTmp = processListItemPartials(partialPattern, patternlab, partialTemplateTmp, startFile);
                   partialPattern.parameterizedTemplate = partialTemplateTmp;

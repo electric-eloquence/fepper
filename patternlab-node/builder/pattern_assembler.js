@@ -30,9 +30,7 @@
     }
 
     function findPartialsExtended(template){
-      var extended = {};
-      extended.template = template;
-      var matches = findPartials(extended);
+      var matches = findPartials({template: template});
       return matches;
     }
 
