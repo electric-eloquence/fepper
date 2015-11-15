@@ -74,14 +74,31 @@
 
             if(foundPartials && foundPartials.length > 0){
 
+              //find and render any partials within the repeated block
               for(var j = 0; j < foundPartials.length; j++){
 
                 //get the partial
                 var partialName = foundPartials[j].match(/([\w\-\.\/~]+)/g)[0];
                 var partialPattern = pattern_assembler.get_pattern_by_key(partialName, patternlab);
 
-                //find and render any parameterized partials
-                var partialTemplateTmp = parameter_hunter.find_parameters(partialPattern, patternlab, foundPartials[j], startPattern);
+                //determine if the partial is parameterized or not
+                var parameterizedPartial = foundPartials[j].match(/{{>([ ])?([\w\-\.\/~]+)(\()([^)]+)(\))([\s])*}}/);
+
+                var partialTemplateTmp;
+
+                //build out extendedTemplate
+                if(!parameterizedPartial){
+                  //regular old partials just recurse
+                  partialTemplateTmp = pattern_assembler.process_pattern_recursive(partialPattern, patternlab, startFile);
+
+                } else{
+                  //parameterized partials run find_parameters(), process_list_item_partials, and then recurse
+                  partialTemplateTmp = parameter_hunter.find_parameters(pattern, patternlab, foundPartials[j], startPattern);
+                  partialTemplateTmp = processListItemPartials(partialPattern, patternlab, partialTemplateTmp, startFile);
+                  partialPattern.parameterizedTemplate = partialTemplateTmp;
+                  partialTemplateTmp = pattern_assembler.process_pattern_recursive(partialPattern, patternlab, startFile);
+                }
+
                 //replace its reference within the block within this pattern's template
                 thisBlockTemplate = thisBlockTemplate.replace(foundPartials[j], partialTemplateTmp);
               }

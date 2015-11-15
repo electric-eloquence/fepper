@@ -206,9 +206,9 @@
         //determine if the partial is parameterized or not
         var parameterizedPartial = foundPatternPartials[i].match(/{{>([ ])?([\w\-\.\/~]+)(\()([^)]+)(\))([\s])*}}/);
 
-        //build out extendedTemplate
         var partialTemplateTmp;
 
+        //build out extendedTemplate
         if(!parameterizedPartial){
           //regular old partials just recurse
           partialTemplateTmp = processPatternRecursive(partialPattern, patternlab, startFile);
@@ -342,8 +342,8 @@
       process_pattern_iterative: function(file, patternlab){
         processPatternIterative(file, patternlab);
       },
-      process_pattern_recursive: function(file, patternlab, startFile){
-        return processPatternRecursive(file, patternlab, startFile);
+      process_pattern_recursive: function(pattern, patternlab, startFile){
+        return processPatternRecursive(pattern, patternlab, startFile);
       },
       get_pattern_by_key: function(key, patternlab){
         return getpatternbykey(key, patternlab);
