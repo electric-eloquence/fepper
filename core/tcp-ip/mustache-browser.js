@@ -33,8 +33,8 @@
      */
     partialTagToPath(partial) {
       partial = partial.replace(/{{+[^\w]?\s*/, '');
+      partial = partial.replace(/\([^\)]*\)/, '');
       partial = partial.replace(/\s*}+}/, '');
-      partial = partial.replace(/\(.*\)/, '');
       if (partial.indexOf('.mustache') !== partial.length - 9) {
         partial = partial + '.mustache';
       }
@@ -58,6 +58,7 @@
      * Make angle brackets and newlines viewable as HTML and hotlink partials.
      */
     toHtmlEntitiesAndLinks(data) {
+      data = data.replace(/"/g, '&quot;');
       data = data.replace(/</g, '&lt;');
       data = data.replace(/>/g, '&gt;');
       data = data.replace(/{{&gt;[^}]*}}/g, '<a href="?partial=$&">$&</a>');
