@@ -61,19 +61,6 @@
       //render the newly delimited partial
       var renderedPartial = pattern_assembler.renderPattern(partialTemplateTmp, paramData);
 
-      //allData object includes global data, startPattern data, and param data
-      var globalData = JSON.parse(JSON.stringify(patternlab.data));
-      var allData = pattern_assembler.merge_data(globalData, startPattern.jsonFileData);
-      allData = pattern_assembler.merge_data(allData, paramData);
-
-      //render all Mustache tags except partial includes
-      //in order to do so, escape the partials by switching them to ERB
-      renderedPartial = renderedPartial.replace(/{{> ([^}]+)}}/g, '<%> $1%>');
-      renderedPartial = pattern_assembler.renderPattern(renderedPartial, allData);
-
-      //after that's done, switch them back to standard Mustache tags
-      renderedPartial = renderedPartial.replace(/<%> ([^%]+)%>/g, '{{> $1}}');
-
       return renderedPartial;
     }
 
