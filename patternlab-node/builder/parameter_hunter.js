@@ -61,6 +61,30 @@
       //render the newly delimited partial
       var renderedPartial = pattern_assembler.renderPattern(partialTemplateTmp, paramData);
 
+      //allData object includes global data, startPattern data, and param data
+      var globalData = JSON.parse(JSON.stringify(patternlab.data));
+      var allData = pattern_assembler.merge_data(globalData, startPattern.jsonFileData);
+      allData = pattern_assembler.merge_data(allData, paramData);
+
+      //in pre-render, escape all tags which correspond to keys in the allData object
+      //in order to do so, escape the partials by switching them to ERB
+      var escapeLoopsAndConditionals = function(dataKey) {
+        var escapeString = new RegExp('{{([{#\\^\\/&]?\\s*' + dataKey + '\\s*}?)}}', 'g');
+        renderedPartial = renderedPartial.replace(escapeString, '<%$1%>');
+      };
+      pattern_assembler.traverse_data(allData, escapeLoopsAndConditionals);
+
+      //also escape partial includes and listItems loops
+      renderedPartial = renderedPartial.replace(/{{> ([^}]+)}}/g, '<%> $1%>');
+      renderedPartial = renderedPartial.replace(/{{([#\\/]\\s*listItems.[a-z]+\\s*)}}/g, '<%$1%>');
+
+      //the reasoning for rendering at this point is to eliminate the unwanted
+      //recursion paths that would remain if irrelevant Mustache conditionals persisted
+      renderedPartial = pattern_assembler.renderPattern(renderedPartial, allData);
+
+      //after that's done, switch back to standard Mustache tags
+      renderedPartial = renderedPartial.replace(/<%([^%]+)%>/g, '{{$1}}');
+
       return renderedPartial;
     }
 

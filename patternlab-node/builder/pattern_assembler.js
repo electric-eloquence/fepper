@@ -288,6 +288,23 @@
       return obj2;
     }
 
+    /**
+     * Recurse through data object and apply a function at each step.
+     *
+     * @param {Object} data JSON object.
+     * @param {Object} callback The function to be applied on the data at the recursion step.
+     */
+    function traverseData(dataObj, callback){
+      for(var i in dataObj){
+        if(dataObj.hasOwnProperty(i)){
+          callback.apply(this, [i]);
+          if(dataObj[i] !== null && typeof dataObj[i] === 'object'){
+            traverseData(dataObj[i], callback);
+          }
+        }
+      }
+    }
+
     function buildListItems(patternlab){
       //combine all list items into one structure
       var list = [];
@@ -348,6 +365,9 @@
       },
       merge_data: function(existingData, newData){
         return mergeData(existingData, newData);
+      },
+      traverse_data: function(dataObj, callback){
+        return traverseData(dataObj, callback);
       },
       combine_listItems: function(patternlab){
         buildListItems(patternlab);
