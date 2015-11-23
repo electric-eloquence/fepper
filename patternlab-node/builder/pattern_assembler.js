@@ -297,7 +297,7 @@
     function traverseData(dataObj, callback){
       for(var i in dataObj){
         if(dataObj.hasOwnProperty(i)){
-          callback.apply(this, [i]);
+          callback.apply(this, [i, dataObj[i]]);
           if(dataObj[i] !== null && typeof dataObj[i] === 'object'){
             traverseData(dataObj[i], callback);
           }
