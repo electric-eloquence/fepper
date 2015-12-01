@@ -11,6 +11,8 @@
   ]);
 
   gulp.task('custom:frontend-copy', [
+// Uncomment if you wish to enable this.
+//    'css-process:frontend-copy'
   ]);
 
   gulp.task('custom:lint', [
@@ -28,10 +30,8 @@
   gulp.task('custom:static', [
   ]);
 
-  gulp.task('custom:syncback', function (cb) {
-// Uncomment if you wish to enable this.
-//    'css-process:syncback'
-  });
+  gulp.task('custom:syncback', [
+  ]);
 
   gulp.task('custom:tcp-ip', [
   ]);

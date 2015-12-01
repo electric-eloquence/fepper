@@ -22,8 +22,8 @@
       'once',
       'data',
       'fepper:pattern-override',
-      'tcp-ip-load:init',
       ['contrib:tcp-ip', 'custom:tcp-ip'],
+      'tcp-ip-load:init',
       ['tcp-ip-load:listen', 'tcp-ip-reload:listen'],
       ['contrib:watch', 'custom:watch', 'tcp-ip-load:open', 'tcp-ip-reload:watch'],
       cb
@@ -32,18 +32,18 @@
 
   gulp.task('data', function (cb) {
     runSequence(
-      'fepper:data',
       ['contrib:data', 'custom:data'],
+      'fepper:data',
       cb
     );
   });
 
   gulp.task('frontend-copy', [
+    'contrib:frontend-copy',
+    'custom:frontend-copy',
     'fepper:copy-assets',
     'fepper:copy-scripts',
-    'fepper:copy-styles',
-    'contrib:frontend-copy',
-    'custom:frontend-copy'
+    'fepper:copy-styles'
   ]);
 
   gulp.task('install', function (cb) {
@@ -56,65 +56,65 @@
   });
 
   gulp.task('lint', [
+    'contrib:lint',
+    'custom:lint',
     'lint:htmlhint',
     'lint:htmllint',
     'lint:eslint',
-    'lint:jsonlint',
-    'contrib:lint',
-    'custom:lint'
+    'lint:jsonlint'
   ]);
 
   gulp.task('minify', [
-    'minify:uglify',
     'contrib:minify',
-    'custom:minify'
+    'custom:minify',
+    'minify:uglify'
   ]);
 
   gulp.task('once', function (cb) {
     runSequence(
+      ['contrib:once', 'custom:once'],
       'fepper:pattern-override',
       'patternlab:clean',
       'patternlab:build',
       'patternlab:copy',
       'patternlab:copy-styles',
-      ['contrib:once', 'custom:once'],
       cb
     );
   });
 
   gulp.task('publish', function (cb) {
     runSequence(
-      'fepper:publish',
       ['contrib:publish', 'custom:publish'],
+      'fepper:publish',
       cb
     );
   });
 
   gulp.task('static', function (cb) {
     runSequence(
+      ['contrib:static', 'custom:static'],
       'lint',
       'minify',
       'fepper:static-generate',
-      ['contrib:static', 'custom:static'],
       cb
     );
   });
 
   gulp.task('syncback', function (cb) {
     runSequence(
+      ['contrib:syncback', 'custom:syncback'],
       'lint',
       'minify',
       'frontend-copy',
       'template',
-      ['contrib:syncback', 'custom:syncback'],
       cb
     );
   });
 
   gulp.task('template', function (cb) {
     runSequence(
-      'fepper:template',
       ['contrib:template', 'custom:template'],
+      'fepper:template',
       cb
     );
   });
