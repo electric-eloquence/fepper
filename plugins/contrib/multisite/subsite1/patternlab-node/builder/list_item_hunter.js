@@ -9,21 +9,30 @@
  */
 
 (function () {
-	"use strict";
+  "use strict";
 
-	var list_item_hunter = function(){
+  var list_item_hunter = function(){
 
-		var extend = require('util')._extend,
-		pa = require('./pattern_assembler'),
-		mustache = require('mustache'),
-		pattern_assembler = new pa(),
+    var extend = require('util')._extend,
+    pa = require('./pattern_assembler'),
+    ph = require('./parameter_hunter'),
+    mustache = require('mustache'),
+    pattern_assembler = new pa(),
+    parameter_hunter = new ph(),
     items = [ 'zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
 
-		function processListItemPartials(pattern, patternlab){
+    function processListItemPartials(pattern, patternlab, extendedTemplate, startFile){
+      if (!extendedTemplate) {
+        extendedTemplate = pattern.extendedTemplate;
+      }
+
+      //need a reference to the beginning of recursion
+      var startPattern = pattern_assembler.get_pattern_by_key(startFile, patternlab);
+
       //find any listitem blocks
       var matches = pattern_assembler.find_list_items(pattern, patternlab);
-			if(matches !== null){
-				matches.forEach(function(liMatch, index, matches){
+      if(matches !== null){
+        matches.forEach(function(liMatch, index, matches){
 
           if(patternlab.config.debug){
             console.log('found listItem of size ' + liMatch + ' inside ' + pattern.key);
@@ -61,18 +70,38 @@
             allData.link = extend({}, patternlab.data.link);
 
             //check for partials within the repeated block
-            var foundPartials = pattern_assembler.find_pattern_partials({ 'template' : thisBlockTemplate });
+            var foundPartials = pattern_assembler.find_pattern_partials_extended(thisBlockTemplate);
 
             if(foundPartials && foundPartials.length > 0){
 
+              //find and render any partials within the repeated block
               for(var j = 0; j < foundPartials.length; j++){
 
                 //get the partial
-                var partialName = foundPartials[j].match(/([a-z-]+)/ig)[0];
+                var partialName = foundPartials[j].match(/([\w\-\.\/~]+)/g)[0];
                 var partialPattern = pattern_assembler.get_pattern_by_key(partialName, patternlab);
 
-                //replace its reference within the block with the extended template
-                thisBlockTemplate = thisBlockTemplate.replace(foundPartials[j], partialPattern.extendedTemplate);
+                //determine if the partial is parameterized or not
+                var parameterizedPartial = foundPartials[j].match(/{{>([ ])?([\w\-\.\/~]+)(\()([^)]+)(\))([\s])*}}/);
+
+                var partialTemplateTmp;
+
+                //build out extendedTemplate
+                if(!parameterizedPartial){
+                  //regular old partials just recurse
+                  partialTemplateTmp = pattern_assembler.process_pattern_recursive(partialPattern, patternlab, startFile);
+
+                } else{
+                  //parameterized partials run find_parameters(), process_list_item_partials, and then recurse
+                  partialPattern.extendedTemplate = partialPattern.template;
+                  partialTemplateTmp = parameter_hunter.find_parameters(pattern, patternlab, foundPartials[j], startPattern);
+                  partialTemplateTmp = processListItemPartials(partialPattern, patternlab, partialTemplateTmp, startFile);
+                  partialPattern.parameterizedTemplate = partialTemplateTmp;
+                  partialTemplateTmp = pattern_assembler.process_pattern_recursive(partialPattern, patternlab, startFile);
+                }
+
+                //replace its reference within the block within this pattern's template
+                thisBlockTemplate = thisBlockTemplate.replace(foundPartials[j], partialTemplateTmp);
               }
 
               //render with data
@@ -87,22 +116,23 @@
             repeatedBlockHtml = repeatedBlockHtml + thisBlockHTML;
           }
 
-          //replace the block with our generated HTML 
-          var repeatingBlock = pattern.extendedTemplate.substring(pattern.extendedTemplate.indexOf(liMatch), pattern.extendedTemplate.indexOf(end) + end.length);
-          pattern.extendedTemplate = pattern.extendedTemplate.replace(repeatingBlock, repeatedBlockHtml);
+          //replace the block with our generated HTML
+          var repeatingBlock = extendedTemplate.substring(extendedTemplate.indexOf(liMatch), extendedTemplate.indexOf(end) + end.length);
+          extendedTemplate = pattern.extendedTemplate.replace(repeatingBlock, repeatedBlockHtml);
+        });
+      }
 
-				});
-			}
-		}
+      return extendedTemplate;
+    }
 
-		return {
-			process_list_item_partials: function(pattern, patternlab){
-				processListItemPartials(pattern, patternlab);
-			}
-		};
+    return {
+      process_list_item_partials: function(pattern, patternlab, extendedTemplate, startFile){
+        return processListItemPartials(pattern, patternlab, extendedTemplate, startFile);
+      }
+    };
 
-	};
+  };
 
-	module.exports = list_item_hunter;
+  module.exports = list_item_hunter;
 
 }());

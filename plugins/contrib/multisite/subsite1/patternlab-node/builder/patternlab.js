@@ -20,6 +20,7 @@ var patternlab_engine = function () {
   of = require('./object_factory'),
   pa = require('./pattern_assembler'),
   mh = require('./media_hunter'),
+  ph = require('./parameter_hunter'),
   pe = require('./pattern_exporter'),
   he = require('html-entities').AllHtmlEntities,
   patternlab = {};
@@ -65,6 +66,7 @@ var patternlab_engine = function () {
 
     var pattern_assembler = new pa(),
     entity_encoder = new he(),
+    parameter_hunter = new ph(),
     pattern_exporter = new pe(),
     patterns_dir = './source/_patterns';
 
@@ -110,7 +112,10 @@ var patternlab_engine = function () {
           return;
         }
 
-        pattern_assembler.process_pattern_recursive(file.substring(2), patternlab);
+        var pattern = pattern_assembler.get_pattern_by_key(file, patternlab);
+        if(pattern){
+          pattern.extendedTemplate = pattern_assembler.process_pattern_recursive(pattern, patternlab, file);
+        }
     });
 
     //delete the contents of config.patterns.public before writing
