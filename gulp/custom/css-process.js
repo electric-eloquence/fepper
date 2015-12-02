@@ -4,6 +4,7 @@
 (function () {
   'use strict';
 
+  var conf = global.conf;
   var gulp = require('gulp');
   var plugins = require('gulp-load-plugins')();
   var runSequence = require('run-sequence');
