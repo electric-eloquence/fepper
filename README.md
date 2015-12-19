@@ -1,7 +1,6 @@
-Fepper
-======
+##Fepper
 
-A frontend prototyper for streamlining website design and development
+#A frontend prototyper for rapid website design and development
 
 * [Installation](#installation)
 * [Configuration](#configuration)
