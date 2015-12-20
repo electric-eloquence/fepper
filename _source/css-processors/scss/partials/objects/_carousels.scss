@@ -22,7 +22,8 @@
   width: 100%;
   margin: (-$space-half) 0 $space;
 
-  a, div {
+  a,
+  div {
     display: table-cell;
     padding: $pad-half;
   }
