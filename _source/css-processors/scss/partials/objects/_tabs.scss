@@ -21,7 +21,8 @@
     padding: $pad-half;
     background: $gray;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: $gray-light-3;
     }
 

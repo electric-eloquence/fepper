@@ -6,7 +6,8 @@ form > div {
   margin-bottom: $space;
 }
 
-form ol, form ul {
+form ol,
+form ul {
   list-style: none;
   margin-left: 0;
 }
@@ -22,22 +23,31 @@ label {
   padding-bottom: $space-quarter;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
     font-family: inherit;
     font-size: 100%;
     margin: 0;
 }
 
-input, textarea {
+input,
+textarea {
   border: 1px solid $gray;
   padding: $pad-half 0.65rem;
 }
 
-input[type=text], input[type=search], input[type=url], input[type=number], textarea {
+input[type=text],
+input[type=search],
+input[type=url],
+input[type=number],
+textarea {
   -webkit-appearance: none;
 }
 
-button, input[type="submit"] {
+button,
+input[type="submit"] {
   padding: $pad-half;
   background: $gray-dark;
   border: 1px solid $gray;
@@ -68,11 +78,14 @@ input[type="search"]::-webkit-search-decoration {
 
 .inline-form {
   
-  fieldset, .inline-container {
+  fieldset,
+.inline-container {
     position: relative;
   }
   
-  input[type=submit], button, .btn {
+  input[type=submit],
+  button,
+  .btn {
     font-size: $font-size-slightly-smaller;
     padding: 0.65rem 1.3rem;
     background: $gray-dark;
@@ -82,7 +95,8 @@ input[type="search"]::-webkit-search-decoration {
     z-index: 1;
     width: auto;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: $gray;
       color: $white;
     }
@@ -97,11 +111,13 @@ input[type="search"]::-webkit-search-decoration {
 
   } 
   
-  fieldset, .inline-container {
+  fieldset,
+  .inline-container {
     position: relative;
   }
   
-  input[type=submit], button {
+  input[type=submit],
+  button {
     position: absolute;
     top: 0;
     right: 0;
