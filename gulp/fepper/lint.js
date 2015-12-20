@@ -19,7 +19,7 @@
   gulp.task('lint:eslint', function () {
     return gulp.src(conf.src + '/scripts/src/**/*.js')
       .pipe(plugins.eslint())
-      .pipe(plugins.eslint.format())
+      .pipe(plugins.eslint.format());
   });
 
   gulp.task('lint:jsonlint', function () {
