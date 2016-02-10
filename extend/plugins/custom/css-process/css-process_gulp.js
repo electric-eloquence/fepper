@@ -9,7 +9,7 @@
   var plugins = require('gulp-load-plugins')();
   var runSequence = require('run-sequence');
 
-  var utilsGulp = require('../../../../gulp/lib/utils');
+  var utilsGulp = require('../../../../gulp/utils');
 
   gulp.task('css-process', function () {
 // Uncomment the following block to use Stylus.
