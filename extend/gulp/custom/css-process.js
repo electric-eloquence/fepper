@@ -9,7 +9,7 @@
   var plugins = require('gulp-load-plugins')();
   var runSequence = require('run-sequence');
 
-  var utilsGulp = require('../lib/utils');
+  var utilsGulp = require('../../../gulp/lib/utils');
 
   gulp.task('css-process', function () {
     return gulp.src('./' + conf.src + '/css-processors/stylus/*.styl')
