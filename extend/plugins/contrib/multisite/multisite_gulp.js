@@ -11,7 +11,7 @@
   var plugins = require('gulp-load-plugins')();
   var runSequence = require('run-sequence');
 
-  var utils = require('../../../core/lib/utils');
+  var utils = require('../../../../core/lib/utils');
   var rootDir = utils.rootDir();
   var FpPln = require(rootDir + '/core/fp-pln/fp-pln');
   var fpDir = rootDir + '/core/tasks';
@@ -22,8 +22,10 @@
   var multisiteDir = rootDir + '/extend/plugins/contrib/multisite';
   var subsite;
   var subsiteNameError = 'You cannot name a subsite "main"!';
-  var subsites = require(multisiteDir + '/subsites');
   var version = '0_0_0';
+  var yaml = require('js-yaml');
+  var yml = fs.readFileSync(multisiteDir + '/subsites.yml', conf.enc);
+  var subsites = yaml.safeLoad(yml);
 
   function importMustache(from, to) {
     var dest;

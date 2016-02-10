@@ -6,6 +6,7 @@
 (function () {
   'use strict';
 
+  var glob = require('glob');
   var gulp = require('gulp');
   var requireDir = require('require-dir');
   var runSequence = require('run-sequence');
@@ -14,9 +15,13 @@
   // Set global.conf and process.env.CONF.
   utils.conf();
 
-  // Load tasks in tasks directory.
+  // Require tasks in task directories.
   requireDir('gulp', {recurse: true});
   requireDir('extend/gulp', {recurse: true});
+  var extendPlugins = glob.sync('extend/plugins/**/*_gulp.js');
+  for (var i = 0; i < extendPlugins.length; i++) {
+    require('./' + extendPlugins[i]);
+  }
 
   gulp.task('default', function (cb) {
     runSequence(

@@ -1,6 +1,6 @@
 /**
- * Put Gulp tasks contributed by the community in this directory and add them to
- * the more general tasks listed below.
+ * Separating auxiliary contrib tasks into this file to reduce the amount of
+ * noise in contrib.js.
  */
 (function () {
   'use strict';
