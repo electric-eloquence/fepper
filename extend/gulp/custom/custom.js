@@ -11,8 +11,7 @@
   ]);
 
   gulp.task('custom:frontend-copy', [
-// Uncomment if you wish to enable this.
-//    'css-process:frontend-copy'
+    'css-process:frontend-copy'
   ]);
 
   gulp.task('custom:lint', [
@@ -22,6 +21,7 @@
   ]);
 
   gulp.task('custom:once', [
+    'css-process'
   ]);
 
   gulp.task('custom:publish', [
@@ -40,7 +40,6 @@
   ]);
 
   gulp.task('custom:watch', [
-// Uncomment if you wish to enable this.
-//    'css-process:watch'
+    'css-process:watch'
   ]);
 })();
