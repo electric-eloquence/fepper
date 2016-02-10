@@ -4,12 +4,12 @@
   var conf = global.conf;
   var gulp = require('gulp');
 
-  var utils = require('../../core/lib/utils');
+  var utils = require('../core/lib/utils');
   var rootDir = utils.rootDir();
 
   var pathIn = rootDir + '/core/tasks';
   var pathOut = rootDir;
-  var Tasks = require('../../core/tasks/tasks');
+  var Tasks = require('../core/tasks/tasks');
   var tasks = new Tasks(rootDir, conf);
 
   gulp.task('fepper:copy-assets', function () {

@@ -4,12 +4,12 @@
   var conf = global.conf;
   var gulp = require('gulp');
 
-  var utils = require('../../core/lib/utils');
+  var utils = require('../core/lib/utils');
   var rootDir = utils.rootDir();
 
   var pathIn = rootDir + '/' + conf.pln;
   var pathOut = rootDir;
-  var FpPln = require('../../core/fp-pln/fp-pln');
+  var FpPln = require('../core/fp-pln/fp-pln');
   var fpPln = new FpPln(rootDir, conf);
 
   gulp.task('patternlab:build', function (cb) {
