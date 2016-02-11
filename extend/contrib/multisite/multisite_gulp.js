@@ -11,7 +11,7 @@
   var plugins = require('gulp-load-plugins')();
   var runSequence = require('run-sequence');
 
-  var utils = require('../../../../core/lib/utils');
+  var utils = require('../../../core/lib/utils');
   var rootDir = utils.rootDir();
   var FpPln = require(rootDir + '/core/fp-pln/fp-pln');
   var fpDir = rootDir + '/core/tasks';
@@ -19,7 +19,7 @@
 
   var $;
   var i;
-  var multisiteDir = rootDir + '/extend/plugins/contrib/multisite';
+  var multisiteDir = rootDir + '/extend/contrib/multisite';
   var subsite;
   var subsiteNameError = 'You cannot name a subsite "main"!';
   var version = '0_0_0';

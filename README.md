@@ -211,7 +211,7 @@ processors and tries to keep the amount of NPMs to download to a minimum, so it
 does not ship with Stylus (or Sass, Rework, etc) configured. However, since 
 Stylus allows for this easy sharing of variables, Fepper does ship with a 
 `patternlab-node/source/css-processors/stylus` directory which can be compiled 
-into the stock Pattern Lab CSS by configuring `extend/plugins/custom/css-process/css-process_gulp.js`. 
+into the stock Pattern Lab CSS by configuring `extend/custom/css-process/css-process_gulp.js`. 
 The Stylus files are written in the terse, Python-like, indentation-based 
 syntax; however, the more verbose, CSS-like syntax (with curly braces, colons, 
 and semi-colons) is perfectly valid as well.
