@@ -1,1 +1,3 @@
-Place all non-Gulp code for contrib plugins here.
+* Place contrib plugins here.
+* Make necessary configurations to any YAML files associated with the plugins.
+* Add the tasks to contrib.js in order for Fepper to run them.
