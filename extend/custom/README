@@ -1,1 +1,4 @@
-Place all non-Gulp code for custom plugins here.
+* Write custom plugins here.
+* They should be contained within an appropriately named directory.
+* They must include a file ending in "_gulp.js" in order for Fepper to recognize their tasks.
+* Add the tasks to custom.js in order for Fepper to run them.
