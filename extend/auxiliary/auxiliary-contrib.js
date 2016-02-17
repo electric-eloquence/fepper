@@ -1,6 +1,7 @@
 /**
- * Separating auxiliary contrib tasks into this file to reduce the amount of
- * noise in contrib.js.
+ * Separating auxiliary contrib tasks into this file to reduce the amount of 
+ * noise in contrib.js. Preprocess means the task will run before the core 
+ * Fepper task. Postprocess means it will run after.
  */
 (function () {
   'use strict';
