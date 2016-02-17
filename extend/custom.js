@@ -1,6 +1,6 @@
 /**
- * Put custom Gulp tasks in this directory and add them to the more general
- * tasks listed below.
+ * Put tasks defined in _gulp.js appended files within the more general tasks 
+ * listed below.
  */
 (function () {
   'use strict';
@@ -24,6 +24,9 @@
     'css-process'
   ]);
 
+  // You can only publish one site at a time. If the custom:publish task is to 
+  // be enabled, the core fepper:publish task should be disabled by unsetting 
+  // the gh_pages_src setting in conf.yml.
   gulp.task('custom:publish', [
   ]);
 
