@@ -21,10 +21,9 @@
 * On Mac OS X:
   * Install Homebrew [http://brew.sh](http://brew.sh)
 * On other Unix-like OSs:
-  * Permissions might need to be reworked after globally installing NPMs.
-  * Global Node modules and their executables are sometimes written to root-owned directories, so NPM commands with the -g option might need to be run as root.
-  * However, this sometimes writes root-owned files into $HOME/.npm which needs to be owned entirely by the standard user.
-  * If this is the case, be sure to recursively chown $HOME/.npm with the standard user's ownership.
+  * Permissions might need to be reworked in order to globally install NPMs.
+  * It is a good practice not to run npm as root.
+  * This probably requires recursively chowning the global node_modules directory with the standard user's ownership.
 * On non-Unix-like OSs:
   * Sorry, but Fepper is not supported on non-Unix-like OSs.
 * Install Node.js and NPM (Node Package Manager).
@@ -49,10 +48,11 @@
 
 ###<a id="configuration"></a>Configuration###
 
-Edit `conf.yml` for customizing local settings and for general configuration 
-information. If you wish to use the `syncback`, `frontend-copy`, or `template` 
-tasks, you must supply values for the `backend.synced_dirs` configs in order for 
-those directories to get processed and copied to the backend.
+Edit `conf.yml` for customizing local settings and for viewing general 
+configuration information. If you wish to use the `syncback`, `frontend-copy`, 
+or `template` tasks, you must supply values for the `backend.synced_dirs` 
+configs in order for those directories to get processed and copied to the 
+backend.
 
 You may edit `patternlab-node/source/_data/_data.json` to globally populate 
 Mustache templates with data. Underscore-prefixed .json files within 
@@ -60,8 +60,8 @@ Mustache templates with data. Underscore-prefixed .json files within
 in turn getting compiled into data.json, the final source of globally scoped 
 data. Manual edits to data.json will get overwritten on compilation.
 
-When upgrading Fepper, be sure to back up the `patternlab-node/source` directory. 
-This is where all custom work is to be done.
+When upgrading Fepper, be sure to back up the `patternlab-node/source` 
+directory. This is where all custom work is to be done.
 
 If using Git for version control, directories named "ignore" will be ignored.
 
@@ -103,7 +103,7 @@ enter the relative paths to the appropriate backend directories into `conf.yml`.
 frontend data into your backend web application.
 
 ###<a id="webserved-directories"></a>Webserved Directories###
-When using a CMS backend, assets generally need to be shared with the Fepper 
+When using a backend, assets generally need to be shared with the Fepper 
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a task to copy in the 
 reverse direction, Fepper serves backend files if their directories are entered 
@@ -134,7 +134,7 @@ value in `conf.yml` will take priority.
 
 ###<a id="templater"></a>Templater###
 Pattern Lab's Mustache templates can be translated into templates compatible 
-with your CMS backend. Mustache tags just need to be replaced with tags the CMS 
+with your backend. Mustache tags just need to be replaced with tags the backend 
 can use. Put these translations into YAML files named similarly to the Mustache 
 files in `patternlab-node/source/_patterns/03-templates`. Follow the example in 
 `test/files/_patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
@@ -147,17 +147,17 @@ Follow these rules for setting up keys and values:
 * Escape parentheses and question marks with two backslashes.
 * Wrap the key in double quotes.
 * Follow the closing quote with a colon, space, and pipe.
-* Indent the first line of the value two spaces.
-* Indent all following lines of the value by at least two spaces.
+* Indent each line of the value by at least two spaces.
 
-Templates prefixed by "\_\_" will be ignored by the Templater as will files in the 
-`_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
+Templates prefixed by "\_\_" will be ignored by the Templater as will files in 
+the `_nosync` directory. Be sure that `backend.synced_dirs.templates_dir` and 
 `backend.synced_dirs.templates_ext` are set in `conf.yml`. Run `fp syncback` 
 or `fp template` to execute the Templater. The Templater will recurse through 
 nested Mustache templates if the tags are written in the verbose syntax and 
 include the `.mustache` extension, i.e., `{{> 02-organisms/00-global/00-header.mustache }}`. 
-When including parameterized partials, be sure string values and keys with 
-question marks are wrapped in _single_ quotes.
+(However, the more common inclusion use-case is to leave off the extension, and 
+not recurse.) When including parameterized partials, be sure string values and 
+keys with question marks are wrapped in _single_ quotes.
 
 ###<a id="mustache-browser"></a>Mustache Browser###
 Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
@@ -165,14 +165,14 @@ in the upper right, then clicking Code, and then clicking the Mustache tab in
 the bottom pane. The Mustache tags are hot-linked, and if they are written in 
 the verbose syntax, clicking on them will open that Mustache file and display 
 its code in the Pattern Lab UI, with its Mustache tags hot-linked as well. The 
-Mustache tags must be coded in this manner: `{{> 02-organisms/00-global/00-header }}`
+Mustache tags must be coded in the verbose-pathed manner: `{{> 02-organisms/00-global/00-header }}`
 
 The path must be correct; however, the `.mustache` extension is optional. The 
 default homepage is a working example.
 
 ###<a id="html-scraper"></a>HTML Scraper###
 Fepper can scrape and import Mustache templates and JSON data files from actual 
-web pages, preferably the actual CMS backend that Fepper is prototyping for. To 
+web pages, preferably the actual backend that Fepper is prototyping for. To 
 open the Scraper, click Scrape in the Pattern Lab UI, and then click HTML 
 Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
 selector you wish to target (prepended with "#" for IDs and "." for classes). 
@@ -191,10 +191,10 @@ conversion from HTML to XHTML, so don't expect an exact copy of the HTML
 structure of the source HTML.
 
 ###<a id="variables.styl"></a>variables.styl###
-`patternlab-node/source/scripts/src/variables.styl` is a file containing variables 
-that can be shared across the Stylus CSS preprocessor, browser JavaScripts, and 
-PHP backends (and possibly other language backends as well). It ships with these 
-values:
+`patternlab-node/source/scripts/src/variables.styl` is a file containing 
+variables that can be shared across the Stylus CSS preprocessor, browser 
+JavaScripts, and PHP backends (and possibly other language backends as well). It 
+ships with these values:
 
 ```
 bp_lg_max = -1
@@ -208,7 +208,7 @@ It cannot contain comments, semi-colons, curly braces, etc. It is
 straightforward to import and use these variables in Stylus and JavaScript. PHP 
 must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS 
 processors and tries to keep the amount of NPMs to download to a minimum, so it 
-does not ship with Stylus (or Sass, Rework, etc) configured. However, since 
+does not ship with Stylus (or Sass, PostCSS, etc) configured. However, since 
 Stylus allows for this easy sharing of variables, Fepper does ship with a 
 `patternlab-node/source/css-processors/stylus` directory which can be compiled 
 into the stock Pattern Lab CSS by configuring `extend/custom/css-process/css-process_gulp.js`. 
