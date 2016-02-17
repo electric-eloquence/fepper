@@ -26,7 +26,7 @@ backend:
     #   directory below patternlab-php/source/js. In other words, place
     #   JavaScripts you wish to ignore directly in patternlab-php/source/js and
     #   no deeper.
-    # - Use the node . syncback task to perform the sync.
+    # - Use the fp syncback task to perform the sync.
     #
     # - Examples:
     #assets_dir: docroot/themes/theme/assets
