@@ -73,14 +73,15 @@
   /**
    * Recursively merge properties of two objects.
    *
-   * @param {Object} obj1 If obj1 has properties obj2 doesn't, add to obj2.
-   * @param {Object} obj2 This object's properties have priority over obj1.
-   * @returns {Object} obj2
+   * @param {object} obj1 - If obj1 has properties obj2 doesn't, add to obj2.
+   * @param {object} obj2 - This object's properties have priority over obj1.
+   *   If obj2 is null or undefined, be sure to make an assignment to the output
+   *   of this function. In other cases, obj2 get mutated, and no assignment is
+   *   necessary.
+   * @return {object} The mutated obj2 object.
    */
   exports.mergeObjects = function (obj1, obj2) {
-    if (typeof obj2 === 'undefined') {
-      obj2 = {};
-    }
+    obj2 = obj2 || {};
 
     for (var i in obj1) {
       if (obj1.hasOwnProperty(i)) {
@@ -156,7 +157,7 @@
   /**
    * Remove first path element from webservedDirsFull and save to array.
    *
-   * @param The {array} webservedDirsFull The array of webserved directories.
+   * @param {array} webservedDirsFull - The array of webserved directories.
    * @return {array} The webserved directories stripped of configuration prefix.
    */
   exports.webservedDirnamesTruncate = function (webservedDirsFull) {
@@ -179,6 +180,13 @@
 
   /**
    * Copy webserved_dirs to gh_pages_src.
+   *
+   * @param {array} webservedDirsFull - Path to directories webserved by Fepper.
+   * @param {string} rootDir - Fepper's root directory.
+   * @param {array} webservedDirsShort - Path to directories webserved by Fepper
+   *   truncated for publishing to GitHub Pages.
+   * @param {string} ghPagesSrc - The directory that holds the processed code to
+   *   be published to GitHub Pages.
    */
   exports.webservedDirsCopy = function (webservedDirsFull, rootDir, webservedDirsShort, ghPagesSrc) {
     var i;
