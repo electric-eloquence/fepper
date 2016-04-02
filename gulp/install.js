@@ -4,7 +4,6 @@
   var conf = global.conf;
   var fs = require('fs-extra');
   var gulp = require('gulp');
-  var plugins = require('gulp-load-plugins')();
 
   gulp.task('install:config', function () {
     try {
