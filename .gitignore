@@ -8,7 +8,7 @@ conf.yml
 install.log
 node_modules/
 npm-debug.log
-patternlab-node/config.json
+patternlab-node/patternlab-config.json
 patternlab-node/public/*
 !patternlab-node/public/data/annotations.js
 !patternlab-node/public/styleguide
