@@ -129,7 +129,7 @@
 
     // Delete remaining Mustache tags if configured to do so.
     if (!conf.templater.retain_mustache) {
-      code = code.replace(/{{[^}]*}+}\s*\n?/g, '');
+      code = code.replace(/{{(.|\s)*?}?}}\s*\n?/g, '');
     }
     // Replace escaped curly braces.
     code = code.replace(/\\{/g, '{');

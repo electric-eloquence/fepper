@@ -166,7 +166,7 @@
   exports.jsonToMustache = function (jsonForXhtml) {
     var xhtml = builder.buildObject(jsonForXhtml);
     // Remove XML declaration.
-    xhtml = xhtml.replace(/<\?xml[^>]*\?>/g, '');
+    xhtml = xhtml.replace(/<\?xml(.|\s)*?\?>/g, '');
     // Replace html tags with Mustache tags.
     xhtml = xhtml.replace('<html>', '{{# html }}').replace('</html>', '{{/ html }}');
     // Clean up.

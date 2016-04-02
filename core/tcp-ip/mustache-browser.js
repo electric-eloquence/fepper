@@ -32,9 +32,10 @@
      * Strip Mustache tag to only the partial path.
      */
     partialTagToPath(partial) {
-      partial = partial.replace(/{{+[^\w]?\s*/, '');
-      partial = partial.replace(/\([^\)]*\)/, '');
-      partial = partial.replace(/\s*}+}/, '');
+      partial = partial.replace(/^{{>\s*/, '');
+      partial = partial.replace(/\((.|\s)*\)/, '');
+      partial = partial.replace(/\:[\w\-\|]+/, '');
+      partial = partial.replace(/\s*}}$/, '');
       if (partial.indexOf('.mustache') !== partial.length - 9) {
         partial = partial + '.mustache';
       }
@@ -46,8 +47,8 @@
      * Recursively strip token span tags output by the Pattern Lab code viewer.
      */
     spanTokensStrip(code) {
-      code = code.replace(/<span class="token [^>]*>([^<]*)<\/span>/g, '$1');
-      if (code.match(/<span class="token [^>]*>([^<]*)<\/span>/)) {
+      code = code.replace(/<span class="token (.|\s)*?>((.|\s)*?)<\/span>/g, '$2');
+      if (code.search(/<span class="token (.|\s)*?>((.|\s)*?)<\/span>/) > -1) {
         code = this.spanTokensStrip(code);
       }
 
@@ -61,7 +62,7 @@
       data = data.replace(/"/g, '&quot;');
       data = data.replace(/</g, '&lt;');
       data = data.replace(/>/g, '&gt;');
-      data = data.replace(/{{&gt;[^}]*}}/g, '<a href="?partial=$&">$&</a>');
+      data = data.replace(/{{&gt;(.|\s)*?}}/g, '<a href="?partial=$&">$&</a>');
       data = data.replace(/\n/g, '<br>');
 
       return data;
@@ -97,7 +98,7 @@
         else if (typeof req.query.partial === 'string') {
           try {
             // Requires verbosely pathed Mustache partial syntax.
-            partial = this.partialTagToPath(req.query.partial);
+            partial = this.partialTagToPath(req.query.partial.trim());
 
             // Check if query string correlates to actual Mustache file.
             var stats = fs.statSync(this.workDir + '/' + partial);
