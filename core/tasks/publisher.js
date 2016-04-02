@@ -113,10 +113,10 @@
     }
 
     // Similar to gh_pages_prefix, conf.yml takes priority over data.json.
-    if (conf.backend.webserved_dirs.constructor === Array) {
+    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs instanceof Array) {
       webservedDirsFull = conf.backend.webserved_dirs;
     }
-    else if (dataJson.backend_webserved_dirs.constructor === Array) {
+    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs instanceof Array) {
       webservedDirsFull = dataJson.backend_webserved_dirs;
     }
 
