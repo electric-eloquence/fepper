@@ -98,6 +98,6 @@ gh_pages_src: .publish/fepper-gh-pages
 # It is not a good idea to change the following values.
 enc: utf8
 pln: patternlab-node
-bld: patternlab-node/builder
+bld: patternlab-node/core/lib
 pub: patternlab-node/public
 src: patternlab-node/source

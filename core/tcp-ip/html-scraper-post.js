@@ -24,6 +24,7 @@
   };
 
   /**
+   * @param {array} dataArr - Data array.
    * @return {string} Sanitized HTML.
    */
   exports.dataArrayToJson = function (dataArr) {
@@ -45,6 +46,7 @@
    * @param {string} fileName - Filename.
    * @param {string} fileHtml - Mustache file's content.
    * @param {string} fileJson - JSON file's content.
+   * @param {object} res - response object.
    */
   exports.filesWrite = function (templateDir, fileName, fileHtml, fileJson, res) {
     try {
@@ -62,6 +64,7 @@
   /**
    * Sanitize scraped HTML.
    *
+   * @param {string} html - raw HTML.
    * @return {string} Sanitized HTML.
    */
   exports.htmlSanitize = function (html) {
@@ -76,6 +79,7 @@
   /**
    * Convert HTML to XHTML for conversion to full JSON data object.
    *
+   * @param {string} targetHtml - XHTML.
    * @return {string} XHTML.
    */
   exports.htmlToXhtml = function (targetHtml) {
@@ -160,7 +164,7 @@
   };
 
   /**
-   * @param {Object} jsonForXhtml - JSON for conversion to Mustache syntax.
+   * @param {object} jsonForXhtml - JSON for conversion to Mustache syntax.
    * @return {string} XHTML.
    */
   exports.jsonToMustache = function (jsonForXhtml) {
@@ -236,7 +240,7 @@
    * Get JSON and array from XHTML.
    *
    * @param {string} targetXhtml - Well formed XHTML.
-   * @return {Object} Prop 1: json, Prop2: array.
+   * @return {object} Prop 1: json, Prop2: array.
    */
   exports.xhtmlToJsonAndArray = function (targetXhtml) {
     var dataArr;

@@ -19,7 +19,7 @@
   /**
    * Recursively glob pattern files, and then iterate through them.
    *
-   * @param The {string} patternDir The directory to glob.
+   * @param {string} ghPagesDir - The directory to glob.
    * @return {array} The files in the directory.
    */
   exports.filesGet = function (ghPagesDir) {
@@ -29,7 +29,15 @@
   /**
    * Read globbed files, token replace path prefix tags, and write output.
    *
-   * @param {array} files The files to process.
+   * @param {array} publicFiles - The files to process.
+   * @param {object} conf - Configuration object.
+   * @param {array} webservedDirsShort - Path to directories webserved by Fepper
+   *   truncated for publishing to GitHub Pages.
+   * @param {string} prefix - The prefix between the GitHub Pages hostname and
+   *   the document root.
+   * @param {string} workDir - Fepper's root directory.
+   * @param {string} ghPagesSrc - The directory that holds the processed code to
+   *   be published to GitHub Pages.
    */
   exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc) {
     var code;
@@ -105,10 +113,10 @@
     }
 
     // Similar to gh_pages_prefix, conf.yml takes priority over data.json.
-    if (conf.backend.webserved_dirs.constructor === Array) {
+    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs instanceof Array) {
       webservedDirsFull = conf.backend.webserved_dirs;
     }
-    else if (dataJson.backend_webserved_dirs.constructor === Array) {
+    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs instanceof Array) {
       webservedDirsFull = dataJson.backend_webserved_dirs;
     }
 

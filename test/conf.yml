@@ -101,6 +101,6 @@ gh_pages_prefix: /github-repository-name
 # It is not a good idea to change the following values.
 enc: utf8
 pln: .
-bld: builder
+bld: core/lib
 pub: public
 src: source

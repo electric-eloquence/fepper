@@ -13,6 +13,9 @@
 
     /**
      * Message indicating inability to match a partial to a Mustache file.
+     *
+     * @param {object} res - response object.
+     * @param {string} err - error.
      */
     noResult(res, err) {
       var output = '';
@@ -30,6 +33,9 @@
 
     /**
      * Strip Mustache tag to only the partial path.
+     *
+     * @param {string} partial - Mustache syntax.
+     * @return {string} Partial path.
      */
     partialTagToPath(partial) {
       partial = partial.replace(/^{{>\s*/, '');
@@ -45,6 +51,9 @@
 
     /**
      * Recursively strip token span tags output by the Pattern Lab code viewer.
+     *
+     * @param {string} code - HTML/Mustache.
+     * @return {string} Stripped code.
      */
     spanTokensStrip(code) {
       code = code.replace(/<span class="token (.|\s)*?>((.|\s)*?)<\/span>/g, '$2');
@@ -57,6 +66,9 @@
 
     /**
      * Make angle brackets and newlines viewable as HTML and hotlink partials.
+     *
+     * @param {string} data - HTML/Mustache.
+     * @return {string} Viewable and linkable code.
      */
     toHtmlEntitiesAndLinks(data) {
       data = data.replace(/"/g, '&quot;');
