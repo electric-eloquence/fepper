@@ -16,11 +16,11 @@ backend:
   synced_dirs:
     # Relative paths to destination directories for code developed in Fepper.
     # - First, plug a backend into Fepper. Put the actual codebase or even just
-    #   a symbolic link to the codebase into the backend directory.
-    # - Then, enter the paths relative to the backend directory as destinations
+    #   a symbolic link to the codebase into the /backend directory.
+    # - Then, enter the paths relative to the /backend directory as destinations
     #   for frontend code to be synced by Fepper.
     # - It is recommended to contain the backend codebase within a docroot
-    #   directory just below the backend directory. This is so Fepper can serve
+    #   directory just below the /backend directory. This is so Fepper can serve
     #   static files from the backend as per the webserved_dirs settings.
     # - Do not include "backend" or a leading slash in the directory settings.
     # - Do not include a leading dot in the templates_ext setting.
@@ -28,7 +28,7 @@ backend:
     #   directory below patternlab-php/source/js. In other words, place
     #   JavaScripts you wish to ignore directly in patternlab-php/source/js and
     #   no deeper.
-    # - Use the node . syncback task to perform the sync.
+    # - Use the fp syncback task to perform the sync.
     #
     # - Examples:
     #assets_dir: docroot/themes/theme/assets
@@ -94,9 +94,9 @@ gh_pages_src: .publish/fepper-gh-pages
 # If using webserved_dirs and publishing to GitHub Pages, the repository name
 # must be prefixed to the src of the files in webserved_dirs. This value can
 # also be set in data.json and be saved in version control. If both are set, the
-# setting in this file will take priority. Be sure to include the leading slash
-# in this setting.
-gh_pages_prefix: /github-repository-name
+# setting in this file will take priority. Do not include a leading slash in
+# this setting.
+gh_pages_prefix: github-repository-name
 
 # It is not a good idea to change the following values.
 enc: utf8

@@ -33,8 +33,7 @@
    * @param {object} conf - Configuration object.
    * @param {array} webservedDirsShort - Path to directories webserved by Fepper
    *   truncated for publishing to GitHub Pages.
-   * @param {string} prefix - The prefix between the GitHub Pages hostname and
-   *   the document root.
+   * @param {string} prefix - The repository name prefixing the document root.
    * @param {string} workDir - Fepper's root directory.
    * @param {string} ghPagesSrc - The directory that holds the processed code to
    *   be published to GitHub Pages.
@@ -69,13 +68,13 @@
           // add the gh_pages_prefix.
           regex = new RegExp('href="\/' + webservedDirsShort[k], 'g');
           if (codeSplit[j].match(regex)) {
-            codeSplit[j] = codeSplit[j].replace(regex, 'href="' + prefix + '/' + webservedDirsShort[k]);
+            codeSplit[j] = codeSplit[j].replace(regex, 'href="/' + prefix + '/' + webservedDirsShort[k]);
           }
           // If the src of a tag matches one of the webservedDirsShort,
           // add the gh_pages_prefix.
           regex = new RegExp('src="\/' + webservedDirsShort[k], 'g');
           if (codeSplit[j].match(regex)) {
-            codeSplit[j] = codeSplit[j].replace(regex, 'src="' + prefix + '/' + webservedDirsShort[k]);
+            codeSplit[j] = codeSplit[j].replace(regex, 'src="/' + prefix + '/' + webservedDirsShort[k]);
           }
         }
         code += codeSplit[j] + '\n';
