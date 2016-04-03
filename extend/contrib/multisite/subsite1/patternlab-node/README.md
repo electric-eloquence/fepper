@@ -6,27 +6,39 @@ The Node version of [Pattern Lab](http://patternlab.io/) is, at its core, a stat
 
 This repository contains the vanilla builder logic, grunt and gulp configurations, and some sample template/css/data to illustrate the power and flexibility of the tool.
 
+###### Core Team
+
+* [@bmuenzenmeyer](https://github.com/bmuenzenmeyer) - Lead Maintainer
+* [@geoffp](https://github.com/geoffp) - Core Contributor
+
+### Prerequisites
+
+Make sure Node and npm are installed. A great guide can be found here: [https://docs.npmjs.com/getting-started/installing-node](https://docs.npmjs.com/getting-started/installing-node)
+
 ### Download
 
 * Download the [latest release of patternlab-node](https://github.com/pattern-lab/patternlab-node/releases/latest) from Github
 * Via npm, run `npm install patternlab-node` (Note this will auto install the grunt version currently. see below)
+* **NOTE** Node version 4.X and 5.X have tentative support, citing [a lot of Windows issues](https://github.com/nodejs/node-gyp/issues/629), including [mine](https://github.com/pattern-lab/patternlab-node/issues/162). Upgrade node at your own risk until otherwise stated. I've tried to catalog some issues and troubleshooting steps on the [wiki](https://github.com/pattern-lab/patternlab-node/wiki/Windows-Issues).
+
+### Troubleshooting Installs
+
+Make sure you are running your terminal/command line session as administrator. This could mean `sudo`, or opening the window with a right-click option.
 
 ### Choose Your Adventure! Now Vanilla, Grunt & Gulp
 
 This repository ships with two `package.json` files, a `Gruntfile.js`, and a `gulpfile.js`. The default is grunt currently. The core builder is not dependent on either.
-
-**HELP WANTED** Please help me test both of the configurations by [reporting](https://github.com/pattern-lab/patternlab-node/blob/dev/CONTRIBUTING.md) any issues encountered.
 
 ### Getting Started - Grunt
 
 To run patternlab-node using grunt, do the following in the directory you downloaded and extracted the zipped release:
 
 1. Run `npm install` from the command line
-2. Optionally, delete `package.gulp.json`, `gulpfile.js`, and `builder/patternlab_gulp.js` files if you are certain you don't need it.
-* Not deleting `builder/patternlab_gulp.js` may cause a harmless error when running grunt. Delete it.
+2. Optionally, delete `package.gulp.json`, `gulpfile.js`, and `core/lib/patternlab_gulp.js` files if you are certain you don't need it.
+* Not deleting `core/lib/patternlab_gulp.js` may cause a harmless error when running grunt. Delete it.
 3. Run `grunt` or `grunt serve` from the command line
 
-This creates all patterns, the styleguide, and the pattern lab site. It's strongly recommended to run `grunt serve` to see have BrowserSync spin up and serve the files to you.
+This creates all patterns, the styleguide, and the pattern lab site. It's strongly recommended to run `grunt serve` to have BrowserSync spin up and serve the files to you.
 
 ### Getting Started - Gulp
 
@@ -37,7 +49,7 @@ To run patternlab-node using gulp, you need to swap out the default grunt config
 3. Run `npm install` from the command line
 4. Run `gulp` or `gulp serve` from the command line
 
-This creates all patterns, the styleguide, and the pattern lab site. It's strongly recommended to run `grunt serve` to see have BrowserSync spin up and serve the files to you.
+This creates all patterns, the styleguide, and the pattern lab site. It's strongly recommended to run `gulp serve` to have BrowserSync spin up and serve the files to you.
 
 ### There and Back Again, or Switching Between Grunt and Gulp
 
@@ -50,7 +62,7 @@ It's not expected to toggle between the two build systems, but for those migrati
 
 ### Upgrading
 
-You can find some simple upgrade documenation in it's current home here (unreleased but confirmed to work): [https://github.com/pattern-lab/website/blob/dev/patternlabsite/docs/node/upgrading.md](https://github.com/pattern-lab/website/blob/dev/patternlabsite/docs/node/upgrading.md)
+You can find instructions on how to upgrade from version to version of Pattern Lab Node here: [https://github.com/pattern-lab/patternlab-node/wiki/Upgrading](https://github.com/pattern-lab/patternlab-node/wiki/Upgrading)
 
 ### Command Line Interface
 
@@ -73,13 +85,39 @@ Get more information about patternlab-node, pattern lab in general, and where to
 ##### Watching Changes
 To have patternlab-node watch for changes to either a mustache template, data, or stylesheets, run `grunt|gulp watch` or `grunt|gulp serve`. The `Gruntfile|Gulpfile` governs what is watched. It should be easy to add scss or whatever preprocessor you fancy.
 
-##### Preprocessor Support
-The patternlab-node release package ships with some `.scss` files utilized in the creation of the style guide and sample templates, but these are not required. The compilation tasks are commented out in the `Gruntfiles|Gulpfiles` but can be uncommented or changed to meet your needs. Sass modules are not included in `package.json` files - the prevailing thought being if you are familiar enough with preprocessors, you can use the instructions for [grunt-contrib-sass](https://github.com/gruntjs/grunt-contrib-sass) / [gulp-sass](https://github.com/dlmanning/gulp-sass) / _preprocessor of choice_ to install them. Uncomment the preprocessor configuration to fully utilize the example templates, css and style guide.
+##### Configurable Paths
+Pattern Lab Node ships with a particular source and public workflow intended to separate the code you work on with the code generated for consumption elsewhere. If you wish to change any paths, you may do so within `patternlab-config.json`. The contents are here:
 
-**NOTE:** You may run into issues installing gulp-sass if you don't have the latest Visual Studio on Windows. See [here](https://github.com/sass/node-sass/issues/469) for more information and [this query](https://github.com/sass/node-sass/issues?utf8=%E2%9C%93&q=is%3Aissue+install) for a slew of installation problems related to gulp-sass.
+```
+"paths" : {
+    "source" : {
+      "root": "./source/",
+      "patterns" : "./source/_patterns/",
+      "data" : "./source/_data/",
+      "styleguide" : "./core/styleguide/",
+      "patternlabFiles" : "./source/_patternlab-files/",
+      "js" : "./source/js",
+      "images" : "./source/images",
+      "fonts" : "./source/fonts",
+      "css" : "./source/css/"
+    },
+    "public" : {
+      "root" : "./public/",
+      "patterns" : "./public/patterns/",
+      "data" : "./public/data/",
+      "styleguide" : "./public/styleguide/",
+      "js" : "./public/js",
+      "images" : "./public/images",
+      "fonts" : "./public/fonts",
+      "css" : "./public/css"
+    }
+}
+```
+
+Note the intentional repitition of the nested structure, made this way for maximum flexibility. Relative paths are default but absolute paths should work too. You may also use these paths within Grunt or Gulp files by referring to the paths() object.
 
 ##### Nav Bar Controls
-If you don't have a need for some of the nav-bar tools in the Pattern Lab frontend, you can turn them off in `config.json`.
+If you don't have a need for some of the nav-bar tools in the Pattern Lab frontend, you can turn them off in `patternlab-config.json`.
 
 The current selection is as follows.
 
@@ -106,18 +144,55 @@ The current selection is as follows.
 }
 ```
 ##### Pattern States
-You can set the state of a pattern by including it in `config.json` too. The out of the box styles are in progress (orange), in review (yellow), and complete (green).
-Pattern states should be lowercase and use hyphens where spaces are present.
+You can set the state of a pattern by including its key in the `patternStates` object in `patternlab-config.json`, along with a style defined inside `patternStateCascade`. The out of the box styles are in progress (orange), in review (yellow), and complete (green).
 ```
 "patternStates": {
-	"colors" : "inprogress",
-	"fonts" : "inreview",
-	"three-up" : "complete"
+	"atoms-colors" : "complete",
+	"molecules-primary-nav" : "inreview",
+	"organisms-header" : "inprogress"
+}
+```
+
+Note that patterns inherit the lowest common denominator pattern state of their lineage.
+Consider:
+```
+"patternStates": {
+  "molecules-single-comment" : "complete",
+  "organisms-sticky-comment" : "inreview",
+  "templates-article" : "complete"
+}
+```
+In this case, two things are of note:
+
+* templates-article will display inreview since it inherits `organisms-sticky-comment`
+* pages-article will not display any pattern state, as it does not define one
+
+The `patternStateCascade` array is important in that the order is hierarchical.
+The default is below:
+
+```
+"patternStateCascade": ["inprogress", "inreview", "complete"],
+```
+
+which correspond to classes defined inside `./core/styleguide/css/styleguide.css`
+
+```
+/* pattern states */
+.inprogress:before {
+  color: #FF4136 !important;
+}
+
+.inreview:before {
+  color: #FFCC00 !important;
+}
+
+.complete:before {
+  color: #2ECC40 !important;
 }
 ```
 
 ##### Pattern Export
-`config.json` also has two properties that work together to export completed patterns for use in a production environment. Provide an array of keys and an output directory. Pattern Lab doesn't ship with any pattern export keys, but the default directory is `"./pattern_exports/"` created inside the install directory.
+`patternlab-config.json` also has two properties that work together to export completed patterns for use in a production environment. Provide an array of keys and an output directory. Pattern Lab doesn't ship with any pattern export keys, but the default directory is `"./pattern_exports/"` created inside the install directory.
 
 ```
 "patternExportKeys": ["molecules-primary-nav", "organisms-header", "organisms-header"],
@@ -125,6 +200,28 @@ Pattern states should be lowercase and use hyphens where spaces are present.
 ```
 
 Coupled with exported css (much easier to extract with existing tools like [grunt-contrib-copy](https://github.com/gruntjs/grunt-contrib-copy)), pattern export can help to maintain the relevancy of the design system by directly placing partials in a directory of your choosing.
+
+##### cacheBust
+`patternlab-config.json` has this flag to instruct Pattern Lab to append a unique query string to Javascript and CSS assets throughout the frontend.
+
+```
+"cacheBust": true
+```
+
+Default: true
+
+##### defaultPattter
+`patternlab-config.json` has an entry that allows you to specifiy a specific pattern upon launch of the main site. It works even without BrowserSync running. Set it like this:
+
+```
+"defaultPattern": "pages-homepage",
+```
+Default: "all"
+If running with BrowserSync, you may also set [this BrowserSync options](https://www.browsersync.io/docs/options/#option-startPath) to achieve the same result via your Gruntfile or Gulpfile.
+
+```
+startPath: '/?p=pages-homepage',
+```
 
 ##### baseurl
 
@@ -142,8 +239,20 @@ If you'd like to exclude an individual pattern you can do so by prepending the f
 
 You can also exclude complete directories by prepending the directory name with an underscore, like: `/_experiment/...`
 
+##### Style Guide Excludes
+
+Exclude whole pattern types from the "All patterns" styleguide by adding entries to `patternlab-config.json`. This is quite useful to make speedier. Pattern Lab Node ships with the following:
+
+```
+"styleGuideExcludes": [
+	"templates",
+	"pages"
+]
+```
+
+
 ##### Debug Mode
-`patternlab.json` is a file created for debugging purposes. Set `debug` to true in `.config.json` to see all the secrets.
+`patternlab.json` is a file created for debugging purposes. Set `debug` to true in `.patternlab-config.json` to see all the secrets.
 
 ##### Server &amp; BrowserSync
 Running `grunt serve` or `gulp serve` will compile the Pattern Lab frontend and host it by default on <a href="http://localhost:3000">http://localhost:3000</a> via [BrowserSync](http://www.browsersync.io/docs/). After it starts, templates, `data.json`, and scss/css changes in your source code will be automatically injected into the page.
@@ -177,6 +286,37 @@ Pattern parameters **do not** currently support the following:
 * nested properties within the parameter data, such as `{{> molecules-single-comment(foo.bar: 'baz') }}`
 
 You can read the full documentation on pattern parameters here: [Using Pattern Parameters](http://patternlab.io/docs/pattern-parameters.html)
+
+##### Pattern Style Modifiers
+Style Modifiers allow you to create a base pattern that you can easily modify by adding a class name to the pattern partial. Read more about them [here](http://patternlab.io/docs/pattern-stylemodifier.html), including support with pattern parameters. Below is the gist.
+
+The basic syntax is this:
+
+```
+{{> atoms-message:error }}
+```
+
+This works by using a reserved mustache variable of sorts called {{ styleModifier }} applied to the atoms-message mustache file itself:
+
+```
+<div class="message {{ styleModifier }}">{{ message }}</div>
+```
+
+Once rendered, it looks like this:
+
+```
+<div>
+    <div class="message error"></div>
+</div>
+```
+
+You may also specify multiple classes using a pipe character (|).
+
+```
+{{> atoms-message:error|is-on }}
+```
+
+
 
 ##### Pseudo-Patterns
 Pseudo-patterns are meant to give developers the ability to build multiple and unique **rendered** patterns off of one base pattern and its mark-up while giving them control over the data that is injected into the base pattern. This feature is especially useful when developing template- and page-style patterns.
