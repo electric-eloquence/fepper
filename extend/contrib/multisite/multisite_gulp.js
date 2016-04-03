@@ -906,7 +906,6 @@
       runSequence(
         'multisite:pattern-override',
         'multisite:clean',
-        'multisite:build',
         'multisite:copy',
         'multisite:copy-styles',
         cb

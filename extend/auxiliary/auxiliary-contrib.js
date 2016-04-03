@@ -22,6 +22,7 @@
   ]);
 
   gulp.task('contrib:once:preprocess', [
+    'multisite:build'
   ]);
 
   gulp.task('contrib:publish:preprocess', [
