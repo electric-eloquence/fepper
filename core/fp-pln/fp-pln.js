@@ -12,10 +12,21 @@
     }
 
     build(arg) {
+      var indexFile;
+      var indexFileOut;
       var patternlab = require(this.plnDir + '/core/lib/patternlab.js')();
 
       if (typeof arg === 'undefined') {
         patternlab.build();
+
+        // Some overrides after the stock build.
+        indexFile = this.plnDir + '/public/index.html';
+        indexFileOut = fs.readFileSync(indexFile, this.conf.enc);
+        indexFileOut = indexFileOut.replace(/(allow-same-origin allow-scripts)/, '$1 allow-forms allow-popups');
+        indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="scripts/src/variables.styl" type="text/javascript"></script>\n$1');
+        indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="scripts/src/fepper-obj.js"></script>\n$1');
+        indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="scripts/patternlab-overrider.js"></script>\n$1');
+        fs.writeFileSync(indexFile, indexFileOut);
       }
       else if (arg === 'v') {
         patternlab.version();

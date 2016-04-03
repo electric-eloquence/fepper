@@ -458,6 +458,26 @@
         // /////////////////////////////////////////////////////////////////////
 
         fs.writeFileSync(plOverriderFile, plOverriderContent);
+
+        // Also write CSS for toolbar.
+        var navCss = `
+<style type="text/css">
+  .fp-nav-container {
+    clear: both;
+  }
+  .fp-nav-label {
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    float: left;
+    font-size: 68.75%;
+    padding: 1em 1em 0 1em;
+  }
+</style>
+`;
+        var indexFile = rootDir + '/' + conf.pub + '/index.html';
+        var indexFileOut = fs.readFileSync(indexFile, conf.enc);
+        indexFileOut = indexFileOut.replace(/(<\/head>)/, navCss + '$1');
+        fs.writeFileSync(indexFile, indexFileOut);
+
         cb();
       })
       .catch(function (reason) {
