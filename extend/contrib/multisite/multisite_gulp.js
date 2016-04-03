@@ -189,325 +189,26 @@
     });
 
     gulp.task('multisite:build', function (cb) {
-      var msPatternPaths = {};
-      var plnDir;
-      var plOverriderFile = rootDir + '/' + conf.src + '/scripts/patternlab-overrider.js';
-      var plOverriderContent = fs.readFileSync(plOverriderFile, conf.enc);
-
-      // Delete pre-existing Multisite function.
-      var regex1 = '\\n\\n\\(function multisite_\\d+_\\d+_\\d+';
-      var regex2 = '(.|\\s)*?}\\)\\(\\);';
-      if (plOverriderContent.match(new RegExp(regex1))) {
-        plOverriderContent = plOverriderContent.replace(new RegExp(regex1 + regex2), '');
-      }
-
-      // ///////////////////////////////////////////////////////////////////////
-      // Begin backticked multi-line string.
-      plOverriderContent += `
-(function multisite_` + version + ` () {
-  // First, inject CSS for toolbar.
-  var navCss = '\
-  .fp-nav-container {\
-    clear: both;\
-    max-height: 0;\
-    overflow: hidden;\
-  }\
-  .fp-nav-container.expand-down {\
-    max-height: 9999px;\
-    overflow: visible;\
-    -webkit-transition: max-height 0.5s;\
-    -moz-transition: max-height 0.5s;\
-    -ms-transition: max-height 0.5s;\
-    -o-transition: max-height 0.5s;\
-    transition: max-height 0.5s;\
-  }\
-  .fp-nav-label {\
-    border-right: 1px solid rgba(255, 255, 255, 0.05);\
-    float: left;\
-    font-size: 68.75%;\
-    padding: 1em 1em 0 1em;\
-  }\
-';
-
-  var style = document.createElement('style');
-  style.innerHTML = navCss;
-  document.getElementsByTagName('head')[0].appendChild(style);
-
-  // Then, build the toolbar.
-  var sgNavContainer = document.getElementById("sg-nav-container");
-`;    // End backticked multi-line string.
-      // ///////////////////////////////////////////////////////////////////////
-
       Promise.resolve(0).then(function loop(i) {
         if (i < subsites.length) {
-          var patternIndex;
-          var patternNavInner;
-          var patternNavOuter;
-          var $this;
+          var plnDir;
+          var subsiteDir;
 
           return new Promise(function (resolve, reject) {
-            msPatternPaths[subsites[i].name] = {};
             subsiteDir = multisiteDir + '/' + subsites[i].name;
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
-
-            patternNavOuter = '<div class="fp-nav-container sg-nav-container" id="fp-nav-container--' + subsites[i].name + '">\\n';
-            patternNavOuter += '<div class="fp-nav-label">' + subsites[i].name.toUpperCase() + '</div>\\n<ol class="sg-nav">\\n';
-
             fpPlns[i].build();
-
             resolve();
           })
           .then(function () {
             process.chdir(rootDir);
-
-            patternIndex = fs.readFileSync(plnDir + '/public/index.html', conf.enc);
-            $ = cheerio.load(patternIndex);
-
-            patternNavInner = $('ol.sg-nav').html();
-            patternNavInner = patternNavInner.replace(/\'/g, '\\\'');
-            patternNavInner = patternNavInner.replace(/\n/g, '\\n');
-            patternNavInner = patternNavInner.replace(/(href=")(patterns)/g, '$1' + subsites[i].name + '/$2');
-            patternNavInner = patternNavInner.replace(/(href=")(styleguide)/g, '$1' + subsites[i].name + '/$2');
-
-            patternNavOuter += patternNavInner;
-            patternNavOuter += '\\n</ol>\\n</div>\\n';
-
-            $('a.sg-pop').each(function () {
-              $this = $(this);
-              msPatternPaths[subsites[i].name][$this.attr('data-patternpartial')] = $this.attr('href');
-            });
-
-            plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
-            plOverriderContent += patternNavOuter;
-            plOverriderContent += `  ');\n`;
           })
           .then(function () {
             return i + 1;
           })
           .then(loop);
         }
-
-        plOverriderContent += `\n  var msPatternPaths = ` + JSON.stringify(msPatternPaths) + `;\n`;
-
-        // /////////////////////////////////////////////////////////////////////
-        // Begin backticked multi-line string.
-        plOverriderContent += `
-  urlHandler.getFileName = function (name) {
-    var baseDir     = "patterns";
-    var fileName    = "";
-
-    if (name == undefined) {
-      return fileName;
-    }
-
-    if (name == "all") {
-      return "styleguide/html/styleguide.html";
-    }
-
-    var paths = (name.indexOf("viewall-") != -1) ? viewAllPaths : patternPaths;
-    nameClean = name.replace("viewall-","");
-
-    // look at this as a regular pattern
-    var bits        = this.getPatternInfo(nameClean, paths);
-    var patternType = bits[0];
-    var pattern     = bits[1];
-
-    if ((paths[patternType] != undefined) && (paths[patternType][pattern] != undefined)) {
-      fileName = paths[patternType][pattern];
-    }
-    else if (paths[patternType] != undefined) {
-      for (patternMatchKey in paths[patternType]) {
-        if (patternMatchKey.indexOf(pattern) != -1) {
-          fileName = paths[patternType][patternMatchKey];
-          break;
-        }
-      }
-    }
-
-    if (fileName == "") {
-      return fileName;
-    }
-
-    var regex = /\\//g;
-    if ((name.indexOf("viewall-") != -1) && (fileName != "")) {
-      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/index.html";
-    }
-    else if (fileName != "") {
-      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/"+fileName.replace(regex,"-")+".html";
-    }
-
-    var oGetVars = urlHandler.getRequestVars();
-    if (typeof oGetVars.subsite === 'string' && oGetVars.subsite.trim()) {
-      fileName = oGetVars.subsite + '/' + fileName;
-    }
-
-    return fileName;
-  };
-
-  urlHandler.pushPattern = function (pattern, givenPath) {
-    var data         = { "pattern": pattern };
-    var fileName     = urlHandler.getFileName(pattern);
-    var expectedPath = window.location.pathname.replace("public/index.html","public/")+fileName;
-    var pathParts;
-
-    if (givenPath.indexOf(expectedPath) === -1) {
-      pathParts = expectedPath.split("/");
-      if (pathParts.length > 2 && pathParts[2] !== "patterns" && pathParts[2] !== "styleguide") {
-        // make sure to update the iframe because there was a click
-        document.getElementById("sg-viewport").contentWindow.postMessage( { "path": fileName }, urlHandler.targetOrigin);
-      }
-    } else {
-      var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
-      var href;
-      var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
-      pathParts = sgViewportPathname.split("/");
-
-      if (
-        pathParts.length > 2 && (
-          (pathParts[1] !== "patterns" && pathParts[2] === "patterns") ||
-          (pathParts[1] !== "styleguide" && pathParts[2] === "styleguide")
-        )
-      ) {
-        addressReplacement += "&subsite=" + pathParts[1];
-        href = sgViewportPathname.substr(1);
-      } else {
-        href = urlHandler.getFileName(pattern);
-      }
-
-      // add to the history
-      history.pushState(data, null, addressReplacement);
-      // update title
-      document.getElementById("title").innerHTML = "Fepper - "+pattern;
-      // insert multisite path into "Open in new window" link
-      document.getElementById("sg-raw").setAttribute("href", href);
-    }
-  };
-
-  /* Pattern Lab accordion dropdown */
-  // Accordion dropdown
-  $(".fp-nav-container .sg-acc-handle").on("click", function(e){
-    e.preventDefault();
-
-    var $this = $(this),
-      $panel = $this.next(".fp-nav-container .sg-acc-panel"),
-      subnav = $this.parent().parent().hasClass("sg-acc-panel");
-
-    //Close other panels if link isn't a subnavigation item
-    if (!subnav) {
-      $(".fp-nav-container .sg-acc-handle").not($this).removeClass("active");
-      $(".fp-nav-container .sg-acc-panel").not($panel).removeClass("active");
-    }
-
-    //Activate selected panel
-    $this.toggleClass("active");
-    $panel.toggleClass("active");
-    setAccordionHeight();
-  });
-
-  //Accordion Height
-  function setAccordionHeight() {
-    var $activeAccordion = $(".fp-nav-container .sg-acc-panel.active").first(),
-      accordionHeight = $activeAccordion.height(),
-      sh = $(document).height(), //Viewport Height
-      $headerHeight = $(".sg-header").height(),
-      availableHeight = sh-$headerHeight; //Screen height minus the height of the header
-
-    $activeAccordion.height(availableHeight); //Set height of accordion to the available height
-  }
-
-  $(".fp-nav-container .sg-nav-toggle").on("click", function(e){
-    e.preventDefault();
-    $(".fp-nav-container .sg-nav-container").toggleClass("active");
-  });
-
-  // update the iframe with the source from clicked element in pull down menu. also close the menu
-  // having it outside fixes an auto-close bug i ran into
-  // replacing the default listener
-  $(".sg-nav a").not(".sg-acc-handle").off("click");
-  $(".sg-nav a").not(".sg-acc-handle").on("click", function(e){
-
-    e.preventDefault();
-
-    // update the iframe via the history api handler
-    var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-    var $this = $(this);
-    var navLinkHref = $this.attr("href");
-    var hrefParts = navLinkHref.split("/");
-    var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
-    var pathnameParts = sgViewportPathname.split("/");
-
-    if (
-      pathnameParts.length > 2 && (
-        (pathnameParts[1] !== "patterns" && pathnameParts[2] === "patterns") ||
-        (pathnameParts[1] !== "styleguide" && pathnameParts[2] === "styleguide")
-      )
-    ) {
-      if (
-        hrefParts.length > 2 && (
-          (hrefParts[0] !== "patterns" && hrefParts[1] === "patterns") ||
-          (hrefParts[0] !== "styleguide" && hrefParts[1] === "styleguide")
-        )
-      ) {
-        navLinkHref = hrefParts.splice(1).join("/");
-      } else {
-        navLinkHref = "../" + navLinkHref;
-      }
-    }
-
-    // update address bar if going from subsite to main
-    if (navLinkHref.indexOf("../") === 0) {
-      var pattern = $this.attr("data-patternpartial");
-      var data = {pattern: pattern};
-      var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
-      window.history.pushState(data, null, addressReplacement);
-    }
-
-    document.getElementById("sg-viewport").contentWindow.postMessage( { "path": navLinkHref }, targetOrigin);
-
-    // close up the menu
-    $this.parents("li").children(".sg-acc-panel").toggleClass("active");
-    $this.parents("li").children(".sg-acc-handle").toggleClass("active");
-
-    return false;
-
-  });
-
-  // load iframe on parent load
-  // possible but unlikely race condition here with the default location.replace
-  // will ignore unless it becomes a recurring problem
-  var oGetVars = urlHandler.getRequestVars();
-  if (typeof oGetVars.subsite === "string" && oGetVars.subsite) {
-    if (typeof oGetVars.p === "string" && oGetVars.p) {
-      var iFramePath;
-      var iFrameLocation = document.getElementById("sg-viewport").contentWindow.location;
-      var patternPath;
-
-      patternPath = msPatternPaths[oGetVars.subsite][oGetVars.p];
-      iFramePath = window.location.protocol+"//"+window.location.host+"/"+oGetVars.subsite+"/"+patternPath;
-      document.getElementById("sg-viewport").contentWindow.location.replace(iFramePath);
-      document.getElementById("sg-raw").setAttribute("href", oGetVars.subsite+"/"+patternPath);
-    }
-  }
-
-  // animate the showing and hiding of the fp-nav-containers
-  var fpNavs = document.querySelectorAll(".fp-nav-container");
-  var sgHeader = document.querySelector(".sg-header");
-  sgHeader.addEventListener("mouseenter", function () {
-    for (var i = 0; i < fpNavs.length; i++) {
-      fpNavs[i].classList.add("expand-down");
-    }
-  });
-  sgHeader.addEventListener("mouseleave", function () {
-    for (var i = 0; i < fpNavs.length; i++) {
-      fpNavs[i].classList.remove("expand-down");
-    }
-  });
-})();
-`;      // End backticked multi-line string.
-        // /////////////////////////////////////////////////////////////////////
-
-        fs.writeFileSync(plOverriderFile, plOverriderContent);
         cb();
       })
       .catch(function (reason) {
@@ -657,7 +358,6 @@
 
       // Create Gulp tasks for copying individual subsite assets.
       if (typeof subsiteObj.synced_dirs.assets_dir === 'string' && subsiteObj.synced_dirs.assets_dir.trim()) {
-console.log(subsiteObj);
         subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'assets');
         gulp.task('multisite:frontend-copy-assets:' + subsites[i].name, subsiteCopyTask);
       }
@@ -941,6 +641,7 @@ console.log(subsiteObj);
       runSequence(
         'multisite:pattern-override',
         'multisite:clean',
+        'multisite:build',
         'multisite:copy',
         'multisite:copy-styles',
         cb
@@ -975,6 +676,318 @@ console.log(subsiteObj);
         gulp.task('multisite:publish:' + subsite, subsitePublishTask);
       }
     }
+
+    gulp.task('multisite:patternlab-override', function (cb) {
+      var msPatternPaths = {};
+      var plnDir;
+      var plOverriderFile = rootDir + '/' + conf.src + '/scripts/patternlab-overrider.js';
+      var plOverriderContent = fs.readFileSync(plOverriderFile, conf.enc);
+
+      // Delete pre-existing Multisite function.
+      var regex1 = '\\n\\n\\(function multisite_\\d+_\\d+_\\d+';
+      var regex2 = '(.|\\s)*?}\\)\\(\\);';
+      if (plOverriderContent.match(new RegExp(regex1))) {
+        plOverriderContent = plOverriderContent.replace(new RegExp(regex1 + regex2), '');
+      }
+
+      // ///////////////////////////////////////////////////////////////////////
+      // Begin backticked multi-line string.
+      plOverriderContent += `
+(function multisite_` + version + ` () {
+  // First, inject CSS for toolbar.
+  var navCss = '\
+  .fp-nav-container {\
+    clear: both;\
+    max-height: 0;\
+    overflow: hidden;\
+  }\
+  .fp-nav-container.expand-down {\
+    max-height: 9999px;\
+    overflow: visible;\
+    -webkit-transition: max-height 0.5s;\
+    -moz-transition: max-height 0.5s;\
+    -ms-transition: max-height 0.5s;\
+    -o-transition: max-height 0.5s;\
+    transition: max-height 0.5s;\
+  }\
+  .fp-nav-label {\
+    border-right: 1px solid rgba(255, 255, 255, 0.05);\
+    float: left;\
+    font-size: 68.75%;\
+    padding: 1em 1em 0 1em;\
+  }\
+  .sg-acc-panel.active {\
+    z-index: 1;\
+  }\
+';
+
+  var style = document.createElement('style');
+  style.innerHTML = navCss;
+  document.getElementsByTagName('head')[0].appendChild(style);
+
+  // Then, build the toolbar.
+  var sgNavContainer = document.getElementById("sg-nav-container");
+`;
+      // Pause backticked multi-line string.
+      // ///////////////////////////////////////////////////////////////////////
+
+      for (var i = 0; i < subsites.length; i++) {
+        var patternIndex;
+        var patternNavInner;
+        var patternNavOuter;
+        var $this;
+
+        msPatternPaths[subsites[i].name] = {};
+        subsiteDir = multisiteDir + '/' + subsites[i].name;
+        plnDir = subsiteDir + '/patternlab-node';
+
+        patternNavOuter = '<div class="fp-nav-container sg-nav-container" id="fp-nav-container--' + subsites[i].name + '">\\n';
+        patternNavOuter += '<div class="fp-nav-label">' + subsites[i].name.toUpperCase() + '</div>\\n<ol class="sg-nav">\\n';
+
+        patternIndex = fs.readFileSync(plnDir + '/public/index.html', conf.enc);
+        $ = cheerio.load(patternIndex);
+
+        patternNavInner = $('ol.sg-nav').html();
+        patternNavInner = patternNavInner.replace(/\'/g, '\\\'');
+        patternNavInner = patternNavInner.replace(/\n/g, '\\n');
+        patternNavInner = patternNavInner.replace(/(href=")(patterns)/g, '$1' + subsites[i].name + '/$2');
+        patternNavInner = patternNavInner.replace(/(href=")(styleguide)/g, '$1' + subsites[i].name + '/$2');
+
+        patternNavOuter += patternNavInner;
+        patternNavOuter += '\\n</ol>\\n</div>\\n';
+
+        $('a.sg-pop').each(function () {
+          $this = $(this);
+          msPatternPaths[subsites[i].name][$this.attr('data-patternpartial')] = $this.attr('href');
+        });
+
+        plOverriderContent += `  sgNavContainer.insertAdjacentHTML('afterend', '`;
+        plOverriderContent += patternNavOuter;
+        plOverriderContent += `  ');\n`;
+        plOverriderContent += `\n  var msPatternPaths = ` + JSON.stringify(msPatternPaths) + `;\n`;
+      }
+
+      // /////////////////////////////////////////////////////////////////////
+      // Resume backticked multi-line string.
+      plOverriderContent += `
+  urlHandler.getFileName = function (name) {
+    var baseDir     = "patterns";
+    var fileName    = "";
+
+    if (name == undefined) {
+      return fileName;
+    }
+
+    if (name == "all") {
+      return "styleguide/html/styleguide.html";
+    }
+
+    var paths = (name.indexOf("viewall-") != -1) ? viewAllPaths : patternPaths;
+    nameClean = name.replace("viewall-","");
+
+    // look at this as a regular pattern
+    var bits        = this.getPatternInfo(nameClean, paths);
+    var patternType = bits[0];
+    var pattern     = bits[1];
+
+    if ((paths[patternType] != undefined) && (paths[patternType][pattern] != undefined)) {
+      fileName = paths[patternType][pattern];
+    }
+    else if (paths[patternType] != undefined) {
+      for (patternMatchKey in paths[patternType]) {
+        if (patternMatchKey.indexOf(pattern) != -1) {
+          fileName = paths[patternType][patternMatchKey];
+          break;
+        }
+      }
+    }
+
+    if (fileName == "") {
+      return fileName;
+    }
+
+    var regex = /\\//g;
+    if ((name.indexOf("viewall-") != -1) && (fileName != "")) {
+      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/index.html";
+    }
+    else if (fileName != "") {
+      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/"+fileName.replace(regex,"-")+".html";
+    }
+
+    var oGetVars = urlHandler.getRequestVars();
+    if (typeof oGetVars.subsite === 'string' && oGetVars.subsite.trim()) {
+      fileName = oGetVars.subsite + '/' + fileName;
+    }
+
+    return fileName;
+  };
+
+  urlHandler.pushPattern = function (pattern, givenPath) {
+    var data         = { "pattern": pattern };
+    var fileName     = urlHandler.getFileName(pattern);
+    var expectedPath = window.location.pathname.replace("public/index.html","public/")+fileName;
+    var pathParts;
+
+    if (givenPath.indexOf(expectedPath) === -1) {
+      pathParts = expectedPath.split("/");
+      if (pathParts.length > 2 && pathParts[2] !== "patterns" && pathParts[2] !== "styleguide") {
+        // make sure to update the iframe because there was a click
+        document.getElementById("sg-viewport").contentWindow.postMessage( { "path": fileName }, urlHandler.targetOrigin);
+      }
+    } else {
+      var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
+      var href;
+      var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
+      pathParts = sgViewportPathname.split("/");
+
+      if (
+        pathParts.length > 2 && (
+          (pathParts[1] !== "patterns" && pathParts[2] === "patterns") ||
+          (pathParts[1] !== "styleguide" && pathParts[2] === "styleguide")
+        )
+      ) {
+        addressReplacement += "&subsite=" + pathParts[1];
+        href = sgViewportPathname.substr(1);
+      } else {
+        href = urlHandler.getFileName(pattern);
+      }
+
+      // add to the history
+      history.pushState(data, null, addressReplacement);
+      // update title
+      document.getElementById("title").innerHTML = "Fepper - "+pattern;
+      // insert multisite path into "Open in new window" link
+      document.getElementById("sg-raw").setAttribute("href", href);
+    }
+  };
+
+  /* Pattern Lab accordion dropdown */
+  // Accordion dropdown
+  $(".fp-nav-container .sg-acc-handle").on("click", function(e){
+    e.preventDefault();
+
+    var $this = $(this),
+      $panel = $this.next(".fp-nav-container .sg-acc-panel"),
+      subnav = $this.parent().parent().hasClass("sg-acc-panel");
+
+    //Close other panels if link isn't a subnavigation item
+    if (!subnav) {
+      $(".fp-nav-container .sg-acc-handle").not($this).removeClass("active");
+      $(".fp-nav-container .sg-acc-panel").not($panel).removeClass("active");
+    }
+
+    //Activate selected panel
+    $this.toggleClass("active");
+    $panel.toggleClass("active");
+    setAccordionHeight();
+  });
+
+  //Accordion Height
+  function setAccordionHeight() {
+    var $activeAccordion = $(".fp-nav-container .sg-acc-panel.active").first(),
+      accordionHeight = $activeAccordion.height(),
+      sh = $(document).height(), //Viewport Height
+      $headerHeight = $(".sg-header").height(),
+      availableHeight = sh-$headerHeight; //Screen height minus the height of the header
+
+    $activeAccordion.height(availableHeight); //Set height of accordion to the available height
+  }
+
+  $(".fp-nav-container .sg-nav-toggle").on("click", function(e){
+    e.preventDefault();
+    $(".fp-nav-container .sg-nav-container").toggleClass("active");
+  });
+
+  // update the iframe with the source from clicked element in pull down menu. also close the menu
+  // having it outside fixes an auto-close bug i ran into
+  // replacing the default listener
+  $(".sg-nav a").not(".sg-acc-handle").off("click");
+  $(".sg-nav a").not(".sg-acc-handle").on("click", function(e){
+
+    e.preventDefault();
+
+    // update the iframe via the history api handler
+    var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
+    var $this = $(this);
+    var navLinkHref = $this.attr("href");
+    var hrefParts = navLinkHref.split("/");
+    var sgViewportPathname = document.getElementById("sg-viewport").contentWindow.location.pathname;
+    var pathnameParts = sgViewportPathname.split("/");
+
+    if (
+      pathnameParts.length > 2 && (
+        (pathnameParts[1] !== "patterns" && pathnameParts[2] === "patterns") ||
+        (pathnameParts[1] !== "styleguide" && pathnameParts[2] === "styleguide")
+      )
+    ) {
+      if (
+        hrefParts.length > 2 && (
+          (hrefParts[0] !== "patterns" && hrefParts[1] === "patterns") ||
+          (hrefParts[0] !== "styleguide" && hrefParts[1] === "styleguide")
+        )
+      ) {
+        navLinkHref = hrefParts.splice(1).join("/");
+      } else {
+        navLinkHref = "../" + navLinkHref;
+      }
+    }
+
+    // update address bar if going from subsite to main
+    if (navLinkHref.indexOf("../") === 0) {
+      var pattern = $this.attr("data-patternpartial");
+      var data = {pattern: pattern};
+      var addressReplacement = (window.location.protocol == "file:") ? null : window.location.protocol+"//"+window.location.host+window.location.pathname.replace("index.html","")+"?p="+pattern;
+      window.history.pushState(data, null, addressReplacement);
+    }
+
+    document.getElementById("sg-viewport").contentWindow.postMessage( { "path": navLinkHref }, targetOrigin);
+
+    // close up the menu
+    $this.parents("li").children(".sg-acc-panel").toggleClass("active");
+    $this.parents("li").children(".sg-acc-handle").toggleClass("active");
+
+    return false;
+
+  });
+
+  // load iframe on parent load
+  // possible but unlikely race condition here with the default location.replace
+  // will ignore unless it becomes a recurring problem
+  var oGetVars = urlHandler.getRequestVars();
+  if (typeof oGetVars.subsite === "string" && oGetVars.subsite) {
+    if (typeof oGetVars.p === "string" && oGetVars.p) {
+      var iFramePath;
+      var iFrameLocation = document.getElementById("sg-viewport").contentWindow.location;
+      var patternPath;
+
+      patternPath = msPatternPaths[oGetVars.subsite][oGetVars.p];
+      iFramePath = window.location.protocol+"//"+window.location.host+"/"+oGetVars.subsite+"/"+patternPath;
+      document.getElementById("sg-viewport").contentWindow.location.replace(iFramePath);
+      document.getElementById("sg-raw").setAttribute("href", oGetVars.subsite+"/"+patternPath);
+    }
+  }
+
+  // animate the showing and hiding of the fp-nav-containers
+  var fpNavs = document.querySelectorAll(".fp-nav-container");
+  var sgHeader = document.querySelector(".sg-header");
+  sgHeader.addEventListener("mouseenter", function () {
+    for (var i = 0; i < fpNavs.length; i++) {
+      fpNavs[i].classList.add("expand-down");
+    }
+  });
+  sgHeader.addEventListener("mouseleave", function () {
+    for (var i = 0; i < fpNavs.length; i++) {
+      fpNavs[i].classList.remove("expand-down");
+    }
+  });
+})();
+`;
+      // End backticked multi-line string.
+      // /////////////////////////////////////////////////////////////////////
+
+      fs.writeFileSync(plOverriderFile, plOverriderContent);
+      cb();
+    });
 
     gulp.task('multisite:static', function (cb) {
       var p = new Promise(function (resolve, reject) {

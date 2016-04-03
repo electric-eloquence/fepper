@@ -22,7 +22,7 @@
   ]);
 
   gulp.task('contrib:once:preprocess', [
-    'multisite:build'
+    'multisite:patternlab-override'
   ]);
 
   gulp.task('contrib:publish:preprocess', [
