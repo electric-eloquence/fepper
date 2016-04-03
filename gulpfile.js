@@ -6,6 +6,7 @@
 (function () {
   'use strict';
 
+  var glob = require('glob');
   var gulp = require('gulp');
   var requireDir = require('require-dir');
   var runSequence = require('run-sequence');
@@ -14,24 +15,37 @@
   // Set global.conf and process.env.CONF.
   utils.conf();
 
-  // Load tasks in tasks directory.
-  requireDir('gulp', {recurse: true});
+  // Require tasks in task directories.
+  requireDir('./gulp');
+  requireDir('./extend/auxiliary');
+  require('./extend/contrib');
+  require('./extend/custom');
+  var extendPlugins = glob.sync('extend/**/*_gulp.js');
+  for (var i = 0; i < extendPlugins.length; i++) {
+    require('./' + extendPlugins[i]);
+  }
 
   gulp.task('default', function (cb) {
     runSequence(
       'once',
       'data',
       'fepper:pattern-override',
-      'tcp-ip-load:init',
+      // TCP-IP overrides should run before tcp-ip-load:init in order to
+      // override TcpIp objects before they start listening and watching.
       ['contrib:tcp-ip', 'custom:tcp-ip'],
+      'tcp-ip-load:init',
       ['tcp-ip-load:listen', 'tcp-ip-reload:listen'],
       ['contrib:watch', 'custom:watch', 'tcp-ip-load:open', 'tcp-ip-reload:watch'],
+      // Probably no use-case for these contrib and custom postprocess tasks,
+      // but here just in case.
+      ['contrib:tcp-ip:postprocess', 'custom:tcp-ip:postprocess'],
       cb
     );
   });
 
   gulp.task('data', function (cb) {
     runSequence(
+      ['contrib:data:preprocess', 'custom:data:preprocess'],
       'fepper:data',
       ['contrib:data', 'custom:data'],
       cb
@@ -39,6 +53,8 @@
   });
 
   gulp.task('frontend-copy', [
+    'contrib:frontend-copy:preprocess',
+    'custom:frontend-copy:preprocess',
     'fepper:copy-assets',
     'fepper:copy-scripts',
     'fepper:copy-styles',
@@ -56,6 +72,10 @@
   });
 
   gulp.task('lint', [
+    // Probably no use-case for these contrib and custom preprocess tasks,
+    // but here just in case.
+    'contrib:lint:preprocess',
+    'custom:lint:preprocess',
     'lint:htmlhint',
     'lint:htmllint',
     'lint:eslint',
@@ -65,6 +85,8 @@
   ]);
 
   gulp.task('minify', [
+    'contrib:minify:preprocess',
+    'custom:minify:preprocess',
     'minify:uglify',
     'contrib:minify',
     'custom:minify'
@@ -72,6 +94,7 @@
 
   gulp.task('once', function (cb) {
     runSequence(
+      ['contrib:once:preprocess', 'custom:once:preprocess'],
       'fepper:pattern-override',
       'patternlab:clean',
       'patternlab:build',
@@ -84,7 +107,11 @@
 
   gulp.task('publish', function (cb) {
     runSequence(
+      ['contrib:publish:preprocess', 'custom:publish:preprocess'],
       'fepper:publish',
+      // Since GitHub pages will only render the last publish, you might need to
+      // ensure that only one publish task runs. The main fepper:publish task
+      // can be disabled by unsetting the gh_pages_src setting in conf.yml.
       ['contrib:publish', 'custom:publish'],
       cb
     );
@@ -92,6 +119,7 @@
 
   gulp.task('static', function (cb) {
     runSequence(
+      ['contrib:static:preprocess', 'custom:static:preprocess'],
       'lint',
       'minify',
       'fepper:static-generate',
@@ -102,6 +130,7 @@
 
   gulp.task('syncback', function (cb) {
     runSequence(
+      ['contrib:syncback:preprocess', 'custom:syncback:preprocess'],
       'lint',
       'minify',
       'frontend-copy',
@@ -113,6 +142,7 @@
 
   gulp.task('template', function (cb) {
     runSequence(
+      ['contrib:template:preprocess', 'custom:template:preprocess'],
       'fepper:template',
       ['contrib:template', 'custom:template'],
       cb

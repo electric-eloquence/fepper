@@ -19,7 +19,7 @@
   /**
    * Recursively glob pattern files, and then iterate through them.
    *
-   * @param The {string} patternDir The directory to glob.
+   * @param {string} ghPagesDir - The directory to glob.
    * @return {array} The files in the directory.
    */
   exports.filesGet = function (ghPagesDir) {
@@ -29,7 +29,14 @@
   /**
    * Read globbed files, token replace path prefix tags, and write output.
    *
-   * @param {array} files The files to process.
+   * @param {array} publicFiles - The files to process.
+   * @param {object} conf - Configuration object.
+   * @param {array} webservedDirsShort - Path to directories webserved by Fepper
+   *   truncated for publishing to GitHub Pages.
+   * @param {string} prefix - The repository name prefixing the document root.
+   * @param {string} workDir - Fepper's root directory.
+   * @param {string} ghPagesSrc - The directory that holds the processed code to
+   *   be published to GitHub Pages.
    */
   exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc) {
     var code;
@@ -61,13 +68,13 @@
           // add the gh_pages_prefix.
           regex = new RegExp('href="\/' + webservedDirsShort[k], 'g');
           if (codeSplit[j].match(regex)) {
-            codeSplit[j] = codeSplit[j].replace(regex, 'href="' + prefix + '/' + webservedDirsShort[k]);
+            codeSplit[j] = codeSplit[j].replace(regex, 'href="/' + prefix + '/' + webservedDirsShort[k]);
           }
           // If the src of a tag matches one of the webservedDirsShort,
           // add the gh_pages_prefix.
           regex = new RegExp('src="\/' + webservedDirsShort[k], 'g');
           if (codeSplit[j].match(regex)) {
-            codeSplit[j] = codeSplit[j].replace(regex, 'src="' + prefix + '/' + webservedDirsShort[k]);
+            codeSplit[j] = codeSplit[j].replace(regex, 'src="/' + prefix + '/' + webservedDirsShort[k]);
           }
         }
         code += codeSplit[j] + '\n';

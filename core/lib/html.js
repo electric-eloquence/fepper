@@ -20,7 +20,7 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT">
     <meta http-equiv="pragma" content="no-cache">
 
-    <link rel="stylesheet" href="/css/style.css" media="all">
+    <link rel="stylesheet" href="/styles/style.css" media="all">
   </head>
 
   <body style="width: 100%;" class="text {{ class }}">

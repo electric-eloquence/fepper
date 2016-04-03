@@ -48,12 +48,42 @@
   box-sizing: border-box;
 }
 
-html, body, div, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, ol, ul, li, form, legend, label, table, header, footer, nav, section, figure {
+html,
+body,
+div,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+ol,
+ul,
+li,
+form,
+legend,
+label,
+table,
+header,
+footer,
+nav,
+section,
+figure {
   margin: 0;
   padding: 0;
 }
 
-header, footer, nav, section, article, hgroup, figure {
+header,
+footer,
+nav,
+section,
+article,
+hgroup,
+figure {
   display: block;
 }
 
@@ -64,18 +94,27 @@ header, footer, nav, section, article, hgroup, figure {
     $GLOBAL CLASSES
 \*------------------------------------*/
 /* Clearfix */
-.cf, .l-two-col, [role=main] {
+.cf,
+.l-two-col,
+[role=main] {
   *zoom: 1;
 }
 
-.cf:before, .l-two-col:before, [role=main]:before, .cf:after, .l-two-col:after, [role=main]:after {
+.cf:before,
+.l-two-col:before,
+[role=main]:before,
+.cf:after,
+.l-two-col:after,
+[role=main]:after {
   content: " ";
   /* 1 */
   display: table;
   /* 2 */
 }
 
-.cf:after, .l-two-col:after, [role=main]:after {
+.cf:after,
+.l-two-col:after,
+[role=main]:after {
   clear: both;
 }
 
@@ -171,21 +210,25 @@ a {
   text-decoration: none;
   outline: 0;
 }
-a:hover, a:focus {
+a:hover,
+a:focus {
   color: gray;
 }
 
 /* Headings */
 /*Further Reading: http:/csswizardry.com/2012/02/pragmatic-practical-font-sizing-in-css/ */
-h1, .alpha {
+h1,
+.alpha {
   line-height: 1.2;
 }
 
-h2, .beta {
+h2,
+.beta {
   line-height: 1.2;
 }
 
-h3, .gamma {
+h3,
+.gamma {
   line-height: 1.2;
 }
 
@@ -222,7 +265,8 @@ abbr {
   cursor: help;
 }
 
-ol, ul {
+ol,
+ul {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -246,7 +290,9 @@ dd {
     $MEDIA ELEMENTS
 \*------------------------------------*/
 /* Flexible Media */
-img, video, object {
+img,
+video,
+object {
   max-width: 100%;
   height: auto;
 }
@@ -273,7 +319,8 @@ form > div {
   margin-bottom: 1rem;
 }
 
-form ol, form ul {
+form ol,
+form ul {
   list-style: none;
   margin-left: 0;
 }
@@ -289,22 +336,31 @@ label {
   padding-bottom: 0.25rem;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font-family: inherit;
   font-size: 100%;
   margin: 0;
 }
 
-input, textarea {
+input,
+textarea {
   border: 1px solid gray;
   padding: 0.5rem 0.65rem;
 }
 
-input[type=text], input[type=search], input[type=url], input[type=number], textarea {
+input[type=text],
+input[type=search],
+input[type=url],
+input[type=number],
+textarea {
   -webkit-appearance: none;
 }
 
-button, input[type="submit"] {
+button,
+input[type="submit"] {
   padding: 0.5rem;
   background: #333333;
   border: 1px solid gray;
@@ -332,10 +388,13 @@ input[type="search"]::-webkit-search-decoration {
   margin-bottom: 1rem;
 }
 
-.inline-form fieldset, .inline-form .inline-container {
+.inline-form fieldset,
+.inline-form .inline-container {
   position: relative;
 }
-.inline-form input[type=submit], .inline-form button, .inline-form .btn {
+.inline-form input[type=submit],
+.inline-form button,
+.inline-form .btn {
   font-size: 0.875em;
   padding: 0.65rem 1.3rem;
   background: #333333;
@@ -345,7 +404,12 @@ input[type="search"]::-webkit-search-decoration {
   z-index: 1;
   width: auto;
 }
-.inline-form input[type=submit]:hover, .inline-form input[type=submit]:focus, .inline-form button:hover, .inline-form button:focus, .inline-form .btn:hover, .inline-form .btn:focus {
+.inline-form input[type=submit]:hover,
+.inline-form input[type=submit]:focus,
+.inline-form button:hover,
+.inline-form button:focus,
+.inline-form .btn:hover,
+.inline-form .btn:focus {
   background: gray;
   color: white;
 }
@@ -358,10 +422,12 @@ input[type="search"]::-webkit-search-decoration {
     width: 82%;
   }
 }
-.inline-search-results-form fieldset, .inline-search-results-form .inline-container {
+.inline-search-results-form fieldset,
+.inline-search-results-form .inline-container {
   position: relative;
 }
-.inline-search-results-form input[type=submit], .inline-search-results-form button {
+.inline-search-results-form input[type=submit],
+.inline-search-results-form button {
   position: absolute;
   top: 0;
   right: 0;
@@ -441,7 +507,9 @@ td {
     $LAYOUT
 \*------------------------------------*/
 /* Layout Container */
-.lc, .header, [role=main] {
+.lc,
+.header,
+[role=main] {
   max-width: 72rem;
   margin: 0 auto;
   padding: 0.5rem;
@@ -777,7 +845,9 @@ td {
   color: white;
   line-height: 1.2;
 }
-.footer .lc, .footer .header, .footer [role=main] {
+.footer .lc,
+.footer .header,
+.footer [role=main] {
   padding: 1rem 1rem 0;
 }
 .footer a {
@@ -899,7 +969,28 @@ td {
   -webkit-font-smoothing: antialiased;
 }
 
-.icon-twitter:before, .icon-stumbleupon:before, .icon-pinterest:before, .icon-linkedin:before, .icon-google-plus:before, .icon-search:before, .icon-play:before, .icon-menu:before, .icon-arrow-left:before, .icon-arrow-right:before, .icon-bubble:before, .icon-facebook:before, .icon-feed:before, .icon-youtube:before, .icon-tag:before, .icon-tumblr:before, .icon-instagram, .icon-podcast, .icon-apple, .icon-android, .icon-arrow:after, .icon-envelope:before {
+.icon-twitter:before,
+.icon-stumbleupon:before,
+.icon-pinterest:before,
+.icon-linkedin:before,
+.icon-google-plus:before,
+.icon-search:before,
+.icon-play:before,
+.icon-menu:before,
+.icon-arrow-left:before,
+.icon-arrow-right:before,
+.icon-bubble:before,
+.icon-facebook:before,
+.icon-feed:before,
+.icon-youtube:before,
+.icon-tag:before,
+.icon-tumblr:before,
+.icon-instagram,
+.icon-podcast,
+.icon-apple,
+.icon-android,
+.icon-arrow:after,
+.icon-envelope:before {
   font-family: 'icons';
   speak: none;
   font-style: normal;
@@ -1035,7 +1126,8 @@ td {
   border: 0;
   text-align: center;
 }
-.btn:hover, .btn:focus {
+.btn:hover,
+.btn:focus {
   color: white;
 }
 .btn.disabled {
@@ -1322,7 +1414,8 @@ td {
   padding: 0.5rem;
   background: gray;
 }
-.tabs a:hover, .tabs a:focus {
+.tabs a:hover,
+.tabs a:focus {
   background: #dddddd;
 }
 .tabs a.active {

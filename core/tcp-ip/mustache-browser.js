@@ -13,6 +13,9 @@
 
     /**
      * Message indicating inability to match a partial to a Mustache file.
+     *
+     * @param {object} res - response object.
+     * @param {string} err - error.
      */
     noResult(res, err) {
       var output = '';
@@ -30,11 +33,15 @@
 
     /**
      * Strip Mustache tag to only the partial path.
+     *
+     * @param {string} partial - Mustache syntax.
+     * @return {string} Partial path.
      */
     partialTagToPath(partial) {
-      partial = partial.replace(/{{+[^\w]?\s*/, '');
-      partial = partial.replace(/\s*}+}/, '');
-      partial = partial.replace(/\(.*\)/, '');
+      partial = partial.replace(/^{{>\s*/, '');
+      partial = partial.replace(/\((.|\s)*\)/, '');
+      partial = partial.replace(/\:[\w\-\|]+/, '');
+      partial = partial.replace(/\s*}}$/, '');
       if (partial.indexOf('.mustache') !== partial.length - 9) {
         partial = partial + '.mustache';
       }
@@ -44,10 +51,13 @@
 
     /**
      * Recursively strip token span tags output by the Pattern Lab code viewer.
+     *
+     * @param {string} code - HTML/Mustache.
+     * @return {string} Stripped code.
      */
     spanTokensStrip(code) {
-      code = code.replace(/<span class="token [^>]*>([^<]*)<\/span>/g, '$1');
-      if (code.match(/<span class="token [^>]*>([^<]*)<\/span>/)) {
+      code = code.replace(/<span class="token (.|\s)*?>((.|\s)*?)<\/span>/g, '$2');
+      if (code.search(/<span class="token (.|\s)*?>((.|\s)*?)<\/span>/) > -1) {
         code = this.spanTokensStrip(code);
       }
 
@@ -56,11 +66,15 @@
 
     /**
      * Make angle brackets and newlines viewable as HTML and hotlink partials.
+     *
+     * @param {string} data - HTML/Mustache.
+     * @return {string} Viewable and linkable code.
      */
     toHtmlEntitiesAndLinks(data) {
+      data = data.replace(/"/g, '&quot;');
       data = data.replace(/</g, '&lt;');
       data = data.replace(/>/g, '&gt;');
-      data = data.replace(/{{&gt;[^}]*}}/g, '<a href="?partial=$&">$&</a>');
+      data = data.replace(/{{&gt;(.|\s)*?}}/g, '<a href="?partial=$&">$&</a>');
       data = data.replace(/\n/g, '<br>');
 
       return data;
@@ -96,7 +110,7 @@
         else if (typeof req.query.partial === 'string') {
           try {
             // Requires verbosely pathed Mustache partial syntax.
-            partial = this.partialTagToPath(req.query.partial);
+            partial = this.partialTagToPath(req.query.partial.trim());
 
             // Check if query string correlates to actual Mustache file.
             var stats = fs.statSync(this.workDir + '/' + partial);

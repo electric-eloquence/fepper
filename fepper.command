@@ -1,9 +1,15 @@
 #!/bin/bash
-DIR="$(dirname "$0")"
-cd $DIR
-if [[ ! -f "$DIR/conf.yml" || ! -f "$DIR/patternlab-node/config.json" ]]; then
+
+# cd to working environment.
+root_dir=$(dirname $0)
+cd $root_dir
+
+# Run installer or default task.
+if [[ ! -f ${root_dir}/conf.yml || ! -f ${root_dir}/patternlab-node/config.json ]]; then
   npm install
 else
-  node "$DIR/index.js" $1
+  node ${root_dir}/index.js
 fi
+
+# Open a shell for this script's process.
 $SHELL
