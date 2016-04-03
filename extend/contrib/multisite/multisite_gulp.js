@@ -199,6 +199,16 @@
   var navCss = '\
   .fp-nav-container {\
     clear: both;\
+    max-height: 0;\
+    overflow: hidden;\
+  }\
+  .fp-nav-container.expand-down {\
+    max-height: 9999px;\
+    -webkit-transition: max-height 0.5s;\
+    -moz-transition: max-height 0.5s;\
+    -ms-transition: max-height 0.5s;\
+    -o-transition: max-height 0.5s;\
+    transition: max-height 0.5s;\
   }\
   .fp-nav-label {\
     border-right: 1px solid rgba(255, 255, 255, 0.05);\
@@ -452,9 +462,6 @@
 
   });
 
-  // push viewport down beyond expanded toolbar
-  document.getElementById("sg-vp-wrap").style.top = "` + (2.0625 + 2.0625 * subsites.length) + `em";
-
   // load iframe on parent load
   // possible but unlikely race condition here with the default location.replace
   // will ignore unless it becomes a recurring problem
@@ -471,6 +478,20 @@
       document.getElementById("sg-raw").setAttribute("href", oGetVars.subsite+"/"+patternPath);
     }
   }
+
+  // animate the showing and hiding of the fp-nav-containers
+  var fpNavs = document.querySelectorAll(".fp-nav-container");
+  var sgHeader = document.querySelector(".sg-header");
+  sgHeader.addEventListener("mouseenter", function () {
+    for (var i = 0; i < fpNavs.length; i++) {
+      fpNavs[i].classList.add("expand-down");
+    }
+  });
+  sgHeader.addEventListener("mouseleave", function () {
+    for (var i = 0; i < fpNavs.length; i++) {
+      fpNavs[i].classList.remove("expand-down");
+    }
+  });
 })();
 `;      // End backticked multi-line string.
         // /////////////////////////////////////////////////////////////////////
