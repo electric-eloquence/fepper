@@ -14,7 +14,6 @@
   var utils = require('../lib/utils');
 
   exports.main = function (workDir, conf) {
-    var dataJson = utils.data(workDir, conf);
     var defaultPort = 35729;
     var dest = workDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
 
