@@ -31,8 +31,8 @@
       require('./static-generator.js').main(this.workDir, this.conf);
     }
 
-    template(destDir) {
-      require('./templater.js').main(this.workDir, this.conf, destDir);
+    template(destDir, ext) {
+      require('./templater.js').main(this.workDir, this.conf, destDir, ext);
     }
   };
 })();

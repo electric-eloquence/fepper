@@ -8,7 +8,8 @@ subsites:
     # here as they are done in conf.yml.
     synced_dirs:
       assets_dir: docroot
-      scripts_dir:
-      styles_dir:
-      templates_dir:
-      templates_ext:
+      scripts_dir: docroot
+      styles_dir: docroot
+      templates_dir: docroot
+      # Do not include a leading dot in the templates_ext setting.
+      templates_ext: tpl.php

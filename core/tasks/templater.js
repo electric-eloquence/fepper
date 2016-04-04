@@ -19,7 +19,6 @@
     var code1;
     var code2 = '';
     var codeSplit;
-    var fs = require('fs-extra');
     var i;
     var j;
     var partial;
@@ -138,7 +137,7 @@
     return code;
   };
 
-  exports.main = function (workDir, conf, destDir) {
+  exports.main = function (workDir, conf, destDir, ext) {
     var code;
     var dest;
     var files;
@@ -152,32 +151,25 @@
     var ymlFile = '';
 
     try {
-      // Only proceed if templates_dir is set.
-      if (typeof conf.backend.synced_dirs.templates_dir !== 'string') {
+      templatesDir = destDir ? destDir : conf.backend.synced_dirs.templates_dir;
+      // Only proceed if templatesDir is a string.
+      if (typeof templatesDir !== 'string') {
         return;
       }
-
-      // Only proceed if templates_ext is set.
-      if (typeof conf.backend.synced_dirs.templates_ext !== 'string') {
-        return;
-      }
-
-      // Only proceed if templatesExt is set correctly.
-      templatesExt = conf.backend.synced_dirs.templates_ext;
-      if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
-        return;
-      }
-
-      // Only proceed if templatesDir exists.
-      templatesDir = conf.backend.synced_dirs.templates_dir;
-      if (destDir) {
-        templatesDir = destDir + '/backend/' + templatesDir;
-      }
-      else {
-        templatesDir = workDir + '/backend/' + templatesDir;
-      }
+      // Only proceed if templatesDir is an existing directory.
+      templatesDir = utils.rootDir() + '/backend/' + templatesDir;
       stats = fs.statSync(templatesDir);
       if (!stats.isDirectory()) {
+        return;
+      }
+
+      templatesExt = ext ? ext : conf.backend.synced_dirs.templates_ext;
+      // Only proceed if templates_ext is a string.
+      if (typeof templatesExt !== 'string') {
+        return;
+      }
+      // Only proceed if templatesExt is set correctly.
+      if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
         return;
       }
 
