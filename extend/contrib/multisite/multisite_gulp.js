@@ -27,15 +27,6 @@
   var yml = fs.readFileSync(multisiteDir + '/subsites.yml', conf.enc);
   var subsites = yaml.safeLoad(yml).subsites;
 
-  function getSubsiteObj(subsite) {
-    for (var i = 0; i < subsites.length; i++) {
-      if (subsites[i].name === subsite) {
-        return subsites[i];
-      }
-    }
-    return null;
-  }
-
   function importMustache(from, to) {
     var dest;
     var destDir;
@@ -163,7 +154,7 @@
     // Populate fpPlns array and tasks object.
     var fpPlns = [];
     var subsiteDir;
-    var tasks = {};
+
     for (i = 0; i < subsites.length; i++) {
       // Cannot have a subsite named "main". Error and exit if that's the case.
       if (subsites[i].name === 'main') {
@@ -174,7 +165,7 @@
       // Instantiate Fepper task objects for all subsites.
       subsiteDir = multisiteDir + '/' + subsites[i].name;
       fpPlns[i] = new FpPln(subsiteDir, conf);
-      tasks[subsites[i].name] = new Tasks(subsiteDir, conf);
+      subsites[i].tasks = new Tasks(subsiteDir, conf);
     }
 
     // Run once on the command line to install.
@@ -329,12 +320,12 @@
             subsiteDir = multisiteDir + '/' + subsites[i].name;
             plnDir = subsiteDir + '/patternlab-node';
             process.chdir(plnDir);
-            tasks[subsites[i].name].appendix();
+            subsites[i].tasks.appendix();
             resolve();
           })
           .then(function () {
             jsonCompileTask = jsonCompileTaskClosure();
-            jsonCompileTask(tasks[subsites[i].name]);
+            jsonCompileTask(subsites[i].tasks);
           })
           .then(function () {
             return i + 1;
@@ -351,26 +342,23 @@
 
     var subsiteCopyScripts;
     var subsiteCopyTask;
-    var subsiteObj;
 
     for (i = 0; i < subsites.length; i++) {
-      subsiteObj = getSubsiteObj(subsites[i].name);
-
       // Create Gulp tasks for copying individual subsite assets.
-      if (typeof subsiteObj.synced_dirs.assets_dir === 'string' && subsiteObj.synced_dirs.assets_dir.trim()) {
-        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'assets', subsiteObj.synced_dirs.assets_dir);
+      if (typeof subsites[i].synced_dirs.assets_dir === 'string') {
+        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'assets', subsites[i].synced_dirs.assets_dir);
         gulp.task('multisite:frontend-copy-assets:' + subsites[i].name, subsiteCopyTask);
       }
 
       // Create Gulp tasks for copying individual subsite scripts.
-      if (typeof subsiteObj.synced_dirs.scripts_dir === 'string' && subsiteObj.synced_dirs.scripts_dir.trim()) {
-        subsiteCopyScripts = subsiteCopyScriptsClosure(subsites[i].name, subsiteObj.synced_dirs.assets_dir);
+      if (typeof subsites[i].synced_dirs.scripts_dir === 'string') {
+        subsiteCopyScripts = subsiteCopyScriptsClosure(subsites[i].name, subsites[i].synced_dirs.assets_dir);
         gulp.task('multisite:frontend-copy-scripts:' + subsites[i].name, subsiteCopyScripts);
       }
 
       // Create Gulp tasks for copying individual subsite styles.
-      if (typeof subsiteObj.synced_dirs.styles_dir === 'string' && subsiteObj.synced_dirs.styles_dir.trim()) {
-        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'styles', subsiteObj.synced_dirs.styles_dir);
+      if (typeof subsites[i].synced_dirs.styles_dir === 'string') {
+        subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'styles', subsites[i].synced_dirs.styles_dir);
         gulp.task('multisite:frontend-copy-styles:' + subsites[i].name, subsiteCopyTask);
       }
     }
@@ -381,11 +369,9 @@
       var merged = mergeStream();
 
       for (var i = 0; i < subsites.length; i++) {
-        subsiteObj = getSubsiteObj(subsites[i].name);
-
         // Create tasks for copying individual subsite assets and merge them.
-        if (typeof subsiteObj.synced_dirs.assets_dir === 'string' && subsiteObj.synced_dirs.assets_dir.trim()) {
-          subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'assets', subsiteObj.synced_dirs.assets_dir);
+        if (typeof subsites[i].synced_dirs.assets_dir === 'string') {
+          subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'assets', subsites[i].synced_dirs.assets_dir);
           merged.add(subsiteCopyTask());
         }
       }
@@ -399,11 +385,9 @@
       var merged = mergeStream();
 
       for (var i = 0; i < subsites.length; i++) {
-        subsiteObj = getSubsiteObj(subsites[i].name);
-
         // Create tasks for copying individual subsite scripts and merge them.
-        if (typeof subsiteObj.synced_dirs.scripts_dir === 'string' && subsiteObj.synced_dirs.scripts_dir.trim()) {
-          subsiteCopyScripts = subsiteCopyScriptsClosure(subsites[i].name, subsiteObj.synced_dirs.scripts_dir);
+        if (typeof subsites[i].synced_dirs.scripts_dir === 'string') {
+          subsiteCopyScripts = subsiteCopyScriptsClosure(subsites[i].name, subsites[i].synced_dirs.scripts_dir);
           merged.add(subsiteCopyScripts());
         }
       }
@@ -417,11 +401,9 @@
       var merged = mergeStream();
 
       for (var i = 0; i < subsites.length; i++) {
-        subsiteObj = getSubsiteObj(subsites[i].name);
-
         // Create tasks for copying individual subsite styles and merge them.
-        if (typeof subsiteObj.synced_dirs.styles_dir === 'string' && subsiteObj.synced_dirs.styles_dir.trim()) {
-          subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'styles', subsiteObj.synced_dirs.styles_dir);
+        if (typeof subsites[i].synced_dirs.styles_dir === 'string') {
+          subsiteCopyTask = subsiteCopyTaskClosure(subsites[i].name, 'styles', subsites[i].synced_dirs.styles_dir);
           merged.add(subsiteCopyTask());
         }
       }
@@ -432,15 +414,14 @@
     var frontendCopyTasksArray;
     for (i = 0; i < subsites.length; i++) {
       frontendCopyTasksArray = [];
-      subsiteObj = getSubsiteObj(subsites[i].name);
 
-      if (typeof subsiteObj.synced_dirs.assets_dir === 'string' && subsiteObj.synced_dirs.assets_dir.trim()) {
+      if (typeof subsites[i].synced_dirs.assets_dir === 'string') {
         frontendCopyTasksArray.push('multisite:frontend-copy-assets:' + subsites[i].name);
       }
-      if (typeof subsiteObj.synced_dirs.scripts_dir === 'string' && subsiteObj.synced_dirs.scripts_dir.trim()) {
+      if (typeof subsites[i].synced_dirs.scripts_dir === 'string') {
         frontendCopyTasksArray.push('multisite:frontend-copy-scripts:' + subsites[i].name);
       }
-      if (typeof subsiteObj.synced_dirs.styles_dir === 'string' && subsiteObj.synced_dirs.styles_dir.trim()) {
+      if (typeof subsites[i].synced_dirs.styles_dir === 'string') {
         frontendCopyTasksArray.push('multisite:frontend-copy-styles:' + subsites[i].name);
       }
 
@@ -663,11 +644,10 @@
 
     gulp.task('multisite:pattern-override', function (cb) {
       var p = new Promise(function (resolve, reject) {
+        var i;
         process.chdir(fpDir);
-        for (subsite in tasks) {
-          if (tasks.hasOwnProperty(subsite)) {
-            tasks[subsite].patternOverride(multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js');
-          }
+        for (i = 0; i < subsites.length; i++) {
+          subsites[i].tasks.patternOverride(multisiteDir + '/' + subsite + '/' + conf.pub + '/scripts/pattern-overrider.js');
         }
         resolve();
       });
@@ -683,11 +663,9 @@
 
     // Create Gulp tasks for publishing individual subsites.
     var subsitePublishTask;
-    for (subsite in tasks) {
-      if (tasks.hasOwnProperty(subsite)) {
-        subsitePublishTask = subsitePublishTaskClosure(tasks[subsite], subsite);
-        gulp.task('multisite:publish:' + subsite, subsitePublishTask);
-      }
+    for (i = 0; i < subsites.length; i++) {
+      subsitePublishTask = subsitePublishTaskClosure(subsites[i].tasks, subsite);
+      gulp.task('multisite:publish:' + subsite, subsitePublishTask);
     }
 
     gulp.task('multisite:patternlab-override', function (cb) {
@@ -1004,11 +982,10 @@
 
     gulp.task('multisite:static', function (cb) {
       var p = new Promise(function (resolve, reject) {
+        var i;
         process.chdir(fpDir);
-        for (subsite in tasks) {
-          if (tasks.hasOwnProperty(subsite)) {
-            tasks[subsite].staticGenerate();
-          }
+        for (i = 0; i < subsites.length; i++) {
+          subsites[i].tasks.staticGenerate();
         }
         resolve();
       });
@@ -1088,18 +1065,11 @@
 
     // Create Gulp tasks for templating individual subsites.
     var subsiteTemplateTask;
-    for (subsite in tasks) {
-      if (tasks.hasOwnProperty(subsite)) {
-        subsiteObj = getSubsiteObj(subsite);
 
-        if (
-            typeof subsiteObj.synced_dirs.templates_dir === 'string' && subsiteObj.synced_dirs.templates_dir.trim() &&
-            typeof subsiteObj.synced_dirs.templates_ext === 'string' && subsiteObj.synced_dirs.templates_ext.trim()
-        ) {
-
-          subsiteTemplateTask = subsiteTemplateTaskClosure(tasks[subsite], subsiteObj.synced_dirs.templates_dir, subsiteObj.synced_dirs.templates_ext);
-          gulp.task('multisite:template:' + subsite, subsiteTemplateTask);
-        }
+    for (i = 0; i < subsites.length; i++) {
+      if (typeof subsites[i].synced_dirs.templates_dir === 'string' && typeof subsites[i].synced_dirs.templates_ext === 'string') {
+        subsiteTemplateTask = subsiteTemplateTaskClosure(subsites[i].tasks, subsites[i].synced_dirs.templates_dir, subsites[i].synced_dirs.templates_ext);
+        gulp.task('multisite:template:' + subsites[i].name, subsiteTemplateTask);
       }
     }
 
@@ -1107,16 +1077,9 @@
       var subsite;
 
       // Run Fepper templater task for all subsites.
-      for (subsite in tasks) {
-        if (tasks.hasOwnProperty(subsite)) {
-          subsiteObj = getSubsiteObj(subsite);
-
-          if (
-              typeof subsiteObj.synced_dirs.templates_dir === 'string' && subsiteObj.synced_dirs.templates_dir.trim() &&
-              typeof subsiteObj.synced_dirs.templates_ext === 'string' && subsiteObj.synced_dirs.templates_ext.trim()
-          ) {
-            tasks[subsite].template(subsiteObj.synced_dirs.templates_dir, subsiteObj.synced_dirs.templates_ext);
-          }
+      for (i = 0; i < subsites.length; i++) {
+        if (typeof subsites[i].synced_dirs.templates_dir === 'string' && typeof subsites[i].synced_dirs.templates_ext === 'string') {
+          subsites[i].tasks.template(subsites[i].synced_dirs.templates_dir, subsites[i].synced_dirs.templates_ext);
         }
       }
       cb();
