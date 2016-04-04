@@ -11,8 +11,6 @@
   var fs = require('fs-extra');
   var path = require('path');
 
-  var utils = require('../lib/utils');
-
   exports.main = function (workDir, conf) {
     var defaultPort = 35729;
     var dest = workDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
@@ -47,7 +45,6 @@ if (codeFill) {
 }
 
 `;
-
     // Initialize destination file.
     fs.mkdirsSync(path.dirname(dest));
     fs.writeFileSync(dest, output);
@@ -67,7 +64,6 @@ if (window.location.port === '${conf.express_port}') {
   //]]>
 }
 `;
-
     // Write out the LiveReloader.
     fs.appendFileSync(dest, output);
   };
