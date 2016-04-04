@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html class="{{ htmlClass }}">
 <head>
-  <!-- Redirect away from default Pattern Lab landing page (which loads every
-    pattern and crushes browsers in large projects.) Do this before downloading
-    significant amounts of the page's data. -->
+  {{! Redirect away from default Pattern Lab landing page (which loads every
+      pattern and crushes browsers in large projects.) Do this before
+      downloading significant amounts of the page's data. }}
   <script type="text/javascript">
   if (window.location.pathname.indexOf('/styleguide/html/styleguide.html') > -1 && window.location.search === '' && '{{ homepage }}'.length) {
     window.location = '../../patterns/{{ homepage }}/{{ homepage }}.html';
