@@ -53,16 +53,6 @@ if (codeFill) {
     fs.mkdirsSync(path.dirname(dest));
     fs.writeFileSync(dest, output);
 
-    if (typeof dataJson.homepage === 'string') {
-      // Backticked multi-line string.
-      output = `// Redirect away from all-patterns page on launch.
-if (window.location.pathname.indexOf('/styleguide/html/styleguide.html') > -1 && window.location.search === '') {
-  window.location = '../../patterns/${dataJson.homepage}/${dataJson.homepage}.html';
-}
-
-`;
-    }
-
     // Write out the homepage redirector.
     fs.appendFileSync(dest, output);
 
