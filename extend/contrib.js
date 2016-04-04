@@ -9,28 +9,28 @@
 
   gulp.task('contrib:data', [
 // Uncomment if you wish to enable this.
-    'multisite:data'
+//    'multisite:data'
   ]);
 
   gulp.task('contrib:frontend-copy', [
 // Uncomment if you wish to enable this.
 // Change "subsite1" to use another subsite name or "all" for all subsites.
-    'multisite:frontend-copy:subsite1'
+//    'multisite:frontend-copy:subsite1'
   ]);
 
   gulp.task('contrib:lint', [
 // Uncomment if you wish to enable this.
-    'multisite:lint'
+//    'multisite:lint'
   ]);
 
   gulp.task('contrib:minify', [
 // Uncomment if you wish to enable this.
-    'multisite:minify'
+//    'multisite:minify'
   ]);
 
   gulp.task('contrib:once', [
 // Uncomment if you wish to enable this.
-    'multisite:once'
+//    'multisite:once'
   ]);
 
   // You can only publish one site at a time. If the contrib:publish task is to 
@@ -43,29 +43,29 @@
 
   gulp.task('contrib:static', [
 // Uncomment if you wish to enable this.
-    'multisite:static'
+//    'multisite:static'
   ]);
 
   gulp.task('contrib:syncback', [
 // Uncomment if you wish to enable this.
 // Change "subsite1" to use another subsite name or "all" for all subsites.
-    'multisite:syncback:subsite1'
+//    'multisite:syncback:subsite1'
   ]);
 
   gulp.task('contrib:tcp-ip', [
 // Uncomment if you wish to enable this.
-    'multisite:tcp-ip'
+//    'multisite:tcp-ip'
   ]);
 
   gulp.task('contrib:template', [
 // Uncomment if you wish to enable this.
 // Change "subsite1" to use another subsite name or "all" for all subsites.
-    'multisite:template:subsite1'
+//    'multisite:template:subsite1'
   ]);
 
   // No pre or postprocessing for watch tasks.
   gulp.task('contrib:watch', [
 // Uncomment if you wish to enable this.
-    'multisite:watch'
+//    'multisite:watch'
   ]);
 })();

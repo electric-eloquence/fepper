@@ -22,7 +22,8 @@
   ]);
 
   gulp.task('contrib:once:preprocess', [
-    'multisite:patternlab-override'
+// Uncomment if you're enabling multisite.
+//    'multisite:patternlab-override'
   ]);
 
   gulp.task('contrib:publish:preprocess', [
