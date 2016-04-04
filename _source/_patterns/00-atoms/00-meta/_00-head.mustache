@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html class="{{ htmlClass }}">
 <head>
+  {{! Redirect away from default Pattern Lab landing page (which loads every
+      pattern and crushes browsers in large projects.) Do this before
+      downloading significant amounts of the page's data. }}
+  <script type="text/javascript">
+  if (window.location.pathname.indexOf('/styleguide/html/styleguide.html') > -1 && window.location.search === '') {
+    window.location = '../../patterns/{{ homepage }}/{{ homepage }}.html';
+  }
+  </script>
+
   <title>{{ title }}</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width" />
