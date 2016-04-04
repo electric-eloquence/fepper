@@ -22,6 +22,8 @@
   ]);
 
   gulp.task('contrib:once:preprocess', [
+// Uncomment if you're enabling multisite.
+//    'multisite:patternlab-override'
   ]);
 
   gulp.task('contrib:publish:preprocess', [
@@ -33,9 +35,10 @@
   gulp.task('contrib:syncback:preprocess', [
   ]);
 
-  // TCP-IP overrides should run before tcp-ip-load:init in order to override
-  // TcpIp objects before they start listening and watching.
-  // Therefore, the auxiliary task option is for postprocess and not preprocess.
+  // TCP-IP overrides need to run after tcp-ip-load:init in order for there to
+  // be a global.express object to override. They must then override it before
+  // it starts listening and tcp-ip-reload starts watching. Hence, the default
+  // contrib task is a preprocess and this auxiliary task is a postprocess.
   gulp.task('contrib:tcp-ip:postprocess', [
   ]);
 

@@ -30,10 +30,11 @@
       'once',
       'data',
       'fepper:pattern-override',
-      // TCP-IP overrides should run before tcp-ip-load:init in order to
-      // override TcpIp objects before they start listening and watching.
-      ['contrib:tcp-ip', 'custom:tcp-ip'],
       'tcp-ip-load:init',
+      // TCP-IP overrides need to run after tcp-ip-load:init in order for there
+      // to be a global.express object to override. They must then override it
+      // before it starts listening and tcp-ip-reload starts watching.
+      ['contrib:tcp-ip', 'custom:tcp-ip'],
       ['tcp-ip-load:listen', 'tcp-ip-reload:listen'],
       ['contrib:watch', 'custom:watch', 'tcp-ip-load:open', 'tcp-ip-reload:watch'],
       // Probably no use-case for these contrib and custom postprocess tasks,
