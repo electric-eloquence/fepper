@@ -73,10 +73,10 @@
 
     // Copy webserved directories.
     // conf.yml takes priority over data.json.
-    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs instanceof Array) {
+    if (Array.isArray(conf.backend.webserved_dirs)) {
       webservedDirsFull = conf.backend.webserved_dirs;
     }
-    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs instanceof Array) {
+    else if (Array.isArray(dataJson.backend_webserved_dirs)) {
       webservedDirsFull = dataJson.backend_webserved_dirs;
     }
     if (webservedDirsFull) {

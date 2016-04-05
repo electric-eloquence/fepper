@@ -30,10 +30,10 @@
     // priority over backend_webserved_dirs in data.json. The data.json setting
     // can be version controlled, while the conf.yml setting can override the
     // version controlled setting for local-specific exceptions.
-    if (typeof conf.backend.webserved_dirs === 'object' && conf.backend.webserved_dirs instanceof Array) {
+    if (Array.isArray(conf.backend.webserved_dirs)) {
       webservedDirs = conf.backend.webserved_dirs;
     }
-    else if (typeof dataJson.backend_webserved_dirs === 'object' && dataJson.backend_webserved_dirs instanceof Array) {
+    else if (Array.isArray(dataJson.backend_webserved_dirs)) {
       webservedDirs = dataJson.backend_webserved_dirs;
     }
     if (webservedDirs) {
