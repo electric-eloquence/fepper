@@ -150,7 +150,7 @@
   // End plugin-scoped variable and function definitions.
   // Begin Gulp task definitions.
   // ///////////////////////////////////////////////////////////////////////////
-  if (typeof subsites === 'object' && subsites instanceof Array && subsites.length) {
+  if (Array.isArray(subsites) && subsites.length) {
     // Populate fpPlns array and tasks object.
     var fpPlns = [];
     var subsiteDir;
