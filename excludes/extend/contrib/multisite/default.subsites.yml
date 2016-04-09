@@ -1,0 +1,15 @@
+--- # To activate subsites, list them here. Use array of objects YAML syntax.
+subsites:
+  # Use a hyphen to delimit each subsite object as a separate array element.
+  -
+    # Make sure the subsite name matches the directory name.
+    name: subsite1
+    # In order to syncback anything sourced in this subsite, define synced_dirs
+    # here as they are done in conf.yml.
+    synced_dirs:
+      assets_dir:
+      scripts_dir:
+      styles_dir:
+      templates_dir:
+      templates_ext:
+  # Follow this pattern for each additional subsite (including the hyphen.)

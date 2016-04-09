@@ -1,0 +1,17 @@
+<div class="page" id="page">
+  {{> organisms-_main-header }}
+  <div role="main">
+    <h1 class="section-title">Our Outdoor Blog</h1>
+    <div class="l-two-col">
+      <div class="l-main">
+        {{> organisms-_main-latest-posts }}
+        {{> molecules-_main-pagination }}
+      </div><!--end l-main-->
+
+      <div class="l-sidebar">
+        {{> organisms-_main-recent-tweets }}
+      </div><!--end l-sidebar-->
+    </div><!--end two-col-->
+  </div><!--End role=main-->
+  {{> organisms-_main-footer }}
+</div>
