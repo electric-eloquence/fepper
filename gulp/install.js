@@ -12,7 +12,7 @@
     catch (err) {
       // Only copy to patternlab-config.json if it doesn't exist.
       if (err.code === 'ENOENT') {
-        return gulp.src('./patternlab-config.json')
+        return gulp.src('./excludes/patternlab-config.json')
           .pipe(gulp.dest('./' + conf.pln));
       }
     }
