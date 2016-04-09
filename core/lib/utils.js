@@ -17,7 +17,7 @@
     var yml;
 
     try {
-      yml = fs.readFileSync(__dirname + '/../../default.conf.yml', enc);
+      yml = fs.readFileSync(__dirname + '/../../excludes/default.conf.yml', enc);
       defaults = yaml.safeLoad(yml);
     }
     catch (err) {
