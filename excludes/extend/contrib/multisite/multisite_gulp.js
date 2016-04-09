@@ -174,7 +174,7 @@
     // Run once on the command line to uninstall.
     // Be sure to remove all references to multisite in contrib.js.
     gulp.task('multisite:uninstall', function () {
-      return gulp.src(rootDir + '/_source/scripts/patternlab-overrider.js')
+      return gulp.src(rootDir + '/excludes/source/scripts/patternlab-overrider.js')
         .pipe(gulp.dest(rootDir + '/patternlab-node/source/scripts'));
     });
 

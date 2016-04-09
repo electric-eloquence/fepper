@@ -3,6 +3,7 @@
 .publish/
 **/ignore*
 conf.yml
+extend
 install.log
 node_modules/
 npm-debug.log
