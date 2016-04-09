@@ -1,13 +1,10 @@
 .*.swp
 .DS_Store
 .publish/
-/backend/*
 !/backend/README
 /conf.yml
-/extend/
 /install.log
 /npm-debug.log
-/pref.yml
 Thumbs.db
 ignore/
 node_modules/
