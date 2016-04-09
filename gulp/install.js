@@ -23,9 +23,9 @@
       fs.statSync(conf.src);
     }
     catch (err) {
-      // Only copy _source if patternlab-config.json doesn't exist.
+      // Only copy excludes/source if patternlab-config.json doesn't exist.
       if (err.code === 'ENOENT') {
-        return gulp.src('./_source/**')
+        return gulp.src('./excludes/source/**')
           .pipe(gulp.dest('./' + conf.pln + '/source/'));
       }
     }

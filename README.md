@@ -247,7 +247,7 @@ as well.
 
 ###<a id="more-documentation"></a>More Documentation###
 
-* [default.conf.yml](https://github.com/electric-eloquence/fepper/blob/master/default.conf.yml)
+* [default.conf.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.conf.yml)
 * [Pattern Lab](http://patternlab.io/docs/index.html)
 * [Mustache](https://mustache.github.io/mustache.5.html)
 

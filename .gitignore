@@ -5,6 +5,7 @@
 backend/*
 !backend/README
 conf.yml
+extend
 install.log
 node_modules/
 npm-debug.log
