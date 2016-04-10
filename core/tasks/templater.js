@@ -30,14 +30,11 @@
       // Split by Mustache tag for parsing.
       codeSplit = code1.split('{{');
       for (i = 0; i < codeSplit.length; i++) {
-        // Replace line feeds and carriage returns with tokens.
-        codeSplit[i] = codeSplit[i].replace(/\n/g, '{{ \\n }}');
-        codeSplit[i] = codeSplit[i].replace(/\r/g, '{{ \\r }}');
         // Signal the OK to recurse by appending partial tags with the .mustache
         // extension. We do NOT want to recurse EVERY included partial because
         // then the outputted file will not contain any partials, which defeats
         // the purpose of recursing templates in the first place.
-        if (codeSplit[i].match(/^>\s*[\w\-\.\/]+\.mustache\s*}}/)) {
+        if (codeSplit[i].search(/^>\s*[\w\-\.\/~]+\.mustache\s*\}\}/) > -1) {
           partial = codeSplit[i].split('}}');
           partial[0] = partial[0].replace(/^>\s*/, '').trim();
           partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], conf, patternDir);
@@ -57,9 +54,6 @@
           }
         }
       }
-      // Reinstate line feeds and carriage returns.
-      code2 = code2.replace(/{{ \\n }}/g, '\n');
-      code2 = code2.replace(/{{ \\r }}/g, '\r');
 
       return code2;
     }
@@ -69,8 +63,8 @@
   };
 
   exports.mustacheUnescape = function (escaped) {
-    var unescaped = escaped.replace(/{\s*/, '{\\s');
-    unescaped = unescaped.replace(/\s*}/, '\\s}');
+    var unescaped = escaped.replace(/\{\s*/, '{\\s');
+    unescaped = unescaped.replace(/\s*\}/, '\\s}');
     return unescaped;
   };
 
@@ -120,7 +114,7 @@
     for (i in tokens) {
       if (tokens.hasOwnProperty(i)) {
         unescaped = exports.mustacheUnescape(i);
-        re = new RegExp('{{\\s*' + unescaped + '\\s*}}', 'g');
+        re = new RegExp('\\{\\{\\s*' + unescaped + '\\s*\\}\\}', 'g');
         token = tokens[i].replace(/\n$/, '');
         code = code.replace(re, token);
       }
@@ -128,11 +122,11 @@
 
     // Delete remaining Mustache tags if configured to do so.
     if (!conf.templater.retain_mustache) {
-      code = code.replace(/{{(.|\s)*?}?}}\s*\n?/g, '');
+      code = code.replace(/\{\{[^\(]*?(\((.|\s)*?\))?\s*\}?\}\}\s*\n?/g, '');
     }
     // Replace escaped curly braces.
-    code = code.replace(/\\{/g, '{');
-    code = code.replace(/\\}/g, '}');
+    code = code.replace(/\\\{/g, '{');
+    code = code.replace(/\\\}/g, '}');
 
     return code;
   };
