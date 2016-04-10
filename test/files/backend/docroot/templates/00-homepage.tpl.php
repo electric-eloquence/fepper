@@ -4,13 +4,13 @@
 	<a href=""><img src="../../assets/logo.png" class="logo" alt="Logo Alt Text" /></a>
 <a href="#" class="nav-toggle nav-toggle-search icon-search"><span class="is-vishidden">Search</span></a>
 	<a href="#" class="nav-toggle nav-toggle-menu icon-menu"><span class="is-vishidden">Menu</span></a>
-<?php print $page['primary_nav']; ?>
+	<?php print $page['primary_nav']; ?>
 	<?php print $page['search']; ?>
 </header>
 <!-- End .header -->
 
 	<div role="main">
-<?php if ($emergency): ?>
+		<?php if ($emergency): ?>
 			<?php print $alert; ?>
 		<?php endif; ?>
 		<?php if ($hero): ?>
