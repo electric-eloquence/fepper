@@ -1,5 +1,5 @@
 /**
- * Put tasks defined in _gulp.js appended files within the more general tasks 
+ * Put tasks defined in _extend.js appended files within the more general tasks 
  * listed below.
  */
 (function () {
