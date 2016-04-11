@@ -51,12 +51,14 @@
 * To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
 
 ###<a id="upgrading"></a>Upgrading###
-Upgrading Fepper _should_ be as simple as dropping the new package over old.
-However, it's a bit more complicated in that "dot"-prefixed hidden files at the
-root level must _not_ be written over. These are important configuration files
-specific to each user's instance. After excluding these files, all other files 
-can be copied over, and the upgrade will be complete. Future versions of 
-Fepper will automate this process.
+Upgrading Fepper _should_ be as simple as dropping the new package over old. 
+However, it's a bit more complicated in that "dot"-prefixed hidden files at the 
+root level must _not_ be written over. These are important configuration files 
+specific to each user's instance. Users must also be mindful of any custom edits 
+to `package.json`. `package.json` must be copied over in order to pick up any 
+changes to core, but then, any custom edits to `package.json` must be re-added. 
+After the new version's files are copied over and `package.json` refitted, the 
+upgrade will be complete. Future versions of Fepper will automate this process.
 
 ###<a id="configuration"></a>Configuration###
 
