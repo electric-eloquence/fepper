@@ -1,7 +1,7 @@
 {
   "name": "fepper",
-  "description": "A frontend prototyper for streamlining website design and development",
-  "version": "0.0.1",
+  "description": "A frontend prototyper for rapid website design and development",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/electric-eloquence/fepper.git"
