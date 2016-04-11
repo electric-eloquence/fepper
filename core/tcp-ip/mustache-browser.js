@@ -38,10 +38,14 @@
      * @return {string} Partial path.
      */
     partialTagToPath(partial) {
-      partial = partial.replace(/^{{>\s*/, '');
+      // Strip opening Mustache braces and control character.
+      partial = partial.replace(/^\{\{>\s*/, '');
+      // Strip parentheses-wrapped parameter submission.
       partial = partial.replace(/\((.|\s)*\)/, '');
+      // Strip colon/pipe-delimited style modifier.
       partial = partial.replace(/\:[\w\-\|]+/, '');
-      partial = partial.replace(/\s*}}$/, '');
+      // Strip closing Mustache braces.
+      partial = partial.replace(/\s*\}\}$/, '');
       if (partial.indexOf('.mustache') !== partial.length - 9) {
         partial = partial + '.mustache';
       }
@@ -74,7 +78,7 @@
       data = data.replace(/"/g, '&quot;');
       data = data.replace(/</g, '&lt;');
       data = data.replace(/>/g, '&gt;');
-      data = data.replace(/{{&gt;(.|\s)*?}}/g, '<a href="?partial=$&">$&</a>');
+      data = data.replace(/\{\{&gt;(.|\s)*?\}\}/g, '<a href="?partial=$&">$&</a>');
       data = data.replace(/\n/g, '<br>');
 
       return data;
