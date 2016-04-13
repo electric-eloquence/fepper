@@ -6,8 +6,8 @@
 
   var utils = require('../lib/utils');
   var conf = utils.conf();
+  var pref = utils.pref();
   var rootDir = utils.rootDir();
-  var dataJson = utils.data(rootDir, conf);
 
   var htmlScraper = require('./html-scraper');
   var htmlScraperPost = require('./html-scraper-post');
@@ -23,19 +23,11 @@
     var webservedDirSplit;
 
     // Serve the backend's static files where the document root and top-level
-    // directory are set in backend.webserved_dirs in conf.yml or backend_webserved_dirs
-    // in data.json.
+    // directory are set in backend.webserved_dirs in pref.yml.
+    if (Array.isArray(pref.backend.webserved_dirs)) {
+      webservedDirs = pref.backend.webserved_dirs;
+    }
 
-    // First check if backend.webserved_dirs is set in conf.yml. This takes
-    // priority over backend_webserved_dirs in data.json. The data.json setting
-    // can be version controlled, while the conf.yml setting can override the
-    // version controlled setting for local-specific exceptions.
-    if (Array.isArray(conf.backend.webserved_dirs)) {
-      webservedDirs = conf.backend.webserved_dirs;
-    }
-    else if (Array.isArray(dataJson.backend_webserved_dirs)) {
-      webservedDirs = dataJson.backend_webserved_dirs;
-    }
     if (webservedDirs) {
       for (i = 0; i < webservedDirs.length; i++) {
         webservedDirSplit = webservedDirs[i].split('/');

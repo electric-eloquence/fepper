@@ -10,26 +10,28 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
+  var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(confYml);
+  var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
+  var pref = yaml.safeLoad(prefYml);
   var testDir = rootDir + '/' + conf.test_dir;
-  var ghPagesDir = testDir + '/' + conf.gh_pages_src;
+  var ghPagesDir = testDir + '/' + pref.gh_pages_src;
   var publisher = require(rootDir + '/core/tasks/publisher');
   var Tasks = require(rootDir + '/core/tasks/tasks');
   var tasks = new Tasks(testDir, conf);
 
   describe('Publisher', function () {
     // Get array of truncated dirnames.
-    var webservedDirs = utils.webservedDirnamesTruncate(conf.backend.webserved_dirs);
+    var webservedDirs = utils.webservedDirnamesTruncate(pref.backend.webserved_dirs);
 
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    tasks.publish(conf, testDir + '/.publish', true);
+    tasks.publish(testDir + '/.publish', pref, true);
 
     it('should read a valid .gh_pages_src config', function () {
-      expect(conf.gh_pages_src).to.be.a('string');
-      expect(conf.gh_pages_src.trim()).to.not.equal('');
+      expect(pref.gh_pages_src).to.be.a('string');
+      expect(pref.gh_pages_src.trim()).to.not.equal('');
     });
 
     it('should glob the specified patterns directory', function () {
@@ -50,7 +52,7 @@
       var fileAfterPath = ghPagesDir + '/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
 
       fs.copySync(fileBeforePath, fileAfterPath);
-      publisher.filesProcess([fileAfterPath], conf, webservedDirs, conf.gh_pages_prefix, testDir, testDir);
+      publisher.filesProcess([fileAfterPath], conf, webservedDirs, pref.gh_pages_prefix, testDir, testDir);
       var fileAfter = fs.readFileSync(fileAfterPath);
 
       expect(fileAfter).to.not.equal('');
@@ -61,7 +63,7 @@
       var pass = true;
       var stats;
 
-      utils.webservedDirsCopy(conf.backend.webserved_dirs, testDir, webservedDirs, ghPagesDir);
+      utils.webservedDirsCopy(pref.backend.webserved_dirs, testDir, webservedDirs, ghPagesDir);
       for (var i = 0; i < webservedDirs.length; i++) {
         stats = fs.statSync(ghPagesDir + '/' + webservedDirs[i]);
         if (!stats.isDirectory()) {

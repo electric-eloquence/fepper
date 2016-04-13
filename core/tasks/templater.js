@@ -108,7 +108,7 @@
     return tokens;
   };
 
-  exports.tokensReplace = function (tokens, code, conf) {
+  exports.tokensReplace = function (tokens, code, conf, pref) {
     var i;
     var re;
     var token;
@@ -124,7 +124,7 @@
     }
 
     // Delete remaining Mustache tags if configured to do so.
-    if (!conf.templater.retain_mustache) {
+    if (!pref.templater.retain_mustache) {
       code = code.replace(/\{\{[^\(]*?(\((.|\s)*?\))?\s*\}?\}\}\s*\n?/g, '');
     }
     // Replace escaped curly braces.
@@ -134,7 +134,7 @@
     return code;
   };
 
-  exports.main = function (workDir, conf, destDir, ext) {
+  exports.main = function (workDir, conf, destDir, pref, ext) {
     var code;
     var dest;
     var files;
@@ -148,7 +148,7 @@
     var ymlFile = '';
 
     try {
-      templatesDir = destDir ? destDir : conf.backend.synced_dirs.templates_dir;
+      templatesDir = destDir ? destDir : pref.backend.synced_dirs.templates_dir;
       // Only proceed if templatesDir is a string.
       if (typeof templatesDir !== 'string') {
         return;
@@ -160,7 +160,7 @@
         return;
       }
 
-      templatesExt = ext ? ext : conf.backend.synced_dirs.templates_ext;
+      templatesExt = ext ? ext : pref.backend.synced_dirs.templates_ext;
       // Only proceed if templates_ext is a string.
       if (typeof templatesExt !== 'string') {
         return;
@@ -191,7 +191,7 @@
         // Load tokens from YAML file.
         tokens = exports.tokensLoad(ymlFile, conf);
         // Iterate through tokens and replace keys for values in the code.
-        code = exports.tokensReplace(tokens, code, conf);
+        code = exports.tokensReplace(tokens, code, conf, pref);
         // Write compiled templates.
         dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
 
