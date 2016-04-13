@@ -2,9 +2,10 @@
   'use strict';
 
   module.exports = class {
-    constructor(workDir, conf) {
+    constructor(workDir, conf, pref) {
       this.workDir = workDir;
       this.conf = conf;
+      this.pref = pref || {};
     }
 
     appendix() {
@@ -28,7 +29,7 @@
     }
 
     staticGenerate() {
-      require('./static-generator.js').main(this.workDir, this.conf);
+      require('./static-generator.js').main(this.workDir, this.conf, this.pref);
     }
 
     template(destDir, ext) {

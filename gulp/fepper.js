@@ -11,7 +11,7 @@
   var pathIn = rootDir + '/core/tasks';
   var pathOut = rootDir;
   var Tasks = require('../core/tasks/tasks');
-  var tasks = new Tasks(rootDir, conf);
+  var tasks = new Tasks(rootDir, conf, pref);
 
   gulp.task('fepper:copy-assets', function () {
     if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()) {
