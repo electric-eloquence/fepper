@@ -62,11 +62,10 @@ upgrade will be complete. Future versions of Fepper will automate this process.
 
 ###<a id="configuration"></a>Configuration###
 
-Edit `conf.yml` for customizing local settings and for viewing general 
-configuration information. If you wish to use the `syncback`, `frontend-copy`, 
-or `template` tasks, you must supply values for the `backend.synced_dirs` 
-configs in order for those directories to get processed and copied to the 
-backend.
+Edit `pref.yml` to customize preferences and to view further documentation in 
+the comments. If you wish to use the `syncback`, `frontend-copy`, or `template` 
+tasks, you must supply values for the `backend.synced_dirs` preferences in order 
+for those directories to get processed and copied to the backend.
 
 ###<a id="utilization"></a>Utilization###
 
@@ -76,7 +75,7 @@ backend.
   * `fp`
 * These other utility tasks are runnable on the command line:
   * `fp data` to force compile data.json.
-  * `fp frontend-copy` to copy assets, scripts, and styles to backend.
+  * `fp frontend-copy` to copy assets, scripts, and styles to the backend.
   * `fp lint` to lint HTML, JavaScripts, and JSON.
   * `fp minify` to minify JavaScripts.
   * `fp once` to clean the public folder and do a one-off Fepper build.
@@ -123,21 +122,18 @@ pages in the `patterns` directory must start with `../04-pages-` and not
 Fepper can almost as easily work with a CMS backend such as Drupal or WordPress, 
 while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
 even just a symbolic link to the codebase into the `backend` directory. Then, 
-enter the relative paths to the appropriate backend directories into `conf.yml`. 
+enter the relative paths to the appropriate backend directories into `pref.yml`. 
 (Do not include "backend" or a leading slash.) You will then be able to run 
-`fp syncback`, `fp frontend-copy`, or `fp template` to export your 
-frontend data into your backend web application.
+`fp syncback`, `fp frontend-copy`, or `fp template` to export your frontend data 
+into your backend web application.
 
 ###<a id="webserved-directories"></a>Webserved Directories###
 When using a backend, assets generally need to be shared with the Fepper 
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a task to copy in the 
 reverse direction, Fepper serves backend files if their directories are entered 
-into the `webserved_dirs` block in `conf.yml` or 
-`patternlab-node/source/_data/_data.json`. Setting `webserved_dirs` in 
-`_data.json` will save that value in version control. If `webserved_dirs` is set 
-in both `conf.yml` and `_data.json`, the value in `conf.yml` will take priority. 
-Be sure these values are formatted as YAML or JSON array elements.
+into the `webserved_dirs` block in `pref.yml`. Be sure these values are 
+formatted as YAML array elements.
 
 ```
 DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 
@@ -152,12 +148,8 @@ account, you may run `fp publish` to publish `patternlab-node/public` to GitHub
 Pages. The Pattern Lab UI and Fepper static files will then be viewable from the 
 Web at `http://{user}.github.io/{repo}`. Normally, this is all that is needed. 
 However, if you are using `webserved_dirs`, you will need to supply a 
-`gh_pages_prefix` config in `conf.yml` or 
-`patternlab-node/source/_data/_data.json`. This config needs to be set to the 
-name of your GitHub repository and must contain a leading slash. Setting 
-`gh_pages_prefix` in `_data.json` will save that value in version control. If 
-`gh_pages_prefix` is set in both `conf.yml` and `_data.json`, the value in 
-`conf.yml` will take priority.
+`gh_pages_prefix` preference in `pref.yml`. This preference needs to be set to 
+the name of your GitHub repository.
 
 ###<a id="templater"></a>Templater###
 Pattern Lab's Mustache templates can be translated into templates compatible 
@@ -178,7 +170,7 @@ Follow these rules for setting up keys and values:
 
 Run `fp syncback` or `fp template` to execute the Templater. 
 
-* Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` are set in `conf.yml`. 
+* Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in the `_nosync` directory. 
 * The Templater will recurse through nested Mustache templates if the tags are written in the verbose syntax and have the `.mustache` extension, i.e. `{{> 02-organisms/00-global/00-header.mustache }}`. 
 * However, the more common inclusion use-case is to leave off the extension, and not recurse. 
@@ -249,7 +241,7 @@ as well.
 
 ###<a id="more-documentation"></a>More Documentation###
 
-* [default.conf.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.conf.yml)
+* [default.pref.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.pref.yml)
 * [Pattern Lab](http://patternlab.io/docs/index.html)
 * [Mustache](https://mustache.github.io/mustache.5.html)
 

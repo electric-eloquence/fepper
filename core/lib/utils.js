@@ -21,11 +21,9 @@
       defaults = yaml.safeLoad(yml);
     }
     catch (err) {
-      exports.error('Missing or malformed defaults.conf.yml! Exiting!');
+      exports.error('Missing or malformed excludes/defaults.conf.yml! Exiting!');
       return;
     }
-
-    defaults.gh_pages_src = null;
 
     if (!global.conf) {
       // Try getting conf from global process object.
@@ -57,6 +55,37 @@
     }
 
     return global.conf;
+  };
+
+  exports.pref = function () {
+    var pref;
+    var defaults;
+    var yml;
+
+    try {
+      yml = fs.readFileSync(__dirname + '/../../excludes/default.pref.yml', enc);
+      defaults = yaml.safeLoad(yml);
+    }
+    catch (err) {
+      exports.error('Missing or malformed excludes/defaults.pref.yml! Exiting!');
+      return;
+    }
+
+    defaults.gh_pages_src = null;
+
+    try {
+      yml = fs.readFileSync(__dirname + '/../../pref.yml', enc);
+      pref = yaml.safeLoad(yml);
+    }
+    catch (err) {
+      exports.error('Missing or malformed pref.yml! Exiting!');
+      return;
+    }
+
+    pref = exports.mergeObjects(defaults, pref);
+    global.pref = pref;
+
+    return global.pref;
   };
 
   exports.data = function (workDir, conf) {

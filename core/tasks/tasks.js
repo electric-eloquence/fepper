@@ -2,9 +2,10 @@
   'use strict';
 
   module.exports = class {
-    constructor(workDir, conf) {
+    constructor(workDir, conf, pref) {
       this.workDir = workDir;
       this.conf = conf;
+      this.pref = pref || {};
     }
 
     appendix() {
@@ -23,16 +24,16 @@
       require('./pattern-overrider.js').main(this.workDir, this.conf);
     }
 
-    publish(conf, publishDir, test) {
-      require('./publisher.js').main(this.workDir, conf, publishDir, test);
+    publish(publishDir, pref, test) {
+      require('./publisher.js').main(this.workDir, publishDir, this.conf, pref, test);
     }
 
     staticGenerate() {
-      require('./static-generator.js').main(this.workDir, this.conf);
+      require('./static-generator.js').main(this.workDir, this.conf, this.pref);
     }
 
     template(destDir, ext) {
-      require('./templater.js').main(this.workDir, this.conf, destDir, ext);
+      require('./templater.js').main(this.workDir, this.conf, destDir, this.pref, ext);
     }
   };
 })();

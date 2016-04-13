@@ -4,7 +4,7 @@
  * Fepper can easily be configured to serve assets in the backend directory.
  * However, if published on GitHub Pages, in order to also serve these assets,
  * their paths must be prefixed by the repository name. That can be set with
- * gh_pages_prefix in conf.yml or _data.json.
+ * gh_pages_prefix in pref.yml.
  */
 (function () {
   'use strict';
@@ -85,38 +85,28 @@
     }
   };
 
-  exports.main = function (workDir, conf, publishDir, test) {
-    var dataJson = utils.data(workDir, conf);
-    var ghPagesSrc = path.normalize(publishDir + '/../' + conf.gh_pages_src);
+  exports.main = function (workDir, publishDir, conf, pref, test) {
+    var ghPagesSrc = path.normalize(publishDir + '/../' + pref.gh_pages_src);
     var publicDir = workDir + '/' + conf.pub;
     var prefix;
     var publicFiles;
     var webservedDirsShort;
     var webservedDirsFull;
 
-    // First, make sure conf.gh_pages_src is set.
-    if (!conf.gh_pages_src) {
+    // First, make sure pref.gh_pages_src is set.
+    if (!pref.gh_pages_src) {
       utils.warn('gh_pages_src not set for ' + workDir + '. Skipping...');
       return;
     }
 
-    // Then, check for gh_pages_prefix. If it is set in conf.yml, that takes
-    // priority over gh_pages_prefix set in data.json. The data.json setting can
-    // be version controlled, while the conf.yml setting can override the version
-    // controlled setting for local-specific exceptions.
-    if (typeof conf.gh_pages_prefix === 'string') {
-      prefix = conf.gh_pages_prefix;
-    }
-    else if (dataJson && typeof dataJson.gh_pages_prefix === 'string') {
-      prefix = dataJson.gh_pages_prefix;
+    // Then, check for gh_pages_prefix in pref.yml.
+    if (typeof pref.gh_pages_prefix === 'string') {
+      prefix = pref.gh_pages_prefix;
     }
 
-    // Similar to gh_pages_prefix, conf.yml takes priority over data.json.
-    if (Array.isArray(conf.backend.webserved_dirs)) {
-      webservedDirsFull = conf.backend.webserved_dirs;
-    }
-    else if (Array.isArray(dataJson.backend_webserved_dirs)) {
-      webservedDirsFull = dataJson.backend_webserved_dirs;
+    // Then, check for backend.webserved_dirs in pref.yml.
+    if (Array.isArray(pref.backend.webserved_dirs)) {
+      webservedDirsFull = pref.backend.webserved_dirs;
     }
 
     var p = new Promise(function (resolve, reject) {
