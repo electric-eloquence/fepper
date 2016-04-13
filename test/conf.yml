@@ -1,6 +1,4 @@
 ---
-test_dir: test/files
-
 express_port: 3000
 livereload_port: 35729
 
@@ -18,3 +16,4 @@ pln: .
 bld: core/lib
 pub: public
 src: source
+test_dir: test/files

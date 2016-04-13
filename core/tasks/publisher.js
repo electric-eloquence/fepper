@@ -99,12 +99,12 @@
       return;
     }
 
-    // Then, check for gh_pages_prefix in pref.yml. 
+    // Then, check for gh_pages_prefix in pref.yml.
     if (typeof pref.gh_pages_prefix === 'string') {
       prefix = pref.gh_pages_prefix;
     }
 
-    // Then, check for backend.webserved_dirs in pref.yml. 
+    // Then, check for backend.webserved_dirs in pref.yml.
     if (Array.isArray(pref.backend.webserved_dirs)) {
       webservedDirsFull = pref.backend.webserved_dirs;
     }

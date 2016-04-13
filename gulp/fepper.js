@@ -14,23 +14,23 @@
   var tasks = new Tasks(rootDir, conf, pref);
 
   gulp.task('fepper:copy-assets', function () {
-    if (typeof conf.backend.synced_dirs.assets_dir === 'string' && conf.backend.synced_dirs.assets_dir.trim()) {
+    if (typeof pref.backend.synced_dirs.assets_dir === 'string' && pref.backend.synced_dirs.assets_dir.trim()) {
       return gulp.src(rootDir + '/' + conf.src + '/assets/**')
-        .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.assets_dir));
+        .pipe(gulp.dest('backend/' + pref.backend.synced_dirs.assets_dir));
     }
   });
 
   gulp.task('fepper:copy-scripts', function () {
-    if (typeof conf.backend.synced_dirs.scripts_dir === 'string' && conf.backend.synced_dirs.scripts_dir.trim()) {
+    if (typeof pref.backend.synced_dirs.scripts_dir === 'string' && pref.backend.synced_dirs.scripts_dir.trim()) {
       return gulp.src(rootDir + '/' + conf.src + '/scripts/*/**')
-        .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.scripts_dir));
+        .pipe(gulp.dest('backend/' + pref.backend.synced_dirs.scripts_dir));
     }
   });
 
   gulp.task('fepper:copy-styles', function () {
-    if (typeof conf.backend.synced_dirs.styles_dir === 'string' && conf.backend.synced_dirs.styles_dir.trim()) {
+    if (typeof pref.backend.synced_dirs.styles_dir === 'string' && pref.backend.synced_dirs.styles_dir.trim()) {
       return gulp.src(rootDir + '/' + conf.src + '/styles/**')
-        .pipe(gulp.dest('backend/' + conf.backend.synced_dirs.styles_dir));
+        .pipe(gulp.dest('backend/' + pref.backend.synced_dirs.styles_dir));
     }
   });
 
@@ -81,10 +81,10 @@
   });
 
   gulp.task('fepper:publish', function (cb) {
-    if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
+    if (typeof pref.gh_pages_src === 'string' && pref.gh_pages_src.trim()) {
       var p = new Promise(function (resolve, reject) {
         process.chdir(pathIn);
-        tasks.publish(rootDir + '/.publish', conf, pref);
+        tasks.publish(rootDir + '/.publish', pref);
         resolve();
       });
       p.then(function () {
@@ -118,7 +118,7 @@
   });
 
   gulp.task('fepper:template', function (cb) {
-    if (typeof conf.backend.synced_dirs.templates_dir === 'string' && conf.backend.synced_dirs.templates_dir.trim()) {
+    if (typeof pref.backend.synced_dirs.templates_dir === 'string' && pref.backend.synced_dirs.templates_dir.trim()) {
       var p = new Promise(function (resolve, reject) {
         process.chdir(pathIn);
         tasks.template();

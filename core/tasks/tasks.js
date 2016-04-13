@@ -24,8 +24,8 @@
       require('./pattern-overrider.js').main(this.workDir, this.conf);
     }
 
-    publish(publishDir, conf, pref, test) {
-      require('./publisher.js').main(this.workDir, publishDir, conf, pref, test);
+    publish(publishDir, pref, test) {
+      require('./publisher.js').main(this.workDir, publishDir, this.conf, pref, test);
     }
 
     staticGenerate() {
@@ -33,7 +33,7 @@
     }
 
     template(destDir, ext) {
-      require('./templater.js').main(this.workDir, this.conf, destDir, ext);
+      require('./templater.js').main(this.workDir, this.conf, destDir, this.pref, ext);
     }
   };
 })();
