@@ -10,8 +10,10 @@
   var rootDir = utils.rootDir();
 
   var staticGenerator = require(rootDir + '/core/tasks/static-generator');
-  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
+  var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(confYml);
+  var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
+  var pref = yaml.safeLoad(prefYml);
   var testDir = rootDir + '/' + conf.test_dir;
   var publicDir = testDir + '/public';
   var staticDir = testDir + '/static';
@@ -120,9 +122,9 @@
       var pass = true;
       var stats;
       // Get array of truncated dirnames.
-      var webservedDirs = utils.webservedDirnamesTruncate(conf.backend.webserved_dirs);
+      var webservedDirs = utils.webservedDirnamesTruncate(pref.backend.webserved_dirs);
 
-      utils.webservedDirsCopy(conf.backend.webserved_dirs, testDir, webservedDirs, staticDir);
+      utils.webservedDirsCopy(pref.backend.webserved_dirs, testDir, webservedDirs, staticDir);
       for (var i = 0; i < webservedDirs.length; i++) {
         stats = fs.statSync(staticDir + '/' + webservedDirs[i]);
         if (!stats.isDirectory()) {

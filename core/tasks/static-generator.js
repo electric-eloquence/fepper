@@ -56,8 +56,7 @@
     }
   };
 
-  exports.main = function (workDir, conf) {
-    var dataJson = utils.data(workDir, conf);
+  exports.main = function (workDir, conf, pref) {
     var publicDir = workDir + '/' + conf.pub;
     var staticDir = workDir + '/' + conf.src + '/static';
     var webservedDirsFull;
@@ -72,13 +71,10 @@
     exports.pagesDirCompile(workDir, conf, publicDir + '/patterns', staticDir);
 
     // Copy webserved directories.
-    // conf.yml takes priority over data.json.
-    if (Array.isArray(conf.backend.webserved_dirs)) {
-      webservedDirsFull = conf.backend.webserved_dirs;
+    if (Array.isArray(pref.backend.webserved_dirs)) {
+      webservedDirsFull = pref.backend.webserved_dirs;
     }
-    else if (Array.isArray(dataJson.backend_webserved_dirs)) {
-      webservedDirsFull = dataJson.backend_webserved_dirs;
-    }
+
     if (webservedDirsFull) {
       webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
       utils.webservedDirsCopy(webservedDirsFull, workDir, webservedDirsShort, staticDir);

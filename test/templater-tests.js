@@ -11,8 +11,10 @@
   var rootDir = utils.rootDir();
 
   var templater = require(rootDir + '/core/tasks/templater');
-  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
+  var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(confYml);
+  var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
+  var pref = yaml.safeLoad(prefYml);
   var testDir = rootDir + '/' + conf.test_dir;
   var patternDir = testDir + '/' + conf.src + '/_patterns';
   var srcDir = patternDir + '/03-templates';
@@ -51,8 +53,8 @@
     });
 
     it('should write templates', function () {
-      var templatesDir = testDir + '/backend/' + conf.backend.synced_dirs.templates_dir;
-      var templatesExt = conf.backend.synced_dirs.templates_ext;
+      var templatesDir = testDir + '/backend/' + pref.backend.synced_dirs.templates_dir;
+      var templatesExt = pref.backend.synced_dirs.templates_ext;
 
       // Clear out templates dir.
       fs.removeSync(templatesDir);
@@ -62,7 +64,7 @@
       var code = templater.mustacheRecurse(fileRoot, conf, patternDir);
       // Load tokens from YAML file.
       var tokens = templater.tokensLoad(srcDir + '/00-homepage.yml', conf);
-      code = templater.tokensReplace(tokens, code, conf);
+      code = templater.tokensReplace(tokens, code, conf, pref);
       templater.templatesWrite(fileRoot, srcDir, templatesDir, templatesExt, code);
     });
   });

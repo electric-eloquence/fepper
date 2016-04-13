@@ -1,0 +1,75 @@
+---
+backend:
+  synced_dirs:
+    # Relative paths to destination directories for code developed in Fepper.
+    # - First, plug a backend into Fepper. Put the actual codebase or even just
+    #   a symbolic link to the codebase into the /backend directory.
+    # - Then, enter the paths relative to the /backend directory as destinations
+    #   for frontend code to be synced by Fepper.
+    # - It is recommended to contain the backend codebase within a docroot
+    #   directory just below the /backend directory. This is so Fepper can serve
+    #   static files from the backend as per the webserved_dirs settings.
+    # - Do not include "backend" or a leading or trailing slash in the directory
+    #   settings.
+    # - Do not include a leading dot in the templates_ext setting.
+    # - Note that JavaScripts will only be synced if they are at least one
+    #   directory below patternlab-php/source/js. In other words, place
+    #   JavaScripts you wish to ignore directly in patternlab-php/source/js and
+    #   no deeper.
+    # - Use the fp syncback task to perform the sync.
+    #
+    # - Examples:
+    #assets_dir: docroot/themes/theme/assets
+    #scripts_dir: docroot/themes/theme/scripts
+    #styles_dir: docroot/themes/theme/styles
+    #templates_dir: docroot/themes/theme/templates
+    #templates_ext: tpl.php
+    assets_dir:
+    scripts_dir:
+    styles_dir:
+    templates_dir:
+    templates_ext:
+
+  webserved_dirs:
+    # Relative paths to the backend directories that will be served by Fepper's
+    # webserver.
+    # - These directories will just be served; no syncing will occur with them
+    #   unless they are also listed in synced_dirs. The files in webserved_dirs
+    #   can be browsed (or included) without having to copy them over into
+    #   Pattern Lab.
+    # - Be sure a backend is plugged into Fepper.
+    # - Create a list of relative paths which are to be served. Each path must
+    #   contain the document root and the path from the document root to the
+    #   target directory.
+    # - Do not include "backend" or a leading or trailing slash.
+    # - To include the directories' files in your code (or to view them in a
+    # - browser), enter the path without the document root. For example, if the
+    #   setting is docroot/css, enter /css without docroot.
+    # - Do not use names that will collide with what's in Pattern Lab, i.e.
+    #   docroot/assets, docroot/scripts, etc.
+    # - DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER
+    #   PUBLIC HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO
+    #   ANY PUBLISHED SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE
+    #   PUBLIC ANY SENSITIVE INFORMATION CONTAINED WITHIN THE SOURCE CODE!
+    #
+    # - Examples:
+    #- docroot/css
+    #- docroot/img
+    #- docroot/js
+
+templater:
+  # By default, the Templater will not retain untranslated Mustache tags when
+  # translating to the backend's templating language. However, if the backend's
+  # templating language happens to be Mustache, set this value to true.
+  retain_mustache: false
+
+# It is not a good idea to change the following value, but you can comment out
+# gh_pages_src to surpress publishing the Fepper public dir to GitHub Pages.
+# This may be desired if you only wish to publish a Fepper subsite and not the
+# global site.
+gh_pages_src: .publish/fepper-gh-pages
+
+# If using webserved_dirs and publishing to GitHub Pages, the repository name
+# must be prefixed to the src of the files in webserved_dirs. Do not include a 
+# leading or trailing slash.
+#gh_pages_prefix: github-repository-name
