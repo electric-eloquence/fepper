@@ -2,6 +2,7 @@
   'use strict';
 
   var conf = global.conf;
+  var pref = global.pref;
   var gulp = require('gulp');
 
   var utils = require('../core/lib/utils');
@@ -83,7 +84,7 @@
     if (typeof conf.gh_pages_src === 'string' && conf.gh_pages_src.trim()) {
       var p = new Promise(function (resolve, reject) {
         process.chdir(pathIn);
-        tasks.publish(conf, rootDir + '/.publish');
+        tasks.publish(rootDir + '/.publish', conf, pref);
         resolve();
       });
       p.then(function () {

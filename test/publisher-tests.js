@@ -10,8 +10,10 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
+  var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(confYml);
+  var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
+  var pref = yaml.safeLoad(prefYml);
   var testDir = rootDir + '/' + conf.test_dir;
   var ghPagesDir = testDir + '/' + conf.gh_pages_src;
   var publisher = require(rootDir + '/core/tasks/publisher');
@@ -25,7 +27,7 @@
     // Clear out gh_pages_src dir.
     fs.removeSync(ghPagesDir);
     // Run gh-pages-prefixer.js.
-    tasks.publish(conf, testDir + '/.publish', true);
+    tasks.publish(testDir + '/.publish', conf, pref, true);
 
     it('should read a valid .gh_pages_src config', function () {
       expect(conf.gh_pages_src).to.be.a('string');

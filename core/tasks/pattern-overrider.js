@@ -1,8 +1,8 @@
 /**
  * Writes browser JavaScript files for overriding Pattern Lab.
  *
- * The Mustache files in _patternlab_files do not respect variables defined in
- * data.json or conf.yml. In order to run browser JavaScripts configured with
+ * The Mustache files in Pattern Lab do not respect variables defined in
+ * conf.yml or pref.yml. In order to run browser JavaScripts configured with
  * these variables, write out the configured code to pattern-overrider.js.
  */
 (function () {

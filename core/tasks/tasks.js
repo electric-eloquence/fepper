@@ -23,8 +23,8 @@
       require('./pattern-overrider.js').main(this.workDir, this.conf);
     }
 
-    publish(conf, publishDir, test) {
-      require('./publisher.js').main(this.workDir, conf, publishDir, test);
+    publish(publishDir, conf, pref, test) {
+      require('./publisher.js').main(this.workDir, publishDir, conf, pref, test);
     }
 
     staticGenerate() {
