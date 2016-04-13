@@ -76,7 +76,7 @@ backend.
   * `fp`
 * These other utility tasks are runnable on the command line:
   * `fp data` to force compile data.json.
-  * `fp frontend-copy` to copy assets, scripts, and styles to backend.
+  * `fp frontend-copy` to copy assets, scripts, and styles to the backend.
   * `fp lint` to lint HTML, JavaScripts, and JSON.
   * `fp minify` to minify JavaScripts.
   * `fp once` to clean the public folder and do a one-off Fepper build.
