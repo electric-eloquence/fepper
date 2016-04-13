@@ -1,6 +1,6 @@
 ##Fepper
 
-#A frontend prototyper for rapid website design and development
+#A frontend prototyper for the rapid prototyping of websites
 
 * [Installation](#installation)
 * [Upgrading](#upgrading)
@@ -26,7 +26,7 @@
 * On other Unix-like OSs:
   * Permissions might need to be reworked in order to globally install NPMs.
   * It is a bad practice to run npm as root.
-  * If necessary, recursively chown the global node_modules directory with the standard user's ownership.
+  * If necessary, recursively chown the global node\_modules directory with the standard user's ownership.
 * On non-Unix-like OSs:
   * Sorry, but Fepper is not supported on non-Unix-like OSs.
 * Install Node.js and NPM (Node Package Manager).
