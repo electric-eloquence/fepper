@@ -1,8 +1,10 @@
 (function () {
   'use strict';
 
-  var cheerio = require('cheerio');
   var conf = global.conf;
+  var pref = global.pref;
+
+  var cheerio = require('cheerio');
   var fs = require('fs-extra');
   var glob = require('glob');
   var gulp = require('gulp');
@@ -110,9 +112,9 @@
 
   function subsitePublishTaskClosure(taskObj, subsite) {
     return function (cb) {
-      // Only publish subsite if gh_pages_src is not set in conf.yml.
-      if (typeof conf.gh_pages_src !== 'string' || !conf.gh_pages_src.trim()) {
-        conf.gh_pages_src = '.publish/fepper-gh-pages';
+      // Only publish subsite if gh_pages_src is not set in pref.yml.
+      if (typeof pref.gh_pages_src !== 'string' || !pref.gh_pages_src.trim()) {
+        pref.gh_pages_src = '.publish/fepper-gh-pages';
 
         var p = new Promise(function (resolve, reject) {
           process.chdir(fpDir);
