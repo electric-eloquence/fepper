@@ -35,7 +35,7 @@
 
   // You can only publish one site at a time. If the contrib:publish task is to 
   // be enabled, the core fepper:publish task should be disabled by unsetting 
-  // the gh_pages_src setting in conf.yml.
+  // the gh_pages_src setting in pref.yml.
   gulp.task('contrib:publish', [
 // Uncomment if you wish to enable this.
 //    'multisite:publish:subsite1'
