@@ -26,7 +26,7 @@
 
   // You can only publish one site at a time. If the custom:publish task is to 
   // be enabled, the core fepper:publish task should be disabled by unsetting 
-  // the gh_pages_src setting in conf.yml.
+  // the gh_pages_src setting in pref.yml.
   gulp.task('custom:publish', [
   ]);
 
