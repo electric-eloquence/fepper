@@ -1,5 +1,5 @@
 /* 
- * patternlab-node - v1.2.1 - 2016 
+ * patternlab-node - v1.2.2 - 2016 
  * 
  * Brian Muenzenmeyer, and the web community.
  * Licensed under the MIT license. 
@@ -210,27 +210,27 @@ var patternlab_engine = function (config) {
     //find mediaQueries
     media_hunter.find_media_queries('./source/css', patternlab);
 
-    // check if patterns are excluded, if not add them to styleguidePatterns
-    if (styleGuideExcludes && styleGuideExcludes.length) {
-      for (i = 0; i < patternlab.patterns.length; i++) {
+    for (i = 0; i < patternlab.patterns.length; i++) {
 
-        // skip underscore-prefixed files
-        if (isPatternExcluded(patternlab.patterns[i])) {
-          if (patternlab.config.debug) {
-            console.log('Omitting ' + patternlab.patterns[i].key + " from styleguide pattern exclusion.");
-          }
-          continue;
+      // skip underscore-prefixed files
+      if (isPatternExcluded(patternlab.patterns[i])) {
+        if (patternlab.config.debug) {
+          console.log('Omitting ' + patternlab.patterns[i].key + " from styleguide pattern exclusion.");
         }
+        continue;
+      }
 
+      // check if patterns are excluded, if not add them to styleguidePatterns
+      var isExcluded = false;
+      if (styleGuideExcludes && styleGuideExcludes.length) {
         var key = patternlab.patterns[i].key;
         var typeKey = key.substring(0, key.indexOf('-'));
-        var isExcluded = (styleGuideExcludes.indexOf(typeKey) > -1);
-        if (!isExcluded) {
-          styleguidePatterns.push(patternlab.patterns[i]);
-        }
+        isExcluded = (styleGuideExcludes.indexOf(typeKey) > -1);
       }
-    } else {
-      styleguidePatterns = patternlab.patterns;
+
+      if (!isExcluded) {
+        styleguidePatterns.push(patternlab.patterns[i]);
+      }
     }
 
     //get the main page head and foot
