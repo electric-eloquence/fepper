@@ -171,7 +171,7 @@
     }
 
     // Run once on the command line to install.
-    gulp.task('multisite:install', ['multisite:data']);
+    gulp.task('multisite:install', ['multisite:data', 'multisite:build']);
 
     // Run once on the command line to uninstall.
     // Be sure to remove all references to multisite in contrib.js.
