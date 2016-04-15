@@ -1,5 +1,8 @@
 #Fepper Changelog
 
+##v0.2.4
+* Updating multisite Pattern Lab
+
 ##v0.2.3
 * Fixing multisite install
 
