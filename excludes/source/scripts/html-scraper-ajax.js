@@ -30,10 +30,10 @@
     for (i = 0; i < queries.length; i++) {
       param = queries[i].split('=');
       key = decodeURIComponent(param[0].replace(/\+/g, ' '));
-      if (typeof param[1] === 'string') {
+      if (key === 'success' && typeof param[1] === 'string') {
         value = decodeURIComponent(param[1].replace(/\+/g, ' '));
         msgType = key[0].toUpperCase() + key.substring(1);
-        msg += msgType + '!: ' + value + '\\n';
+        msg += msgType + '! ' + value + '\\n';
       }
     }
 
