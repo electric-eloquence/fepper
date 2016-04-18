@@ -12,6 +12,7 @@
     output += htmlObj.scraperTitle;
     output += htmlObj.landingBody;
     output += '</section>';
+    output = output.replace('{{ attributes }}', ' target="_blank"');
     output = output.replace('{{ url }}', url);
     output = output.replace('{{ target }}', target);
     res.end(output);
