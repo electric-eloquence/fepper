@@ -1,5 +1,11 @@
 #Fepper Changelog
 
+##v0.3.0
+* Replacing abandoned gulp-livereload with supported gulp-refresh
+* Scraper refinements
+* Better scraper success msg
+* templates\_dir override and unit tests
+
 ##v0.2.4
 * Updating multisite Pattern Lab
 
