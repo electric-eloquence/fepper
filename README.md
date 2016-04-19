@@ -171,6 +171,7 @@ Follow these rules for setting up keys and values:
 Run `fp syncback` or `fp template` to execute the Templater. 
 
 * Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
+* The default `templates_dir` and `templates_ext` settings in `pref.yml` can be overridden by similarly named settings in the template-specific YAML files. 
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in the `_nosync` directory. 
 * The Templater will recurse through nested Mustache templates if the tags are written in the verbose syntax and have the `.mustache` extension, i.e. `{{> 02-organisms/00-global/00-header.mustache }}`. 
 * However, the more common inclusion use-case is to leave off the extension, and not recurse. 
