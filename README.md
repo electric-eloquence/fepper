@@ -1,6 +1,6 @@
 ##Fepper
 
-#A frontend prototyper for the rapid prototyping of websites
+#A Front End Prototyper for the rapid prototyping of websites
 
 * [Installation](#installation)
 * [Upgrading](#upgrading)
