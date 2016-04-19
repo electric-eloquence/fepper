@@ -10,22 +10,22 @@
       return;
     }
 
-    plugins.livereload.listen({port: conf.livereload_port});
+    plugins.refresh.listen({port: conf.livereload_port});
   });
 
   gulp.task('tcp-ip-reload:assetsScripts', function () {
     return gulp.src(conf.pub + '/!(styles|patterns|styleguide)/**')
-      .pipe(plugins.livereload());
+      .pipe(plugins.refresh());
   });
 
   gulp.task('tcp-ip-reload:index', function () {
     return gulp.src(conf.pub + '/index.html')
-      .pipe(plugins.livereload());
+      .pipe(plugins.refresh());
   });
 
   gulp.task('tcp-ip-reload:injectStyles', function () {
     return gulp.src(conf.pub + '/**/*.css')
-      .pipe(plugins.livereload());
+      .pipe(plugins.refresh());
   });
 
   gulp.task('tcp-ip-reload:watch', function () {

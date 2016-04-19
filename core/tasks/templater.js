@@ -92,22 +92,6 @@
     return dest;
   };
 
-  exports.tokensLoad = function (ymlFile, conf) {
-    var tokens;
-    var yml = '';
-
-    try {
-      yml = fs.readFileSync(ymlFile, conf.enc);
-      tokens = yaml.safeLoad(yml);
-    }
-    catch (err) {
-      // Fail gracefully.
-      tokens = {};
-    }
-
-    return tokens;
-  };
-
   exports.tokensReplace = function (tokens, code, conf, pref) {
     var i;
     var re;
@@ -134,8 +118,9 @@
     return code;
   };
 
-  exports.main = function (workDir, conf, destDir, pref, ext) {
+  exports.main = function (workDir, conf, pref, ext) {
     var code;
+    var data = null;
     var dest;
     var files;
     var i;
@@ -144,28 +129,29 @@
     var stats;
     var templatesDir;
     var templatesExt;
-    var tokens;
+    var yml;
     var ymlFile = '';
 
     try {
-      templatesDir = destDir ? destDir : pref.backend.synced_dirs.templates_dir;
       // Only proceed if templatesDir is a string.
-      if (typeof templatesDir !== 'string') {
+      if (typeof pref.backend.synced_dirs.templates_dir !== 'string') {
         return;
       }
+
       // Only proceed if templatesDir is an existing directory.
-      templatesDir = utils.rootDir() + '/backend/' + templatesDir;
+      templatesDir = workDir + '/backend/' + pref.backend.synced_dirs.templates_dir;
       stats = fs.statSync(templatesDir);
       if (!stats.isDirectory()) {
         return;
       }
 
-      templatesExt = ext ? ext : pref.backend.synced_dirs.templates_ext;
       // Only proceed if templates_ext is a string.
-      if (typeof templatesExt !== 'string') {
+      if (typeof pref.backend.synced_dirs.templates_ext !== 'string') {
         return;
       }
+
       // Only proceed if templatesExt is set correctly.
+      templatesExt = pref.backend.synced_dirs.templates_ext;
       if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
         return;
       }
@@ -186,12 +172,32 @@
           ymlFile = '';
         }
 
+        if (ymlFile) {
+          try {
+            yml = fs.readFileSync(ymlFile, conf.enc);
+            data = yaml.safeLoad(yml);
+
+            if (typeof data.templates_dir === 'string') {
+              templatesDir = workDir + '/backend/' + data.templates_dir.trim();
+              // Unset templates_dir in local YAML data.
+              delete data.templates_dir;
+            }
+            if (typeof data.templates_ext === 'string') {
+              templatesExt = data.templates_ext.trim();
+              // Unset templates_dir in local YAML data.
+              delete data.templates_ext;
+            }
+          }
+          catch (err) {
+            // Fail gracefully.
+            data = null;
+          }
+        }
+
         // Recurse through Mustache templates (sparingly. See comment above)
         code = exports.mustacheRecurse(files[i], conf, patternDir);
-        // Load tokens from YAML file.
-        tokens = exports.tokensLoad(ymlFile, conf);
         // Iterate through tokens and replace keys for values in the code.
-        code = exports.tokensReplace(tokens, code, conf, pref);
+        code = exports.tokensReplace(data, code, conf, pref);
         // Write compiled templates.
         dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
 
