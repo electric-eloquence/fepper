@@ -354,6 +354,7 @@
           output += htmlObj.foot;
           output = output.replace('{{ title }}', 'Fepper HTML Scraper');
           output = output.replace('{{ class }}', 'scraper');
+          output = output.replace('{{ attributes }}', '');
           output = output.replace('{{ url }}', req.body.url);
           output = output.replace('{{ target }}', req.body.target);
           res.end(output);
