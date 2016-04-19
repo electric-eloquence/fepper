@@ -49,7 +49,7 @@
       <h1>Fepper HTML Scraper</h1>`;
 
   exports.landingBody = `
-      <form action="/html-scraper" method="post" target="_blank">
+      <form action="/html-scraper" method="post"{{ attributes }}>
         <div>
           <label for="url">Enter URL:</label>
           <input name="url" type="text" value="{{ url }}" style="width: 100%;" />
@@ -105,9 +105,9 @@
 
   exports.success = `
       <h1 style="color: green;">Installation successful!</h1>
-      <p>To start Fepping, just click here: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></p>
-      <p>To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.</p>
-      <p>The following documentation is also available in README.md on the command line:</p>`;
+      <p>To open the UI, click here: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></p>
+      <p>To halt Fepper, go to the command prompt where Fepper is running and press Ctrl+c.</p>
+      <p>The following documentation is also available in Fepper's README.md:</p>`;
 
   exports.foot = `
     </main>
