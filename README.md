@@ -1,13 +1,13 @@
-##Fepper##
+##Fepper
 
-#A frontend prototyper for the rapid prototyping of websites#
+#A frontend prototyper for the rapid prototyping of websites
 
-###Child projects###
+###Child projects
 * [Fepper Minimal](https://github.com/electric-eloquence/fepper-minimal) - no unnecessary assets, styles, or Pattern Lab demo.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - templates configured for Drupal 8, along with a Drupal theme built to accept those templates.
 * [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) - templates configured for WordPress, along with a WordPress theme built to accept those templates.
 
-###Table of contents###
+###Table of contents
 * [Installation](#installation)
 * [Upgrading](#upgrading)
 * [Configuration](#configuration)
@@ -25,7 +25,7 @@
 * [More Documentation](#more-documentation)
 * [Contributing](#contributing)
 
-###<a id="installation"></a>Installation###
+###<a id="installation"></a>Installation
 
 * On Mac OS X:
   * Install [Homebrew](http://brew.sh).
@@ -56,7 +56,7 @@
   * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).  
 * To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
 
-###<a id="upgrading"></a>Upgrading###
+###<a id="upgrading"></a>Upgrading
 Upgrading Fepper _should_ be as simple as dropping the new package over old. 
 However, it's a bit more complicated in that "dot"-prefixed hidden files at the 
 root level must _not_ be written over. These are important configuration files 
@@ -66,14 +66,14 @@ changes to core, but then, any custom edits to `package.json` must be re-added.
 After the new version's files are copied over and `package.json` refitted, the 
 upgrade will be complete. Future versions of Fepper will automate this process.
 
-###<a id="configuration"></a>Configuration###
+###<a id="configuration"></a>Configuration
 
 Edit `pref.yml` to customize preferences and to view further documentation in 
 the comments. If you wish to use the `syncback`, `frontend-copy`, or `template` 
 tasks, you must supply values for the `backend.synced_dirs` preferences in order 
 for those directories to get processed and copied to the backend.
 
-###<a id="utilization"></a>Utilization###
+###<a id="utilization"></a>Utilization
 
 * To launch from Mac OS X Finder:
   * Double-click `fepper.command`
@@ -91,12 +91,12 @@ for those directories to get processed and copied to the backend.
   * `fp template` translates templates for the backend and copies them there.
 * If using Git for version control, directories named "ignore" will be ignored.
 
-###<a id="global-data"></a>Global Data###
+###<a id="global-data"></a>Global Data
 Edit `patternlab-node/source/_data/_data.json` to globally populate Mustache 
 templates with data. Manual edits to `patternlab-node/source/_data/data.json` 
 will get overwritten on compilation.
 
-###<a id="partial-data"></a>Partial Data###
+###<a id="partial-data"></a>Partial Data
 Underscore-prefixed .json files within 
 `patternlab-node/source/_patterns` will be concatenated to the output of 
 `_data.json`, the whole in turn getting compiled into `data.json`, the final 
@@ -113,7 +113,7 @@ will be picked up by all patterns.
 * __DO PUT GLOBAL DATA IN patternlab-node/source/\_data/\_data.json__
 * __DO LIBERALLY USE PARTIAL DATA IN patternlab-node/source/\_patterns FOR ORGANIZATIONAL SANITY__
 
-###<a id="static-site-generation"></a>Static Site Generation###
+###<a id="static-site-generation"></a>Static Site Generation
 Running `fp static` will generate a complete static site based on the files 
 in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
 [http://localhost:3000/static/](http://localhost:3000/static/). An `index.html` 
@@ -124,7 +124,7 @@ the Pattern Lab UI, they will work correctly in the static site even if the
 pages in the `patterns` directory must start with `../04-pages-` and not 
 `../../patterns/04-pages-`.
 
-###<a id="the-backend"></a>The Backend###
+###<a id="the-backend"></a>The Backend
 Fepper can almost as easily work with a CMS backend such as Drupal or WordPress, 
 while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
 even just a symbolic link to the codebase into the `backend` directory. Then, 
@@ -133,7 +133,7 @@ enter the relative paths to the appropriate backend directories into `pref.yml`.
 `fp syncback`, `fp frontend-copy`, or `fp template` to export your frontend data 
 into your backend web application.
 
-###<a id="webserved-directories"></a>Webserved Directories###
+###<a id="webserved-directories"></a>Webserved Directories
 When using a backend, assets generally need to be shared with the Fepper 
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a task to copy in the 
@@ -148,7 +148,7 @@ SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE
 INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 ```
 
-###<a id="github-pages"></a>GitHub Pages###
+###<a id="github-pages"></a>GitHub Pages
 If you have checked your Fepper instance into a repository in your GitHub 
 account, you may run `fp publish` to publish `patternlab-node/public` to GitHub 
 Pages. The Pattern Lab UI and Fepper static files will then be viewable from the 
@@ -157,7 +157,7 @@ However, if you are using `webserved_dirs`, you will need to supply a
 `gh_pages_prefix` preference in `pref.yml`. This preference needs to be set to 
 the name of your GitHub repository.
 
-###<a id="templater"></a>Templater###
+###<a id="templater"></a>Templater
 Pattern Lab's Mustache templates can be translated into templates compatible 
 with your backend. Mustache tags just need to be replaced with tags the backend 
 can use. Put these translations into YAML files named similarly to the Mustache 
@@ -186,7 +186,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
 [Fepper for WordPress](https://github.com/electric-eloquence/fepper-wordpress) 
 have working examples of templates compatible with the Templater.
 
-###<a id="mustache-browser"></a>Mustache Browser###
+###<a id="mustache-browser"></a>Mustache Browser
 Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
 in the upper right, then clicking Code, and then clicking the Mustache tab in 
 the bottom pane. The Mustache tags are hot-linked, and if they are written in 
@@ -198,7 +198,7 @@ Mustache tags must be coded in the verbose-pathed manner:
 The path must be correct; however, the `.mustache` extension is optional. The 
 default homepage is a working example.
 
-###<a id="html-scraper"></a>HTML Scraper###
+###<a id="html-scraper"></a>HTML Scraper
 Fepper can scrape and import Mustache templates and JSON data files from actual 
 web pages. A common use-case is to scrape pages from a backend populated with 
 CMS content in order to auto-generate data, and to replicate the HTML structure. 
@@ -219,7 +219,7 @@ correctly indent the Mustache code. However, the JSON parsing requires a
 conversion from HTML to XHTML, so don't expect an exact copy of the HTML 
 structure of the source HTML.
 
-###<a id="variables.styl"></a>variables.styl###
+###<a id="variables.styl"></a>variables.styl
 `patternlab-node/source/scripts/src/variables.styl` is a file containing 
 variables that can be shared across the Stylus CSS preprocessor, browser 
 JavaScripts, and PHP backends (and possibly other language backends as well). It 
@@ -246,13 +246,13 @@ in the terse, Python-like, indentation-based syntax; however, the more verbose,
 CSS-like syntax (with curly braces, colons, and semi-colons) is perfectly valid 
 as well.
 
-###<a id="more-documentation"></a>More Documentation###
+###<a id="more-documentation"></a>More Documentation
 
 * [default.pref.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.pref.yml)
 * [Pattern Lab](http://patternlab.io/docs/index.html)
 * [Mustache](https://mustache.github.io/mustache.5.html)
 
-###<a id="contributing"></a>Contributing###
+###<a id="contributing"></a>Contributing
 
 Contributions and bug fixes are greatly appreciated!
 
