@@ -66,6 +66,12 @@ changes to core, but then, any custom edits to `package.json` must be re-added.
 After the new version's files are copied over and `package.json` refitted, the 
 upgrade will be complete. Future versions of Fepper will automate this process.
 
+All upgrades must use the code from the parent project at 
+[https://github.com/electric-eloquence/fepper](https://github.com/electric-eloquence/fepper) 
+even if the original installation was from a child project. Copying over the 
+code from a child project will overwrite custom code specific to your instance 
+so don't do it.
+
 ###<a id="configuration"></a>Configuration
 
 Edit `pref.yml` to customize preferences and to view further documentation in 
