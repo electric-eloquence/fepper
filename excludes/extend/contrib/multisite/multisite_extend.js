@@ -1032,7 +1032,7 @@
 
       for (var i = 0; i < subsites.length; i++) {
         allsitesReloadTask = gulp.src(multisiteDir + '/' + subsites[i].name + '/' + conf.pub + '/!(styles|patterns|styleguide)/**')
-          .pipe(plugins.livereload());
+          .pipe(plugins.refresh());
         merged.add(allsitesReloadTask);
       }
 
@@ -1045,7 +1045,7 @@
 
       for (var i = 0; i < subsites.length; i++) {
         allsitesReloadTask = gulp.src(multisiteDir + '/' + subsites[i].name + '/' + conf.pub + '/index.html')
-          .pipe(plugins.livereload());
+          .pipe(plugins.refresh());
         merged.add(allsitesReloadTask);
       }
 
@@ -1058,7 +1058,7 @@
 
       for (var i = 0; i < subsites.length; i++) {
         allsitesReloadTask = gulp.src(multisiteDir + '/' + subsites[i].name + '/' + conf.pub + '/**/*.css')
-          .pipe(plugins.livereload());
+          .pipe(plugins.refresh());
         merged.add(allsitesReloadTask);
       }
 
