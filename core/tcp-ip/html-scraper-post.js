@@ -13,6 +13,9 @@
   var utils = require('../lib/utils');
   var xmlSerializer = new xmldom.XMLSerializer();
 
+  var html2json = require('html2json').html2json;
+  var json2html = require('html2json').json2html;
+
   /**
    * @param {string} str - The text requiring sane newlines.
    * @return {string} A line feed at the end and stripped of carriage returns.
@@ -163,6 +166,88 @@
     return jsonObj;
   };
 
+  exports.jsonRecurse2 = function (jsonObj, dataArr, recursionInc, index, prevIndex) {
+    var childObj;
+    var obj;
+    var underscored;
+
+    if (
+      jsonObj.child &&
+      jsonObj.child[0] &&
+      jsonObj.child[0].node === 'text'
+    ) {
+
+      if (jsonObj.attr instanceof Object) {
+        if (typeof jsonObj.attr.class === 'string') {
+          underscored = jsonObj.attr.class;
+        }
+        else if (typeof jsonObj.attr.id === 'string') {
+          underscored = jsonObj.attr.id;
+        }
+        underscored = underscored.replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
+        obj = {};
+        obj[underscored] = jsonObj.child[0].text;
+        dataArr.push(obj);
+      }
+
+          recursionInc++;
+          exports.jsonRecurse2(childObj, dataArr, recursionInc, childObj.tag, index);
+        }
+      }
+/*
+      else if (i === 'text') {
+        for (var j in jsonObj) {
+          if (!jsonObj.hasOwnProperty(j)) {
+            continue;
+          }
+
+          else if (j !== '$') {
+            continue;
+          }
+
+          underscored = '';
+          for (var k in jsonObj[j]) {
+            if (!jsonObj[j].hasOwnProperty(k)) {
+              continue;
+            }
+
+            else if (k === 'class') {
+              underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
+              obj = {};
+              obj[underscored] = jsonObj[i];
+              dataArr.push(obj);
+              break;
+            }
+
+            else if (k === 'id') {
+              underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
+              obj = {};
+              obj[underscored] = jsonObj[i];
+              dataArr.push(obj);
+              // Don't break because we would prefer to use classes.
+            }
+          }
+        }
+
+        if (underscored === '') {
+          if (typeof index !== 'undefined' && typeof prevIndex !== 'undefined') {
+            underscored = prevIndex + '_' + recursionInc;
+            obj = {};
+            obj[underscored] = jsonObj[i];
+            dataArr.push(obj);
+            jsonObj[i] = '{{ ' + underscored + ' }}';
+          }
+        }
+
+        else {
+          jsonObj[i] = '{{ ' + underscored + ' }}';
+        }
+      }
+*/
+    }
+    return jsonObj;
+  };
+
   /**
    * @param {object} jsonForXhtml - JSON for conversion to Mustache syntax.
    * @return {string} XHTML.
@@ -260,6 +345,11 @@
 
     return {json: jsonForXhtml, array: dataArr};
   };
+
+  exports.htmlToJsonAndArray = function (targetHtml) {
+    var jsonForHtml = html2json(targetHtml);
+    return {json: jsonForHtml};
+  }
 
   exports.main = function (req, res) {
     var $;

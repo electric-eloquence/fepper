@@ -21,6 +21,9 @@
 
   var xhtml = htmlScraperPost.htmlToXhtml(html);
   var dataObj = htmlScraperPost.xhtmlToJsonAndArray(xhtml);
+  var dataObj2 = htmlScraperPost.htmlToJsonAndArray(html);
+var util = require('util');
+console.log(util.inspect(dataObj, true, null));
   var jsonForData = htmlScraperPost.dataArrayToJson(dataObj.array);
 
   describe('HTML Scraper Post', function () {
