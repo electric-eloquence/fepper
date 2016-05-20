@@ -34,7 +34,6 @@
   var testDir = rootDir + '/' + conf.test_dir;
   var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
 
-  var xhtml = htmlScraperPost.htmlToXhtml(html);
   var dataObj = htmlScraperPost.htmlToJsonAndArray(html);
   var dataObj2 = htmlScraperPost.htmlToJsonAndArray(html);
   var jsonForData = htmlScraperPost.dataArrayToJson(dataObj.array);

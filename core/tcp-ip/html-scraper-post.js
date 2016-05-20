@@ -5,14 +5,9 @@
   var fs = require('fs');
   var tidy = require('htmltidy2').tidy;
   var request = require('request');
-  var xml2js = require('xml2js');
-  var xmldom = require('xmldom');
 
-  var builder = new xml2js.Builder();
-  var domParser = new xmldom.DOMParser();
   var htmlObj = require('../lib/html');
   var utils = require('../lib/utils');
-  var xmlSerializer = new xmldom.XMLSerializer();
 
   var html2json = require('html2json').html2json;
   var json2html = require('html2json').json2html;
@@ -78,19 +73,6 @@
     html = html.replace(/<\/textarea(.*?)>/g, '</figure$1>');
 
     return html;
-  };
-
-  /**
-   * Convert HTML to XHTML for conversion to full JSON data object.
-   *
-   * @param {string} targetHtml - XHTML.
-   * @return {string} XHTML.
-   */
-  exports.htmlToXhtml = function (targetHtml) {
-    var targetParsed = domParser.parseFromString(targetHtml, 'text/html');
-    var targetXhtml = xmlSerializer.serializeToString(targetParsed);
-
-    return targetXhtml;
   };
 
   /**
@@ -334,31 +316,6 @@
     }
 
     return targetSplit;
-  };
-
-  /**
-   * Get JSON and array from XHTML.
-   *
-   * @param {string} targetXhtml - Well formed XHTML.
-   * @return {object} Prop 1: json, Prop2: array.
-   */
-  exports.xhtmlToJsonAndArray = function (targetXhtml) {
-    var dataArr;
-    var jsonForXhtml;
-
-    // Convert to JSON.
-    xml2js.parseString(targetXhtml, function (err, res) {
-      if (err) {
-        utils.error(err);
-        return {};
-      }
-
-      // jsonRecurse builds dataArr.
-      dataArr = [];
-      jsonForXhtml = exports.jsonRecurse(res, dataArr);
-    });
-
-    return {json: jsonForXhtml, array: dataArr};
   };
 
   exports.htmlToJsonAndArray = function (targetHtml) {
