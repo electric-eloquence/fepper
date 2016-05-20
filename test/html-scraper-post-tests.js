@@ -10,7 +10,22 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
-  var html = '<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><script></script><textarea></textarea></body></html>';
+  var html = `
+<html>
+<body>
+<section id="one" class="test">Foo</section>
+<section id="two" class="test">Bar</section>
+<section class="test">Foot</section>
+<section class="test">Barf</section>
+<section class="test">Bazm</section>
+<section>Fooz</section>
+<section>Barz</section>
+<section>Bazz</section>
+<script></script>
+<textarea></textarea>
+</body>
+</html>
+`;
   var $ = cheerio.load(html);
   var htmlScraperPost = require(rootDir + '/core/tcp-ip/html-scraper-post');
   var req = {body: {target: '', url: ''}};
@@ -20,10 +35,8 @@
   var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
 
   var xhtml = htmlScraperPost.htmlToXhtml(html);
-  var dataObj = htmlScraperPost.xhtmlToJsonAndArray(xhtml);
+  var dataObj = htmlScraperPost.htmlToJsonAndArray(html);
   var dataObj2 = htmlScraperPost.htmlToJsonAndArray(html);
-var util = require('util');
-console.log(util.inspect(dataObj, true, null));
   var jsonForData = htmlScraperPost.dataArrayToJson(dataObj.array);
 
   describe('HTML Scraper Post', function () {
@@ -82,7 +95,12 @@ console.log(util.inspect(dataObj, true, null));
         var $targetEl = $('.test');
         var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
 
-        expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n<section id="two" class="test">Bar</section>\n');
+        expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
+<section id="two" class="test">Bar</section>
+<section class="test">Foot</section>
+<section class="test">Barf</section>
+<section class="test">Bazm</section>
+`);
         expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
       });
 
@@ -106,7 +124,15 @@ console.log(util.inspect(dataObj, true, null));
         var $targetEl = $('section');
         var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
 
-        expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n<section id="two" class="test">Bar</section>\n');
+        expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
+<section id="two" class="test">Bar</section>
+<section class="test">Foot</section>
+<section class="test">Barf</section>
+<section class="test">Bazm</section>
+<section>Fooz</section>
+<section>Barz</section>
+<section>Bazz</section>
+`);
         expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
       });
 
@@ -123,7 +149,22 @@ console.log(util.inspect(dataObj, true, null));
       var htmlSan = htmlScraperPost.htmlSanitize(html);
 
       it('should replace script tags with code tags', function () {
-        expect(htmlSan).to.equal('<html><body><section id="one" class="test">Foo</section><section id="two" class="test">Bar</section><code></code><figure></figure></body></html>');
+        expect(htmlSan).to.equal(`
+<html>
+<body>
+<section id="one" class="test">Foo</section>
+<section id="two" class="test">Bar</section>
+<section class="test">Foot</section>
+<section class="test">Barf</section>
+<section class="test">Bazm</section>
+<section>Fooz</section>
+<section>Barz</section>
+<section>Bazz</section>
+<code></code>
+<figure></figure>
+</body>
+</html>
+`);
         expect(html).to.contain('script');
         expect(html).to.not.contain('code');
         expect(htmlSan).to.not.contain('script');
@@ -161,11 +202,41 @@ console.log(util.inspect(dataObj, true, null));
     });
 
     describe('JSON to Mustache Converter', function () {
-      var xhtml = htmlScraperPost.jsonToMustache(dataObj.json);
-
-      it('should return XHTML with Mustache tags', function () {
-        expect(xhtml).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}');
+      it('should return HTML with Mustache tags', function () {
+        var html;
+        var p = new Promise(function (resolve, reject) {
+          htmlScraperPost.jsonToMustache(dataObj.json, resolve);
+        });
+        return p.then(function (value) {
+          expect(value).to.equal(`<section id="one" class="test">
+  {{ one }}
+</section>
+<section id="two" class="test">
+  {{ two }}
+</section>
+<section class="test">
+  {{ test }}
+</section>
+<section class="test">
+  {{ test_1 }}
+</section>
+<section class="test">
+  {{ test_2 }}
+</section>
+<section>
+  {{ section }}
+</section>
+<section>
+  {{ section_1 }}
+</section>
+<section>
+  {{ section_2 }}
+</section>
+<textarea>
+</textarea>
+`);
       });
+     });
     });
 
     describe('File Writer', function () {
@@ -185,9 +256,9 @@ console.log(util.inspect(dataObj, true, null));
       });
 
       it('should correctly format newlines in file body', function () {
-        var xhtml = '{{# html }}\r\n  <body>\r\n    <section id="one" class="test">{{ test_5 }}</section>\r\n    <section id="two" class="test">{{ test_6 }}</section>\r\n    <script/>\r\n    <textarea/>\r\n  </body>\r\n{{/ html }}';
+        var html = '{{# html }}\r\n  <body>\r\n    <section id="one" class="test">{{ test_5 }}</section>\r\n    <section id="two" class="test">{{ test_6 }}</section>\r\n    <script/>\r\n    <textarea/>\r\n  </body>\r\n{{/ html }}';
 
-        expect(htmlScraperPost.newlineFormat(xhtml)).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n');
+        expect(htmlScraperPost.newlineFormat(html)).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n');
       });
 
       it('should write file to destination', function () {

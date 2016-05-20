@@ -3,6 +3,7 @@
 
   var cheerio = require('cheerio');
   var fs = require('fs');
+  var tidy = require('htmltidy2').tidy;
   var request = require('request');
   var xml2js = require('xml2js');
   var xmldom = require('xmldom');
@@ -166,103 +167,117 @@
     return jsonObj;
   };
 
-  exports.jsonRecurse2 = function (jsonObj, dataArr, recursionInc, index, prevIndex) {
-    var childObj;
+
+
+  exports.jsonRecurse2 = function (jsonObj, dataArr) {
     var obj;
-    var underscored;
+    var suffix;
+    var suffixInt;
+    var underscored = '';
 
     if (
       jsonObj.child &&
       jsonObj.child[0] &&
-      jsonObj.child[0].node === 'text'
+      jsonObj.child[0].node === 'text' &&
+      typeof jsonObj.child[0].text === 'string' &&
+      jsonObj.child[0].text.trim()
     ) {
 
-      if (jsonObj.attr instanceof Object) {
-        if (typeof jsonObj.attr.class === 'string') {
-          underscored = jsonObj.attr.class;
-        }
-        else if (typeof jsonObj.attr.id === 'string') {
+      if (jsonObj.attr) {
+        if (typeof jsonObj.attr.id === 'string') {
           underscored = jsonObj.attr.id;
         }
-        underscored = underscored.replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
+        else if (typeof jsonObj.attr.class === 'string') {
+          underscored = jsonObj.attr.class;
+        }
+      }
+      else if (typeof jsonObj.tag === 'string') {
+        underscored = jsonObj.tag;
+      }
+
+      if (underscored) {
+        underscored = underscored.replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '');
+        // Add incrementing suffix to dedupe items of the same class or tag.
+        for (var i = dataArr.length - 1; i >= 0; i--) {
+          // Check dataArr for similarly named items.
+          for (var j in dataArr[i]) {
+            if (dataArr[i].hasOwnProperty(j)) {
+              if (j.indexOf(underscored) === 0) {
+                // Slice off the suffix of the last match.
+                suffix = j.slice(underscored.length, j.length);
+                if (suffix) {
+                  // Increment that suffix and append to the new key.
+                  suffixInt = parseInt(suffix.slice(1), 10);
+                }
+                else {
+                  suffixInt = 0;
+                }
+                suffixInt++;
+                underscored += '_' + suffixInt;
+              }
+            }
+          }
+        }
         obj = {};
         obj[underscored] = jsonObj.child[0].text;
         dataArr.push(obj);
+        jsonObj.child[0].text = '{{ ' + underscored + ' }}';
       }
-
-          recursionInc++;
-          exports.jsonRecurse2(childObj, dataArr, recursionInc, childObj.tag, index);
-        }
-      }
-/*
-      else if (i === 'text') {
-        for (var j in jsonObj) {
-          if (!jsonObj.hasOwnProperty(j)) {
-            continue;
-          }
-
-          else if (j !== '$') {
-            continue;
-          }
-
-          underscored = '';
-          for (var k in jsonObj[j]) {
-            if (!jsonObj[j].hasOwnProperty(k)) {
-              continue;
-            }
-
-            else if (k === 'class') {
-              underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
-              obj = {};
-              obj[underscored] = jsonObj[i];
-              dataArr.push(obj);
-              break;
-            }
-
-            else if (k === 'id') {
-              underscored = jsonObj[j][k].replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '') + '_' + recursionInc;
-              obj = {};
-              obj[underscored] = jsonObj[i];
-              dataArr.push(obj);
-              // Don't break because we would prefer to use classes.
-            }
-          }
-        }
-
-        if (underscored === '') {
-          if (typeof index !== 'undefined' && typeof prevIndex !== 'undefined') {
-            underscored = prevIndex + '_' + recursionInc;
-            obj = {};
-            obj[underscored] = jsonObj[i];
-            dataArr.push(obj);
-            jsonObj[i] = '{{ ' + underscored + ' }}';
-          }
-        }
-
-        else {
-          jsonObj[i] = '{{ ' + underscored + ' }}';
-        }
-      }
-*/
     }
-    return jsonObj;
+    else if (Array.isArray(jsonObj.child)) {
+      for (var i = 0; i < jsonObj.child.length; i++) {
+        exports.jsonRecurse2(jsonObj.child[i], dataArr);
+      }
+    }
   };
+
+
 
   /**
-   * @param {object} jsonForXhtml - JSON for conversion to Mustache syntax.
+   * @param {object} jsonForHtml - JSON for conversion to Mustache syntax.
+   * @param {function} resolve - a Promise resolve function.
    * @return {string} XHTML.
    */
-  exports.jsonToMustache = function (jsonForXhtml) {
-    var xhtml = builder.buildObject(jsonForXhtml);
-    // Remove XML declaration.
-    xhtml = xhtml.replace(/<\?xml(.|\s)*?\?>/g, '');
-    // Replace html tags with Mustache tags.
-    xhtml = xhtml.replace('<html>', '{{# html }}').replace('</html>', '{{/ html }}');
-    // Clean up.
-    xhtml = xhtml.replace(/^\s*\n/g, '');
+  exports.jsonToMustache = function (jsonForHtml, resolve) {
+    // Create an array which can be passed by reference and mutated by async
+    // functions.
+    var html = json2html(jsonForHtml);
 
-    return xhtml;
+    // Clean up.
+    html = html.replace(/^\s*\n/g, '');
+    tidy(html, {indent: true, showBodyOnly: true}, function (err, htmlTidied) {
+      resolve(htmlTidied);
+    });
   };
+
+  exports.outputHtml = function (dataArr1, jsonForData, htmlObj, html) {
+    // Convert dataArr1 to JSON and stringify for output.
+    var jsonForData = exports.dataArrayToJson(dataArr1);
+    var dataStr = JSON.stringify(jsonForData, null, 2);
+    var  output = '';
+
+    output += htmlObj.head;
+    output += '<section>\n';
+    output += htmlObj.scraperTitle;
+    output += htmlObj.reviewerPrefix;
+    // HTML entities.
+    output += $('<div/>').text(targetHtml).html().replace(/\n/g, '<br>');
+    output += htmlObj.reviewerSuffix;
+    output += htmlObj.importerPrefix;
+    output += html;
+    output += htmlObj.json;
+    output += dataStr;
+    output += htmlObj.importerSuffix;
+    output += htmlObj.landingBody;
+    output += '</section>';
+    output += htmlObj.foot;
+    output = output.replace('{{ title }}', 'Fepper HTML Scraper');
+    output = output.replace('{{ class }}', 'scraper');
+    output = output.replace('{{ attributes }}', '');
+    output = output.replace('{{ url }}', req.body.url);
+    output = output.replace('{{ target }}', req.body.target);
+    res.end(output);
+  }
 
   exports.redirectWithMsg = function (res, type, msg, target, url) {
     if (res) {
@@ -340,7 +355,7 @@
 
       // jsonRecurse builds dataArr.
       dataArr = [];
-      jsonForXhtml = exports.jsonRecurse(res, dataArr, 0);
+      jsonForXhtml = exports.jsonRecurse(res, dataArr);
     });
 
     return {json: jsonForXhtml, array: dataArr};
@@ -348,7 +363,10 @@
 
   exports.htmlToJsonAndArray = function (targetHtml) {
     var jsonForHtml = html2json(targetHtml);
-    return {json: jsonForHtml};
+    var dataArr = [];
+
+    exports.jsonRecurse2(jsonForHtml, dataArr);
+    return {json: jsonForHtml, array: dataArr};
   }
 
   exports.main = function (req, res) {
@@ -359,9 +377,12 @@
     var fileHtml;
     var fileJson;
     var fileName;
+    var html = '';
     var jsonForData;
+    var jsonForHtml;
     var jsonForXhtml;
     var output;
+    var promise;
     var target;
     var targetBase;
     var $targetEl;
@@ -391,12 +412,13 @@
           targetHtml = '';
           $targetEl = $(targetBase);
 
+console.info($targetEl);
           if ($targetEl.length) {
             targetHtmlObj = exports.targetHtmlGet($targetEl, targetIndex, $);
 
             // Sanitize scraped HTML.
-            targetHtml = '<html>' + exports.htmlSanitize(targetHtmlObj.all) + '</html>';
-            targetFirst = '<html>' + exports.htmlSanitize(targetHtmlObj.first) + '</html>';
+            targetHtml = exports.htmlSanitize(targetHtmlObj.all);
+            targetFirst = exports.htmlSanitize(targetHtmlObj.first);
 
             // Convert HTML to XHTML for conversion to full JSON data object.
             targetXhtml = exports.htmlToXhtml(targetHtml);
@@ -405,49 +427,35 @@
             dataArr1 = exports.xhtmlToJsonAndArray(targetXhtml).array;
 
             // Delete html tags.
-            targetHtml = targetHtml.replace('<html>', '').replace('</html>', '');
+//            targetHtml = targetHtml.replace('<html>', '').replace('</html>', '');
 
             // Convert HTML to XHTML for Mustache template.
-            targetXhtml = exports.htmlToXhtml(targetFirst);
+//            targetXhtml = exports.htmlToXhtml(targetFirst);
 
             // Get JSON and array from XHTML.
-            dataObj = exports.xhtmlToJsonAndArray(targetXhtml);
+console.info($targetEl);
+console.info(targetHtmlObj);
+console.info(targetHtml);
+            dataObj = exports.htmlToJsonAndArray(targetHtml);
 
             // Get dataArr2 array. We can't use dataArr1 because we need it
             // untouched so we can build jsonForData.
             dataArr1 = dataObj.array;
 
             // Build XHTML with mustache tags.
-            jsonForXhtml = dataObj.json;
-            xhtml = exports.jsonToMustache(jsonForXhtml);
+            jsonForHtml = dataObj.json;
+console.info(utils.i(jsonForHtml));
+            promise = new Promise(function (resolve, reject) {
+              exports.jsonToMustache(jsonForHtml, resolve);
+            });
+            promise.then(function (value) {
+              exports.outputHtml(value);
+            });
+          }
+          else {
+            exports.outputHtml(targetHtml);
           }
 
-          // Convert dataArr1 to JSON and stringify for output.
-          jsonForData = exports.dataArrayToJson(dataArr1);
-          dataStr = JSON.stringify(jsonForData, null, 2);
-
-          output = '';
-          output += htmlObj.head;
-          output += '<section>\n';
-          output += htmlObj.scraperTitle;
-          output += htmlObj.reviewerPrefix;
-          // HTML entities.
-          output += $('<div/>').text(targetHtml).html().replace(/\n/g, '<br>');
-          output += htmlObj.reviewerSuffix;
-          output += htmlObj.importerPrefix;
-          output += xhtml;
-          output += htmlObj.json;
-          output += dataStr;
-          output += htmlObj.importerSuffix;
-          output += htmlObj.landingBody;
-          output += '</section>';
-          output += htmlObj.foot;
-          output = output.replace('{{ title }}', 'Fepper HTML Scraper');
-          output = output.replace('{{ class }}', 'scraper');
-          output = output.replace('{{ attributes }}', '');
-          output = output.replace('{{ url }}', req.body.url);
-          output = output.replace('{{ target }}', req.body.target);
-          res.end(output);
         });
       }
       catch (err) {
