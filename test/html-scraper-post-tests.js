@@ -10,8 +10,14 @@
   var enc = utils.conf().enc;
   var rootDir = utils.rootDir();
 
+  var htmlScraperPost = require(rootDir + '/core/tcp-ip/html-scraper-post');
+  var req = {body: {target: '', url: ''}};
+  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+  var conf = yaml.safeLoad(yml);
+  var testDir = rootDir + '/' + conf.test_dir;
+  var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
+
   var html = `
-<html>
 <body>
 <section id="one" class="test">Foo</section>
 <section id="two" class="test">Bar</section>
@@ -22,21 +28,15 @@
 <section>Barz</section>
 <section>Bazz</section>
 <script></script>
+<br>
+<div></div>
+<p></p>
 <textarea></textarea>
+<!-- comment -->
 </body>
-</html>
 `;
+  var jsons = htmlScraperPost.htmlToJsons(html);
   var $ = cheerio.load(html);
-  var htmlScraperPost = require(rootDir + '/core/tcp-ip/html-scraper-post');
-  var req = {body: {target: '', url: ''}};
-  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
-  var testDir = rootDir + '/' + conf.test_dir;
-  var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
-
-  var dataObj = htmlScraperPost.htmlToJsonAndArray(html);
-  var dataObj2 = htmlScraperPost.htmlToJsonAndArray(html);
-  var jsonForData = htmlScraperPost.dataArrayToJson(dataObj.array);
 
   describe('HTML Scraper Post', function () {
     describe('CSS Selector Validator', function () {
@@ -95,9 +95,13 @@
         var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
 
         expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
+<!-- BEGIN ARRAY ELEMENT 1 -->
 <section id="two" class="test">Bar</section>
+<!-- BEGIN ARRAY ELEMENT 2 -->
 <section class="test">Foot</section>
+<!-- BEGIN ARRAY ELEMENT 3 -->
 <section class="test">Barf</section>
+<!-- BEGIN ARRAY ELEMENT 4 -->
 <section class="test">Bazm</section>
 `);
         expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
@@ -124,12 +128,19 @@
         var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
 
         expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
+<!-- BEGIN ARRAY ELEMENT 1 -->
 <section id="two" class="test">Bar</section>
+<!-- BEGIN ARRAY ELEMENT 2 -->
 <section class="test">Foot</section>
+<!-- BEGIN ARRAY ELEMENT 3 -->
 <section class="test">Barf</section>
+<!-- BEGIN ARRAY ELEMENT 4 -->
 <section class="test">Bazm</section>
+<!-- BEGIN ARRAY ELEMENT 5 -->
 <section>Fooz</section>
+<!-- BEGIN ARRAY ELEMENT 6 -->
 <section>Barz</section>
+<!-- BEGIN ARRAY ELEMENT 7 -->
 <section>Bazz</section>
 `);
         expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
@@ -149,7 +160,6 @@
 
       it('should replace script tags with code tags', function () {
         expect(htmlSan).to.equal(`
-<html>
 <body>
 <section id="one" class="test">Foo</section>
 <section id="two" class="test">Bar</section>
@@ -160,9 +170,12 @@
 <section>Barz</section>
 <section>Bazz</section>
 <code></code>
+<br>
+<div></div>
+<p></p>
 <figure></figure>
+<!-- comment -->
 </body>
-</html>
 `);
         expect(html).to.contain('script');
         expect(html).to.not.contain('code');
@@ -180,62 +193,84 @@
 
     describe('HTML Converter', function () {
       it('should return a JSON object', function () {
-        expect(dataObj.json).to.be.an('object');
-        expect(dataObj.json).to.not.be.empty;
+        expect(jsons.jsonForHtml).to.be.an('object');
+        expect(jsons.jsonForHtml).to.not.be.empty;
       });
 
       it('should return an array', function () {
-        expect(dataObj.array).to.be.an('array');
-        expect(dataObj.array).to.not.be.empty;
+        expect(jsons.jsonForData).to.be.an('object');
+        expect(jsons.jsonForData).to.not.be.empty;
       });
     });
 
     describe('Array to JSON Converter', function () {
-      it('should return a JSON object', function () {
+      it('should return a JSON object of data pulled from non-empty elements', function () {
+        expect(jsons.jsonForData).to.be.an('object');
+        expect(jsons.jsonForData.html[0].test).to.equal('Foo');
+        expect(jsons.jsonForData.html[0].test_1).to.equal('Bar');
+        expect(jsons.jsonForData.html[0].test_2).to.equal('Foot');
+        expect(jsons.jsonForData.html[0].test_3).to.equal('Barf');
+        expect(jsons.jsonForData.html[0].test_4).to.equal('Bazm');
+        expect(jsons.jsonForData.html[0].section).to.equal('Fooz');
+        expect(jsons.jsonForData.html[0].section_1).to.equal('Barz');
+        expect(jsons.jsonForData.html[0].section_2).to.equal('Bazz');
+        expect(jsons.jsonForData.html[0].body).to.equal(undefined);
+        expect(jsons.jsonForData.html[0].script).to.equal(undefined);
+        expect(jsons.jsonForData.html[0].br).to.equal(undefined);
+        expect(jsons.jsonForData.html[0].div).to.equal(undefined);
+        expect(jsons.jsonForData.html[0].p).to.equal(undefined);
+        expect(jsons.jsonForData.html[0].textarea).to.equal(undefined);
+      });
+
+      it('should create multiple array elements when the selector targets multiple DOM elements', function () {
+        var html = `
+<section id="one" class="test">Foo</section>
+<section id="two" class="test">Bar</section>
+<section class="test">Foot</section>
+<section class="test">Barf</section>
+<section class="test">Bazm</section>
+`;
+        var $ = cheerio.load(html);
+        var $targetEl = $('.test');
+        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+        var targetHtml = htmlScraperPost.htmlSanitize(targetHtmlObj.all);
+        var jsonForData = htmlScraperPost.htmlToJsons(targetHtml).jsonForData;
+
         expect(jsonForData).to.be.an('object');
-        expect(jsonForData.html[0].one_5).to.equal('Foo');
-        expect(jsonForData.html[0].test_5).to.equal('Foo');
-        expect(jsonForData.html[0].two_6).to.equal('Bar');
-        expect(jsonForData.html[0].test_6).to.equal('Bar');
+        expect(jsonForData.html[0].test).to.equal('Foo');
+        expect(jsonForData.html[1].test).to.equal('Bar');
+        expect(jsonForData.html[2].test).to.equal('Foot');
+        expect(jsonForData.html[3].test).to.equal('Barf');
+        expect(jsonForData.html[4].test).to.equal('Bazm');
       });
     });
 
     describe('JSON to Mustache Converter', function () {
       it('should return HTML with Mustache tags', function () {
         var html;
-        var p = new Promise(function (resolve, reject) {
-          htmlScraperPost.jsonToMustache(dataObj.json, resolve);
-        });
-        return p.then(function (value) {
-          expect(value).to.equal(`<section id="one" class="test">
-  {{ one }}
-</section>
-<section id="two" class="test">
-  {{ two }}
-</section>
-<section class="test">
-  {{ test }}
-</section>
-<section class="test">
-  {{ test_1 }}
-</section>
-<section class="test">
-  {{ test_2 }}
-</section>
-<section>
-  {{ section }}
-</section>
-<section>
-  {{ section_1 }}
-</section>
-<section>
-  {{ section_2 }}
-</section>
-<textarea>
-</textarea>
+
+        html = htmlScraperPost.jsonToMustache(jsons.jsonForHtml);
+        expect(html).to.equal(`{{# html }}
+
+  <body>
+    <section id="one" class="test">{{ test }}</section>
+    <section id="two" class="test">{{ test_1 }}</section>
+    <section class="test">{{ test_2 }}</section>
+    <section class="test">{{ test_3 }}</section>
+    <section class="test">{{ test_4 }}</section>
+    <section>{{ section }}</section>
+    <section>{{ section_1 }}</section>
+    <section>{{ section_2 }}</section>
+    <script></script>
+    <br/>
+    <div></div>
+    <p></p>
+    <textarea></textarea>
+    <!-- comment -->
+  </body>
+{{/ html }}
 `);
       });
-     });
     });
 
     describe('File Writer', function () {
@@ -262,7 +297,7 @@
 
       it('should write file to destination', function () {
         var fileHtml = '{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n';
-        var fileJson = htmlScraperPost.newlineFormat(JSON.stringify(jsonForData, null, 2));
+        var fileJson = htmlScraperPost.newlineFormat(JSON.stringify(jsons.jsonForData, null, 2));
         var fileName = '0-test.1_2';
         var fileFullPath = scrapeDir + '/' + fileName;
 

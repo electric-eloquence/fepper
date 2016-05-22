@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  exports.head = `
+  exports.headSrc = `
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,31 +19,18 @@
     <meta http-equiv="expires" content="0">
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT">
     <meta http-equiv="pragma" content="no-cache">
-
-    <link rel="stylesheet" href="/styles/style.css" media="all">
-  </head>
-
-  <body style="width: 100%;" class="text {{ class }}">
-    <main style="margin: 0 auto;padding-top: 40px;max-width: 750px;">`;
-
-  exports.headNoStyles = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title id="title">{{ title }}</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="UTF-8">
-
-    <!-- never cache -->
-    <meta http-equiv="cache-control" content="max-age=0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT">
-    <meta http-equiv="pragma" content="no-cache">
+    {{# styles }}
+      <link rel="stylesheet" href="/fepper-core/style.css" media="all">
+    {{/ styles }}
   </head>
 
   <body style="width: 100%;" class="text">
-    <main>`;
+    <main>
+      <div class="message {{ msg_class }}">{{ message }}</div>`;
+
+  exports.head = exports.headSrc.replace('{{# styles }}', '').replace('{{/ styles }}', '');
+
+  exports.headNoStyles = exports.headSrc.replace(/{{# styles }}(.|\s)*{{\/ styles }}/, '');
 
   exports.scraperTitle = `
       <h1>Fepper HTML Scraper</h1>`;
@@ -104,7 +91,7 @@
       </script>`;
 
   exports.success = `
-      <h1 style="color: green;">Installation successful!</h1>
+      <h1 class="success">Installation successful!</h1>
       <p>To open the UI, click here: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></p>
       <p>To halt Fepper, go to the command prompt where Fepper is running and press Ctrl+c.</p>
       <p>The following documentation is also available in Fepper's README.md:</p>`;

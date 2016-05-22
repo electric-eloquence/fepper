@@ -7,7 +7,7 @@
   var baseUrl = window.location.protocol + '//' + window.location.host;
   var xhr = new XMLHttpRequest();
 
-  xhr.open('GET', baseUrl + '/' + 'html-scraper-xhr', true);
+  xhr.open('GET', baseUrl + '/' + 'html-scraper-xhr' + window.location.search, true);
   xhr.onload = function () {
     var main = document.getElementsByTagName('main')[0];
     main.innerHTML = xhr.responseText;

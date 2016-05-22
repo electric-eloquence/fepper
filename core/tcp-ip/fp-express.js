@@ -54,6 +54,9 @@
     // HTML scraper and importer actions.
     app.post('/html-scraper', htmlScraperPost.main);
 
+    // Fepper static files.
+    app.use('/fepper-core', express.static(rootDir + '/core/lib/webserved'));
+
     // For everything else, document root = Pattern Lab.
     app.use(express.static(rootDir + '/patternlab-node/public'));
 
