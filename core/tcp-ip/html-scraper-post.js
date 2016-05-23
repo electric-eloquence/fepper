@@ -111,11 +111,11 @@ exports.jsonRecurse = function (jsonObj, dataObj, dataKeys, inc) {
   ) {
 
     if (jsonObj.attr) {
-      if (typeof jsonObj.attr.class === 'string') {
-        underscored = jsonObj.attr.class;
-      }
-      else if (typeof jsonObj.attr.id === 'string') {
+      if (typeof jsonObj.attr.id === 'string') {
         underscored = jsonObj.attr.id;
+      }
+      else if (typeof jsonObj.attr.class === 'string') {
+        underscored = jsonObj.attr.class;
       }
     }
     else if (typeof jsonObj.tag === 'string') {
