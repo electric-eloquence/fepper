@@ -1,15 +1,15 @@
-(function () {
-  'use strict';
+'use strict';
 
-  var htmlObj = require('../lib/html');
+var htmlObj = require('../lib/html');
 
-  exports.main = function (req, res) {
-    var output = '';
-    output += htmlObj.head;
-    output += '<script src="scripts/html-scraper-ajax.js"></script>\n';
-    output += htmlObj.foot;
-    output = output.replace('{{ title }}', 'Fepper HTML Scraper');
-    output = output.replace('{{ class }}', 'scraper');
-    res.end(output);
-  };
-})();
+exports.main = function (req, res) {
+  var output = '';
+
+  output += htmlObj.headWithMsg;
+  output += '<script src="scripts/html-scraper-ajax.js"></script>\n';
+  output += htmlObj.foot;
+  output = output.replace('{{ title }}', 'Fepper HTML Scraper');
+  output = output.replace('{{ msg_class }}', '');
+  output = output.replace('{{ message }}', '');
+  res.end(output);
+};

@@ -5,18 +5,17 @@
  * conf.yml or pref.yml. In order to run browser JavaScripts configured with
  * these variables, write out the configured code to pattern-overrider.js.
  */
-(function () {
-  'use strict';
+'use strict';
 
-  var fs = require('fs-extra');
-  var path = require('path');
+var fs = require('fs-extra');
+var path = require('path');
 
-  exports.main = function (workDir, conf) {
-    var defaultPort = 35729;
-    var dest = workDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
+exports.main = function (workDir, conf) {
+  var defaultPort = 35729;
+  var dest = workDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
 
-    // Backticked multi-line string.
-    var output = `// Mustache code browser.
+  // Backticked multi-line string.
+  var output = `// Mustache code browser.
 var pd = parent.document;
 var codeFill = pd.getElementById('sg-code-fill');
 var codeTitle = pd.getElementById('sg-code-title-mustache');
@@ -45,26 +44,25 @@ if (codeFill) {
 }
 
 `;
-    // Initialize destination file.
-    fs.mkdirsSync(path.dirname(dest));
-    fs.writeFileSync(dest, output);
+  // Initialize destination file.
+  fs.mkdirsSync(path.dirname(dest));
+  fs.writeFileSync(dest, output);
 
-    // Write out the homepage redirector.
-    fs.appendFileSync(dest, output);
+  // Write out the homepage redirector.
+  fs.appendFileSync(dest, output);
 
-    // Check if LiveReload port set in conf.yml. If not, use default.
-    if (typeof conf.livereload_port !== 'number' && typeof conf.livereload_port !== 'string') {
-      conf.livereload_port = defaultPort;
-    }
-    // Backticked multi-line string.
-    output = `// LiveReload.
+  // Check if LiveReload port set in conf.yml. If not, use default.
+  if (typeof conf.livereload_port !== 'number' && typeof conf.livereload_port !== 'string') {
+    conf.livereload_port = defaultPort;
+  }
+  // Backticked multi-line string.
+  output = `// LiveReload.
 if (window.location.port === '${conf.express_port}') {
   //<![CDATA[
     document.write('<script type="text/javascript" src="http://HOST:${conf.livereload_port}/livereload.js"><\\/script>'.replace('HOST', location.hostname));
   //]]>
 }
 `;
-    // Write out the LiveReloader.
-    fs.appendFileSync(dest, output);
-  };
-})();
+  // Write out the LiveReloader.
+  fs.appendFileSync(dest, output);
+};
