@@ -91,7 +91,6 @@
       </script>`;
 
   exports.success = `
-      <h1 class="success">Installation successful!</h1>
       <p>To open the UI, click here: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></p>
       <p>To halt Fepper, go to the command prompt where Fepper is running and press Ctrl+c.</p>
       <p>The following documentation is also available in Fepper's README.md:</p>`;

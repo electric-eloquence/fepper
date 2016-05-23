@@ -74,6 +74,16 @@
     return html;
   };
 
+  exports.htmlToJsons = function (targetHtml) {
+    var jsonForHtml = html2json('<body>' + targetHtml + '</body>');
+    var dataObj = {html: [{}]};
+    var dataKeys = [[]];
+
+    exports.jsonRecurse(jsonForHtml, dataObj, dataKeys, 0);
+
+    return {jsonForHtml: jsonForHtml, jsonForData: dataObj};
+  }
+
   /**
    * @param {string} fileName - Filename.
    * @return {boolean} True or false.
@@ -149,7 +159,6 @@
       for (var i in tmpObj) {
         if (tmpObj.hasOwnProperty(i)) {
           dataObj.html[inc][i] = tmpObj[i].replace(/"/g, '\\"');
-//console.info(tmpObj[i]);
         }
       }
     }
@@ -191,6 +200,8 @@
     output += '</section>';
     output += htmlObj.foot;
     output = output.replace('{{ title }}', 'Fepper HTML Scraper');
+    output = output.replace('{{ msg_class }}', '');
+    output = output.replace('{{ message }}', '');
     output = output.replace('{{ attributes }}', '');
     output = output.replace('{{ url }}', req.body.url);
     output = output.replace('{{ target }}', req.body.target);
@@ -203,7 +214,7 @@
 
       target = typeof target === 'string' ? target : '';
       url = typeof url === 'string' ? url : '';
-      res.writeHead(303, {Location: 'html-scraper?msg_class=' + type + '&message=' + msgType + '!: ' + msg + '&target=' + target + '&url=' + url});
+      res.writeHead(303, {Location: 'html-scraper?msg_class=' + type + '&message=' + msgType + '! ' + msg + '&target=' + target + '&url=' + url});
       res.end();
     }
   };
@@ -258,16 +269,6 @@
 
     return targetSplit;
   };
-
-  exports.htmlToJsons = function (targetHtml) {
-    var jsonForHtml = html2json('<body>' + targetHtml + '</body>');
-    var dataObj = {html: [{}]};
-    var dataKeys = [[]];
-
-    exports.jsonRecurse(jsonForHtml, dataObj, dataKeys, 0);
-
-    return {jsonForHtml: jsonForHtml, jsonForData: dataObj};
-  }
 
   exports.main = function (req, res) {
     var $;

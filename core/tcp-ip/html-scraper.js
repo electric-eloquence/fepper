@@ -10,6 +10,8 @@
     output += '<script src="scripts/html-scraper-ajax.js"></script>\n';
     output += htmlObj.foot;
     output = output.replace('{{ title }}', 'Fepper HTML Scraper');
+    output = output.replace('{{ msg_class }}', '');
+    output = output.replace('{{ message }}', '');
     res.end(output);
   };
 })();
