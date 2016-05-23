@@ -193,8 +193,8 @@
 
     describe('HTML Converter', function () {
       it('should return a JSON object', function () {
-        expect(jsons.jsonForHtml).to.be.an('object');
-        expect(jsons.jsonForHtml).to.not.be.empty;
+        expect(jsons.jsonForMustache).to.be.an('object');
+        expect(jsons.jsonForMustache).to.not.be.empty;
       });
 
       it('should return an array', function () {
@@ -247,10 +247,10 @@
 
     describe('JSON to Mustache Converter', function () {
       it('should return HTML with Mustache tags', function () {
-        var html;
+        var mustache;
 
-        html = htmlScraperPost.jsonToMustache(jsons.jsonForHtml);
-        expect(html).to.equal(`{{# html }}
+        mustache = htmlScraperPost.jsonToMustache(jsons.jsonForMustache);
+        expect(mustache).to.equal(`{{# html }}
 
   <body>
     <section id="one" class="test">{{ test }}</section>
@@ -290,13 +290,13 @@
       });
 
       it('should correctly format newlines in file body', function () {
-        var html = '{{# html }}\r\n  <body>\r\n    <section id="one" class="test">{{ test_5 }}</section>\r\n    <section id="two" class="test">{{ test_6 }}</section>\r\n    <script/>\r\n    <textarea/>\r\n  </body>\r\n{{/ html }}';
+        var mustache = '{{# html }}\r\n  <body>\r\n    <section id="one" class="test">{{ test_5 }}</section>\r\n    <section id="two" class="test">{{ test_6 }}</section>\r\n    <script/>\r\n    <textarea/>\r\n  </body>\r\n{{/ html }}';
 
-        expect(htmlScraperPost.newlineFormat(html)).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n');
+        expect(htmlScraperPost.newlineFormat(mustache)).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n');
       });
 
       it('should write file to destination', function () {
-        var fileHtml = '{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n';
+        var fileMustache = '{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n';
         var fileJson = htmlScraperPost.newlineFormat(JSON.stringify(jsons.jsonForData, null, 2));
         var fileName = '0-test.1_2';
         var fileFullPath = scrapeDir + '/' + fileName;
@@ -304,7 +304,7 @@
         fs.mkdirsSync(scrapeDir);
         fs.writeFileSync(fileFullPath, '');
         var fileBefore = fs.readFileSync(fileFullPath);
-        htmlScraperPost.filesWrite(scrapeDir, fileName, fileHtml, fileJson, null);
+        htmlScraperPost.filesWrite(scrapeDir, fileName, fileMustache, fileJson, null);
         var fileAfter = fs.readFileSync(fileFullPath);
 
         expect(fileAfter).to.not.equal('');
