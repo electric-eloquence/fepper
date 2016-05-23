@@ -1,10 +1,8 @@
-(function () {
-  'use strict';
+'use strict';
 
-  var utilsFepper = require('../core/lib/utils');
+var utilsFepper = require('../core/lib/utils');
 
-  exports.handleError = function (err) {
-    utilsFepper.log(err.toString());
-    this.emit('end');
-  };
-})();
+exports.handleError = function (err) {
+  utilsFepper.log(err.toString());
+  this.emit('end');
+};

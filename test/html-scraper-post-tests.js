@@ -1,23 +1,22 @@
-(function () {
-  'use strict';
+'use strict';
 
-  var cheerio = require('cheerio');
-  var expect = require('chai').expect;
-  var fs = require('fs-extra');
-  var yaml = require('js-yaml');
+var cheerio = require('cheerio');
+var expect = require('chai').expect;
+var fs = require('fs-extra');
+var yaml = require('js-yaml');
 
-  var utils = require('../core/lib/utils');
-  var enc = utils.conf().enc;
-  var rootDir = utils.rootDir();
+var utils = require('../core/lib/utils');
+var enc = utils.conf().enc;
+var rootDir = utils.rootDir();
 
-  var htmlScraperPost = require(rootDir + '/core/tcp-ip/html-scraper-post');
-  var req = {body: {target: '', url: ''}};
-  var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-  var conf = yaml.safeLoad(yml);
-  var testDir = rootDir + '/' + conf.test_dir;
-  var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
+var htmlScraperPost = require(rootDir + '/core/tcp-ip/html-scraper-post');
+var req = {body: {target: '', url: ''}};
+var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
+var conf = yaml.safeLoad(yml);
+var testDir = rootDir + '/' + conf.test_dir;
+var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
 
-  var html = `
+var html = `
 <body>
 <section id="one" class="test">Foo</section>
 <section id="two" class="test">Bar</section>
@@ -35,66 +34,66 @@
 <!-- comment -->
 </body>
 `;
-  var jsons = htmlScraperPost.htmlToJsons(html);
-  var $ = cheerio.load(html);
+var jsons = htmlScraperPost.htmlToJsons(html);
+var $ = cheerio.load(html);
 
-  describe('HTML Scraper Post', function () {
-    describe('CSS Selector Validator', function () {
-      it('should identify the CSS class with no index', function () {
-        var selector = '.class_test-0';
-        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
+describe('HTML Scraper Post', function () {
+  describe('CSS Selector Validator', function () {
+    it('should identify the CSS class with no index', function () {
+      var selector = '.class_test-0';
+      var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
-        expect(selectorSplit[0]).to.equal('.class_test-0');
-        expect(selectorSplit[1]).to.equal('');
-      });
-
-      it('should identify the CSS class and index', function () {
-        var selector = '.class_test-0[0]';
-        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
-
-        expect(selectorSplit[0]).to.equal('.class_test-0');
-        expect(selectorSplit[1]).to.equal('0');
-      });
-
-      it('should identify the CSS id with no index', function () {
-        var selector = '#id_test-0';
-        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
-
-        expect(selectorSplit[0]).to.equal('#id_test-0');
-        expect(selectorSplit[1]).to.equal('');
-      });
-
-      it('should identify the CSS id and index', function () {
-        var selector = '#id_test-0[1]';
-        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
-
-        expect(selectorSplit[0]).to.equal('#id_test-0');
-        expect(selectorSplit[1]).to.equal('1');
-      });
-
-      it('should identify the HTML tag with no index', function () {
-        var selector = 'h1';
-        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
-
-        expect(selectorSplit[0]).to.equal('h1');
-        expect(selectorSplit[1]).to.equal('');
-      });
-
-      it('should identify the CSS id and index', function () {
-        var selector = 'h1[2]';
-        var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
-
-        expect(selectorSplit[0]).to.equal('h1');
-        expect(selectorSplit[1]).to.equal('2');
-      });
+      expect(selectorSplit[0]).to.equal('.class_test-0');
+      expect(selectorSplit[1]).to.equal('');
     });
 
-    describe('Target HTML Getter', function () {
-      it('should get all selectors of a given class if given no index', function () {
-        var $targetEl = $('.test');
-        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+    it('should identify the CSS class and index', function () {
+      var selector = '.class_test-0[0]';
+      var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
-        expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
+      expect(selectorSplit[0]).to.equal('.class_test-0');
+      expect(selectorSplit[1]).to.equal('0');
+    });
+
+    it('should identify the CSS id with no index', function () {
+      var selector = '#id_test-0';
+      var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
+
+      expect(selectorSplit[0]).to.equal('#id_test-0');
+      expect(selectorSplit[1]).to.equal('');
+    });
+
+    it('should identify the CSS id and index', function () {
+      var selector = '#id_test-0[1]';
+      var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
+
+      expect(selectorSplit[0]).to.equal('#id_test-0');
+      expect(selectorSplit[1]).to.equal('1');
+    });
+
+    it('should identify the HTML tag with no index', function () {
+      var selector = 'h1';
+      var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
+
+      expect(selectorSplit[0]).to.equal('h1');
+      expect(selectorSplit[1]).to.equal('');
+    });
+
+    it('should identify the CSS id and index', function () {
+      var selector = 'h1[2]';
+      var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
+
+      expect(selectorSplit[0]).to.equal('h1');
+      expect(selectorSplit[1]).to.equal('2');
+    });
+  });
+
+  describe('Target HTML Getter', function () {
+    it('should get all selectors of a given class if given no index', function () {
+      var $targetEl = $('.test');
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+
+      expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
 <!-- BEGIN ARRAY ELEMENT 1 -->
 <section id="two" class="test">Bar</section>
 <!-- BEGIN ARRAY ELEMENT 2 -->
@@ -104,30 +103,30 @@
 <!-- BEGIN ARRAY ELEMENT 4 -->
 <section class="test">Bazm</section>
 `);
-        expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
-      });
+      expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
+    });
 
-      it('should get one selector of a given class if given an index', function () {
-        var $targetEl = $('.test');
-        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, 1, $);
+    it('should get one selector of a given class if given an index', function () {
+      var $targetEl = $('.test');
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, 1, $);
 
-        expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
-        expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
-      });
+      expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
+      expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
+    });
 
-      it('should get one selector of a given id', function () {
-        var $targetEl = $('#one');
-        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+    it('should get one selector of a given id', function () {
+      var $targetEl = $('#one');
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
 
-        expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n');
-        expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
-      });
+      expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n');
+      expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
+    });
 
-      it('should get all selectors of a given tagname if given no index', function () {
-        var $targetEl = $('section');
-        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+    it('should get all selectors of a given tagname if given no index', function () {
+      var $targetEl = $('section');
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
 
-        expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
+      expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
 <!-- BEGIN ARRAY ELEMENT 1 -->
 <section id="two" class="test">Bar</section>
 <!-- BEGIN ARRAY ELEMENT 2 -->
@@ -143,23 +142,23 @@
 <!-- BEGIN ARRAY ELEMENT 7 -->
 <section>Bazz</section>
 `);
-        expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
-      });
-
-      it('should get one selector of a given tagname if given an index', function () {
-        var $targetEl = $('section');
-        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, 1, $);
-
-        expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
-        expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
-      });
+      expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
     });
 
-    describe('HTML Sanitizer', function () {
-      var htmlSan = htmlScraperPost.htmlSanitize(html);
+    it('should get one selector of a given tagname if given an index', function () {
+      var $targetEl = $('section');
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, 1, $);
 
-      it('should replace script tags with code tags', function () {
-        expect(htmlSan).to.equal(`
+      expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
+      expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
+    });
+  });
+
+  describe('HTML Sanitizer', function () {
+    var htmlSan = htmlScraperPost.htmlSanitize(html);
+
+    it('should replace script tags with code tags', function () {
+      expect(htmlSan).to.equal(`
 <body>
 <section id="one" class="test">Foo</section>
 <section id="two" class="test">Bar</section>
@@ -177,80 +176,80 @@
 <!-- comment -->
 </body>
 `);
-        expect(html).to.contain('script');
-        expect(html).to.not.contain('code');
-        expect(htmlSan).to.not.contain('script');
-        expect(htmlSan).to.contain('code');
-      });
-
-      it('should replace textarea tags with figure tags', function () {
-        expect(html).to.contain('textarea');
-        expect(html).to.not.contain('figure');
-        expect(htmlSan).to.not.contain('textarea');
-        expect(htmlSan).to.contain('figure');
-      });
+      expect(html).to.contain('script');
+      expect(html).to.not.contain('code');
+      expect(htmlSan).to.not.contain('script');
+      expect(htmlSan).to.contain('code');
     });
 
-    describe('HTML Converter', function () {
-      it('should return a JSON object', function () {
-        expect(jsons.jsonForMustache).to.be.an('object');
-        expect(jsons.jsonForMustache).to.not.be.empty;
-      });
+    it('should replace textarea tags with figure tags', function () {
+      expect(html).to.contain('textarea');
+      expect(html).to.not.contain('figure');
+      expect(htmlSan).to.not.contain('textarea');
+      expect(htmlSan).to.contain('figure');
+    });
+  });
 
-      it('should return an array', function () {
-        expect(jsons.jsonForData).to.be.an('object');
-        expect(jsons.jsonForData).to.not.be.empty;
-      });
+  describe('HTML Converter', function () {
+    it('should return a JSON object', function () {
+      expect(jsons.jsonForMustache).to.be.an('object');
+      expect(jsons.jsonForMustache).to.not.be.empty;
     });
 
-    describe('Array to JSON Converter', function () {
-      it('should return a JSON object of data pulled from non-empty elements', function () {
-        expect(jsons.jsonForData).to.be.an('object');
-        expect(jsons.jsonForData.html[0].test).to.equal('Foo');
-        expect(jsons.jsonForData.html[0].test_1).to.equal('Bar');
-        expect(jsons.jsonForData.html[0].test_2).to.equal('Foot');
-        expect(jsons.jsonForData.html[0].test_3).to.equal('Barf');
-        expect(jsons.jsonForData.html[0].test_4).to.equal('Bazm');
-        expect(jsons.jsonForData.html[0].section).to.equal('Fooz');
-        expect(jsons.jsonForData.html[0].section_1).to.equal('Barz');
-        expect(jsons.jsonForData.html[0].section_2).to.equal('Bazz');
-        expect(jsons.jsonForData.html[0].body).to.equal(undefined);
-        expect(jsons.jsonForData.html[0].script).to.equal(undefined);
-        expect(jsons.jsonForData.html[0].br).to.equal(undefined);
-        expect(jsons.jsonForData.html[0].div).to.equal(undefined);
-        expect(jsons.jsonForData.html[0].p).to.equal(undefined);
-        expect(jsons.jsonForData.html[0].textarea).to.equal(undefined);
-      });
+    it('should return an array', function () {
+      expect(jsons.jsonForData).to.be.an('object');
+      expect(jsons.jsonForData).to.not.be.empty;
+    });
+  });
 
-      it('should create multiple array elements when the selector targets multiple DOM elements', function () {
-        var html = `
+  describe('Array to JSON Converter', function () {
+    it('should return a JSON object of data pulled from non-empty elements', function () {
+      expect(jsons.jsonForData).to.be.an('object');
+      expect(jsons.jsonForData.html[0].test).to.equal('Foo');
+      expect(jsons.jsonForData.html[0].test_1).to.equal('Bar');
+      expect(jsons.jsonForData.html[0].test_2).to.equal('Foot');
+      expect(jsons.jsonForData.html[0].test_3).to.equal('Barf');
+      expect(jsons.jsonForData.html[0].test_4).to.equal('Bazm');
+      expect(jsons.jsonForData.html[0].section).to.equal('Fooz');
+      expect(jsons.jsonForData.html[0].section_1).to.equal('Barz');
+      expect(jsons.jsonForData.html[0].section_2).to.equal('Bazz');
+      expect(typeof jsons.jsonForData.html[0].body).to.equal('undefined');
+      expect(typeof jsons.jsonForData.html[0].script).to.equal('undefined');
+      expect(typeof jsons.jsonForData.html[0].br).to.equal('undefined');
+      expect(typeof jsons.jsonForData.html[0].div).to.equal('undefined');
+      expect(typeof jsons.jsonForData.html[0].p).to.equal('undefined');
+      expect(typeof jsons.jsonForData.html[0].textarea).to.equal('undefined');
+    });
+
+    it('should create multiple array elements when the selector targets multiple DOM elements', function () {
+      var html = `
 <section id="one" class="test">Foo</section>
 <section id="two" class="test">Bar</section>
 <section class="test">Foot</section>
 <section class="test">Barf</section>
 <section class="test">Bazm</section>
 `;
-        var $ = cheerio.load(html);
-        var $targetEl = $('.test');
-        var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
-        var targetHtml = htmlScraperPost.htmlSanitize(targetHtmlObj.all);
-        var jsonForData = htmlScraperPost.htmlToJsons(targetHtml).jsonForData;
+      var $ = cheerio.load(html);
+      var $targetEl = $('.test');
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+      var targetHtml = htmlScraperPost.htmlSanitize(targetHtmlObj.all);
+      var jsonForData = htmlScraperPost.htmlToJsons(targetHtml).jsonForData;
 
-        expect(jsonForData).to.be.an('object');
-        expect(jsonForData.html[0].test).to.equal('Foo');
-        expect(jsonForData.html[1].test).to.equal('Bar');
-        expect(jsonForData.html[2].test).to.equal('Foot');
-        expect(jsonForData.html[3].test).to.equal('Barf');
-        expect(jsonForData.html[4].test).to.equal('Bazm');
-      });
+      expect(jsonForData).to.be.an('object');
+      expect(jsonForData.html[0].test).to.equal('Foo');
+      expect(jsonForData.html[1].test).to.equal('Bar');
+      expect(jsonForData.html[2].test).to.equal('Foot');
+      expect(jsonForData.html[3].test).to.equal('Barf');
+      expect(jsonForData.html[4].test).to.equal('Bazm');
     });
+  });
 
-    describe('JSON to Mustache Converter', function () {
-      it('should return HTML with Mustache tags', function () {
-        var mustache;
+  describe('JSON to Mustache Converter', function () {
+    it('should return HTML with Mustache tags', function () {
+      var mustache;
 
-        mustache = htmlScraperPost.jsonToMustache(jsons.jsonForMustache);
-        expect(mustache).to.equal(`{{# html }}
+      mustache = htmlScraperPost.jsonToMustache(jsons.jsonForMustache);
+      expect(mustache).to.equal(`{{# html }}
 
   <body>
     <section id="one" class="test">{{ test }}</section>
@@ -270,46 +269,45 @@
   </body>
 {{/ html }}
 `);
-      });
-    });
-
-    describe('File Writer', function () {
-      it('should validate user-submitted filename', function () {
-        var isFilenameValid = htmlScraperPost.isFilenameValid;
-        var validFilename = '0-test.1_2';
-        var invalidChar = '0-test.1_2!';
-        var invalidHyphenPrefix = '-0-test.1_2';
-        var invalidPeriodPrefix = '.0-test.1_2';
-        var invalidUnderscorePrefix = '_0-test.1_2';
-
-        expect(isFilenameValid(validFilename)).to.equal(true);
-        expect(isFilenameValid(invalidChar)).to.equal(false);
-        expect(isFilenameValid(invalidHyphenPrefix)).to.equal(false);
-        expect(isFilenameValid(invalidPeriodPrefix)).to.equal(false);
-        expect(isFilenameValid(invalidUnderscorePrefix)).to.equal(false);
-      });
-
-      it('should correctly format newlines in file body', function () {
-        var mustache = '{{# html }}\r\n  <body>\r\n    <section id="one" class="test">{{ test_5 }}</section>\r\n    <section id="two" class="test">{{ test_6 }}</section>\r\n    <script/>\r\n    <textarea/>\r\n  </body>\r\n{{/ html }}';
-
-        expect(htmlScraperPost.newlineFormat(mustache)).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n');
-      });
-
-      it('should write file to destination', function () {
-        var fileMustache = '{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n';
-        var fileJson = htmlScraperPost.newlineFormat(JSON.stringify(jsons.jsonForData, null, 2));
-        var fileName = '0-test.1_2';
-        var fileFullPath = scrapeDir + '/' + fileName;
-
-        fs.mkdirsSync(scrapeDir);
-        fs.writeFileSync(fileFullPath, '');
-        var fileBefore = fs.readFileSync(fileFullPath);
-        htmlScraperPost.filesWrite(scrapeDir, fileName, fileMustache, fileJson, null);
-        var fileAfter = fs.readFileSync(fileFullPath);
-
-        expect(fileAfter).to.not.equal('');
-        expect(fileAfter).to.not.equal(fileBefore);
-      });
     });
   });
-})();
+
+  describe('File Writer', function () {
+    it('should validate user-submitted filename', function () {
+      var isFilenameValid = htmlScraperPost.isFilenameValid;
+      var validFilename = '0-test.1_2';
+      var invalidChar = '0-test.1_2!';
+      var invalidHyphenPrefix = '-0-test.1_2';
+      var invalidPeriodPrefix = '.0-test.1_2';
+      var invalidUnderscorePrefix = '_0-test.1_2';
+
+      expect(isFilenameValid(validFilename)).to.equal(true);
+      expect(isFilenameValid(invalidChar)).to.equal(false);
+      expect(isFilenameValid(invalidHyphenPrefix)).to.equal(false);
+      expect(isFilenameValid(invalidPeriodPrefix)).to.equal(false);
+      expect(isFilenameValid(invalidUnderscorePrefix)).to.equal(false);
+    });
+
+    it('should correctly format newlines in file body', function () {
+      var mustache = '{{# html }}\r\n  <body>\r\n    <section id="one" class="test">{{ test_5 }}</section>\r\n    <section id="two" class="test">{{ test_6 }}</section>\r\n    <script/>\r\n    <textarea/>\r\n  </body>\r\n{{/ html }}';
+
+      expect(htmlScraperPost.newlineFormat(mustache)).to.equal('{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n');
+    });
+
+    it('should write file to destination', function () {
+      var fileMustache = '{{# html }}\n  <body>\n    <section id="one" class="test">{{ test_5 }}</section>\n    <section id="two" class="test">{{ test_6 }}</section>\n    <script/>\n    <textarea/>\n  </body>\n{{/ html }}\n';
+      var fileJson = htmlScraperPost.newlineFormat(JSON.stringify(jsons.jsonForData, null, 2));
+      var fileName = '0-test.1_2';
+      var fileFullPath = scrapeDir + '/' + fileName;
+
+      fs.mkdirsSync(scrapeDir);
+      fs.writeFileSync(fileFullPath, '');
+      var fileBefore = fs.readFileSync(fileFullPath);
+      htmlScraperPost.filesWrite(scrapeDir, fileName, fileMustache, fileJson, null);
+      var fileAfter = fs.readFileSync(fileFullPath);
+
+      expect(fileAfter).to.not.equal('');
+      expect(fileAfter).to.not.equal(fileBefore);
+    });
+  });
+});

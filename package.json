@@ -17,7 +17,7 @@
     "gh-pages": "^0.10.0",
     "glob": "^5.0.5",
     "gulp": "^3.9.0",
-    "gulp-eslint": "^1.0.0",
+    "gulp-eslint": "^2.0.0",
     "gulp-htmlhint": "^0.3.0",
     "gulp-htmllint": "0.0.6",
     "gulp-jsonlint": "^1.1.0",
