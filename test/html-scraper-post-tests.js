@@ -205,11 +205,11 @@ describe('HTML Scraper Post', function () {
   describe('Array to JSON Converter', function () {
     it('should return a JSON object of data pulled from non-empty elements', function () {
       expect(jsons.jsonForData).to.be.an('object');
-      expect(jsons.jsonForData.html[0].test).to.equal('Foo');
-      expect(jsons.jsonForData.html[0].test_1).to.equal('Bar');
-      expect(jsons.jsonForData.html[0].test_2).to.equal('Foot');
-      expect(jsons.jsonForData.html[0].test_3).to.equal('Barf');
-      expect(jsons.jsonForData.html[0].test_4).to.equal('Bazm');
+      expect(jsons.jsonForData.html[0].one).to.equal('Foo');
+      expect(jsons.jsonForData.html[0].two).to.equal('Bar');
+      expect(jsons.jsonForData.html[0].test).to.equal('Foot');
+      expect(jsons.jsonForData.html[0].test_1).to.equal('Barf');
+      expect(jsons.jsonForData.html[0].test_2).to.equal('Bazm');
       expect(jsons.jsonForData.html[0].section).to.equal('Fooz');
       expect(jsons.jsonForData.html[0].section_1).to.equal('Barz');
       expect(jsons.jsonForData.html[0].section_2).to.equal('Bazz');
@@ -223,8 +223,8 @@ describe('HTML Scraper Post', function () {
 
     it('should create multiple array elements when the selector targets multiple DOM elements', function () {
       var html = `
-<section id="one" class="test">Foo</section>
-<section id="two" class="test">Bar</section>
+<section class="test">Foo</section>
+<section class="test">Bar</section>
 <section class="test">Foot</section>
 <section class="test">Barf</section>
 <section class="test">Bazm</section>
@@ -252,11 +252,11 @@ describe('HTML Scraper Post', function () {
       expect(mustache).to.equal(`{{# html }}
 
   <body>
-    <section id="one" class="test">{{ test }}</section>
-    <section id="two" class="test">{{ test_1 }}</section>
+    <section id="one" class="test">{{ one }}</section>
+    <section id="two" class="test">{{ two }}</section>
+    <section class="test">{{ test }}</section>
+    <section class="test">{{ test_1 }}</section>
     <section class="test">{{ test_2 }}</section>
-    <section class="test">{{ test_3 }}</section>
-    <section class="test">{{ test_4 }}</section>
     <section>{{ section }}</section>
     <section>{{ section_1 }}</section>
     <section>{{ section_2 }}</section>

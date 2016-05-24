@@ -97,72 +97,65 @@ exports.isFilenameValid = function (fileName) {
 
 exports.jsonRecurse = function (jsonObj, dataObj, dataKeys, inc) {
   var i;
+  var j;
   var tmpObj;
   var suffix;
   var suffixInt;
   var underscored = '';
 
-  if (
-    jsonObj.child &&
-    jsonObj.child[0] &&
-    jsonObj.child[0].node === 'text' &&
-    typeof jsonObj.child[0].text === 'string' &&
-    jsonObj.child[0].text.trim()
-  ) {
+  if (Array.isArray(jsonObj.child)) {
+    for (i = 0; i < jsonObj.child.length; i++) {
+      if (
+        jsonObj.child[i].node === 'text' &&
+        typeof jsonObj.child[i].text === 'string' &&
+        jsonObj.child[i].text.trim()
+      ) {
 
-    if (jsonObj.attr) {
-      if (typeof jsonObj.attr.class === 'string') {
-        underscored = jsonObj.attr.class;
-      }
-      else if (typeof jsonObj.attr.id === 'string') {
-        underscored = jsonObj.attr.id;
-      }
-    }
-    else if (typeof jsonObj.tag === 'string') {
-      underscored = jsonObj.tag;
-    }
+        if (jsonObj.attr) {
+          if (typeof jsonObj.attr.id === 'string') {
+            underscored = jsonObj.attr.id;
+          }
+          else if (typeof jsonObj.attr.class === 'string') {
+            underscored = jsonObj.attr.class;
+          }
+        }
 
-    if (underscored) {
-      underscored = underscored.replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '');
-      // Add incrementing suffix to dedupe items of the same class or tag.
-      for (i = dataKeys[inc].length - 1; i >= 0; i--) {
-        // Check dataKeys for similarly named items.
-        if (dataKeys[inc][i].indexOf(underscored) === 0) {
-          // Slice off the suffix of the last match.
-          suffix = dataKeys[inc][i].slice(underscored.length, dataKeys[inc][i].length);
-          if (suffix) {
-            // Increment that suffix and append to the new key.
-            suffixInt = parseInt(suffix.slice(1), 10);
+        if (!underscored && typeof jsonObj.tag === 'string') {
+          underscored = jsonObj.tag;
+        }
+
+        if (underscored) {
+          underscored = underscored.replace(/-/g, '_').replace(/ /g, '_').replace(/[^\w]/g, '');
+          // Add incrementing suffix to dedupe items of the same class or tag.
+          for (j = dataKeys[inc].length - 1; j >= 0; j--) {
+            // Check dataKeys for similarly named items.
+            if (dataKeys[inc][j].indexOf(underscored) === 0) {
+              // Slice off the suffix of the last match.
+              suffix = dataKeys[inc][j].slice(underscored.length, dataKeys[inc][j].length);
+              if (suffix) {
+                // Increment that suffix and append to the new key.
+                suffixInt = parseInt(suffix.slice(1), 10);
+              }
+              else {
+                suffixInt = 0;
+              }
+              underscored += '_' + ++suffixInt;
+            }
           }
-          else {
-            suffixInt = 0;
-          }
-          underscored += '_' + ++suffixInt;
+          tmpObj = {};
+          tmpObj[underscored] = jsonObj.child[i].text.trim();
+          dataKeys[inc].push(underscored);
+          dataObj.html[inc][underscored] = tmpObj[underscored].replace(/"/g, '\\"');
+          jsonObj.child[i].text = '{{ ' + underscored + ' }}';
         }
       }
-      tmpObj = {};
-      tmpObj[underscored] = jsonObj.child[0].text.trim();
-      dataKeys[inc].push(underscored);
-      jsonObj.child[0].text = '{{ ' + underscored + ' }}';
-    }
-  }
-  else if (Array.isArray(jsonObj.child)) {
-    for (i = 0; i < jsonObj.child.length; i++) {
-      if (jsonObj.child[i].node === 'comment' && jsonObj.child[i].text.indexOf(' BEGIN ARRAY ELEMENT ') === 0) {
+      else if (jsonObj.child[i].node === 'comment' && jsonObj.child[i].text.indexOf(' BEGIN ARRAY ELEMENT ') === 0) {
         inc++;
         dataObj.html[inc] = {};
         dataKeys.push([]);
       }
       else {
         exports.jsonRecurse(jsonObj.child[i], dataObj, dataKeys, inc);
-      }
-    }
-  }
-
-  if (tmpObj instanceof Object) {
-    for (i in tmpObj) {
-      if (tmpObj.hasOwnProperty(i)) {
-        dataObj.html[inc][i] = tmpObj[i].replace(/"/g, '\\"');
       }
     }
   }
@@ -197,8 +190,8 @@ exports.outputHtml = function (jsonForData, htmlObj, targetHtml, mustache, req, 
   output += htmlObj.importerPrefix;
   output += mustache;
   output += htmlObj.json;
-  // HTML entities.
-  output += $('<div/>').text(dataStr).html();
+  // Escape double-quotes.
+  output += dataStr.replace(/&quot;/g, '&bsol;&quot;');
   output += htmlObj.importerSuffix;
   output += htmlObj.landingBody;
   output += '</section>';
