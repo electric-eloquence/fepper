@@ -148,8 +148,8 @@ exports.jsonRecurse = function (jsonObj, dataObj, dataKeys, inc) {
           dataObj.html[inc][underscored] = tmpObj[underscored].replace(/"/g, '\\"');
           jsonObj.child[i].text = '{{ ' + underscored + ' }}';
         }
-
-      } else if (jsonObj.child[i].node === 'comment' && jsonObj.child[i].text.indexOf(' BEGIN ARRAY ELEMENT ') === 0) {
+      }
+      else if (jsonObj.child[i].node === 'comment' && jsonObj.child[i].text.indexOf(' BEGIN ARRAY ELEMENT ') === 0) {
         inc++;
         dataObj.html[inc] = {};
         dataKeys.push([]);
