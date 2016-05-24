@@ -243,14 +243,8 @@ fieldset {
 
 label {
   display: block !important;
+  margin-bottom: 0 !important;
   padding-bottom: 0.25rem !important;
-}
-
-button,
-input,
-select,
-textarea {
-  margin: 0 !important;
 }
 
 input,

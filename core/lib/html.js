@@ -51,14 +51,14 @@ exports.landingBody = `
       </div>`;
 
 exports.reviewerPrefix = `
-      <div style="border: 1px solid black;margin-top: 10px;overflow-x: scroll;padding: 20px;width: 100%;">`;
+      <div style="border: 1px solid black;margin: 10px 0 20px;overflow-x: scroll;padding: 20px;width: 100%;">`;
 
 exports.reviewerSuffix = `
       </div>`;
 
 exports.importerPrefix = `
-      <h3 style="padding-top: 20px;">Does this HTML look right?</h3>
-      <form action="/html-scraper" method="post" name="importer" onsubmit="return validateForm();">
+      <h3>Does this HTML look right?</h3>
+      <form action="/html-scraper" method="post" name="importer" onsubmit="return validateForm();" style="margin-bottom: 20px;">
         <div>Yes, import into Fepper.</div>
         <label for="import-form">Enter a filename to save this under:</label>
         <input name="filename" type="text" value="" style="width: 100%" />
@@ -72,7 +72,7 @@ exports.importerSuffix = `
         </textarea>
         <input name="import-form" type="submit" value="Submit" style="margin-top: 10px;" />
       </form>
-      <h3 style="padding-top: 20px;">Otherwise, correct the URL and Target Selector and submit again.</h3>
+      <h3>Otherwise, correct the URL and Target Selector and submit again.</h3>
 
       <script type="text/javascript">
         function validateForm() {
