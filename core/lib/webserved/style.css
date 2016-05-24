@@ -74,6 +74,7 @@ hgroup,
 figure {
   font-size: inherit !important;
   font-weight: normal !important;
+  line-height: inherit !important;
 }
 
 h1,
@@ -88,14 +89,9 @@ h6 {
   padding: 0 !important;
 }
 
-p,
-label,
-li {
-  line-height: 1.5 !important;
-}
-
 html {
   font-size: 16px !important;
+  line-height: 1.5 !important;
 }
 
 body {
