@@ -78,11 +78,20 @@ exports.htmlSanitize = function (html) {
 };
 
 exports.htmlToJsons = function (targetHtml) {
-  var jsonForMustache = html2json('<body>' + targetHtml + '</body>');
+  var jsonForMustache = null;
   var dataObj = {html: [{}]};
   var dataKeys = [[]];
 
-  exports.jsonRecurse(jsonForMustache, dataObj, dataKeys, 0);
+  try {
+    jsonForMustache = html2json('<body>' + targetHtml + '</body>');
+  }
+  catch (err) {
+    utils.error(err);
+  }
+
+  if (jsonForMustache) {
+    exports.jsonRecurse(jsonForMustache, dataObj, dataKeys, 0);
+  }
 
   return {jsonForMustache: jsonForMustache, jsonForData: dataObj};
 };
@@ -167,7 +176,14 @@ exports.jsonRecurse = function (jsonObj, dataObj, dataKeys, inc) {
  * @return {string} XHTML.
  */
 exports.jsonToMustache = function (jsonForMustache) {
-  var mustache = json2html(jsonForMustache);
+  var mustache = '<body></body>';
+
+  try {
+    mustache = json2html(jsonForMustache);
+  }
+  catch (err) {
+    utils.error(err);
+  }
 
   mustache = beautify(mustache, {indent_size: 2});
   mustache = mustache.replace(/^\s*<body>/, '{{# html }}');
@@ -316,7 +332,12 @@ exports.main = function (req, res) {
           jsonForMustache = exports.htmlToJsons(targetFirst).jsonForMustache;
 
           // Finish conversion to Mustache.
-          mustache = exports.jsonToMustache(jsonForMustache);
+          if (jsonForMustache) {
+            mustache = exports.jsonToMustache(jsonForMustache);
+          }
+          else {
+            mustache = targetFirst;
+          }
         }
 
         // Output Mustache.
