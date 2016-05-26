@@ -1,5 +1,8 @@
 #Fepper Changelog
 
+##v0.4.1
+* HTML scraper excepts for malformed HTML
+
 ##v0.4.0
 * Using minimal multisite subsite
 * Replacing xml2js and xmldom with html2json and js-beautify
