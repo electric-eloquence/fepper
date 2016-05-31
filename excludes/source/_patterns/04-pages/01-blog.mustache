@@ -1,5 +1,5 @@
 <div class="page" id="page">
-  {{> organisms-header }}
+  {{> components-header }}
   <div role="main">
     <h1 class="section-title">Our Outdoor Blog</h1>
     <div class="l-two-col">
@@ -8,18 +8,18 @@
           
           <ul class="post-list">
             {{# latest-posts }}
-              <li>{{> molecules-media-block }}</li>
+              <li>{{> compounds-media-block }}</li>
             {{/ latest-posts }}
           </ul>
           <a href="#" class="text-btn">View more posts</a>
         </section>
-        {{> molecules-pagination }}
+        {{> compounds-pagination }}
       </div><!--end l-main-->
 
       <div class="l-sidebar">
-        {{> organisms-recent-tweets }}
+        {{> components-recent-tweets }}
       </div><!--end l-sidebar-->
     </div><!--end two-col-->
   </div><!--End role=main-->
-  {{> organisms-footer }}
+  {{> components-footer }}
 </div>

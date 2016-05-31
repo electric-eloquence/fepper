@@ -22,10 +22,10 @@ gulp.task('install:copy', function () {
     fs.statSync(conf.src);
   }
   catch (err) {
-    // Only copy excludes/source if patternlab-config.json doesn't exist.
+    // Only copy excludes/source if patternlab-node/source doesn't exist.
     if (err.code === 'ENOENT') {
       return gulp.src('./excludes/source/**')
-        .pipe(gulp.dest('./' + conf.pln + '/source/'));
+        .pipe(gulp.dest('./' + conf.src));
     }
   }
 });
