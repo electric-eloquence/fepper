@@ -1,5 +1,8 @@
 #Fepper Changelog
 
+##v0.5.0
+* New nomenclature
+
 ##v0.4.1
 * HTML scraper excepts for malformed HTML
 
