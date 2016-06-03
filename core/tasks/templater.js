@@ -70,6 +70,38 @@ exports.mustacheUnescape = function (escaped) {
   return unescaped;
 };
 
+exports.templatesDirCheck = function (templatesDir) {
+  var fullPath = workDir + '/backend/' + templatesDir;
+  var stats;
+
+  // Only proceed if templatesDir is a string.
+  if (typeof templatesDir !== 'string') {
+    return false;
+  }
+
+  // Only proceed if templatesDir is an existing directory.
+  stats = fs.statSync(fullPath);
+  if (!stats.isDirectory()) {
+    return false;
+  }
+
+  return true;
+};
+
+exports.templatesExtCheck = function (templatesExt) {
+  // Only proceed if templatesExt is a string.
+  if (typeof templatesExt !== 'string') {
+    return false;
+  }
+
+  // Only proceed if templatesExt is set correctly.
+  if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
+    return false;
+  }
+
+  return true;
+};
+
 exports.templatesGlob = function (srcDir) {
   var glob1 = glob.sync(srcDir + '/!(__)*.mustache');
   var glob2 = glob.sync(srcDir + '/!(_no_sync)/!(__)*.mustache');
@@ -127,32 +159,23 @@ exports.main = function (workDir, conf, pref, ext) {
   var srcDir = patternDir + '/03-templates';
   var stats;
   var templatesDir;
+  var templatesDirDefault;
   var templatesExt;
+  var templatesExtDefault;
   var yml;
   var ymlFile = '';
 
   try {
-    // Only proceed if templatesDir is a string.
-    if (typeof pref.backend.synced_dirs.templates_dir !== 'string') {
-      return;
+    if (typeof pref.backend.synced_dirs.templates_dir === 'string') {
+      if (exports.templatesDirCheck(pref.backend.synced_dirs.templates_dir)) {
+        templatesDirDefault = pref.backend.synced_dirs.templates_dir;
+      }
     }
 
-    // Only proceed if templatesDir is an existing directory.
-    templatesDir = workDir + '/backend/' + pref.backend.synced_dirs.templates_dir;
-    stats = fs.statSync(templatesDir);
-    if (!stats.isDirectory()) {
-      return;
-    }
-
-    // Only proceed if templates_ext is a string.
-    if (typeof pref.backend.synced_dirs.templates_ext !== 'string') {
-      return;
-    }
-
-    // Only proceed if templatesExt is set correctly.
-    templatesExt = pref.backend.synced_dirs.templates_ext;
-    if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
-      return;
+    if (typeof pref.backend.synced_dirs.templates_ext === 'string') {
+      if (exports.templatesExtCheck(pref.backend.synced_dirs.templates_ext)) {
+        templatesExtDefault = pref.backend.synced_dirs.templates_ext;
+      }
     }
 
     // Search source directory for Mustache files.
@@ -160,6 +183,9 @@ exports.main = function (workDir, conf, pref, ext) {
     // Trying to keep the globbing simple and maintainable.
     files = exports.templatesGlob(srcDir);
     for (i = 0; i < files.length; i++) {
+      templatesDir = '';
+      templatesExt = '';
+
       // Read YAML file and store keys/values in tokens object.
       ymlFile = files[i].replace(/\.mustache$/, '.yml');
       // Make sure the YAML file exists before proceeding.
@@ -176,13 +202,14 @@ exports.main = function (workDir, conf, pref, ext) {
           yml = fs.readFileSync(ymlFile, conf.enc);
           data = yaml.safeLoad(yml);
 
-          if (typeof data.templates_dir === 'string') {
-            templatesDir = workDir + '/backend/' + data.templates_dir.trim();
+          if (typeof data.templates_dir === 'string' && exports.templatesDirCheck(data.templates_dir)) {
+            templatesDir = workDir + '/backend/' + data.templates_dir;
             // Unset templates_dir in local YAML data.
             delete data.templates_dir;
           }
-          if (typeof data.templates_ext === 'string') {
-            templatesExt = data.templates_ext.trim();
+
+          if (typeof data.templates_ext === 'string' && exports.templatesExtCheck(data.templates_ext)) {
+            templatesExt = data.templates_ext;
             // Unset templates_dir in local YAML data.
             delete data.templates_ext;
           }
@@ -193,15 +220,25 @@ exports.main = function (workDir, conf, pref, ext) {
         }
       }
 
-      // Recurse through Mustache templates (sparingly. See comment above)
-      code = exports.mustacheRecurse(files[i], conf, patternDir);
-      // Iterate through tokens and replace keys for values in the code.
-      code = exports.tokensReplace(data, code, conf, pref);
-      // Write compiled templates.
-      dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
+      if (templatesDirDefault && !templatesDir) {
+        templatesDir = templatesDirDefault;
+      }
 
-      // Log to console.
-      utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
+      if (templatesExtDefault && !templatesExt) {
+        templatesExt = templatesExtDefault;
+      }
+
+      if (templatesDir && templatesExt) {
+        // Recurse through Mustache templates (sparingly. See comment above)
+        code = exports.mustacheRecurse(files[i], conf, patternDir);
+        // Iterate through tokens and replace keys for values in the code.
+        code = exports.tokensReplace(data, code, conf, pref);
+        // Write compiled templates.
+        dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
+
+        // Log to console.
+        utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
+      }
     }
   }
   catch (err) {
