@@ -182,7 +182,7 @@ exports.main = function (workDir, conf, pref, ext) {
         ymlFile = '';
       }
 
-      if (ymlFile) {
+      if (stats.isFile()) {
         try {
           yml = fs.readFileSync(ymlFile, conf.enc);
           data = yaml.safeLoad(yml);
