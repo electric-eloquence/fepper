@@ -14,22 +14,6 @@ var yaml = require('js-yaml');
 
 var utils = require('../lib/utils');
 
-exports.targetDirCheck = function (workDir, dir) {
-  var fullPath;
-  var stats;
-
-  if (typeof dir === 'string') {
-    fullPath = workDir + '/backend/' + dir.trim();
-    stats = fs.statSync(fullPath);
-
-    if (stats.isDirectory()) {
-      return fullPath;
-    }
-  }
-
-  return '';
-};
-
 exports.targetDirGlob = function (srcDir) {
   var glob1 = glob.sync(srcDir + '/!(__)*!(.yml)');
   var glob2 = glob.sync(srcDir + '/!(_no_sync)/!(__)*!(.yml)');
@@ -53,7 +37,7 @@ exports.main = function (workDir, conf, pref) {
   for (i = 0; i < syncTypes.length; i++) {
     try {
       syncTypeAppended = syncTypes[i] + '_dir';
-      targetDirDefault = exports.targetDirCheck(workDir, pref.backend.synced_dirs[syncTypeAppended]);
+      targetDirDefault = utils.backendDirCheck(workDir, pref.backend.synced_dirs[syncTypeAppended]);
 
       // Search source directory for frontend files.
       // Excluding files in _nosync directory and those prefixed by __.
@@ -80,7 +64,7 @@ exports.main = function (workDir, conf, pref) {
             data = yaml.safeLoad(yml);
 
             if (typeof data[syncTypeAppended] === 'string') {
-              targetDir = exports.targetDirCheck(workDir, data[syncTypeAppended]);
+              targetDir = utils.backendDirCheck(workDir, data[syncTypeAppended]);
               // Unset templates_dir in local YAML data.
               delete data[syncTypeAppended];
             }
