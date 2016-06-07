@@ -11,6 +11,10 @@ module.exports = class {
     require('./appendixer.js').main(this.workDir, this.conf);
   }
 
+  frontendCopy(frontendGlob, frontendDataKey) {
+    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref, frontendGlob, frontendDataKey);
+  }
+
   jsonCompile() {
     require('./json-compiler.js').main(this.workDir, this.conf);
   }
@@ -35,7 +39,7 @@ module.exports = class {
     require('./templater.js').main(this.workDir, this.conf, this.pref);
   }
 
-  fcTest() {
-    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref);
+  fcTest(frontendGlob, frontendDataKey) {
+    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref, frontendGlob, frontendDataKey);
   }
 };

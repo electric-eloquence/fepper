@@ -67,29 +67,34 @@ exports.mustacheRecurse = function (file, conf, patternDir) {
 exports.mustacheUnescape = function (escaped) {
   var unescaped = escaped.replace(/\{\s*/, '{\\s');
   unescaped = unescaped.replace(/\s*\}/, '\\s}');
+
   return unescaped;
 };
 
 exports.templatesExtCheck = function (templatesExt) {
   var templatesExtTrimmed;
+
   if (typeof templatesExt === 'string') {
     templatesExtTrimmed = templatesExt.trim();
     if (templatesExtTrimmed.match(/^[\w\-\.\/]+$/)) {
       return templatesExtTrimmed;
     }
   }
+
   return '';
 };
 
 exports.templatesGlob = function (srcDir) {
   var glob1 = glob.sync(srcDir + '/!(__)*.mustache');
   var glob2 = glob.sync(srcDir + '/!(_no_sync)/!(__)*.mustache');
+
   return glob1.concat(glob2);
 };
 
 exports.templatesWrite = function (file, srcDir, templatesDir, templatesExt, code) {
   // Determine destination for token-replaced code.
   var dest = file.replace(srcDir, '');
+
   // Replace underscore prefixes.
   dest = dest.replace(/\/_([^\/]+)$/, '/$1');
   dest = templatesDir + dest;
@@ -153,6 +158,7 @@ exports.main = function (workDir, conf, pref) {
     // Trying to keep the globbing simple and maintainable.
     files = exports.templatesGlob(srcDir);
     for (i = 0; i < files.length; i++) {
+      stats = null;
       templatesDir = '';
       templatesExt = '';
 
@@ -167,7 +173,7 @@ exports.main = function (workDir, conf, pref) {
         ymlFile = '';
       }
 
-      if (stats.isFile()) {
+      if (stats && stats.isFile()) {
         try {
           yml = fs.readFileSync(ymlFile, conf.enc);
           data = yaml.safeLoad(yml);
