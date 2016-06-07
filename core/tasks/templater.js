@@ -70,21 +70,15 @@ exports.mustacheUnescape = function (escaped) {
   return unescaped;
 };
 
-exports.templatesDirCheck = function (templatesDir) {
-  // Only proceed if templatesDir is an existing directory.
-  var stats = fs.statSync(templatesDir);
-  if (!stats.isDirectory()) {
-    return false;
-  }
-  return true;
-};
-
 exports.templatesExtCheck = function (templatesExt) {
-  // Only proceed if templatesExt is set correctly.
-  if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
-    return false;
+  var templatesExtTrimmed;
+  if (typeof templatesExt === 'string') {
+    templatesExtTrimmed = templatesExt.trim();
+    if (templatesExtTrimmed.match(/^[\w\-\.\/]+$/)) {
+      return templatesExtTrimmed;
+    }
   }
-  return true;
+  return '';
 };
 
 exports.templatesGlob = function (srcDir) {
@@ -151,17 +145,8 @@ exports.main = function (workDir, conf, pref) {
   var ymlFile = '';
 
   try {
-    if (typeof pref.backend.synced_dirs.templates_dir === 'string') {
-      if (exports.templatesDirCheck(workDir + '/backend/' + pref.backend.synced_dirs.templates_dir)) {
-        templatesDirDefault = workDir + '/backend/' + pref.backend.synced_dirs.templates_dir;
-      }
-    }
-
-    if (typeof pref.backend.synced_dirs.templates_ext === 'string') {
-      if (exports.templatesExtCheck(pref.backend.synced_dirs.templates_ext)) {
-        templatesExtDefault = pref.backend.synced_dirs.templates_ext;
-      }
-    }
+    templatesDirDefault = utils.backendDirCheck(workDir, pref.backend.synced_dirs.templates_dir);
+    templatesExtDefault = exports.templatesExtCheck(pref.backend.synced_dirs.templates_ext);
 
     // Search source directory for Mustache files.
     // Excluding templates in _nosync directory and those prefixed by __.
@@ -188,21 +173,13 @@ exports.main = function (workDir, conf, pref) {
           data = yaml.safeLoad(yml);
 
           if (typeof data.templates_dir === 'string') {
-            // Need to trim multi-line YAML syntax.
-            templatesDir = workDir + '/backend/' + data.templates_dir.trim();
-            if (!exports.templatesDirCheck(templatesDir)) {
-              templatesDir = '';
-            }
+            templatesDir = utils.backendDirCheck(workDir, data.templates_dir);
             // Unset templates_dir in local YAML data.
             delete data.templates_dir;
           }
 
           if (typeof data.templates_ext === 'string') {
-            // Need to trim multi-line YAML syntax.
-            templatesExt = data.templates_ext.trim();
-            if (!exports.templatesExtCheck(templatesExt)) {
-              templatesExt = '';
-            }
+            templatesExt = exports.templatesExtCheck(data.templates_ext);
             // Unset templates_dir in local YAML data.
             delete data.templates_ext;
           }

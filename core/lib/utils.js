@@ -141,6 +141,25 @@ exports.mergeObjects = function (obj1, obj2) {
 };
 
 // ///////////////////////////////////////////////////////////////////////////
+// File system utilities.
+// ///////////////////////////////////////////////////////////////////////////
+exports.backendDirCheck = function (workDir, backendDir) {
+  var fullPath;
+  var stats;
+
+  if (typeof backendDir === 'string') {
+    fullPath = workDir + '/backend/' + backendDir.trim();
+    stats = fs.statSync(fullPath);
+
+    if (stats.isDirectory()) {
+      return fullPath;
+    }
+  }
+
+  return '';
+};
+
+// ///////////////////////////////////////////////////////////////////////////
 // Logging.
 // ///////////////////////////////////////////////////////////////////////////
 exports.console = console;
