@@ -70,13 +70,20 @@ exports.mustacheUnescape = function (escaped) {
   return unescaped;
 };
 
-exports.templatesDirCheck = function (templatesDir) {
-  // Only proceed if templatesDir is an existing directory.
-  var stats = fs.statSync(templatesDir);
-  if (!stats.isDirectory()) {
-    return false;
+exports.targetDirCheck = function (workDir, dir) {
+  var fullPath;
+  var stats;
+
+  if (typeof dir === 'string') {
+    fullPath = workDir + '/backend/' + dir.trim();
+    stats = fs.statSync(fullPath);
+
+    if (stats.isDirectory()) {
+      return fullPath;
+    }
   }
-  return true;
+
+  return '';
 };
 
 exports.templatesExtCheck = function (templatesExt) {
@@ -140,101 +147,82 @@ exports.main = function (workDir, conf, pref, ext) {
   var dest;
   var files;
   var i;
+  var j;
   var patternDir = workDir + '/' + conf.src + '/_patterns';
-  var srcDir = patternDir + '/03-templates';
+  var srcDir = workDir + '/' + conf.src;
   var stats;
-  var templatesDir;
-  var templatesDirDefault;
-  var templatesExt;
-  var templatesExtDefault;
+  var assetsDir;
+  var assetsDirDefault;
+  var scriptsDir;
+  var scriptsDirDefault;
+  var stylesDir;
+  var stylesDirDefault;
+  var syncTypeAppended;
+  var syncTypes = ['assets', 'scripts', 'styles'];
+  var targetDir;
+  var targetDirDefault;
   var yml;
   var ymlFile = '';
 
-  try {
-    if (typeof pref.backend.synced_dirs.templates_dir === 'string') {
-      if (exports.templatesDirCheck(workDir + '/backend/' + pref.backend.synced_dirs.templates_dir)) {
-        templatesDirDefault = workDir + '/backend/' + pref.backend.synced_dirs.templates_dir;
-      }
-    }
+  for (i = 0; i < syncTypes.length; i++) {
+    try {
+      syncTypeAppended = syncTypes[i] + '_dir';
+      targetDirDefault = exports.targetDirCheck(workDir, pref.backend.synced_dirs[syncTypeAppended]);
 
-    if (typeof pref.backend.synced_dirs.templates_ext === 'string') {
-      if (exports.templatesExtCheck(pref.backend.synced_dirs.templates_ext)) {
-        templatesExtDefault = pref.backend.synced_dirs.templates_ext;
-      }
-    }
+      // Search source directory for frontend files.
+      // Excluding files in _nosync directory and those prefixed by __.
+      // Trying to keep the globbing simple and maintainable.
+      files = exports.templatesGlob(srcDir + '/' + syncTypes[i]);
+      for (j = 0; j < files.length; j++) {
+        if (files[j].slice(-4) === '.yml') {
+          continue;
+        }
 
-    // Search source directory for Mustache files.
-    // Excluding templates in _nosync directory and those prefixed by __.
-    // Trying to keep the globbing simple and maintainable.
-    files = exports.templatesGlob(srcDir);
-    for (i = 0; i < files.length; i++) {
-      templatesDir = '';
-      templatesExt = '';
+        targetDir = '';
 
-      // Read YAML file and store keys/values in tokens object.
-      ymlFile = files[i].replace(/\.mustache$/, '.yml');
-      // Make sure the YAML file exists before proceeding.
-      try {
-        stats = fs.statSync(ymlFile);
-      }
-      catch (err) {
-        // Unset ymlFile if no YAML file.
-        ymlFile = '';
-      }
-
-      if (stats.isFile()) {
+        // Read YAML file and store keys/values in tokens object.
+        ymlFile = files[j].replace(/\.[a-z]+$/, '.yml');
+        // Make sure the YAML file exists before proceeding.
         try {
-          yml = fs.readFileSync(ymlFile, conf.enc);
-          data = yaml.safeLoad(yml);
-
-          if (typeof data.templates_dir === 'string') {
-            // Need to trim multi-line YAML syntax.
-            templatesDir = workDir + '/backend/' + data.templates_dir.trim();
-            if (!exports.templatesDirCheck(templatesDir)) {
-              templatesDir = '';
-            }
-            // Unset templates_dir in local YAML data.
-            delete data.templates_dir;
-          }
-
-          if (typeof data.templates_ext === 'string') {
-            // Need to trim multi-line YAML syntax.
-            templatesExt = data.templates_ext.trim();
-            if (!exports.templatesExtCheck(templatesExt)) {
-              templatesExt = '';
-            }
-            // Unset templates_dir in local YAML data.
-            delete data.templates_ext;
-          }
+          stats = fs.statSync(ymlFile);
         }
         catch (err) {
-          // Fail gracefully.
-          data = null;
+          // Unset ymlFile if no YAML file.
+          ymlFile = '';
+        }
+
+        if (stats.isFile()) {
+          try {
+            yml = fs.readFileSync(ymlFile, conf.enc);
+            data = yaml.safeLoad(yml);
+
+            if (typeof data.templates_dir === 'string') {
+              targetDir = exports.targetDirCheck(workDir, data[syncTypeAppended]);
+              // Unset templates_dir in local YAML data.
+              delete data[syncTypeAppended];
+            }
+          }
+          catch (err) {
+            // Fail gracefully.
+            data = null;
+          }
+        }
+
+        if (targetDirDefault && !targetDir) {
+          targetDir = targetDirDefault;
+        }
+
+        if (targetDir) {
+          // Copy to targetDir.
+          fs.copySync(files[i], targetDir);
+
+          // Log to console.
+          utils.log('Guh \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
         }
       }
-
-      if (templatesDirDefault && !templatesDir) {
-        templatesDir = templatesDirDefault;
-      }
-
-      if (templatesExtDefault && !templatesExt) {
-        templatesExt = templatesExtDefault;
-      }
-
-      if (templatesDir && templatesExt) {
-        // Recurse through Mustache templates (sparingly. See comment above.)
-        code = exports.mustacheRecurse(files[i], conf, patternDir);
-        // Iterate through tokens and replace keys for values in the code.
-        code = exports.tokensReplace(data, code, conf, pref);
-        // Write compiled templates.
-        dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
-
-        // Log to console.
-        utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
-      }
     }
-  }
-  catch (err) {
-    utils.error(err);
+    catch (err) {
+      utils.error(err);
+    }
   }
 };
