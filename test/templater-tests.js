@@ -64,8 +64,27 @@ describe('Templater', function () {
     expect(ignored).to.equal(null);
   });
 
+  it('should ignore Mustache files in a _nosync directory', function () {
+    var ignored = null;
+
+    try {
+      ignored = fs.statSync(templatesDir + '/_nosync/00-nosync.tpl.php');
+    }
+    catch (err) {
+      // Do nothing.
+    }
+
+    expect(ignored).to.equal(null);
+  });
+
   it('should write to the default templates directory', function () {
     var output = fs.readFileSync(templatesDir + '/00-homepage.tpl.php', conf.enc).trim();
+
+    expect(output).to.equal('<div class="page" id="page"><a href=""><img src="../../assets/logo.png" class="logo" alt="Logo Alt Text" /></a><?php print $page[\'footer\']; ?></div>');
+  });
+
+  it('should write to nested directories within the default templates directory', function () {
+    var output = fs.readFileSync(templatesDir + '/nested/00-nested.tpl.php', conf.enc).trim();
 
     expect(output).to.equal('<div class="page" id="page"><a href=""><img src="../../assets/logo.png" class="logo" alt="Logo Alt Text" /></a><?php print $page[\'footer\']; ?></div>');
   });

@@ -38,8 +38,4 @@ module.exports = class {
   template() {
     require('./templater.js').main(this.workDir, this.conf, this.pref);
   }
-
-  fcTest(frontendGlob, frontendDataKey) {
-    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref, frontendGlob, frontendDataKey);
-  }
 };

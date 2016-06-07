@@ -15,8 +15,8 @@ var tasks = new Tasks(rootDir, conf, pref);
 gulp.task('fepper:copy-assets', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
-    // Don't have an easy way to use the closure when passing params.
-    tasks.fcTest('assets', 'assets_dir');
+    // No easy way to use the closure when passing params.
+    tasks.frontendCopy('assets', 'assets_dir');
     resolve();
   });
   p.then(function () {
@@ -32,8 +32,8 @@ gulp.task('fepper:copy-assets', function (cb) {
 gulp.task('fepper:copy-scripts', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
-    // Don't have an easy way to use the closure when passing params.
-    tasks.fcTest('scripts/*', 'scripts_dir');
+    // No easy way to use the closure when passing params.
+    tasks.frontendCopy('scripts/*', 'scripts_dir');
     resolve();
   });
   p.then(function () {
@@ -49,8 +49,8 @@ gulp.task('fepper:copy-scripts', function (cb) {
 gulp.task('fepper:copy-styles', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
-    // Don't have an easy way to use the closure when passing params.
-    tasks.fcTest('styles', 'styles_dir');
+    // No easy way to use the closure when passing params.
+    tasks.frontendCopy('styles', 'styles_dir');
     resolve();
   });
   p.then(function () {
@@ -70,6 +70,7 @@ gulp.task('fepper:data', function (cb) {
     resolve();
   });
   p1.then(function () {
+    // No easy way to use the closure when chaining promised functions.
     p2();
   })
   .catch(function (reason) {
@@ -104,19 +105,3 @@ gulp.task('fepper:static-generate', staticGenerateTask);
 
 var templateTask = utils.fsContextClosure(pathIn, tasks, 'template', pathOut);
 gulp.task('fepper:template', templateTask);
-
-gulp.task('fepper:fc-test-assets', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    tasks.fcTest('assets');
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
-});

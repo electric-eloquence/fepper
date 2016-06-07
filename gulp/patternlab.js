@@ -26,7 +26,7 @@ gulp.task('patternlab:copy-styles', copyStylesTask);
 gulp.task('patternlab:help', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
-    // Don't have an easy way to use the closure when passing params.
+    // No easy way to use the closure when passing params.
     fpPln.build('help');
     resolve();
   });
@@ -43,7 +43,7 @@ gulp.task('patternlab:help', function (cb) {
 gulp.task('patternlab:only-patterns', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
-    // Don't have an easy way to use the closure when passing params.
+    // No easy way to use the closure when passing params.
     fpPln.build('only-patterns');
     resolve();
   });
@@ -60,7 +60,7 @@ gulp.task('patternlab:only-patterns', function (cb) {
 gulp.task('patternlab:v', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
-    // Don't have an easy way to use the closure when passing params.
+    // No easy way to use the closure when passing params.
     fpPln.build('v');
     resolve();
   });
