@@ -86,7 +86,7 @@ exports.templatesExtCheck = function (templatesExt) {
 
 exports.templatesGlob = function (srcDir) {
   var glob1 = glob.sync(srcDir + '/!(__)*.mustache');
-  var glob2 = glob.sync(srcDir + '/!(_no_sync)/!(__)*.mustache');
+  var glob2 = glob.sync(srcDir + '/!(_nosync)/**');
 
   return glob1.concat(glob2);
 };
