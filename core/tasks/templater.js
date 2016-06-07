@@ -71,34 +71,19 @@ exports.mustacheUnescape = function (escaped) {
 };
 
 exports.templatesDirCheck = function (templatesDir) {
-  var fullPath = workDir + '/backend/' + templatesDir;
-  var stats;
-
-  // Only proceed if templatesDir is a string.
-  if (typeof templatesDir !== 'string') {
-    return false;
-  }
-
   // Only proceed if templatesDir is an existing directory.
-  stats = fs.statSync(fullPath);
+  var stats = fs.statSync(templatesDir);
   if (!stats.isDirectory()) {
     return false;
   }
-
   return true;
 };
 
 exports.templatesExtCheck = function (templatesExt) {
-  // Only proceed if templatesExt is a string.
-  if (typeof templatesExt !== 'string') {
-    return false;
-  }
-
   // Only proceed if templatesExt is set correctly.
   if (!templatesExt.match(/^[\w\-\.\/]+$/)) {
     return false;
   }
-
   return true;
 };
 
@@ -167,8 +152,8 @@ exports.main = function (workDir, conf, pref, ext) {
 
   try {
     if (typeof pref.backend.synced_dirs.templates_dir === 'string') {
-      if (exports.templatesDirCheck(pref.backend.synced_dirs.templates_dir)) {
-        templatesDirDefault = pref.backend.synced_dirs.templates_dir;
+      if (exports.templatesDirCheck(workDir + '/backend/' + pref.backend.synced_dirs.templates_dir)) {
+        templatesDirDefault = workDir + '/backend/' + pref.backend.synced_dirs.templates_dir;
       }
     }
 
@@ -202,14 +187,22 @@ exports.main = function (workDir, conf, pref, ext) {
           yml = fs.readFileSync(ymlFile, conf.enc);
           data = yaml.safeLoad(yml);
 
-          if (typeof data.templates_dir === 'string' && exports.templatesDirCheck(data.templates_dir)) {
-            templatesDir = workDir + '/backend/' + data.templates_dir;
+          if (typeof data.templates_dir === 'string') {
+            // Need to trim multi-line YAML syntax
+            templatesDir = workDir + '/backend/' + data.templates_dir.trim();
+            if (!exports.templatesDirCheck(templatesDir)) {
+              templatesDir = '';
+            }
             // Unset templates_dir in local YAML data.
             delete data.templates_dir;
           }
 
-          if (typeof data.templates_ext === 'string' && exports.templatesExtCheck(data.templates_ext)) {
-            templatesExt = data.templates_ext;
+          if (typeof data.templates_ext === 'string') {
+            // Need to trim multi-line YAML syntax
+            templatesExt = data.templates_ext.trim();
+            if (!exports.templatesExtCheck(templatesExt)) {
+              templatesExt = '';
+            }
             // Unset templates_dir in local YAML data.
             delete data.templates_ext;
           }
