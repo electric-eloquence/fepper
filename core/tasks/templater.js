@@ -134,7 +134,7 @@ exports.tokensReplace = function (tokens, code, conf, pref) {
   return code;
 };
 
-exports.main = function (workDir, conf, pref, ext) {
+exports.main = function (workDir, conf, pref) {
   var code;
   var data = null;
   var dest;
