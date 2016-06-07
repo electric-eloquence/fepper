@@ -14,78 +14,72 @@ var yaml = require('js-yaml');
 
 var utils = require('../lib/utils');
 
-exports.targetDirGlob = function (srcDir) {
+exports.srcDirGlob = function (srcDir) {
   var glob1 = glob.sync(srcDir + '/!(__)*!(.yml)');
   var glob2 = glob.sync(srcDir + '/!(_no_sync)/!(__)*!(.yml)');
   return glob1.concat(glob2);
 };
 
-exports.main = function (workDir, conf, pref) {
+exports.main = function (workDir, conf, pref, frontendGlob, frontendDataKey) {
   var data;
   var files;
   var i;
-  var j;
   var srcDir = workDir + '/' + conf.src;
   var stats;
-  var syncTypeAppended;
-  var syncTypes = ['assets', 'scripts', 'styles'];
   var targetDir;
   var targetDirDefault;
   var yml;
   var ymlFile = '';
 
-  for (i = 0; i < syncTypes.length; i++) {
-    try {
-      syncTypeAppended = syncTypes[i] + '_dir';
-      targetDirDefault = utils.backendDirCheck(workDir, pref.backend.synced_dirs[syncTypeAppended]);
+  try {
+    targetDirDefault = utils.backendDirCheck(workDir, pref.backend.synced_dirs[frontendDataKey]);
 
-      // Search source directory for frontend files.
-      // Excluding files in _nosync directory and those prefixed by __.
-      // Trying to keep the globbing simple and maintainable.
-      files = exports.targetDirGlob(srcDir + '/' + syncTypes[i]);
-      for (j = 0; j < files.length; j++) {
-        stats = null;
-        targetDir = '';
+    // Search source directory for frontend files.
+    // Excluding files in _nosync directory and those prefixed by __.
+    // Trying to keep the globbing simple and maintainable.
+    files = exports.srcDirGlob(srcDir + '/' + frontendGlob);
+    for (i = 0; i < files.length; i++) {
+      stats = null;
+      targetDir = '';
 
-        // Read YAML file and store keys/values in tokens object.
-        ymlFile = files[j].replace(/\.[a-z]+$/, '.yml');
-        // Make sure the YAML file exists before proceeding.
+      // Read YAML file and store keys/values in tokens object.
+      ymlFile = files[i].replace(/\.[a-z]+$/, '.yml');
+      // Make sure the YAML file exists before proceeding.
+      try {
+        stats = fs.statSync(ymlFile);
+      }
+      catch (err) {
+        // Unset ymlFile if no YAML file.
+        ymlFile = '';
+      }
+
+      if (stats && stats.isFile()) {
         try {
-          stats = fs.statSync(ymlFile);
+          yml = fs.readFileSync(ymlFile, conf.enc);
+          data = yaml.safeLoad(yml);
+
+          if (typeof data[frontendDataKey] === 'string') {
+            targetDir = utils.backendDirCheck(workDir, data[frontendDataKey]);
+            // Unset templates_dir in local YAML data.
+            delete data[frontendDataKey];
+          }
         }
         catch (err) {
-          // Unset ymlFile if no YAML file.
-          ymlFile = '';
-        }
-
-        if (stats && stats.isFile()) {
-          try {
-            yml = fs.readFileSync(ymlFile, conf.enc);
-            data = yaml.safeLoad(yml);
-
-            if (typeof data[syncTypeAppended] === 'string') {
-              targetDir = utils.backendDirCheck(workDir, data[syncTypeAppended]);
-              // Unset templates_dir in local YAML data.
-              delete data[syncTypeAppended];
-            }
-          }
-          catch (err) {
-            // Fail gracefully.
-          }
-        }
-
-        if (targetDirDefault && !targetDir) {
-          targetDir = targetDirDefault;
-        }
-
-        if (targetDir) {
-          // Copy to targetDir.
-          fs.copySync(files[j], targetDir + '/' + path.basename(files[j]));
+          // Fail gracefully.
         }
       }
+
+      if (targetDirDefault && !targetDir) {
+        targetDir = targetDirDefault;
+      }
+
+      if (targetDir) {
+        // Copy to targetDir.
+        fs.copySync(files[i], targetDir + '/' + path.basename(files[i]));
+      }
     }
-    catch (err) {
-      utils.error(err);
-    }
+  }
+  catch (err) {
+    utils.error(err);
   }
 };
