@@ -117,22 +117,33 @@ gulp.task('fepper:static-generate', function (cb) {
 });
 
 gulp.task('fepper:template', function (cb) {
-  if (typeof pref.backend.synced_dirs.templates_dir === 'string' && pref.backend.synced_dirs.templates_dir.trim()) {
-    var p = new Promise(function (resolve, reject) {
-      process.chdir(pathIn);
-      tasks.template();
-      resolve();
-    });
-    p.then(function () {
-      process.chdir(pathOut);
-      cb();
-    })
-    .catch(function (reason) {
-      utils.error(reason);
-      cb();
-    });
-  }
-  else {
-    utils.warn('No templates_dir defined.');
-  }
+  var p = new Promise(function (resolve, reject) {
+    process.chdir(pathIn);
+    tasks.template();
+    resolve();
+  });
+  p.then(function () {
+    process.chdir(pathOut);
+    cb();
+  })
+  .catch(function (reason) {
+    utils.error(reason);
+    cb();
+  });
+});
+
+gulp.task('fepper:fc-test', function (cb) {
+  var p = new Promise(function (resolve, reject) {
+    process.chdir(pathIn);
+    tasks.fcTest();
+    resolve();
+  });
+  p.then(function () {
+    process.chdir(pathOut);
+    cb();
+  })
+  .catch(function (reason) {
+    utils.error(reason);
+    cb();
+  });
 });
