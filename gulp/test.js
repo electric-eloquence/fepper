@@ -5,28 +5,36 @@ var plugins = require('gulp-load-plugins')();
 
 gulp.task('test:eslint-fepper', function () {
   return gulp.src('./core/**/*.js')
-    .pipe(plugins.eslint())
+    // An ESLint bug requires that the node env be defined here and not in
+    // .eslintrc.json.
+    .pipe(plugins.eslint({envs: ['node']}))
     .pipe(plugins.eslint.format())
     .pipe(plugins.eslint.failAfterError());
 });
 
 gulp.task('test:eslint-gulp', function () {
   return gulp.src('./gulp/**/*.js')
-    .pipe(plugins.eslint())
+    // An ESLint bug requires that the node env be defined here and not in
+    // .eslintrc.json.
+    .pipe(plugins.eslint({envs: ['node']}))
     .pipe(plugins.eslint.format())
     .pipe(plugins.eslint.failAfterError());
 });
 
 gulp.task('test:eslint-root', function () {
   return gulp.src('./*.js')
-    .pipe(plugins.eslint())
+    // An ESLint bug requires that the node env be defined here and not in
+    // .eslintrc.json.
+    .pipe(plugins.eslint({envs: ['node']}))
     .pipe(plugins.eslint.format())
     .pipe(plugins.eslint.failAfterError());
 });
 
 gulp.task('test:eslint-test', function () {
   return gulp.src('./test/*.js')
-    .pipe(plugins.eslint())
+    // An ESLint bug requires that the node env be defined here and not in
+    // .eslintrc.json.
+    .pipe(plugins.eslint({envs: ['node']}))
     .pipe(plugins.eslint.format())
     .pipe(plugins.eslint.failAfterError());
 });
