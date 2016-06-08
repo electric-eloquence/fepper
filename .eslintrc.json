@@ -1,9 +1,10 @@
 {
   "extends": "eslint:recommended",
   "env": {
+    "amd": true,
     "browser": true,
     "es6": true,
-    "node": true
+    "mocha": true
   },
   "globals": {
     "describe": true,
@@ -76,7 +77,7 @@
     "space-infix-ops": 2,
     "space-unary-ops": [2, { "words": true, "nonwords": false }],
     "spaced-comment": [2, "always"],
-    "strict": 2,
+    "strict": [2, "safe"],
     "yoda": [2, "never"],
     // Warnings.
     "max-nested-callbacks": [1, 4],
