@@ -23,9 +23,9 @@ backend:
     #styles_dir: docroot/themes/theme/styles
     #templates_dir: docroot/themes/theme/templates
     #templates_ext: tpl.php
-    assets_dir:
-    scripts_dir:
-    styles_dir:
+    assets_dir: docroot/assets
+    scripts_dir: docroot/scripts
+    styles_dir: docroot/styles
     templates_dir: docroot/templates
     templates_ext: tpl.php
 

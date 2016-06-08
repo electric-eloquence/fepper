@@ -3,6 +3,7 @@
 var conf = global.conf;
 var gulp = require('gulp');
 
+var gulpUtils = require('./utils');
 var utils = require('../core/lib/utils');
 var rootDir = utils.rootDir();
 
@@ -11,73 +12,22 @@ var pathOut = rootDir;
 var FpPln = require('../core/fp-pln/fp-pln');
 var fpPln = new FpPln(rootDir, conf);
 
-gulp.task('patternlab:build', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    fpPln.build();
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
-});
+var buildTask = gulpUtils.fsContextClosure(pathIn, fpPln, 'build', pathOut);
+gulp.task('patternlab:build', buildTask);
 
-gulp.task('patternlab:clean', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    fpPln.clean();
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
-});
+var cleanTask = gulpUtils.fsContextClosure(pathIn, fpPln, 'clean', pathOut);
+gulp.task('patternlab:clean', cleanTask);
 
-gulp.task('patternlab:copy', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    fpPln.copy();
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
-});
+var copyTask = gulpUtils.fsContextClosure(pathIn, fpPln, 'copy', pathOut);
+gulp.task('patternlab:copy', copyTask);
 
-gulp.task('patternlab:copy-styles', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    fpPln.copyStyles();
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
-});
+var copyStylesTask = gulpUtils.fsContextClosure(pathIn, fpPln, 'copyStyles', pathOut);
+gulp.task('patternlab:copy-styles', copyStylesTask);
 
 gulp.task('patternlab:help', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
+    // No easy way to use the closure when passing params.
     fpPln.build('help');
     resolve();
   });
@@ -94,6 +44,7 @@ gulp.task('patternlab:help', function (cb) {
 gulp.task('patternlab:only-patterns', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
+    // No easy way to use the closure when passing params.
     fpPln.build('only-patterns');
     resolve();
   });
@@ -110,6 +61,7 @@ gulp.task('patternlab:only-patterns', function (cb) {
 gulp.task('patternlab:v', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
+    // No easy way to use the closure when passing params.
     fpPln.build('v');
     resolve();
   });
