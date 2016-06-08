@@ -85,7 +85,7 @@ exports.templatesExtCheck = function (templatesExt) {
 };
 
 exports.templatesGlob = function (srcDir) {
-  var glob1 = glob.sync(srcDir + '/!(__)*.mustache');
+  var glob1 = glob.sync(srcDir + '/*');
   var glob2 = glob.sync(srcDir + '/!(_nosync)/**');
 
   return glob1.concat(glob2);
@@ -141,7 +141,8 @@ exports.main = function (workDir, conf, pref) {
   var i;
   var patternDir = workDir + '/' + conf.src + '/_patterns';
   var srcDir = patternDir + '/03-templates';
-  var stats;
+  var stats1;
+  var stats2;
   var templatesDir;
   var templatesDirDefault;
   var templatesExt;
@@ -158,7 +159,24 @@ exports.main = function (workDir, conf, pref) {
     // Trying to keep the globbing simple and maintainable.
     files = exports.templatesGlob(srcDir);
     for (i = 0; i < files.length; i++) {
-      stats = null;
+      try {
+        stats1 = fs.statSync(files[i]);
+      }
+      catch (err) {
+        // Fail gracefully.
+      }
+
+      // Exclude directories and files prefixed by __ or not suffixed by .mustache.
+      if (
+        !stats1 ||
+        !stats1.isFile() ||
+        path.basename(files[i]).substring(0, 2) === '__' ||
+        files[i].slice(-9) !== '.mustache'
+      ) {
+        continue;
+      }
+
+      stats2 = null;
       templatesDir = '';
       templatesExt = '';
 
@@ -166,14 +184,14 @@ exports.main = function (workDir, conf, pref) {
       ymlFile = files[i].replace(/\.mustache$/, '.yml');
       // Make sure the YAML file exists before proceeding.
       try {
-        stats = fs.statSync(ymlFile);
+        stats2 = fs.statSync(ymlFile);
       }
       catch (err) {
         // Unset ymlFile if no YAML file.
         ymlFile = '';
       }
 
-      if (stats && stats.isFile()) {
+      if (stats2 && stats2.isFile()) {
         try {
           yml = fs.readFileSync(ymlFile, conf.enc);
           data = yaml.safeLoad(yml);

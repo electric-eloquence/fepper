@@ -40,7 +40,12 @@ exports.main = function (workDir, conf, pref, frontendGlob, frontendDataKey) {
       }
 
       // Exclude directories and files prefixed by __ or suffixed by .yml.
-      if (!stats1 || !stats1.isFile() || path.basename(files[i]).substring(0, 2) === '__' || files[i].slice(-4) === '.yml') {
+      if (
+        !stats1 ||
+        !stats1.isFile() ||
+        path.basename(files[i]).substring(0, 2) === '__' ||
+        files[i].slice(-4) === '.yml'
+      ) {
         continue;
       }
 
