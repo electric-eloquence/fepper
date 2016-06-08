@@ -16,7 +16,7 @@ gulp.task('fepper:copy-assets', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
     // No easy way to use the closure when passing params.
-    tasks.frontendCopy('assets', 'assets_dir');
+    tasks.frontendCopy('assets');
     resolve();
   });
   p.then(function () {
@@ -33,7 +33,7 @@ gulp.task('fepper:copy-scripts', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
     // No easy way to use the closure when passing params.
-    tasks.frontendCopy('scripts/*', 'scripts_dir');
+    tasks.frontendCopy('scripts');
     resolve();
   });
   p.then(function () {
@@ -50,7 +50,7 @@ gulp.task('fepper:copy-styles', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
     // No easy way to use the closure when passing params.
-    tasks.frontendCopy('styles', 'styles_dir');
+    tasks.frontendCopy('styles');
     resolve();
   });
   p.then(function () {
