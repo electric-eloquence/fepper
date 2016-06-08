@@ -4,6 +4,7 @@ var conf = global.conf;
 var pref = global.pref;
 var gulp = require('gulp');
 
+var gulpUtils = require('./utils');
 var utils = require('../core/lib/utils');
 var rootDir = utils.rootDir();
 
@@ -94,14 +95,14 @@ gulp.task('fepper:data', function (cb) {
   };
 });
 
-var patternOverrideTask = utils.fsContextClosure(pathIn, tasks, 'patternOverride', pathOut);
+var patternOverrideTask = gulpUtils.fsContextClosure(pathIn, tasks, 'patternOverride', pathOut);
 gulp.task('fepper:pattern-override', patternOverrideTask);
 
-var publishTask = utils.fsContextClosure(pathIn, tasks, 'publish', pathOut);
+var publishTask = gulpUtils.fsContextClosure(pathIn, tasks, 'publish', pathOut);
 gulp.task('fepper:publish', publishTask);
 
-var staticGenerateTask = utils.fsContextClosure(pathIn, tasks, 'staticGenerate', pathOut);
+var staticGenerateTask = gulpUtils.fsContextClosure(pathIn, tasks, 'staticGenerate', pathOut);
 gulp.task('fepper:static-generate', staticGenerateTask);
 
-var templateTask = utils.fsContextClosure(pathIn, tasks, 'template', pathOut);
+var templateTask = gulpUtils.fsContextClosure(pathIn, tasks, 'template', pathOut);
 gulp.task('fepper:template', templateTask);
