@@ -20,7 +20,7 @@ var templatesAlt = templatesDir + '-alt';
 
 describe('Templater', function () {
   it('should recurse through Mustache partials', function () {
-    var fileFurthest = patternDir + '/00-atoms/03-images/00-logo.mustache';
+    var fileFurthest = patternDir + '/00-elements/03-images/00-logo.mustache';
     var fileRoot = patternDir + '/03-templates/00-homepage.mustache';
     var code = templater.mustacheRecurse(fileRoot, conf, patternDir);
     var partial = fs.readFileSync(fileFurthest, conf.enc);
