@@ -100,7 +100,7 @@ exports.main = function (workDir, conf, pref, frontendType) {
           // If copying scripts, do not segregate min from src.
           if (frontendType === 'scripts') {
             scriptsTarget = files[i].replace(srcDir + '/' + frontendType + '/min', '');
-            scriptsTarget = files[i].replace(srcDir + '/' + frontendType + '/src', '');
+            scriptsTarget = scriptsTarget.replace(srcDir + '/' + frontendType + '/src', '');
             fs.copySync(files[i], targetDir + '/' + scriptsTarget);
           }
           else {
