@@ -11,6 +11,10 @@ module.exports = class {
     require('./appendixer.js').main(this.workDir, this.conf);
   }
 
+  frontendCopy(frontendType) {
+    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref, frontendType);
+  }
+
   jsonCompile() {
     require('./json-compiler.js').main(this.workDir, this.conf);
   }

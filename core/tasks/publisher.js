@@ -93,7 +93,7 @@ exports.main = function (workDir, publishDir, conf, pref, test) {
   var webservedDirsFull;
 
   // First, make sure pref.gh_pages_src is set.
-  if (!pref.gh_pages_src) {
+  if (typeof pref.gh_pages_src !== 'string' || !pref.gh_pages_src.trim()) {
     utils.warn('gh_pages_src not set for ' + workDir + '. Skipping...');
     return;
   }

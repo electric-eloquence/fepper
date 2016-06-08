@@ -54,12 +54,12 @@
   });
 
   gulp.task('css-process:frontend-copy', function (cb) {
-    runSequence(
 // Uncomment when enabling any CSS processor.
+//    runSequence(
 //      'css-process:compile-no-comments',
 //      'patternlab:copy-styles',
-      cb
-    );
+//      cb
+//    );
   });
 
   gulp.task('css-process:watch', function () {

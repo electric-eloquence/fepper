@@ -14,11 +14,11 @@ var testDir = rootDir + '/' + conf.test_dir;
 var MustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
 var mustacheBrowser = new MustacheBrowser(testDir + '/' + conf.src + '/_patterns', conf);
 
-var mustache = '<section id="one" class="test">{{> 02-organisms/00-global/00-header(\'partial?\': true) }}</section><section id="two" class="test">{{> 02-organisms/00-global/01-footer.mustache }}</section><script></script><textarea></textarea></body></html>';
+var mustache = '<section id="one" class="test">{{> 02-components/00-global/00-header(\'partial?\': true) }}</section><section id="two" class="test">{{> 02-components/00-global/01-footer.mustache }}</section><script></script><textarea></textarea></body></html>';
 var htmlEntitiesAndLinks = mustacheBrowser.toHtmlEntitiesAndLinks(mustache);
-var partialTag = '{{> 02-organisms/00-global/00-header(\'partial?\': true) }}';
+var partialTag = '{{> 02-components/00-global/00-header(\'partial?\': true) }}';
 var partialPath = mustacheBrowser.partialTagToPath(partialTag);
-var partialTag2 = '{{> 02-organisms/00-global/00-footer.mustache }}';
+var partialTag2 = '{{> 02-components/00-global/00-footer.mustache }}';
 var partialPath2 = mustacheBrowser.partialTagToPath(partialTag);
 
 describe('Mustache Browser', function () {
@@ -35,7 +35,7 @@ describe('Mustache Browser', function () {
   it('should link Mustache partials', function () {
     expect(htmlEntitiesAndLinks).to.contain('<a href="');
     expect(htmlEntitiesAndLinks).to.contain('</a>');
-    expect(htmlEntitiesAndLinks).to.equal('&lt;section id=&quot;one&quot; class=&quot;test&quot;&gt;<a href="?partial={{&gt; 02-organisms/00-global/00-header(\'partial?\': true) }}">{{&gt; 02-organisms/00-global/00-header(\'partial?\': true) }}</a>&lt;/section&gt;&lt;section id=&quot;two&quot; class=&quot;test&quot;&gt;<a href="?partial={{&gt; 02-organisms/00-global/01-footer.mustache }}">{{&gt; 02-organisms/00-global/01-footer.mustache }}</a>&lt;/section&gt;&lt;script&gt;&lt;/script&gt;&lt;textarea&gt;&lt;/textarea&gt;&lt;/body&gt;&lt;/html&gt;');
+    expect(htmlEntitiesAndLinks).to.equal('&lt;section id=&quot;one&quot; class=&quot;test&quot;&gt;<a href="?partial={{&gt; 02-components/00-global/00-header(\'partial?\': true) }}">{{&gt; 02-components/00-global/00-header(\'partial?\': true) }}</a>&lt;/section&gt;&lt;section id=&quot;two&quot; class=&quot;test&quot;&gt;<a href="?partial={{&gt; 02-components/00-global/01-footer.mustache }}">{{&gt; 02-components/00-global/01-footer.mustache }}</a>&lt;/section&gt;&lt;script&gt;&lt;/script&gt;&lt;textarea&gt;&lt;/textarea&gt;&lt;/body&gt;&lt;/html&gt;');
   });
 
   it('should strip Mustache tags to get partial path', function () {
@@ -47,7 +47,7 @@ describe('Mustache Browser', function () {
     expect(partialPath).to.not.contain('}}');
     expect(partialPath).to.not.contain('(');
     expect(partialPath).to.not.contain(')');
-    expect(partialPath).to.equal('02-organisms/00-global/00-header.mustache');
+    expect(partialPath).to.equal('02-components/00-global/00-header.mustache');
   });
 
   it('should append .mustache extension to end of partials with no extension', function () {

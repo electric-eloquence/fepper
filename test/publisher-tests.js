@@ -46,9 +46,9 @@ describe('Publisher', function () {
   });
 
   it('should prefix webserved_dirs with gh_pages_prefix', function () {
-    var fileBeforePath = testDir + '/' + conf.pub + '/patterns/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
+    var fileBeforePath = testDir + '/' + conf.pub + '/patterns/00-elements-03-images-00-logo/00-elements-03-images-00-logo.html';
     var fileBefore = fs.readFileSync(fileBeforePath);
-    var fileAfterPath = ghPagesDir + '/00-atoms-03-images-00-logo/00-atoms-03-images-00-logo.html';
+    var fileAfterPath = ghPagesDir + '/00-elements-03-images-00-logo/00-elements-03-images-00-logo.html';
 
     fs.copySync(fileBeforePath, fileAfterPath);
     publisher.filesProcess([fileAfterPath], conf, webservedDirs, pref.gh_pages_prefix, testDir, testDir);
