@@ -11,8 +11,8 @@ module.exports = class {
     require('./appendixer.js').main(this.workDir, this.conf);
   }
 
-  frontendCopy(frontendGlob, frontendDataKey) {
-    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref, frontendGlob, frontendDataKey);
+  frontendCopy(frontendType) {
+    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref, frontendType);
   }
 
   jsonCompile() {

@@ -13,10 +13,13 @@ exports.srcDirGlob = function (srcDir) {
   return glob1.concat(glob2);
 };
 
-exports.main = function (workDir, conf, pref, frontendGlob, frontendDataKey) {
+exports.main = function (workDir, conf, pref, frontendType) {
   var data;
   var files;
+  var frontendDataKey = frontendType + '_dir';
+  var frontendGlob = frontendType;
   var i;
+  var scriptsTarget;
   var srcDir = workDir + '/' + conf.src;
   var stats1;
   var stats2;
@@ -26,6 +29,7 @@ exports.main = function (workDir, conf, pref, frontendGlob, frontendDataKey) {
   var ymlFile = '';
 
   try {
+    frontendGlob += frontendType === 'scripts' ? '/*' : '';
     targetDirDefault = utils.backendDirCheck(workDir, pref.backend.synced_dirs[frontendDataKey]);
 
     // Search source directory for frontend files.
@@ -54,6 +58,12 @@ exports.main = function (workDir, conf, pref, frontendGlob, frontendDataKey) {
 
       // Read YAML file and store keys/values in tokens object.
       ymlFile = files[i].replace(/\.[a-z]+$/, '.yml');
+
+      // If iterating on minified script, check for its source file's YAML.
+      if (frontendType === 'scripts' && files[i].indexOf(srcDir + '/scripts/min/') === 0) {
+        ymlFile = ymlFile.replace(srcDir + '/scripts/min/', srcDir + '/scripts/src/');
+      }
+
       // Make sure the YAML file exists before proceeding.
       try {
         stats2 = fs.statSync(ymlFile);
@@ -85,7 +95,21 @@ exports.main = function (workDir, conf, pref, frontendGlob, frontendDataKey) {
 
       if (targetDir) {
         // Copy to targetDir.
-        fs.copySync(files[i], targetDir + '/' + path.basename(files[i]));
+        // If copying to default target, retain nested directory structure.
+        if (targetDir === targetDirDefault) {
+          // If copying scripts, do not segregate min from src.
+          if (frontendType === 'scripts') {
+            scriptsTarget = files[i].replace(srcDir + '/' + frontendType + '/min', '');
+            scriptsTarget = files[i].replace(srcDir + '/' + frontendType + '/src', '');
+            fs.copySync(files[i], targetDir + '/' + scriptsTarget);
+          }
+          else {
+            fs.copySync(files[i], targetDir + '/' + files[i].replace(srcDir + '/' + frontendType + '/', ''));
+          }
+        }
+        else {
+          fs.copySync(files[i], targetDir + '/' + path.basename(files[i]));
+        }
       }
     }
   }
