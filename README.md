@@ -136,32 +136,15 @@ while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or
 even just a symbolic link to the codebase into the `backend` directory. Then, 
 enter the relative paths to the appropriate backend directories into `pref.yml`. 
 (Do not include "backend" or a leading slash.) You will then be able to run 
-`fp syncback`, `fp frontend-copy`, or `fp template` to export your frontend data 
-into your backend web application.
+`fp syncback` or `fp frontend-copy` to export your frontend data into your 
+backend web application.
 
-###<a id="webserved-directories"></a>Webserved Directories
-When using a backend, assets generally need to be shared with the Fepper 
-frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
-backend, but not the other way. Instead of providing a task to copy in the 
-reverse direction, Fepper serves backend files if their directories are entered 
-into the `webserved_dirs` block in `pref.yml`. Be sure these values are 
-formatted as YAML array elements.
-
-```
-DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 
-HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO ANY PUBLISHED 
-SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE 
-INFORMATION CONTAINED WITHIN THE SOURCE CODE!
-```
-
-###<a id="github-pages"></a>GitHub Pages
-If you have checked your Fepper instance into a repository in your GitHub 
-account, you may run `fp publish` to publish `patternlab-node/public` to GitHub 
-Pages. The Pattern Lab UI and Fepper static files will then be viewable from the 
-Web at `http://{user}.github.io/{repo}`. Normally, this is all that is needed. 
-However, if you are using `webserved_dirs`, you will need to supply a 
-`gh_pages_prefix` preference in `pref.yml`. This preference needs to be set to 
-the name of your GitHub repository.
+* Be sure that `backend.synced_dirs.assets_dir`, `backend.synced_dirs.scripts_dir`, and `backend.synced_dirs.styles_dir` are set in `pref.yml`. 
+* The above values set in `pref.yml` can be overridden on a per-file basis by similarly named YAML files with similarly named settings. 
+* These YAML files must match the source file's name with exception of the extension. 
+* The extension must be `.yml`
+* The overriding property must only contain the lowest level key-value, not the entire hierarchy, i.e. only `assets_dir`, `scripts_dir`, or `styles_dir` 
+* Files prefixed by "\_\_" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
 
 ###<a id="templater"></a>Templater
 Pattern Lab's Mustache templates can be translated into templates compatible 
@@ -191,6 +174,30 @@ Run `fp syncback` or `fp template` to execute the Templater.
 [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) and 
 [Fepper for WordPress](https://github.com/electric-eloquence/fepper-wordpress) 
 have working examples of templates compatible with the Templater.
+
+###<a id="webserved-directories"></a>Webserved Directories
+When using a backend, assets generally need to be shared with the Fepper 
+frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
+backend, but not the other way. Instead of providing a task to copy in the 
+reverse direction, Fepper serves backend files if their directories are entered 
+into the `webserved_dirs` block in `pref.yml`. Be sure these values are 
+formatted as YAML array elements.
+
+```
+DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! GITHUB PAGES AND MANY OTHER PUBLIC 
+HOSTS DO NOT PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES, SO ANY PUBLISHED 
+SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE 
+INFORMATION CONTAINED WITHIN THE SOURCE CODE!
+```
+
+###<a id="github-pages"></a>GitHub Pages
+If you have checked your Fepper instance into a repository in your GitHub 
+account, you may run `fp publish` to publish `patternlab-node/public` to GitHub 
+Pages. The Pattern Lab UI and Fepper static files will then be viewable from the 
+Web at `http://{user}.github.io/{repo}`. Normally, this is all that is needed. 
+However, if you are using `webserved_dirs`, you will need to supply a 
+`gh_pages_prefix` preference in `pref.yml`. This preference needs to be set to 
+the name of your GitHub repository.
 
 ###<a id="mustache-browser"></a>Mustache Browser
 Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
