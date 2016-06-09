@@ -3,6 +3,39 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 
+gulp.task('test:eslint-extend', [
+  'test:eslint-extend:1',
+  'test:eslint-extend:2',
+  'test:eslint-extend:3'
+]);
+
+gulp.task('test:eslint-extend:1', function () {
+  return gulp.src('./excludes/extend/*.js')
+    // An ESLint bug requires that the node env be defined here and not in
+    // .eslintrc.json.
+    .pipe(plugins.eslint({envs: ['node']}))
+    .pipe(plugins.eslint.format())
+    .pipe(plugins.eslint.failAfterError());
+});
+
+gulp.task('test:eslint-extend:2', function () {
+  return gulp.src('./excludes/extend/*/*.js')
+    // An ESLint bug requires that the node env be defined here and not in
+    // .eslintrc.json.
+    .pipe(plugins.eslint({envs: ['node']}))
+    .pipe(plugins.eslint.format())
+    .pipe(plugins.eslint.failAfterError());
+});
+
+gulp.task('test:eslint-extend:3', function () {
+  return gulp.src('./excludes/extend/*/*/*.js')
+    // An ESLint bug requires that the node env be defined here and not in
+    // .eslintrc.json.
+    .pipe(plugins.eslint({envs: ['node']}))
+    .pipe(plugins.eslint.format())
+    .pipe(plugins.eslint.failAfterError());
+});
+
 gulp.task('test:eslint-fepper', function () {
   return gulp.src('./core/**/*.js')
     // An ESLint bug requires that the node env be defined here and not in
