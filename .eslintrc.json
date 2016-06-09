@@ -1,17 +1,12 @@
 {
   "extends": "eslint:recommended",
   "env": {
-    "amd": true,
     "browser": true,
     "es6": true,
     "mocha": true
   },
   "globals": {
-    "describe": true,
-    "expect": true,
-    "it": true,
-    "jQuery": true,
-    "Modernizr": true
+    "jQuery": true
   },
   "rules": {
     // Errors.
