@@ -152,6 +152,7 @@ gulp.task('template', function (cb) {
 
 gulp.task('test', function (cb) {
   runSequence(
+    'test:eslint-extend',
     'test:eslint-fepper',
     'test:eslint-gulp',
     'test:eslint-root',

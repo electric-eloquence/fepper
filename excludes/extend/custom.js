@@ -1,48 +1,49 @@
 /**
- * Put tasks defined in _extend.js appended files within the more general tasks 
+ * Put tasks defined in _extend.js appended files within the more general tasks
  * listed below.
  */
-(function () {
-  'use strict';
+'use strict';
 
-  var gulp = require('gulp');
+var gulp = require('gulp');
 
-  gulp.task('custom:data', [
-  ]);
+gulp.task('custom:data', [
+]);
 
-  gulp.task('custom:frontend-copy', [
-    'css-process:frontend-copy'
-  ]);
+gulp.task('custom:frontend-copy', [
+// Uncomment if you wish to enable this.
+//  'css-process:frontend-copy'
+]);
 
-  gulp.task('custom:lint', [
-  ]);
+gulp.task('custom:lint', [
+]);
 
-  gulp.task('custom:minify', [
-  ]);
+gulp.task('custom:minify', [
+]);
 
-  gulp.task('custom:once', [
-    'css-process'
-  ]);
+gulp.task('custom:once', [
+// Uncomment if you wish to enable this.
+//  'css-process'
+]);
 
-  // You can only publish one site at a time. If the custom:publish task is to 
-  // be enabled, the core fepper:publish task should be disabled by unsetting 
-  // the gh_pages_src setting in pref.yml.
-  gulp.task('custom:publish', [
-  ]);
+// You can only publish one site at a time. If the custom:publish task is to
+// be enabled, the core fepper:publish task should be disabled by unsetting
+// the gh_pages_src setting in pref.yml.
+gulp.task('custom:publish', [
+]);
 
-  gulp.task('custom:static', [
-  ]);
+gulp.task('custom:static', [
+]);
 
-  gulp.task('custom:syncback', [
-  ]);
+gulp.task('custom:syncback', [
+]);
 
-  gulp.task('custom:tcp-ip', [
-  ]);
+gulp.task('custom:tcp-ip', [
+]);
 
-  gulp.task('custom:template', [
-  ]);
+gulp.task('custom:template', [
+]);
 
-  gulp.task('custom:watch', [
-    'css-process:watch'
-  ]);
-})();
+gulp.task('custom:watch', [
+// Uncomment if you wish to enable this.
+//  'css-process:watch'
+]);
