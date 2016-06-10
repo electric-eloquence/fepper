@@ -26,13 +26,12 @@
 * [Contributing](#contributing)
 
 ###<a id="installation"></a>Installation
-
 * On Mac OS X:
   * Install [Homebrew](http://brew.sh).
 * On other Unix-like OSs:
   * Permissions might need to be reworked in order to globally install NPMs.
   * It is a bad practice to run npm as root.
-  * If necessary, recursively chown the global node\_modules directory with the standard user's ownership.
+  * If necessary, recursively chown the global node_modules directory with the standard user's ownership.
 * On non-Unix-like OSs:
   * Sorry, but Fepper is not supported on non-Unix-like OSs.
 * Install Node.js and NPM (Node Package Manager).
@@ -73,14 +72,12 @@ code from a child project will overwrite custom code specific to your instance
 so don't do it.
 
 ###<a id="configuration"></a>Configuration
-
 Edit `pref.yml` to customize preferences and to view further documentation in 
 the comments. If you wish to use the `syncback`, `frontend-copy`, or `template` 
 tasks, you must supply values for the `backend.synced_dirs` preferences in order 
 for those directories to get processed and copied to the backend.
 
 ###<a id="utilization"></a>Utilization
-
 * To launch from Mac OS X Finder:
   * Double-click `fepper.command`
 * To launch from the command line:
@@ -115,9 +112,9 @@ another pattern. However, `_00-homepage.json` is _partial data_ and will get
 concatenated to the _global data_ outputted to `data.json`. `_00-homepage.json` 
 will be picked up by all patterns.
 
-* __DO NOT EDIT patternlab-node/source/\_data/data.json__
-* __DO PUT GLOBAL DATA IN patternlab-node/source/\_data/\_data.json__
-* __DO LIBERALLY USE PARTIAL DATA IN patternlab-node/source/\_patterns FOR ORGANIZATIONAL SANITY__
+* __DO NOT EDIT patternlab-node/source/_data/data.json__
+* __DO PUT GLOBAL DATA IN patternlab-node/source/_data/_data.json__
+* __DO LIBERALLY USE PARTIAL DATA IN patternlab-node/source/_patterns FOR ORGANIZATIONAL SANITY__
 
 ###<a id="static-site-generation"></a>Static Site Generation
 Running `fp static` will generate a complete static site based on the files 
@@ -144,7 +141,7 @@ backend web application.
 * These YAML files must match the source file's name with exception of the extension. 
 * The extension must be `.yml`
 * The overriding property must only contain the lowest level key-value, not the entire hierarchy, i.e. only `assets_dir`, `scripts_dir`, or `styles_dir` 
-* Files prefixed by "\_\_" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
+* Files prefixed by "__" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
 
 ###<a id="templater"></a>Templater
 Pattern Lab's Mustache templates can be translated into templates compatible 
@@ -167,7 +164,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
 
 * Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
 * The default `templates_dir` and `templates_ext` settings in `pref.yml` can be overridden by similarly named settings in the template-specific YAML files. 
-* Templates prefixed by "\_\_" will be ignored by the Templater as will files in the `_nosync` directory. 
+* Templates prefixed by "__" will be ignored by the Templater as will files in the `_nosync` directory. 
 * The Templater will recurse through nested Mustache templates if the tags are written in the verbose syntax and have the `.mustache` extension, i.e. `{{> 02-organisms/00-global/00-header.mustache }}`. 
 * However, the more common inclusion use-case is to leave off the extension, and not recurse. 
 
@@ -259,13 +256,11 @@ CSS-like syntax (with curly braces, colons, and semi-colons) is perfectly valid
 as well.
 
 ###<a id="more-documentation"></a>More Documentation
-
 * [default.pref.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.pref.yml)
 * [Pattern Lab](http://patternlab.io/docs/index.html)
 * [Mustache](https://mustache.github.io/mustache.5.html)
 
 ###<a id="contributing"></a>Contributing
-
 Contributions and bug fixes are greatly appreciated!
 
 * Please pull request against the [dev branch](https://github.com/electric-eloquence/fepper/tree/dev).
