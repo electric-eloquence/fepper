@@ -1,2 +1,0 @@
-* Install and update contributed extensions with NPM.
-* Add the tasks to contrib.js (and auxiliary/auxiliary_contrib.js if necessary) in order for Fepper to run them.
