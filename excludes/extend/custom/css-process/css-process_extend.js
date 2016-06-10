@@ -62,5 +62,5 @@ gulp.task('css-process:watch', function () {
 
 // Delete the previous block and uncomment the following block to use SCSS.
 // Replace them both to use something else.
-//    gulp.watch('./' + conf.src + '/css-processors/scss/**/*.scss', ['css-process']);
+//  gulp.watch('./' + conf.src + '/css-processors/scss/**/*.scss', ['css-process']);
 });
