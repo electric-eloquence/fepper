@@ -1,0 +1,12 @@
+{
+  "version": "0.0.0",
+  "description": "Fepper extensions",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/electric-eloquence/fepper.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "multisite": "*"
+  }
+}
