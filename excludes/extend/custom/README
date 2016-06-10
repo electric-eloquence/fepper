@@ -1,4 +1,0 @@
-* Write custom extensions here.
-* They should be contained within an appropriately named directory.
-* They must include a file ending in "_extend.js" in order for Fepper to recognize their tasks.
-* Add the tasks to custom.js (and auxiliary/auxiliary_custom.js if necessary) in order for Fepper to run them.
