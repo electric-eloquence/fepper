@@ -10,7 +10,7 @@
 /npm-debug.log
 /pref.yml
 Thumbs.db
-ignore*
+ignore
 patternlab-node/patternlab-config.json
 patternlab-node/public/*
 !patternlab-node/public/data/annotations.js
