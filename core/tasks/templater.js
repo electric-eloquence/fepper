@@ -117,7 +117,8 @@ exports.tokensReplace = function (tokens, code, conf, pref) {
     if (tokens.hasOwnProperty(i)) {
       unescaped = exports.mustacheUnescape(i);
       re = new RegExp('\\{\\{\\s*' + unescaped + '\\s*\\}\\}', 'g');
-      code = code.replace(re, tokens[i]);
+      token = tokens[i].replace(/\n$/, '');
+      code = code.replace(re, token);
     }
   }
 
