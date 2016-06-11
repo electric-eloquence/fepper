@@ -65,26 +65,26 @@ gulp.task('fepper:copy-styles', function (cb) {
 });
 
 gulp.task('fepper:data', function (cb) {
-  var p1 = new Promise(function (resolve, reject) {
+  var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
     tasks.appendix();
     resolve();
   });
-  p1.then(function () {
+  p.then(function () {
     // No easy way to use the closure when chaining promised functions.
-    p2();
+    p1();
   })
   .catch(function (reason) {
     utils.error(reason);
     cb();
   });
 
-  var p2 = function () {
-    var p = new Promise(function (resolve, reject) {
+  var p1 = function () {
+    var p2 = new Promise(function (resolve, reject) {
       tasks.jsonCompile();
       resolve();
     });
-    p.then(function () {
+    p2.then(function () {
       process.chdir(pathOut);
       cb();
     })
