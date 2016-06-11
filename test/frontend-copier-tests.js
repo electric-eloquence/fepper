@@ -38,26 +38,26 @@ describe('Frontend Copier', function () {
     frontendCopier.main(testDir, conf, pref, 'styles');
 
     var assetCopied = fs.statSync(assetsTargetDir + '/logo.png');
-    var scriptCopied1 = fs.statSync(scriptsTargetDir + '/fepper-obj.js');
-    var scriptCopied2 = fs.statSync(scriptsTargetDir + '/variables.styl');
-    var scriptCopied3 = fs.statSync(scriptsTargetDir + '-alt/variables-alt.styl');
-    var styleCopied1 = fs.statSync(stylesTargetDir + '/style.css');
-    var styleCopied2 = fs.statSync(stylesTargetDir + '-alt/style-alt.css');
-    var styleCopied3 = fs.statSync(stylesTargetDir + '/fonts/icons.svg');
-    var styleCopied4 = fs.statSync(stylesTargetDir + '/fonts-alt/icons-alt.svg');
-    var styleCopied5 = fs.statSync(stylesTargetDir + '/fonts/nested/icons.nested.svg');
-    var styleCopied6 = fs.statSync(stylesTargetDir + '/fonts/nested-alt/icons.nested-alt.svg');
+    var scriptCopied = fs.statSync(scriptsTargetDir + '/fepper-obj.js');
+    var scriptCopied1 = fs.statSync(scriptsTargetDir + '/variables.styl');
+    var scriptCopied2 = fs.statSync(scriptsTargetDir + '-alt/variables-alt.styl');
+    var styleCopied = fs.statSync(stylesTargetDir + '/style.css');
+    var styleCopied1 = fs.statSync(stylesTargetDir + '-alt/style-alt.css');
+    var styleCopied2 = fs.statSync(stylesTargetDir + '/fonts/icons.svg');
+    var styleCopied3 = fs.statSync(stylesTargetDir + '/fonts-alt/icons-alt.svg');
+    var styleCopied4 = fs.statSync(stylesTargetDir + '/fonts/nested/icons.nested.svg');
+    var styleCopied5 = fs.statSync(stylesTargetDir + '/fonts/nested-alt/icons.nested-alt.svg');
 
     expect(typeof assetCopied).to.equal('object');
+    expect(typeof scriptCopied).to.equal('object');
     expect(typeof scriptCopied1).to.equal('object');
     expect(typeof scriptCopied2).to.equal('object');
-    expect(typeof scriptCopied3).to.equal('object');
+    expect(typeof styleCopied).to.equal('object');
     expect(typeof styleCopied1).to.equal('object');
     expect(typeof styleCopied2).to.equal('object');
     expect(typeof styleCopied3).to.equal('object');
     expect(typeof styleCopied4).to.equal('object');
     expect(typeof styleCopied5).to.equal('object');
-    expect(typeof styleCopied6).to.equal('object');
   });
 
   it('should ignore frontend files prefixed with two undercores', function () {
