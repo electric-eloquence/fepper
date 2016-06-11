@@ -8,9 +8,9 @@ var yaml = require('js-yaml');
 var utils = require('../lib/utils');
 
 exports.srcDirGlob = function (srcDir) {
-  var glob1 = glob.sync(srcDir + '/*');
-  var glob2 = glob.sync(srcDir + '/!(_nosync)/**');
-  return glob1.concat(glob2);
+  var globbed = glob.sync(srcDir + '/*');
+  var globbed1 = glob.sync(srcDir + '/!(_nosync)/**');
+  return globbed.concat(globbed1);
 };
 
 exports.main = function (workDir, conf, pref, frontendType) {
@@ -21,8 +21,9 @@ exports.main = function (workDir, conf, pref, frontendType) {
   var i;
   var scriptsTarget;
   var srcDir = workDir + '/' + conf.src;
+  var srcDir1;
+  var stats;
   var stats1;
-  var stats2;
   var targetDir;
   var targetDirDefault;
   var yml;
@@ -37,7 +38,7 @@ exports.main = function (workDir, conf, pref, frontendType) {
     files = exports.srcDirGlob(srcDir + '/' + frontendGlob);
     for (i = 0; i < files.length; i++) {
       try {
-        stats1 = fs.statSync(files[i]);
+        stats = fs.statSync(files[i]);
       }
       catch (err) {
         // Fail gracefully.
@@ -45,41 +46,47 @@ exports.main = function (workDir, conf, pref, frontendType) {
 
       // Exclude directories and files prefixed by __ or suffixed by .yml.
       if (
-        !stats1 ||
-        !stats1.isFile() ||
+        !stats ||
+        !stats.isFile() ||
         path.basename(files[i]).substring(0, 2) === '__' ||
         files[i].slice(-4) === '.yml'
       ) {
         continue;
       }
 
-      stats2 = null;
+      srcDir1 = srcDir;
+      stats1 = null;
       targetDir = '';
 
       // Read YAML file and store keys/values in tokens object.
       ymlFile = files[i].replace(/\.[a-z]+$/, '.yml');
 
       // If iterating on minified script, check for its source file's YAML.
-      if (frontendType === 'scripts' && files[i].indexOf(srcDir + '/scripts/min/') === 0) {
-        ymlFile = ymlFile.replace(srcDir + '/scripts/min/', srcDir + '/scripts/src/');
+      if (frontendType === 'scripts' && files[i].indexOf(srcDir1 + '/scripts/min/') === 0) {
+        ymlFile = ymlFile.replace(srcDir1 + '/scripts/min/', srcDir1 + '/scripts/src/');
       }
 
       // Make sure the YAML file exists before proceeding.
       try {
-        stats2 = fs.statSync(ymlFile);
+        stats1 = fs.statSync(ymlFile);
       }
       catch (err) {
         // Unset ymlFile if no YAML file.
         ymlFile = '';
       }
 
-      if (stats2 && stats2.isFile()) {
+      if (stats1 && stats1.isFile()) {
         try {
           yml = fs.readFileSync(ymlFile, conf.enc);
           data = yaml.safeLoad(yml);
 
           if (typeof data[frontendDataKey] === 'string') {
             targetDir = utils.backendDirCheck(workDir, data[frontendDataKey]);
+            // Do not maintain nested directory structure in backend if
+            // frontendDataKey is set in exceptional YAML file.
+            if (targetDir) {
+              srcDir1 = path.dirname(files[i]);
+            }
             // Unset templates_dir in local YAML data.
             delete data[frontendDataKey];
           }
@@ -99,12 +106,12 @@ exports.main = function (workDir, conf, pref, frontendType) {
         if (targetDir === targetDirDefault) {
           // If copying scripts, do not segregate min from src.
           if (frontendType === 'scripts') {
-            scriptsTarget = files[i].replace(srcDir + '/' + frontendType + '/min', '');
-            scriptsTarget = scriptsTarget.replace(srcDir + '/' + frontendType + '/src', '');
+            scriptsTarget = files[i].replace(srcDir1 + '/' + frontendType + '/min', '');
+            scriptsTarget = scriptsTarget.replace(srcDir1 + '/' + frontendType + '/src', '');
             fs.copySync(files[i], targetDir + '/' + scriptsTarget);
           }
           else {
-            fs.copySync(files[i], targetDir + '/' + files[i].replace(srcDir + '/' + frontendType + '/', ''));
+            fs.copySync(files[i], targetDir + '/' + files[i].replace(srcDir1 + '/' + frontendType + '/', ''));
           }
         }
         else {
