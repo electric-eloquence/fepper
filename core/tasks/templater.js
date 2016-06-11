@@ -15,8 +15,8 @@ var yaml = require('js-yaml');
 var utils = require('../lib/utils');
 
 exports.mustacheRecurse = function (file, conf, patternDir) {
-  var code1;
-  var code2 = '';
+  var code;
+  var code1 = '';
   var codeSplit;
   var i;
   var j;
@@ -25,9 +25,9 @@ exports.mustacheRecurse = function (file, conf, patternDir) {
 
   try {
     // Read code which will receive token replacement.
-    code1 = fs.readFileSync(file, conf.enc);
+    code = fs.readFileSync(file, conf.enc);
     // Split by Mustache tag for parsing.
-    codeSplit = code1.split('{{');
+    codeSplit = code.split('{{');
     for (i = 0; i < codeSplit.length; i++) {
       // Signal the OK to recurse by appending partial tags with the .mustache
       // extension. We do NOT want to recurse EVERY included partial because
@@ -37,27 +37,27 @@ exports.mustacheRecurse = function (file, conf, patternDir) {
         partial = codeSplit[i].split('}}');
         partial[0] = partial[0].replace(/^>\s*/, '').trim();
         partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], conf, patternDir);
-        code2 += partialCode;
+        code1 += partialCode;
         for (j = 0; j < partial.length; j++) {
           if (j > 0) {
-            code2 += partial[j];
+            code1 += partial[j];
             if (j < partial.length - 1) {
-              code2 += '}}';
+              code1 += '}}';
             }
           }
         }
       }
       else {
         if (i > 0) {
-          code2 += '{{' + codeSplit[i];
+          code1 += '{{' + codeSplit[i];
         }
         else {
-          code2 += codeSplit[i];
+          code1 += codeSplit[i];
         }
       }
     }
 
-    return code2;
+    return code1;
   }
   catch (err) {
     utils.error(err);
@@ -85,10 +85,10 @@ exports.templatesExtCheck = function (templatesExt) {
 };
 
 exports.templatesGlob = function (srcDir) {
-  var glob1 = glob.sync(srcDir + '/*');
-  var glob2 = glob.sync(srcDir + '/!(_nosync)/**');
+  var globbed = glob.sync(srcDir + '/*');
+  var globbed1 = glob.sync(srcDir + '/!(_nosync)/**');
 
-  return glob1.concat(glob2);
+  return globbed.concat(globbed1);
 };
 
 exports.templatesWrite = function (file, srcDir, templatesDir, templatesExt, code) {
@@ -141,8 +141,9 @@ exports.main = function (workDir, conf, pref) {
   var i;
   var patternDir = workDir + '/' + conf.src + '/_patterns';
   var srcDir = patternDir + '/03-templates';
+  var srcDir1;
+  var stats;
   var stats1;
-  var stats2;
   var templatesDir;
   var templatesDirDefault;
   var templatesExt;
@@ -160,7 +161,7 @@ exports.main = function (workDir, conf, pref) {
     files = exports.templatesGlob(srcDir);
     for (i = 0; i < files.length; i++) {
       try {
-        stats1 = fs.statSync(files[i]);
+        stats = fs.statSync(files[i]);
       }
       catch (err) {
         // Fail gracefully.
@@ -168,15 +169,16 @@ exports.main = function (workDir, conf, pref) {
 
       // Exclude directories and files prefixed by __ or not suffixed by .mustache.
       if (
-        !stats1 ||
-        !stats1.isFile() ||
+        !stats ||
+        !stats.isFile() ||
         path.basename(files[i]).substring(0, 2) === '__' ||
         files[i].slice(-9) !== '.mustache'
       ) {
         continue;
       }
 
-      stats2 = null;
+      srcDir1 = srcDir;
+      stats1 = null;
       templatesDir = '';
       templatesExt = '';
 
@@ -184,20 +186,25 @@ exports.main = function (workDir, conf, pref) {
       ymlFile = files[i].replace(/\.mustache$/, '.yml');
       // Make sure the YAML file exists before proceeding.
       try {
-        stats2 = fs.statSync(ymlFile);
+        stats1 = fs.statSync(ymlFile);
       }
       catch (err) {
         // Unset ymlFile if no YAML file.
         ymlFile = '';
       }
 
-      if (stats2 && stats2.isFile()) {
+      if (stats1 && stats1.isFile()) {
         try {
           yml = fs.readFileSync(ymlFile, conf.enc);
           data = yaml.safeLoad(yml);
 
           if (typeof data.templates_dir === 'string') {
             templatesDir = utils.backendDirCheck(workDir, data.templates_dir);
+            // Do not maintain nested directory structure in backend if
+            // templates_dir is set in exceptional YAML file.
+            if (templatesDir) {
+              srcDir1 = path.dirname(files[i]);
+            }
             // Unset templates_dir in local YAML data.
             delete data.templates_dir;
           }
@@ -228,7 +235,7 @@ exports.main = function (workDir, conf, pref) {
         // Iterate through tokens and replace keys for values in the code.
         code = exports.tokensReplace(data, code, conf, pref);
         // Write compiled templates.
-        dest = exports.templatesWrite(files[i], srcDir, templatesDir, templatesExt, code);
+        dest = exports.templatesWrite(files[i], srcDir1, templatesDir, templatesExt, code);
 
         // Log to console.
         utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
