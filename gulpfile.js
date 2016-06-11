@@ -20,7 +20,7 @@ requireDir('./gulp');
 requireDir('./extend/auxiliary');
 require('./extend/contrib');
 require('./extend/custom');
-var extendPlugins = glob.sync('extend/*/*/*_extend.js');
+var extendPlugins = glob.sync('extend/*/*/*~extend.js');
 for (var i = 0; i < extendPlugins.length; i++) {
   require('./' + extendPlugins[i]);
 }

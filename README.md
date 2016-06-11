@@ -250,7 +250,7 @@ does not ship with Stylus (or any other CSS pre/post-processor) configured.
 However, since Stylus allows for this easy sharing of variables, Fepper does 
 ship with a `patternlab-node/source/css-processors/stylus` directory which can 
 be compiled into the stock Pattern Lab CSS by configuring 
-`extend/custom/css-process/css-process_extend.js`. The Stylus files are written 
+`extend/custom/css-process/css-process~extend.js`. The Stylus files are written 
 in the terse, Python-like, indentation-based syntax; however, the more verbose, 
 CSS-like syntax (with curly braces, colons, and semi-colons) is perfectly valid 
 as well.
