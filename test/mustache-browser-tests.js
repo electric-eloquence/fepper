@@ -17,9 +17,9 @@ var mustacheBrowser = new MustacheBrowser(testDir + '/' + conf.src + '/_patterns
 var mustache = '<section id="one" class="test">{{> 02-components/00-global/00-header(\'partial?\': true) }}</section><section id="two" class="test">{{> 02-components/00-global/01-footer.mustache }}</section><script></script><textarea></textarea></body></html>';
 var htmlEntitiesAndLinks = mustacheBrowser.toHtmlEntitiesAndLinks(mustache);
 var partialTag = '{{> 02-components/00-global/00-header(\'partial?\': true) }}';
+var partialTag1 = '{{> 02-components/00-global/00-footer.mustache }}';
 var partialPath = mustacheBrowser.partialTagToPath(partialTag);
-var partialTag2 = '{{> 02-components/00-global/00-footer.mustache }}';
-var partialPath2 = mustacheBrowser.partialTagToPath(partialTag);
+var partialPath1 = mustacheBrowser.partialTagToPath(partialTag1);
 
 describe('Mustache Browser', function () {
   it('should replace angle brackets with HTML entities', function () {
@@ -56,7 +56,7 @@ describe('Mustache Browser', function () {
   });
 
   it('should not append .mustache extension to end of partials with extension', function () {
-    expect(partialTag2).to.contain('.mustache');
-    expect(partialPath2.indexOf('.mustache')).to.equal(partialPath.length - 9);
+    expect(partialTag1).to.contain('.mustache');
+    expect(partialPath1.indexOf('.mustache')).to.equal(partialPath.length - 9);
   });
 });
