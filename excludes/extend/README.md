@@ -4,5 +4,5 @@
 
 ##Custom extensions
 * Write custom extensions within an appropriately named directory just under the `custom` directory.
-* They must include a file ending in "_extend.js" in order for Fepper to recognize their tasks.
+* They must include a file ending in "~extend.js" in order for Fepper to recognize their tasks.
 * Add the tasks to `custom.js` (and `auxiliary/auxiliary_custom.js` if necessary) in order for Fepper to run them.
