@@ -4,7 +4,7 @@
 /backend/*
 !/backend/README
 /conf.yml
-/extend
+/extend/
 /install.log
 /node_modules/
 /npm-debug.log
