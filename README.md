@@ -58,7 +58,7 @@
 ###<a id="update"></a>Update
 The easiest way to update Fepper is with Git. This generally means forking an 
 Electric Eloquence Fepper repository at your project's onset, and pulling from 
-the main upstream repository when an update becomes available.
+the master branch of the main upstream repository when updates are released.
 
 All updates must pull from 
 [https://github.com/electric-eloquence/fepper](https://github.com/electric-eloquence/fepper) 
