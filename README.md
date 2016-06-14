@@ -66,10 +66,10 @@ even if your original installation was forked from a child project. Pulling
 from a child project's repository may overwrite custom code specific to your 
 project so don't do it.
 
-If not updating with Git, you'll need to copy the latest package over old. Be 
-sure to take care that "dot"-prefixed hidden files at the root level are _not_ 
-overwritten. These are important configuration files specific to each user's 
-instance.
+If not updating with Git, you'll need to copy the latest package over the old. 
+Be sure to take care that "dot"-prefixed hidden files at the root level are 
+_not_ overwritten. These are important configuration files specific to each 
+user's instance.
 
 ###<a id="configure"></a>Configure
 Edit `pref.yml` to customize preferences and to view further documentation in 
