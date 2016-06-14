@@ -8,10 +8,10 @@
 * [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) - templates configured for WordPress, along with a WordPress theme built to accommodate those templates.
 
 ###Table of contents
-* [Installation](#installation)
-* [Upgrading](#upgrading)
-* [Configuration](#configuration)
-* [Utilization](#utilization)
+* [Install](#install)
+* [Update](#update)
+* [Configure](#configure)
+* [Use](#use)
 * [Global Data](#global-data)
 * [Partial Data](#partial-data)
 * [Static Site Generation](#static-site-generation)
@@ -25,7 +25,7 @@
 * [More Documentation](#more-documentation)
 * [Contributing](#contributing)
 
-###<a id="installation"></a>Installation
+###<a id="install"></a>Install
 * On Mac OS X:
   * Install [Homebrew](http://brew.sh).
 * On other Unix-like OSs:
@@ -55,30 +55,30 @@
   * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).  
 * To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
 
-###<a id="upgrading"></a>Upgrading
-Upgrading Fepper _should_ be as simple as dropping the new package over old. 
-However, it's a bit more complicated in that "dot"-prefixed hidden files at the 
-root level must _not_ be written over. These are important configuration files 
-specific to each user's instance. Users must also be mindful of any custom edits 
-to `package.json`. `package.json` must be copied over in order to pick up any 
-changes to core, but then, any custom edits to `package.json` must be re-added. 
-After the new version's files are copied over and `package.json` refitted, the 
-upgrade will be complete. Future versions of Fepper will automate this process.
+###<a id="update"></a>Update
+The easiest way to update Fepper is with Git. This generally means forking an 
+Electric Eloquence Fepper repository at your project's onset, and pulling from 
+the main upstream repository when an update becomes available.
 
-All upgrades must use the code from the parent project at 
+All updates must pull from 
 [https://github.com/electric-eloquence/fepper](https://github.com/electric-eloquence/fepper) 
-even if the original installation was from a child project. Copying over the 
-code from a child project will overwrite custom code specific to your instance 
-so don't do it.
+even if your original installation was forked from a child project. Pulling 
+from a child project's repository may overwrite custom code specific to your 
+project so don't do it.
 
-###<a id="configuration"></a>Configuration
+If not updating with Git, you'll need to copy the latest package over old. Be 
+sure to take care that "dot"-prefixed hidden files at the root level are _not_ 
+overwritten. These are important configuration files specific to each user's 
+instance.
+
+###<a id="configure"></a>Configure
 Edit `pref.yml` to customize preferences and to view further documentation in 
 the comments. If you wish to use the `syncback`, `frontend-copy`, or `template` 
 tasks, you must supply values for the `backend.synced_dirs` preferences in order 
 for those directories to get processed and copied to the backend.
 
-###<a id="utilization"></a>Utilization
-* To launch from Mac OS X Finder:
+###<a id="use"></a>Use
+* To launch from the Mac OS X Finder:
   * Double-click `fepper.command`
 * To launch from the command line:
   * `fp`
