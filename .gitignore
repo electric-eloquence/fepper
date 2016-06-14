@@ -4,13 +4,14 @@
 /backend/*
 !/backend/README
 /conf.yml
+!/excludes/extend/node_modules/
 /extend/
 /install.log
-/node_modules/
 /npm-debug.log
 /pref.yml
 Thumbs.db
 ignore/
+node_modules/
 patternlab-node/patternlab-config.json
 patternlab-node/public/*
 !patternlab-node/public/data/annotations.js
