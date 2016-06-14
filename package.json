@@ -39,8 +39,7 @@
     "pagedown": "^1.1.0",
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
-    "run-sequence": "^1.1.2",
-    "yargs": "^3.16.1"
+    "run-sequence": "^1.1.2"
   },
   "license": "MIT",
   "scripts": {
