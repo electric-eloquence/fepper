@@ -84,16 +84,16 @@ exports.templatesExtCheck = function (templatesExt) {
   return '';
 };
 
-exports.templatesGlob = function (srcDir) {
-  var globbed = glob.sync(srcDir + '/*');
-  var globbed1 = glob.sync(srcDir + '/!(_nosync)/**');
+exports.templatesGlob = function (sourceDir) {
+  var globbed = glob.sync(sourceDir + '/*');
+  var globbed1 = glob.sync(sourceDir + '/!(_nosync)/**');
 
   return globbed.concat(globbed1);
 };
 
-exports.templatesWrite = function (file, srcDir, templatesDir, templatesExt, code) {
+exports.templatesWrite = function (file, sourceDir, templatesDir, templatesExt, code) {
   // Determine destination for token-replaced code.
-  var dest = file.replace(srcDir, '');
+  var dest = file.replace(sourceDir, '');
 
   // Replace underscore prefixes.
   dest = dest.replace(/\/_([^\/]+)$/, '/$1');
@@ -109,17 +109,17 @@ exports.templatesWrite = function (file, srcDir, templatesDir, templatesExt, cod
 
 exports.tokensReplace = function (tokens, code, conf, pref) {
   var i;
-  var re;
+  var regex;
   var token;
   var unescaped;
 
   for (i in tokens) {
     if (tokens.hasOwnProperty(i)) {
       unescaped = exports.mustacheUnescape(i);
-      re = new RegExp('\\{\\{\\s*' + unescaped + '\\s*\\}\\}', 'g');
+      regex = new RegExp('\\{\\{\\s*' + unescaped + '\\s*\\}\\}', 'g');
       token = tokens[i].replace(/^\n/, '');
       token = token.replace(/\n$/, '');
-      code = code.replace(re, token);
+      code = code.replace(regex, token);
     }
   }
 
@@ -141,8 +141,8 @@ exports.main = function (workDir, conf, pref) {
   var files;
   var i;
   var patternDir = workDir + '/' + conf.src + '/_patterns';
-  var srcDir = patternDir + '/03-templates';
-  var srcDir1;
+  var sourceDir = patternDir + '/03-templates';
+  var sourceDir1;
   var stats;
   var stats1;
   var templatesDir;
@@ -159,7 +159,7 @@ exports.main = function (workDir, conf, pref) {
     // Search source directory for Mustache files.
     // Excluding templates in _nosync directory and those prefixed by __.
     // Trying to keep the globbing simple and maintainable.
-    files = exports.templatesGlob(srcDir);
+    files = exports.templatesGlob(sourceDir);
     for (i = 0; i < files.length; i++) {
       try {
         stats = fs.statSync(files[i]);
@@ -178,7 +178,7 @@ exports.main = function (workDir, conf, pref) {
         continue;
       }
 
-      srcDir1 = srcDir;
+      sourceDir1 = sourceDir;
       stats1 = null;
       templatesDir = '';
       templatesExt = '';
@@ -204,7 +204,7 @@ exports.main = function (workDir, conf, pref) {
             // Do not maintain nested directory structure in backend if
             // templates_dir is set in exceptional YAML file.
             if (templatesDir) {
-              srcDir1 = path.dirname(files[i]);
+              sourceDir1 = path.dirname(files[i]);
             }
             // Unset templates_dir in local YAML data.
             delete data.templates_dir;
@@ -236,7 +236,7 @@ exports.main = function (workDir, conf, pref) {
         // Iterate through tokens and replace keys for values in the code.
         code = exports.tokensReplace(data, code, conf, pref);
         // Write compiled templates.
-        dest = exports.templatesWrite(files[i], srcDir1, templatesDir, templatesExt, code);
+        dest = exports.templatesWrite(files[i], sourceDir1, templatesDir, templatesExt, code);
 
         // Log to console.
         utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
