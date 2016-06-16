@@ -3,7 +3,6 @@
 .publish/
 !/backend/README
 /conf.yml
-!/excludes/extend/node_modules/
 /install.log
 /npm-debug.log
 Thumbs.db
