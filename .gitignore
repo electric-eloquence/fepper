@@ -3,12 +3,12 @@
 .publish/
 !/backend/README
 /conf.yml
-!/excludes/extend/node_modules/
 /install.log
 /npm-debug.log
 Thumbs.db
 ignore/
 node_modules/
+!/excludes/extend/node_modules/
 patternlab-node/public/*
 !patternlab-node/public/styleguide/
 patternlab-node/source/
