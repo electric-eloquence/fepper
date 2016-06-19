@@ -1,13 +1,13 @@
-##Fepper
+## Fepper
 
-#A frontend prototyper for the rapid prototyping of websites
+# A frontend prototyper for the rapid prototyping of websites
 
-###Child projects
+### Child projects
 * [Fepper Minimal](https://github.com/electric-eloquence/fepper-minimal) - no unnecessary assets, styles, or Pattern Lab demo.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - templates configured for Drupal 8, along with a Drupal theme built to accommodate those templates.
 * [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) - templates configured for WordPress, along with a WordPress theme built to accommodate those templates.
 
-###Table of contents
+### Table of contents
 * [Install](#install)
 * [Update](#update)
 * [Configure](#configure)
@@ -25,7 +25,7 @@
 * [More Documentation](#more-documentation)
 * [Contributing](#contributing)
 
-###<a id="install"></a>Install
+### <a id="install"></a>Install
 * On Mac OS X:
   * Install [Homebrew](http://brew.sh).
 * On other Unix-like OSs:
@@ -39,8 +39,7 @@
   * On a Mac: `brew install node`
   * If already installed, be sure the version is up to date: `node -v`
   * Update if necessary: `brew update && brew upgrade node`
-  * If not on a Mac, and not using Homebrew:
-[https://nodejs.org/en/download/package-manager/](https://nodejs.org/en/download/package-manager/)
+  * If not on a Mac, and not using Homebrew: [https&colon;&sol;&sol;nodejs.org&sol;en&sol;download&sol;package-manager&sol;](https://nodejs.org/en/download/package-manager/)
   * After installing Node, `npm install -g fepper-cli`
 * On Mac OS X:
   * Double-click `fepper.command`
@@ -49,19 +48,19 @@
 * After successful installation:
   * Double-click `fepper.command` again
   * Or enter `fp` on the command line.
-* Open [http://localhost:3000](http://localhost:3000) in a browser if it doesn't open automatically.
+* Open [http&colon;&sol;&sol;localhost&colon;3000](http://localhost:3000) in a browser if it doesn't open automatically.
 * Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
 * Start editing files in `patternlab-node/source`. Changes should automatically appear in the browser.
   * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).  
 * To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
 
-###<a id="update"></a>Update
+### <a id="update"></a>Update
 The easiest way to update Fepper is with Git. This generally means forking an 
 Electric Eloquence Fepper repository at your project's onset, and pulling from 
 the master branch of the main upstream repository when updates are released.
 
 All updates must pull from 
-[https://github.com/electric-eloquence/fepper](https://github.com/electric-eloquence/fepper) 
+[https&colon;&sol;&sol;github.com&sol;electric-eloquence&sol;fepper](https://github.com/electric-eloquence/fepper) 
 even if your original installation was forked from a child project. Pulling 
 from a child project's repository may overwrite custom code specific to your 
 project so don't do it.
@@ -71,13 +70,13 @@ Be sure to take care that "dot"-prefixed hidden files at the root level are
 _not_ overwritten. These are important configuration files specific to each 
 user's instance.
 
-###<a id="configure"></a>Configure
+### <a id="configure"></a>Configure
 Edit `pref.yml` to customize preferences and to view further documentation in 
 the comments. If you wish to use the `syncback`, `frontend-copy`, or `template` 
 tasks, you must supply values for the `backend.synced_dirs` preferences in order 
 for those directories to get processed and copied to the backend.
 
-###<a id="use"></a>Use
+### <a id="use"></a>Use
 * To launch from the Mac OS X Finder:
   * Double-click `fepper.command`
 * To launch from the command line:
@@ -94,12 +93,12 @@ for those directories to get processed and copied to the backend.
   * `fp template` translates templates for the backend and copies them there.
 * If using Git for version control, directories named "ignore" will be ignored.
 
-###<a id="global-data"></a>Global Data
+### <a id="global-data"></a>Global Data
 Edit `patternlab-node/source/_data/_data.json` to globally populate Mustache 
 templates with data. Manual edits to `patternlab-node/source/_data/data.json` 
 will get overwritten on compilation.
 
-###<a id="partial-data"></a>Partial Data
+### <a id="partial-data"></a>Partial Data
 Underscore-prefixed .json files within 
 `patternlab-node/source/_patterns` will be concatenated to the output of 
 `_data.json`, the whole in turn getting compiled into `data.json`, the final 
@@ -116,10 +115,10 @@ will be picked up by all patterns.
 * __DO PUT GLOBAL DATA IN patternlab-node/source/_data/_data.json__
 * __DO LIBERALLY USE PARTIAL DATA IN patternlab-node/source/_patterns FOR ORGANIZATIONAL SANITY__
 
-###<a id="static-site-generation"></a>Static Site Generation
+### <a id="static-site-generation"></a>Static Site Generation
 Running `fp static` will generate a complete static site based on the files 
 in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
-[http://localhost:3000/static/](http://localhost:3000/static/). An `index.html` 
+[http&colon;&sol;&sol;localhost&colon;3000&sol;static&sol;](http://localhost:3000/static/). An `index.html` 
 will be generated based on `04-pages-00-homepage` or whatever is defined as the 
 homepage in `_data.json`. If the links are relative and they work correctly in 
 the Pattern Lab UI, they will work correctly in the static site even if the 
@@ -127,7 +126,7 @@ the Pattern Lab UI, they will work correctly in the static site even if the
 pages in the `patterns` directory must start with `../04-pages-` and not 
 `../../patterns/04-pages-`.
 
-###<a id="the-backend"></a>The Backend
+### <a id="the-backend"></a>The Backend
 Fepper can almost as easily work with a CMS backend such as Drupal or WordPress, 
 while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
 even just a symbolic link to the codebase into the `backend` directory. Then, 
@@ -143,7 +142,7 @@ backend web application.
 * The overriding property must only contain the lowest level key-value, not the entire hierarchy, i.e. only `assets_dir`, `scripts_dir`, or `styles_dir` 
 * Files prefixed by "__" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
 
-###<a id="templater"></a>Templater
+### <a id="templater"></a>Templater
 Pattern Lab's Mustache templates can be translated into templates compatible 
 with your backend. Mustache tags just need to be replaced with tags the backend 
 can use. Put these translations into YAML files named similarly to the Mustache 
@@ -172,7 +171,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
 [Fepper for WordPress](https://github.com/electric-eloquence/fepper-wordpress) 
 have working examples of templates compatible with the Templater.
 
-###<a id="webserved-directories"></a>Webserved Directories
+### <a id="webserved-directories"></a>Webserved Directories
 When using a backend, assets generally need to be shared with the Fepper 
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a task to copy in the 
@@ -187,7 +186,7 @@ SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE
 INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 ```
 
-###<a id="github-pages"></a>GitHub Pages
+### <a id="github-pages"></a>GitHub Pages
 If you have checked your Fepper instance into a repository in your GitHub 
 account, you may run `fp publish` to publish `patternlab-node/public` to GitHub 
 Pages. The Pattern Lab UI and Fepper static files will then be viewable from the 
@@ -196,7 +195,7 @@ However, if you are using `webserved_dirs`, you will need to supply a
 `gh_pages_prefix` preference in `pref.yml`. This preference needs to be set to 
 the name of your GitHub repository.
 
-###<a id="mustache-browser"></a>Mustache Browser
+### <a id="mustache-browser"></a>Mustache Browser
 Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
 in the upper right, then clicking Code, and then clicking the Mustache tab in 
 the bottom pane. The Mustache tags are hot-linked, and if they are written in 
@@ -208,7 +207,7 @@ Mustache tags must be coded in the verbose-pathed manner:
 The path must be correct; however, the `.mustache` extension is optional. The 
 default homepage is a working example.
 
-###<a id="html-scraper"></a>HTML Scraper
+### <a id="html-scraper"></a>HTML Scraper
 Fepper can scrape and import Mustache templates and JSON data files from actual 
 web pages. A common use-case is to scrape pages from a backend populated with 
 CMS content in order to auto-generate data, and to replicate the HTML structure. 
@@ -228,7 +227,7 @@ directory, also viewable under the Scrape menu of the toolbar. The Scraper will
 correctly indent the Mustache code. However, this beautification may also render 
 some attributes of the Mustache code a little different than the original HTML.
 
-###<a id="variables.styl"></a>variables.styl
+### <a id="variables.styl"></a>variables.styl
 `patternlab-node/source/scripts/src/variables.styl` is a file containing 
 variables that can be shared across the Stylus CSS preprocessor, browser 
 JavaScripts, and PHP backends (and possibly other language backends as well). It 
@@ -255,12 +254,12 @@ in the terse, Python-like, indentation-based syntax; however, the more verbose,
 CSS-like syntax (with curly braces, colons, and semi-colons) is perfectly valid 
 as well.
 
-###<a id="more-documentation"></a>More Documentation
+### <a id="more-documentation"></a>More Documentation
 * [default.pref.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.pref.yml)
 * [Pattern Lab](http://patternlab.io/docs/index.html)
 * [Mustache](https://mustache.github.io/mustache.5.html)
 
-###<a id="contributing"></a>Contributing
+### <a id="contributing"></a>Contributing
 Contributions and bug fixes are greatly appreciated!
 
 * Please pull request against the [dev branch](https://github.com/electric-eloquence/fepper/tree/dev).
