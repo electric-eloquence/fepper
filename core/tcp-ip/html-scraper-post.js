@@ -274,7 +274,7 @@ exports.targetValidate = function (target, res, req) {
   }
 
   // Remove closing bracket from targetSplit[1] and validate it is an integer.
-  targetSplit[1] = targetSplit[1].substr(0, targetSplit[1].length - 1);
+  targetSplit[1] = targetSplit[1].slice(0, targetSplit[1].length - 1);
   if (!targetSplit[1].match(/\d*/)) {
     exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
     return [];

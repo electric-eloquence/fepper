@@ -149,10 +149,29 @@ exports.backendDirCheck = function (workDir, backendDir) {
 
   if (typeof backendDir === 'string') {
     fullPath = workDir + '/backend/' + backendDir.trim();
-    stats = fs.statSync(fullPath);
 
-    if (stats.isDirectory()) {
+    try {
+      stats = fs.statSync(fullPath);
+    }
+    catch (err) {
+      // Fail gracefully.
+    }
+
+    if (stats && stats.isDirectory()) {
       return fullPath;
+    }
+  }
+
+  return '';
+};
+
+exports.extCheck = function (ext) {
+  var extTrimmed;
+
+  if (typeof ext === 'string') {
+    extTrimmed = ext.trim();
+    if (extTrimmed.match(/^[\w\-\.\/]+$/)) {
+      return extTrimmed;
     }
   }
 
@@ -169,11 +188,11 @@ exports.isTest = function () {
   var isTest = false;
 
   for (var i = 0; i < process.argv.length; i++) {
-    if (process.argv[i].substr(-5) === 'mocha') {
+    if (process.argv[i].slice(-5) === 'mocha') {
       isTest = true;
       break;
     }
-    else if (process.argv[i].substr(-4) === 'gulp') {
+    else if (process.argv[i].slice(-4) === 'gulp') {
       isGulp = true;
     }
     else if (isGulp && process.argv[i] === 'test') {
