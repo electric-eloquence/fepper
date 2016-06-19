@@ -13,6 +13,7 @@ var htmlScraperPost = require('./html-scraper-post');
 var htmlScraperXhr = require('./html-scraper-xhr');
 var MustacheBrowser = require('./mustache-browser');
 var mustacheBrowser = new MustacheBrowser(rootDir + '/' + conf.src + '/_patterns', conf);
+var readme = require('./readme');
 var success = require('./success');
 
 exports.main = function () {
@@ -46,6 +47,9 @@ exports.main = function () {
 
   // Mustache browser.
   app.get('/mustache-browser', mustacheBrowser.main());
+
+  // Readme page.
+  app.get('/readme', readme.main);
 
   // Success page.
   app.get('/success', success.main);
