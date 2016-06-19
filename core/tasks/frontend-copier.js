@@ -48,7 +48,7 @@ exports.main = function (workDir, conf, pref, frontendType) {
       if (
         !stats ||
         !stats.isFile() ||
-        path.basename(files[i]).substring(0, 2) === '__' ||
+        path.basename(files[i]).slice(0, 2) === '__' ||
         files[i].slice(-4) === '.yml'
       ) {
         continue;
