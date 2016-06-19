@@ -65,13 +65,13 @@ exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, 
       for (k = 0; k < webservedDirsShort.length; k++) {
         // If the href of a tag matches one of the webservedDirsShort values,
         // add the gh_pages_prefix.
-        regex = new RegExp('href="\/' + webservedDirsShort[k], 'g');
+        regex = new RegExp('href="\\/' + webservedDirsShort[k], 'g');
         if (codeSplit[j].match(regex)) {
           codeSplit[j] = codeSplit[j].replace(regex, 'href="/' + prefix + '/' + webservedDirsShort[k]);
         }
         // If the src of a tag matches one of the webservedDirsShort,
         // add the gh_pages_prefix.
-        regex = new RegExp('src="\/' + webservedDirsShort[k], 'g');
+        regex = new RegExp('src="\\/' + webservedDirsShort[k], 'g');
         if (codeSplit[j].match(regex)) {
           codeSplit[j] = codeSplit[j].replace(regex, 'src="/' + prefix + '/' + webservedDirsShort[k]);
         }

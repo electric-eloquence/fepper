@@ -5,7 +5,7 @@
 ```shell
 fp import:erb
 fp import:hbs
-fp import:jsx
+fp import:jsp
 fp import:php
 fp import:twig
 ```

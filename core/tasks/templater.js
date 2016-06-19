@@ -71,19 +71,6 @@ exports.mustacheUnescape = function (escaped) {
   return unescaped;
 };
 
-exports.templatesExtCheck = function (templatesExt) {
-  var templatesExtTrimmed;
-
-  if (typeof templatesExt === 'string') {
-    templatesExtTrimmed = templatesExt.trim();
-    if (templatesExtTrimmed.match(/^[\w\-\.\/]+$/)) {
-      return templatesExtTrimmed;
-    }
-  }
-
-  return '';
-};
-
 exports.templatesGlob = function (sourceDir) {
   var globbed = glob.sync(sourceDir + '/*');
   var globbed1 = glob.sync(sourceDir + '/!(_nosync)/**');
@@ -154,7 +141,7 @@ exports.main = function (workDir, conf, pref) {
 
   try {
     templatesDirDefault = utils.backendDirCheck(workDir, pref.backend.synced_dirs.templates_dir);
-    templatesExtDefault = exports.templatesExtCheck(pref.backend.synced_dirs.templates_ext);
+    templatesExtDefault = utils.extCheck(pref.backend.synced_dirs.templates_ext);
 
     // Search source directory for Mustache files.
     // Excluding templates in _nosync directory and those prefixed by __.
@@ -172,7 +159,7 @@ exports.main = function (workDir, conf, pref) {
       if (
         !stats ||
         !stats.isFile() ||
-        path.basename(files[i]).substring(0, 2) === '__' ||
+        path.basename(files[i]).slice(0, 2) === '__' ||
         files[i].slice(-9) !== '.mustache'
       ) {
         continue;
@@ -211,7 +198,7 @@ exports.main = function (workDir, conf, pref) {
           }
 
           if (typeof data.templates_ext === 'string') {
-            templatesExt = exports.templatesExtCheck(data.templates_ext);
+            templatesExt = utils.extCheck(data.templates_ext);
             // Unset templates_dir in local YAML data.
             delete data.templates_ext;
           }
