@@ -13,7 +13,7 @@ gulp.task('tcp-ip-reload:listen', function () {
 });
 
 gulp.task('tcp-ip-reload:assetsScripts', function () {
-  return gulp.src(conf.pub + '/!(styles|patterns|styleguide)/**')
+  return gulp.src(conf.pub + '/!(_styles|patterns|styleguide)/**')
     .pipe(plugins.refresh());
 });
 
@@ -36,11 +36,11 @@ gulp.task('tcp-ip-reload:watch', function () {
     gulp.watch(conf.src + '/_patterns/**/!(_)*.json', ['patternlab:build']);
     gulp.watch(conf.src + '/_patterns/**/*.mustache', ['patternlab:build']);
     gulp.watch(conf.src + '/_patterns/**/_*.json', ['fepper:data']);
-    gulp.watch(conf.src + '/assets/**', ['patternlab:copy']);
-    gulp.watch(conf.src + '/scripts/**', ['patternlab:copy']);
+    gulp.watch(conf.src + '/_assets/**', ['patternlab:copy']);
+    gulp.watch(conf.src + '/_scripts/**', ['patternlab:copy']);
     gulp.watch(conf.src + '/static/**', ['patternlab:copy']);
-    gulp.watch(conf.src + '/styles/**', ['patternlab:copy-styles']);
-    gulp.watch(conf.pub + '/!(styles|patterns|styleguide)/**', ['tcp-ip-reload:assetsScripts']);
+    gulp.watch(conf.src + '/_styles/**', ['patternlab:copy-styles']);
+    gulp.watch(conf.pub + '/!(_styles|patterns|styleguide)/**', ['tcp-ip-reload:assetsScripts']);
     gulp.watch(conf.pub + '/**/*.css', ['tcp-ip-reload:injectStyles']);
     gulp.watch(conf.pub + '/index.html', ['tcp-ip-reload:index']);
   }, conf.timeout_main);
