@@ -15,7 +15,7 @@ gulp.task('css-process', function () {
       linenos: true
     }))
     .on('error', utilsGulp.handleError)
-    .pipe(gulp.dest('./' + conf.src + '/styles'));
+    .pipe(gulp.dest('./' + conf.src + '/_styles'));
 
 // Delete the previous block and uncomment the following block to use SCSS.
 // Replace them both to use something else.
@@ -25,7 +25,7 @@ gulp.task('css-process', function () {
 //      sourceComments: true
 //    }))
 //    .on('error', plugins.sass.logError)
-//    .pipe(gulp.dest('./' + conf.src + '/styles'));
+//    .pipe(gulp.dest('./' + conf.src + '/_styles'));
 });
 
 // This runs the CSS processor without outputting line comments.
@@ -36,7 +36,7 @@ gulp.task('css-process:no-comments', function () {
       linenos: false
     }))
     .on('error', utilsGulp.handleError)
-    .pipe(gulp.dest('./' + conf.src + '/styles'));
+    .pipe(gulp.dest('./' + conf.src + '/_styles'));
 
 // Delete the previous block and uncomment the following block to use SCSS.
 // Replace them both to use something else.
@@ -46,7 +46,7 @@ gulp.task('css-process:no-comments', function () {
 //      sourceComments: false
 //    }))
 //    .on('error', plugins.sass.logError)
-//    .pipe(gulp.dest('./' + conf.src + '/styles'));
+//    .pipe(gulp.dest('./' + conf.src + '/_styles'));
 });
 
 gulp.task('css-process:frontend-copy', function (cb) {

@@ -300,7 +300,7 @@ describe('HTML Scraper Post', function () {
       var fileName = '0-test.1_2';
       var fileFullPath = scrapeDir + '/' + fileName;
 
-      fs.mkdirsSync(scrapeDir);
+      fs.mkdirpSync(scrapeDir);
       fs.writeFileSync(fileFullPath, '');
       var fileBefore = fs.readFileSync(fileFullPath);
       htmlScraperPost.filesWrite(scrapeDir, fileName, fileMustache, fileJson, null);

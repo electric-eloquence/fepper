@@ -19,7 +19,7 @@ var staticDir = testDir + '/static';
 
 describe('Static Generator', function () {
   it('should copy assets to the static dir', function () {
-    var assetsDir = staticDir + '/assets';
+    var assetsDir = staticDir + '/_assets';
 
     // Clear out assets dir.
     fs.removeSync(assetsDir);
@@ -41,7 +41,7 @@ describe('Static Generator', function () {
   });
 
   it('should copy scripts to the static dir', function () {
-    var scriptsDir = staticDir + '/scripts';
+    var scriptsDir = staticDir + '/_scripts';
 
     // Clear out scripts dir.
     fs.removeSync(scriptsDir);
@@ -63,7 +63,7 @@ describe('Static Generator', function () {
   });
 
   it('should copy styles to the static dir', function () {
-    var stylesDir = staticDir + '/styles';
+    var stylesDir = staticDir + '/_styles';
 
     // Clear out styles dir.
     fs.removeSync(stylesDir);
