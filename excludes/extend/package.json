@@ -6,17 +6,12 @@
     "url": "https://github.com/electric-eloquence/fepper.git"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "devDependencies": {
     "fp-import": "*",
     "fp-multisite": "*",
-    "gulp-eslint": "^2.0.0",
-    "gulp-htmlhint": "^0.3.0",
-    "gulp-htmllint": "0.0.6",
-    "gulp-jsonlint": "^1.1.0",
-    "gulp-refresh": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.2.0",
-    "gulp-stylus": "^2.3.0",
-    "gulp-uglify": "^1.2.0"
+    "gulp-stylus": "^2.4.0"
   }
 }

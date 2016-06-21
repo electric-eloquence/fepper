@@ -12,13 +12,13 @@ var rootDir = utils.rootDir();
 var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
 var conf = yaml.safeLoad(yml);
 var testDir = rootDir + '/' + conf.test_dir;
-var poFile = testDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
+var poFile = testDir + '/' + conf.pub + '/_scripts/pattern-overrider.js';
 var Tasks = require(rootDir + '/core/tasks/tasks');
 var tasks = new Tasks(testDir, conf);
 
 describe('Pattern Overrider', function () {
   // Clear out pattern-overrider.js.
-  fs.mkdirsSync(path.dirname(poFile));
+  fs.mkdirpSync(path.dirname(poFile));
   fs.writeFileSync(poFile, '');
   // Get empty string for comparison.
   var poBefore = fs.readFileSync(poFile, conf.enc);

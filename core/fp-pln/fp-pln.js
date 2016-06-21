@@ -22,9 +22,9 @@ module.exports = class {
       indexFile = this.plnDir + '/public/index.html';
       indexFileOut = fs.readFileSync(indexFile, this.conf.enc);
       indexFileOut = indexFileOut.replace(/(allow-same-origin allow-scripts)/, '$1 allow-forms allow-popups');
-      indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="scripts/src/variables.styl" type="text/javascript"></script>\n$1');
-      indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="scripts/src/fepper-obj.js"></script>\n$1');
-      indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="scripts/patternlab-overrider.js"></script>\n$1');
+      indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="_scripts/src/variables.styl" type="text/javascript"></script>\n$1');
+      indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="_scripts/src/fepper-obj.js"></script>\n$1');
+      indexFileOut = indexFileOut.replace(/(<\/body>)/, '    <script src="_scripts/patternlab-overrider.js"></script>\n$1');
       fs.writeFileSync(indexFile, indexFileOut);
     }
     else if (arg === 'v') {
@@ -47,12 +47,12 @@ module.exports = class {
 
   copy() {
     fs.copySync(this.plnDir + '/source/_data/annotations.js', this.plnDir + '/public/data/annotations.js');
-    fs.copySync(this.plnDir + '/source/assets', this.plnDir + '/public/assets');
-    fs.copySync(this.plnDir + '/source/scripts', this.plnDir + '/public/scripts');
+    fs.copySync(this.plnDir + '/source/_assets', this.plnDir + '/public/_assets');
+    fs.copySync(this.plnDir + '/source/_scripts', this.plnDir + '/public/_scripts');
     fs.copySync(this.plnDir + '/source/static', this.plnDir + '/public/static/');
   }
 
   copyStyles() {
-    fs.copySync(this.plnDir + '/source/styles', this.plnDir + '/public/styles');
+    fs.copySync(this.plnDir + '/source/_styles', this.plnDir + '/public/_styles');
   }
 };

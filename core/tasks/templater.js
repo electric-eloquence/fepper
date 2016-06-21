@@ -88,7 +88,7 @@ exports.templatesWrite = function (file, sourceDir, templatesDir, templatesExt, 
   dest = dest.replace(/mustache$/, templatesExt);
 
   // Write to file system.
-  fs.mkdirsSync(path.dirname(dest));
+  fs.mkdirpSync(path.dirname(dest));
   fs.writeFileSync(dest, code);
 
   return dest;

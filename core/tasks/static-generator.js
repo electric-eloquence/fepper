@@ -7,15 +7,15 @@ var path = require('path');
 var utils = require('../lib/utils');
 
 exports.assetsDirCopy = function (publicDir, staticDir) {
-  fs.copySync(publicDir + '/assets', staticDir + '/assets');
+  fs.copySync(publicDir + '/_assets', staticDir + '/_assets');
 };
 
 exports.scriptsDirCopy = function (publicDir, staticDir) {
-  fs.copySync(publicDir + '/scripts', staticDir + '/scripts');
+  fs.copySync(publicDir + '/_scripts', staticDir + '/_scripts');
 };
 
 exports.stylesDirCopy = function (publicDir, staticDir) {
-  fs.copySync(publicDir + '/styles', staticDir + '/styles');
+  fs.copySync(publicDir + '/_styles', staticDir + '/_styles');
 };
 
 exports.pagesDirCompile = function (workDir, conf, patternDir, staticDir) {
