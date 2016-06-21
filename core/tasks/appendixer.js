@@ -16,7 +16,7 @@ exports.main = function (workDir, conf) {
   var jsonStr = '{\n';
   var srcDir = workDir + '/' + conf.src;
   var appendix = srcDir + '/_data/_appendix.json';
-  var varFile = srcDir + '/scripts/src/variables.styl';
+  var varFile = srcDir + '/_scripts/src/variables.styl';
   var varLine;
   var vars = fs.readFileSync(varFile, conf.enc);
   var varsSplit = vars.split('\n');

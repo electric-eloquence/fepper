@@ -16,7 +16,7 @@ gulp.task('lint:htmllint', function () {
 });
 
 gulp.task('lint:eslint', function () {
-  return gulp.src(conf.src + '/scripts/src/**/*.js')
+  return gulp.src(conf.src + '/_scripts/src/**/*.js')
     .pipe(plugins.eslint())
     .pipe(plugins.eslint.format());
 });

@@ -12,7 +12,7 @@ var path = require('path');
 
 exports.main = function (workDir, conf) {
   var defaultPort = 35729;
-  var dest = workDir + '/' + conf.pub + '/scripts/pattern-overrider.js';
+  var dest = workDir + '/' + conf.pub + '/_scripts/pattern-overrider.js';
 
   // Backticked multi-line string.
   var output = `// Mustache code browser.
@@ -45,7 +45,7 @@ if (codeFill) {
 
 `;
   // Initialize destination file.
-  fs.mkdirsSync(path.dirname(dest));
+  fs.mkdirpSync(path.dirname(dest));
   fs.writeFileSync(dest, output);
 
   // Write out the homepage redirector.

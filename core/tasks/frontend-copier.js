@@ -17,7 +17,8 @@ exports.main = function (workDir, conf, pref, frontendType) {
   var data;
   var files;
   var frontendDataKey = frontendType + '_dir';
-  var frontendGlob = frontendType;
+  var frontendDir = '_' + frontendType;
+  var frontendGlob = frontendDir;
   var i;
   var scriptsTarget;
   var srcDir = workDir + '/' + conf.src;
@@ -62,8 +63,8 @@ exports.main = function (workDir, conf, pref, frontendType) {
       ymlFile = files[i].replace(/\.[a-z]+$/, '.yml');
 
       // If iterating on minified script, check for its source file's YAML.
-      if (frontendType === 'scripts' && files[i].indexOf(srcDir1 + '/scripts/min/') === 0) {
-        ymlFile = ymlFile.replace(srcDir1 + '/scripts/min/', srcDir1 + '/scripts/src/');
+      if (frontendType === 'scripts' && files[i].indexOf(srcDir1 + '/_scripts/min/') === 0) {
+        ymlFile = ymlFile.replace(srcDir1 + '/_scripts/min/', srcDir1 + '/_scripts/src/');
       }
 
       // Make sure the YAML file exists before proceeding.
@@ -106,12 +107,12 @@ exports.main = function (workDir, conf, pref, frontendType) {
         if (targetDir === targetDirDefault) {
           // If copying scripts, do not segregate min from src.
           if (frontendType === 'scripts') {
-            scriptsTarget = files[i].replace(srcDir1 + '/' + frontendType + '/min', '');
-            scriptsTarget = scriptsTarget.replace(srcDir1 + '/' + frontendType + '/src', '');
+            scriptsTarget = files[i].replace(srcDir1 + '/' + frontendDir + '/min', '');
+            scriptsTarget = scriptsTarget.replace(srcDir1 + '/' + frontendDir + '/src', '');
             fs.copySync(files[i], targetDir + '/' + scriptsTarget);
           }
           else {
-            fs.copySync(files[i], targetDir + '/' + files[i].replace(srcDir1 + '/' + frontendType + '/', ''));
+            fs.copySync(files[i], targetDir + '/' + files[i].replace(srcDir1 + '/' + frontendDir + '/', ''));
           }
         }
         else {
