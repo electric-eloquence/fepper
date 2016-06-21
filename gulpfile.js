@@ -28,7 +28,6 @@ for (var i = 0; i < extendPlugins.length; i++) {
 gulp.task('default', function (cb) {
   runSequence(
     'once',
-    'data',
     'fepper:pattern-override',
     'tcp-ip-load:init',
     // TCP-IP overrides need to run after tcp-ip-load:init in order for there
@@ -48,6 +47,7 @@ gulp.task('data', function (cb) {
   runSequence(
     ['contrib:data:preprocess', 'custom:data:preprocess'],
     'fepper:data',
+    'patternlab:build',
     ['contrib:data', 'custom:data'],
     cb
   );
@@ -96,7 +96,9 @@ gulp.task('minify', [
 gulp.task('once', function (cb) {
   runSequence(
     ['contrib:once:preprocess', 'custom:once:preprocess'],
-    'fepper:pattern-override',
+    ['contrib:data:preprocess', 'custom:data:preprocess'],
+    ['fepper:data', 'fepper:pattern-override'],
+    ['contrib:data', 'custom:data'],
     'patternlab:clean',
     'patternlab:build',
     'patternlab:copy',
@@ -114,6 +116,24 @@ gulp.task('publish', function (cb) {
     // ensure that only one publish task runs. The main fepper:publish task
     // can be disabled by unsetting the gh_pages_src setting in pref.yml.
     ['contrib:publish', 'custom:publish'],
+    cb
+  );
+});
+
+gulp.task('restart', function (cb) {
+  runSequence(
+    'once',
+    'fepper:pattern-override',
+    'tcp-ip-load:init',
+    // TCP-IP overrides need to run after tcp-ip-load:init in order for there
+    // to be a global.express object to override. They must then override it
+    // before it starts listening and tcp-ip-reload starts watching.
+    ['contrib:tcp-ip', 'custom:tcp-ip'],
+    ['tcp-ip-load:listen', 'tcp-ip-reload:listen'],
+    ['contrib:watch', 'custom:watch', 'tcp-ip-reload:watch'],
+    // Probably no use-case for these contrib and custom postprocess tasks,
+    // but here just in case.
+    ['contrib:tcp-ip:postprocess', 'custom:tcp-ip:postprocess'],
     cb
   );
 });
