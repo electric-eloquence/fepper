@@ -88,6 +88,7 @@ for those directories to get processed and copied to the backend.
   * `fp minify` to minify JavaScripts.
   * `fp once` to clean the public folder and do a one-off Fepper build.
   * `fp publish` to publish the public folder to GitHub Pages.
+  * `fp restart` to restart after shutdown, but without opening the browser.
   * `fp static` to generate a static site from the 04-pages directory.
   * `fp syncback` combines lint, minify, frontend-copy, and template.
   * `fp template` translates templates for the backend and copies them there.
