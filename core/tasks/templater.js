@@ -75,50 +75,54 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
   var code;
   var data = null;
   var dest;
+  var mustacheFile;
   var patternDir = workDir + '/' + conf.src + '/_patterns';
   var sourceDir = patternDir + '/03-templates';
-  var sourceDir1;
-  var stats;
-  var stats1;
-  var templatesDir;
-  var templatesExt;
+  var sourceDir1 = sourceDir;
+  var stats = null;
+  var stats1 = null;
+  var templatesDir = '';
+  var templatesExt = '';
   var yml;
   var ymlFile = '';
 
+  // Exclude files prefixed by __
+  if (path.basename(file).slice(0, 2) === '__') {
+    return;
+  }
+
+  if (path.extname(file) === '.yml') {
+    mustacheFile = file.replace(/\.yml$/, '.mustache');
+    ymlFile = file;
+  }
+  else if (path.extname(file) === '.mustache') {
+    mustacheFile = file;
+    ymlFile = file.replace(/\.mustache$/, '.yml');
+  }
+
   try {
-    stats = fs.statSync(file);
+    stats = fs.statSync(mustacheFile);
+  }
+  catch (err) {
+    // Only process templates that actually exist.
+    return;
+  }
+
+  try {
+    stats1 = fs.statSync(ymlFile);
   }
   catch (err) {
     // Fail gracefully.
   }
 
-  // Exclude directories and files prefixed by __ or not suffixed by .mustache.
-  if (
-    !stats ||
-    !stats.isFile() ||
-    path.basename(file).slice(0, 2) === '__' ||
-    file.slice(-9) !== '.mustache'
-  ) {
+  // Return on stat fail. Exclude non-files.
+  if (!stats || !stats.isFile()) {
     return;
   }
 
-  sourceDir1 = sourceDir;
-  stats1 = null;
-  templatesDir = '';
-  templatesExt = '';
-
-  // Read YAML file and store keys/values in tokens object.
-  ymlFile = file.replace(/\.mustache$/, '.yml');
-  // Make sure the YAML file exists before proceeding.
-  try {
-    stats1 = fs.statSync(ymlFile);
-  }
-  catch (err) {
-    // Unset ymlFile if no YAML file.
-    ymlFile = '';
-  }
-
+  // Try to read YAML file if it exists.
   if (stats1 && stats1.isFile()) {
+    // Read YAML file and store keys/values in tokens object.
     try {
       yml = fs.readFileSync(ymlFile, conf.enc);
       data = yaml.safeLoad(yml);
@@ -128,7 +132,7 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
         // Do not maintain nested directory structure in backend if
         // templates_dir is set in exceptional YAML file.
         if (templatesDir) {
-          sourceDir1 = path.dirname(file);
+          sourceDir1 = path.dirname(mustacheFile);
         }
         // Unset templates_dir in local YAML data.
         delete data.templates_dir;
@@ -156,11 +160,11 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
 
   if (templatesDir && templatesExt) {
     // Recurse through Mustache templates (sparingly. See comment above.)
-    code = exports.mustacheRecurse(file, conf, patternDir);
+    code = exports.mustacheRecurse(mustacheFile, conf, patternDir);
     // Iterate through tokens and replace keys for values in the code.
     code = exports.tokensReplace(data, code, conf, pref);
     // Write compiled templates.
-    dest = exports.templatesWrite(file, sourceDir1, templatesDir, templatesExt, code);
+    dest = exports.templatesWrite(mustacheFile, sourceDir1, templatesDir, templatesExt, code);
 
     // Log to console.
     utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
@@ -168,8 +172,8 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
 };
 
 exports.templatesGlob = function (sourceDir) {
-  var globbed = glob.sync(sourceDir + '/*');
-  var globbed1 = glob.sync(sourceDir + '/!(_nosync)/**');
+  var globbed = glob.sync(sourceDir + '/*.mustache');
+  var globbed1 = glob.sync(sourceDir + '/!(_nosync)/**/*.mustache');
 
   return globbed.concat(globbed1);
 };
@@ -199,7 +203,7 @@ exports.tokensReplace = function (tokens, code, conf, pref) {
   for (i in tokens) {
     if (tokens.hasOwnProperty(i)) {
       unescaped = exports.mustacheUnescape(i);
-      regex = new RegExp('\\{\\{\\s*' + unescaped + '\\s*\\}\\}', 'g');
+      regex = new RegExp('\\{\\{\\{?\\s*' + unescaped + '\\s*\\}?\\}\\}', 'g');
       token = tokens[i].replace(/^\n/, '');
       token = token.replace(/\n$/, '');
       code = code.replace(regex, token);

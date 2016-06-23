@@ -229,7 +229,7 @@ correctly indent the Mustache code. However, this beautification may also render
 some attributes of the Mustache code a little different than the original HTML.
 
 ### <a id="variables.styl"></a>variables.styl
-`patternlab-node/source/scripts/src/variables.styl` is a file containing 
+`patternlab-node/source/_scripts/src/variables.styl` is a file containing 
 variables that can be shared across the Stylus CSS preprocessor, browser 
 JavaScripts, and PHP backends (and possibly other language backends as well). It 
 ships with these values:
