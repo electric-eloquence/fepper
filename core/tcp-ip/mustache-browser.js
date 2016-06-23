@@ -42,7 +42,7 @@ module.exports = class {
     // Strip opening Mustache braces and control character.
     partial = partial.replace(/^\{\{>\s*/, '');
     // Strip parentheses-wrapped parameter submission.
-    partial = partial.replace(/\((.|\s)*\)/, '');
+    partial = partial.replace(/\([\S\s]*?\)/, '');
     // Strip colon/pipe-delimited style modifier.
     partial = partial.replace(/\:[\w\-\|]+/, '');
     // Strip closing Mustache braces.
@@ -61,8 +61,8 @@ module.exports = class {
    * @return {string} Stripped code.
    */
   spanTokensStrip(code) {
-    code = code.replace(/<span class="token (.|\s)*?>((.|\s)*?)<\/span>/g, '$2');
-    if (code.search(/<span class="token (.|\s)*?>((.|\s)*?)<\/span>/) > -1) {
+    code = code.replace(/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/g, '$1');
+    if (code.search(/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/) > -1) {
       code = this.spanTokensStrip(code);
     }
 
@@ -79,7 +79,7 @@ module.exports = class {
     data = data.replace(/"/g, '&quot;');
     data = data.replace(/</g, '&lt;');
     data = data.replace(/>/g, '&gt;');
-    data = data.replace(/\{\{&gt;(.|\s)*?\}\}/g, '<a href="?partial=$&">$&</a>');
+    data = data.replace(/\{\{&gt;[\S\s]*?\}\}/g, '<a href="?partial=$&">$&</a>');
     data = data.replace(/\n/g, '<br>');
 
     return data;
