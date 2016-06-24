@@ -9,6 +9,7 @@ var request = require('request');
 
 var htmlObj = require('../lib/html');
 var utils = require('../lib/utils');
+var conf = utils.conf();
 
 var jsonForDataEmpty = {html: [{}]};
 
@@ -360,7 +361,7 @@ exports.main = function (req, res) {
       fileName = req.body.filename;
     }
 
-    templateDir = 'patternlab-node/source/_patterns/98-scrape';
+    templateDir = conf.src + '/_patterns/98-scrape';
     fileMustache = exports.newlineFormat(req.body.mustache);
     fileJson = exports.newlineFormat(req.body.json);
     exports.filesWrite(templateDir, fileName, fileMustache, fileJson, res);
