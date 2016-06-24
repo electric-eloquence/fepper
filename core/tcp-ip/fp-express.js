@@ -61,7 +61,7 @@ exports.main = function () {
   app.use('/fepper-core', express.static(rootDir + '/core/lib/webserved'));
 
   // For everything else, document root = Pattern Lab.
-  app.use(express.static(rootDir + '/patternlab-node/public'));
+  app.use(express.static(rootDir + '/' + conf.pub));
 
   return app;
 };

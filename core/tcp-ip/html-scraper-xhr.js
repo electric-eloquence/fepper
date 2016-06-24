@@ -24,9 +24,12 @@ exports.main = function (req, res) {
   output += htmlObj.scraperTitle;
   output += htmlObj.landingBody;
   output += '</section>';
-  output = output.replace('{{ attributes }}', ' target="_blank"');
   output = output.replace('{{ message }}', message);
   output = output.replace('{{ url }}', url);
   output = output.replace('{{ target }}', target);
+
+  if (req.headers.referer.indexOf('/patterns/98-scrape-00-html-scraper/98-scrape-00-html-scraper.html') > -1) {
+    output = output.replace('{{ attributes }}', ' target="_blank"');
+  }
   res.end(output);
 };
