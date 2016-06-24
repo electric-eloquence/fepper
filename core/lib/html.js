@@ -76,9 +76,12 @@ exports.importerSuffix = `
 
       <script type="text/javascript">
         function validateForm() {
-          var x = document.forms["importer"]["filename"].value;
-          if (x == null || x == "") {
-            alert("Filename must be filled out.");
+          'use strict';
+
+          var filename = document.forms['importer']['filename'].value;
+
+          if (!filename) {
+            alert('Filename must be filled out!');
             return false;
           }
         }
