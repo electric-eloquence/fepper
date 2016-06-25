@@ -146,7 +146,7 @@ exports.main = function (workDir, publicDir, publishDir, conf, pref, test) {
     // destination files before copying.
     utils.log('Preparing gh_pages_src...');
     fs.removeSync(ghPagesSrc);
-    fs.mkdirSync(ghPagesSrc);
+    fs.mkdirpSync(ghPagesSrc);
 
     // Get array of truncated dirnames for processing.
     webservedDirsShort = utils.webservedDirnamesTruncate(webservedDirsFull);
