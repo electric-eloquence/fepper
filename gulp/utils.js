@@ -2,11 +2,16 @@
 
 var utilsFepper = require('../core/lib/utils');
 
-exports.fsContextClosure = function (pathIn, instantiatedObj, fnKey, pathOut) {
+exports.fsContextClosure = function (pathIn, instantiatedObj, fnKey, pathOut, args) {
   return function (cb) {
     var p = new Promise(function (resolve, reject) {
       process.chdir(pathIn);
-      instantiatedObj[fnKey]();
+      if (Array.isArray(args)) {
+        instantiatedObj[fnKey].apply(instantiatedObj, args);
+      }
+      else {
+        instantiatedObj[fnKey]();
+      }
       resolve();
     });
     p.then(function () {

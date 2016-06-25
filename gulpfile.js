@@ -111,7 +111,20 @@ gulp.task('once', function (cb) {
 gulp.task('publish', function (cb) {
   runSequence(
     ['contrib:publish:preprocess', 'custom:publish:preprocess'],
+    'static',
     'fepper:publish',
+    // Since GitHub pages will only render the last publish, you might need to
+    // ensure that only one publish task runs. The main fepper:publish task
+    // can be disabled by unsetting the gh_pages_src setting in pref.yml.
+    ['contrib:publish', 'custom:publish'],
+    cb
+  );
+});
+
+gulp.task('publish:pl', function (cb) {
+  runSequence(
+    ['contrib:publish:preprocess', 'custom:publish:preprocess'],
+    'fepper:publish:pl',
     // Since GitHub pages will only render the last publish, you might need to
     // ensure that only one publish task runs. The main fepper:publish task
     // can be disabled by unsetting the gh_pages_src setting in pref.yml.
