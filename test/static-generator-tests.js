@@ -15,7 +15,7 @@ var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
 var pref = yaml.safeLoad(prefYml);
 var testDir = rootDir + '/' + conf.test_dir;
 var publicDir = testDir + '/public';
-var staticDir = testDir + '/static';
+var staticDir = testDir + '/source/static';
 
 describe('Static Generator', function () {
   it('should copy assets to the static dir', function () {
