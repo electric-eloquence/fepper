@@ -23,8 +23,6 @@ describe('Publisher', function () {
   // Get array of truncated dirnames.
   var webservedDirs = utils.webservedDirnamesTruncate(pref.backend.webserved_dirs);
 
-  // Clear out gh_pages_src dir.
-  fs.removeSync(ghPagesDir);
   // Run gh-pages-prefixer.js.
   tasks.publish('public', testDir + '/.publish', true);
 
