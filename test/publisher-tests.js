@@ -17,7 +17,7 @@ var testDir = rootDir + '/' + conf.test_dir;
 var ghPagesDir = testDir + '/' + pref.gh_pages_src;
 var publisher = require(rootDir + '/core/tasks/publisher');
 var Tasks = require(rootDir + '/core/tasks/tasks');
-var tasks = new Tasks(testDir, conf);
+var tasks = new Tasks(testDir, conf, pref);
 
 describe('Publisher', function () {
   // Get array of truncated dirnames.
@@ -26,7 +26,7 @@ describe('Publisher', function () {
   // Clear out gh_pages_src dir.
   fs.removeSync(ghPagesDir);
   // Run gh-pages-prefixer.js.
-  tasks.publish(testDir + '/.publish', pref, true);
+  tasks.publish('public', testDir + '/.publish', true);
 
   it('should read a valid .gh_pages_src config', function () {
     expect(pref.gh_pages_src).to.be.a('string');

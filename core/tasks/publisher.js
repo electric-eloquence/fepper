@@ -11,9 +11,11 @@
 var fs = require('fs-extra');
 var ghpages = require('gh-pages');
 var glob = require('glob');
+var isBinaryFile = require('isbinaryfile');
 var path = require('path');
 
 var utils = require('../lib/utils');
+var rootDir = utils.rootDir();
 
 /**
  * Recursively glob pattern files, and then iterate through them.
@@ -28,6 +30,9 @@ exports.filesGet = function (ghPagesDir) {
 /**
  * Read globbed files, token replace path prefix tags, and write output.
  *
+ * @param {array} publicDir - The directory path within Pattern Lab which is to
+ *   be published. '.' is to be used if the entire public directory is to be
+ *   be published.
  * @param {array} publicFiles - The files to process.
  * @param {object} conf - Configuration object.
  * @param {array} webservedDirsShort - Path to directories webserved by Fepper
@@ -37,28 +42,57 @@ exports.filesGet = function (ghPagesDir) {
  * @param {string} ghPagesSrc - The directory that holds the processed code to
  *   be published to GitHub Pages.
  */
-exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc) {
+exports.filesProcess = function (publicDir, publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc) {
   var code;
   var codeSplit;
   var publicFile;
+  var publishDir;
   var ghPagesSrcFile;
   var i;
   var j;
   var k;
   var regex;
-  var stats;
+  var stats = null;
 
   for (i = 0; i < publicFiles.length; i++) {
     // Read each pattern file.
-    stats = fs.statSync(publicFiles[i]);
-    if (!stats.isFile()) {
+    try {
+      stats = fs.statSync(publicFiles[i]);
+    }
+    catch (err) {
+      // Fail gracefully.
+    }
+    if (!stats || !stats.isFile()) {
+      continue;
+    }
+
+    publicFile = fs.readFileSync(publicFiles[i], conf.enc);
+    publishDir = rootDir + '/' + conf.pub;
+    publishDir += (publicDir === '.') ? '' : '/' + publicDir;
+
+    // Just copy if binary file.
+    if (isBinaryFile.sync(publicFiles[i])) {
+      var nestedDirs = path.dirname(publicFiles[i]).replace(publishDir, '');
+      var binDir = ghPagesSrc + nestedDirs;
+
+      stats = null;
+      try {
+        stats = fs.statSync(binDir);
+      }
+      catch (err) {
+        // Fail gracefully.
+      }
+      if (!stats) {
+        fs.mkdirpSync(binDir);
+      }
+      fs.copySync(publicFiles[i], binDir + '/' + path.basename(publicFiles[i]));
       continue;
     }
 
     code = '';
-    publicFile = fs.readFileSync(publicFiles[i], conf.enc);
     // Split code line by line for parsing.
     codeSplit = publicFile.split('\n');
+
     for (j = 0; j < codeSplit.length; j++) {
       // Iterate through webservedDirsShort. Check to see if the line is
       // calling a path to the dir with href or src elements.
@@ -79,14 +113,13 @@ exports.filesProcess = function (publicFiles, conf, webservedDirsShort, prefix, 
       code += codeSplit[j] + '\n';
     }
 
-    ghPagesSrcFile = publicFiles[i].replace(workDir + '/' + conf.pub, ghPagesSrc);
+    ghPagesSrcFile = publicFiles[i].replace(publishDir, ghPagesSrc);
     fs.outputFileSync(ghPagesSrcFile, code);
   }
 };
 
-exports.main = function (workDir, publishDir, conf, pref, test) {
+exports.main = function (workDir, publicDir, publishDir, conf, pref, test) {
   var ghPagesSrc = path.normalize(publishDir + '/../' + pref.gh_pages_src);
-  var publicDir = workDir + '/' + conf.pub;
   var prefix;
   var publicFiles;
   var webservedDirsShort;
@@ -122,15 +155,18 @@ exports.main = function (workDir, publishDir, conf, pref, test) {
     }
 
     // Recursively glob pattern files, and then iterate through them.
-    publicFiles = exports.filesGet(publicDir);
+    publicFiles = exports.filesGet(workDir + '/' + conf.pub + '/' + publicDir);
     // Read files, token replace path prefix tags, and write output.
-    exports.filesProcess(publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc);
+    exports.filesProcess(publicDir, publicFiles, conf, webservedDirsShort, prefix, workDir, ghPagesSrc);
 
     // Copy webserved_dirs to gh_pages_src.
     if (webservedDirsShort.length) {
       utils.log('Copying webserved_dirs to gh_pages_src...');
       utils.webservedDirsCopy(webservedDirsFull, workDir, webservedDirsShort, ghPagesSrc);
     }
+
+    // Make sure a .nojekyll file exists at the root of gh_pages_src.
+    fs.writeFileSync(ghPagesSrc + '/.nojekyll', '');
 
     resolve();
   });
@@ -140,7 +176,13 @@ exports.main = function (workDir, publishDir, conf, pref, test) {
     if (!test) {
       utils.log('Publishing gh_pages_src to GitHub Pages...');
 
-      ghpages.publish(ghPagesSrc, function (err) {
+      var opts = {
+        clone: 'node_modules/gh-pages/.cache',
+        dotfiles: true,
+        logger: function (message) {utils.log(message);}
+      };
+
+      ghpages.publish(ghPagesSrc, opts, function (err) {
         if (err) {
           utils.error(err);
         }

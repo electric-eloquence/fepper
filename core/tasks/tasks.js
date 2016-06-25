@@ -8,34 +8,34 @@ module.exports = class {
   }
 
   appendix() {
-    require('./appendixer.js').main(this.workDir, this.conf);
+    require('./appendixer').main(this.workDir, this.conf);
   }
 
   frontendCopy(frontendType) {
-    require('./frontend-copier.js').main(this.workDir, this.conf, this.pref, frontendType);
+    require('./frontend-copier').main(this.workDir, this.conf, this.pref, frontendType);
   }
 
   jsonCompile() {
-    require('./json-compiler.js').main(this.workDir, this.conf);
+    require('./json-compiler').main(this.workDir, this.conf);
   }
 
   open() {
-    require('./opener.js').main(this.workDir, this.conf);
+    require('./opener').main(this.workDir, this.conf);
   }
 
   patternOverride() {
-    require('./pattern-overrider.js').main(this.workDir, this.conf);
+    require('./pattern-overrider').main(this.workDir, this.conf);
   }
 
-  publish(publishDir, pref, test) {
-    require('./publisher.js').main(this.workDir, publishDir, this.conf, pref, test);
+  publish(publicDir, publishDir, test) {
+    require('./publisher').main(this.workDir, publicDir, publishDir, this.conf, this.pref, test);
   }
 
   staticGenerate() {
-    require('./static-generator.js').main(this.workDir, this.conf, this.pref);
+    require('./static-generator').main(this.workDir, this.conf, this.pref);
   }
 
   template() {
-    require('./templater.js').main(this.workDir, this.conf, this.pref);
+    require('./templater').main(this.workDir, this.conf, this.pref);
   }
 };
