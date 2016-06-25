@@ -98,8 +98,13 @@ gulp.task('fepper:data', function (cb) {
 var patternOverrideTask = gulpUtils.fsContextClosure(pathIn, tasks, 'patternOverride', pathOut);
 gulp.task('fepper:pattern-override', patternOverrideTask);
 
-var publishTask = gulpUtils.fsContextClosure(pathIn, tasks, 'publish', pathOut);
+var publishArgs = ['static', rootDir + '/.publish'];
+var publishTask = gulpUtils.fsContextClosure(pathIn, tasks, 'publish', pathOut, publishArgs);
 gulp.task('fepper:publish', publishTask);
+
+var publishArgs1 = ['.', rootDir + '/.publish'];
+var publishTask1 = gulpUtils.fsContextClosure(pathIn, tasks, 'publish', pathOut, publishArgs1);
+gulp.task('fepper:publish:pl', publishTask1);
 
 var staticGenerateTask = gulpUtils.fsContextClosure(pathIn, tasks, 'staticGenerate', pathOut);
 gulp.task('fepper:static-generate', staticGenerateTask);
