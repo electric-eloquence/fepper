@@ -125,6 +125,7 @@ gulp.task('publish', function (cb) {
 gulp.task('publish:pl', function (cb) {
   runSequence(
     ['contrib:publish:preprocess', 'custom:publish:preprocess'],
+    'once',
     'fepper:publish:pl',
     // Since GitHub pages will only render the last publish, you might need to
     // ensure that only one publish task runs. The main fepper:publish task
