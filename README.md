@@ -40,7 +40,7 @@
   * On a Mac: `brew install node`
   * If already installed, be sure the version is up to date: `node -v`
   * Update if necessary: `brew update && brew upgrade node`
-  * If not on a Mac, and not using Homebrew: [https&colon;&sol;&sol;nodejs.org&sol;en&sol;download&sol;package-manager&sol;](https://nodejs.org/en/download/package-manager/)
+  * If not on a Mac, and not using Homebrew: https://nodejs.org/en/download/package-manager/
   * After installing Node, `npm install -g fepper-cli`
 * On Mac OS X:
   * Double-click `fepper.command`
@@ -49,7 +49,7 @@
 * After successful installation:
   * Double-click `fepper.command` again
   * Or enter `fp` on the command line.
-* Open [http&colon;&sol;&sol;localhost&colon;3000](http://localhost:3000) in a browser if it doesn't open automatically.
+* Open http://localhost:3000 in a browser if it doesn't open automatically.
 * Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
 * Start editing files in `patternlab-node/source`. Changes should automatically appear in the browser.
   * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).  
@@ -61,7 +61,7 @@ Electric Eloquence Fepper repository at your project's onset, and pulling from
 the master branch of the main upstream repository when updates are released.
 
 All updates must pull from 
-[https&colon;&sol;&sol;github.com&sol;electric-eloquence&sol;fepper](https://github.com/electric-eloquence/fepper) 
+https://github.com/electric-eloquence/fepper 
 even if your original installation was forked from a child project. Pulling 
 from a child project's repository may overwrite custom code specific to your 
 project so don't do it.
@@ -120,7 +120,7 @@ will be picked up by all patterns.
 ### <a id="static-site-generation"></a>Static Site Generation
 Running `fp static` will generate a complete static site based on the files 
 in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
-[http&colon;&sol;&sol;localhost&colon;3000&sol;static&sol;](http://localhost:3000/static/). An `index.html` 
+http://localhost:3000/static/. An `index.html` 
 will be generated based on `04-pages-00-homepage` or whatever is defined as the 
 homepage in `_data.json`. If the links are relative and they work correctly in 
 the Pattern Lab UI, they will work correctly in the static site even if the 
