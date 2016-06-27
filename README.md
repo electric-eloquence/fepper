@@ -22,6 +22,7 @@
 * [Mustache Browser](#mustache-browser)
 * [HTML Scraper](#html-scraper)
 * [variables.styl](#variables.styl)
+* [Extensions](#extensions)
 * [More Documentation](#more-documentation)
 * [Contributing](#contributing)
 
@@ -248,12 +249,24 @@ must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS
 processors and tries to keep the amount of NPMs to download to a minimum, so it 
 does not ship with Stylus (or any other CSS pre/post-processor) configured. 
 However, since Stylus allows for this easy sharing of variables, Fepper does 
-ship with a `patternlab-node/source/css-processors/stylus` directory which can 
-be compiled into the stock Pattern Lab CSS by configuring 
-`extend/custom/css-process/css-process~extend.js`. The Stylus files are written 
-in the terse, Python-like, indentation-based syntax; however, the more verbose, 
-CSS-like syntax (with curly braces, colons, and semi-colons) is perfectly valid 
-as well.
+ship with a `patternlab-node/source/css-processors/stylus` directory. In order 
+to compile its Stylus into the stock Pattern Lab CSS, run `npm install` in the 
+`extend` directory. Then, uncomment the `css-process` tasks in 
+`extend/custom.js`. The Stylus files are written in the terse, Python-like, 
+indentation-based syntax; however, the more verbose, CSS-like syntax (with curly 
+braces, colons, and semi-colons) is perfectly valid as well.
+
+### <a id="extensions"></a>Extensions
+Contributed extensions
+
+* Install and update contributed extensions with NPM.
+* Add the tasks to `contrib.js` (and `auxiliary/auxiliary_contrib.js` if necessary) in order for Fepper to run them.
+
+Custom extensions
+
+* Write custom extensions within an appropriately named directory just under the `custom` directory.
+* They must include a file ending in "~extend.js" in order for Fepper to recognize their tasks.
+* Add the tasks to `custom.js` (and `auxiliary/auxiliary_custom.js` if necessary) in order for Fepper to run them.
 
 ### <a id="more-documentation"></a>More Documentation
 * [default.pref.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.pref.yml)
