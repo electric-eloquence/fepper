@@ -3,6 +3,18 @@
   "version": "0.0.0",
   "description": "A frontend prototyper for the rapid prototyping of websites",
   "main": "./index.js",
+  "scripts": {
+    "postinstall": "if [ ! -d extend ]; then cp -pR excludes/extend extend; fi && if [ ! -f conf.yml ]; then cp excludes/default.conf.yml conf.yml; fi && if [ ! -f pref.yml ]; then cp excludes/default.pref.yml pref.yml; fi && gulp install > install.log",
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/electric-eloquence/fepper.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "devDependencies": {
     "body-parser": "^1.6.3",
     "chai": "^3.5.0",
@@ -35,17 +47,5 @@
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2"
-  },
-  "scripts": {
-    "postinstall": "if [ ! -d extend ]; then cp -pR excludes/extend extend; fi && if [ ! -f conf.yml ]; then cp excludes/default.conf.yml conf.yml; fi && if [ ! -f pref.yml ]; then cp excludes/default.pref.yml pref.yml; fi && gulp install > install.log",
-    "test": "gulp test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/electric-eloquence/fepper.git"
-  },
-  "license": "MIT",
-  "engines": {
-    "node": ">=4.0.0"
   }
 }
