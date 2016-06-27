@@ -10,8 +10,6 @@
     "node": ">=4.0.0"
   },
   "devDependencies": {
-    "fp-import": "*",
-    "fp-multisite": "*",
     "gulp-stylus": "^2.4.0"
   }
 }
