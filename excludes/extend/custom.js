@@ -10,7 +10,7 @@ gulp.task('custom:data', [
 ]);
 
 gulp.task('custom:frontend-copy', [
-// Uncomment if you wish to enable this.
+// Uncomment if you wish to enable Stylus processing.
 //  'css-process:frontend-copy'
 ]);
 
@@ -21,7 +21,7 @@ gulp.task('custom:minify', [
 ]);
 
 gulp.task('custom:once', [
-// Uncomment if you wish to enable this.
+// Uncomment if you wish to enable Stylus processing.
 //  'css-process'
 ]);
 
@@ -44,6 +44,6 @@ gulp.task('custom:template', [
 ]);
 
 gulp.task('custom:watch', [
-// Uncomment if you wish to enable this.
+// Uncomment if you wish to enable Stylus processing.
 //  'css-process:watch'
 ]);

@@ -1,5 +1,6 @@
 /**
- * Use any CSS pre- or post-processor you wish. Or use none.
+ * Supplying Stylus tasks for the custom extension example because of Stylus's
+ * compatibility with JavaScript and PHP. See patternlab-node/source/_scripts/src/variables.styl
  */
 'use strict';
 
@@ -16,16 +17,6 @@ gulp.task('css-process', function () {
     }))
     .on('error', utilsGulp.handleError)
     .pipe(gulp.dest('./' + conf.src + '/_styles'));
-
-// Delete the previous block and uncomment the following block to use SCSS.
-// Replace them both to use something else.
-//  return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
-//    .pipe(plugins.sass({
-//      outputStyle: 'expanded',
-//      sourceComments: true
-//    }))
-//    .on('error', plugins.sass.logError)
-//    .pipe(gulp.dest('./' + conf.src + '/_styles'));
 });
 
 // This runs the CSS processor without outputting line comments.
@@ -37,16 +28,6 @@ gulp.task('css-process:no-comments', function () {
     }))
     .on('error', utilsGulp.handleError)
     .pipe(gulp.dest('./' + conf.src + '/_styles'));
-
-// Delete the previous block and uncomment the following block to use SCSS.
-// Replace them both to use something else.
-//  return gulp.src('./' + conf.src + '/css-processors/scss/*.scss')
-//    .pipe(plugins.sass({
-//      outputStyle: 'expanded',
-//      sourceComments: false
-//    }))
-//    .on('error', plugins.sass.logError)
-//    .pipe(gulp.dest('./' + conf.src + '/_styles'));
 });
 
 gulp.task('css-process:frontend-copy', function (cb) {
@@ -59,8 +40,4 @@ gulp.task('css-process:frontend-copy', function (cb) {
 
 gulp.task('css-process:watch', function () {
   gulp.watch('./' + conf.src + '/css-processors/stylus/**/*.styl', ['css-process']);
-
-// Delete the previous block and uncomment the following block to use SCSS.
-// Replace them both to use something else.
-//  gulp.watch('./' + conf.src + '/css-processors/scss/**/*.scss', ['css-process']);
 });
