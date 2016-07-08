@@ -104,6 +104,29 @@ function saveSize(size) {
 (function () {
   'use strict';
 
+  // Set title.
+  var oGetVars = urlHandler.getRequestVars();
+  var patternName = 'all';
+  if (typeof oGetVars.p !== undefined) {
+    patternName = oGetVars.p;
+  }
+  else if (typeof oGetVars.pattern !== undefined) {
+    patternName = oGetVars.pattern;
+  }
+  if (patternName !== 'all') {
+    document.getElementsByTagName('title')[0].innerHTML = 'Fepper - ' + patternName;
+  }
+
+  var popPattern = '(' + urlHandler.popPattern.toString() + ')';
+  // Hacky but unavoidable in order to be DRY.
+  popPattern = popPattern.replace(/document.getElementById\((?:"|')title(?:"|')\).innerHTML\s*=.*$/m, 'document.getElementById("title").innerHTML = "Fepper - " + patternName;');
+  urlHandler.popPattern = eval(popPattern);
+
+  var pushPattern = '(' + urlHandler.pushPattern.toString() + ')';
+  // Hacky but unavoidable in order to be DRY.
+  pushPattern = pushPattern.replace(/document.getElementById\((?:"|')title(?:"|')\).innerHTML\s*=.*$/m, 'document.getElementById("title").innerHTML = "Fepper - " + pattern;');
+  urlHandler.pushPattern = eval(pushPattern);
+
   // Iterate through bps in order to create event listeners that resize
   // the viewport.
   for (i in bpObj) {
