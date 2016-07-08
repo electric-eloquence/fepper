@@ -1,9 +1,9 @@
 {
-  "article_title" : "Top 10 hiking mountains",
+  "article_title" : "How to build a campfire",
   "img": {
     "landscape_16x9": {
-      "src": "../../_assets/sample/thumb-square-yosemite.jpg",
-      "alt": "Yosemite"
+      "src": "../../_assets/sample/thumb-square-fire.jpg",
+      "alt": "Fire"
     }
   }
 }

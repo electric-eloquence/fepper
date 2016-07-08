@@ -1,9 +1,9 @@
 {
-  "article_title" : "Explore hiking trails",
+  "article_title" : "Navigate the Allegheny River",
   "img": {
     "landscape_16x9": {
-      "src": "../../_assets/sample/tout-4x3-climbers.jpg",
-      "alt": "Explore hiking trails"
+      "src": "../../_assets/sample/thumb-square-river.jpg",
+      "alt": "Post Thumbnail"
     }
   }
 }
