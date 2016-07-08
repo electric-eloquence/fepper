@@ -15,6 +15,7 @@ var oPattern = function (abspath, subdir, filename, data) {
   this.abspath = abspath;
   this.subdir = subdir;
   this.name = subdir.replace(/[\/\\]/g, '-') + '-' + this.fileName; //this is the unique name with the subDir
+  this.name = this.name.replace(/~/g, '-'); //replace tildes with hyphens
   this.jsonFileData = data || {};
   this.patternName = this.fileName.replace(/^\d*\-/, '');
   this.patternDisplayName = this.patternName.split('-').reduce(function (val, working) {

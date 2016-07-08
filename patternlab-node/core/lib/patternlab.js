@@ -177,7 +177,7 @@ var patternlab_engine = function (config) {
 
   function addToPatternPaths(bucketName, pattern) {
     //this is messy, could use a refactor.
-    patternlab.patternPaths[bucketName][pattern.patternName] = pattern.subdir.replace(/\\/g, '/') + "/" + pattern.fileName;
+    patternlab.patternPaths[bucketName][pattern.patternName] = pattern.subdir.replace(/\\/g, '/') + "/" + pattern.fileName.replace(/~/g, '-');
   }
 
   //todo: refactor this as a method on the pattern object itself once we merge dev with pattern-engines branch
