@@ -1,7 +1,7 @@
 {
   "name": "fepper",
   "version": "0.0.0",
-  "description": "A frontend prototyper for the rapid prototyping of websites",
+  "description": "A Front End Prototyper for the rapid prototyping of websites",
   "main": "./index.js",
   "scripts": {
     "postinstall": "if [ ! -d extend ]; then cp -pR excludes/extend extend; fi && if [ ! -f conf.yml ]; then cp excludes/default.conf.yml conf.yml; fi && if [ ! -f pref.yml ]; then cp excludes/default.pref.yml pref.yml; fi && gulp install > install.log",
@@ -24,7 +24,7 @@
     "fs-extra": "^0.22.1",
     "gh-pages": "^0.11.0",
     "glob": "^5.0.5",
-    "gulp": "^3.9.0",
+    "gulp": "3.9.1",
     "gulp-eslint": "^2.0.0",
     "gulp-htmlhint": "^0.3.0",
     "gulp-htmllint": "0.0.6",

@@ -24,7 +24,7 @@
 * [variables.styl](#variables.styl)
 * [Extensions](#extensions)
 * [More Documentation](#more-documentation)
-* [Contributing](#contributing)
+* [Contribute](#contribute)
 
 ### <a id="install"></a>Install
 * On Mac OS X:
@@ -257,23 +257,27 @@ indentation-based syntax; however, the more verbose, CSS-like syntax (with curly
 braces, colons, and semi-colons) is perfectly valid as well.
 
 ### <a id="extensions"></a>Extensions
-Contributed extensions
+The `extend` directory is purposed for extending Fepper's functionality. 
+Extensions can be contributed or custom. The `extend` directory will not be 
+modified when updating Fepper.
+
+Contributed extensions:
 
 * Install and update contributed extensions with NPM.
-* Add the tasks to `contrib.js` (and `auxiliary/auxiliary_contrib.js` if necessary) in order for Fepper to run them.
+* Add the tasks to `extend/contrib.js` (and `extend/auxiliary/auxiliary_contrib.js` if necessary) in order for Fepper to run them.
 
-Custom extensions
+Custom extensions:
 
-* Write custom extensions within an appropriately named directory just under the `custom` directory.
+* Write custom extensions within an appropriately named directory just under the `extend/custom` directory.
 * They must include a file ending in "~extend.js" in order for Fepper to recognize their tasks.
-* Add the tasks to `custom.js` (and `auxiliary/auxiliary_custom.js` if necessary) in order for Fepper to run them.
+* Add the tasks to `extend/custom.js` (and `extend/auxiliary/auxiliary_custom.js` if necessary) in order for Fepper to run them.
 
 ### <a id="more-documentation"></a>More Documentation
 * [default.pref.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.pref.yml)
 * [Pattern Lab](http://patternlab.io/docs/index.html)
 * [Mustache](https://mustache.github.io/mustache.5.html)
 
-### <a id="contributing"></a>Contributing
+### <a id="contribute"></a>Contribute
 Contributions and bug fixes are greatly appreciated!
 
 * Please pull request against the [dev branch](https://github.com/electric-eloquence/fepper/tree/dev).

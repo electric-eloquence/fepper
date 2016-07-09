@@ -1,6 +1,6 @@
 {
   "emergency": {
-    "alertClass" : "error",
+    "alert_class" : "error",
     "excerpt" : {
       "short" : "Emergency! This is a variation of the core homepage template."
     }
