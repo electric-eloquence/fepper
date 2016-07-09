@@ -114,17 +114,26 @@ function saveSize(size) {
     patternName = oGetVars.pattern;
   }
   if (patternName !== 'all') {
-    document.getElementsByTagName('title')[0].innerHTML = 'Fepper - ' + patternName;
+    document.getElementsByTagName('title')[0].innerHTML = 'Fepper' + (patternName ? ' - ' + patternName : '');
   }
 
-  var popPattern = '(' + urlHandler.popPattern.toString() + ')';
-  // Hacky but unavoidable in order to be DRY.
-  popPattern = popPattern.replace(/document.getElementById\((?:"|')title(?:"|')\).innerHTML\s*=.*$/m, 'document.getElementById("title").innerHTML = "Fepper - " + patternName;');
+  // Hacky but unavoidable in order to be DRY. Using regexes which should fail
+  // gracefully in nearly all cases which vary from the indended effects.
+  var popPattern;
+  var pushPattern;
+  var replaced;
+  var replacement;
+
+  replaced = /document.getElementById\((?:"|')title(?:"|')\).innerHTML\s*=.*;\s*$/m;
+  replacement = 'document.getElementById("title").innerHTML = "Fepper" + (patternName ? " - " + patternName : "");';
+  popPattern = '(' + urlHandler.popPattern.toString() + ')';
+  popPattern = popPattern.replace(replaced, replacement);
   urlHandler.popPattern = eval(popPattern);
 
-  var pushPattern = '(' + urlHandler.pushPattern.toString() + ')';
-  // Hacky but unavoidable in order to be DRY.
-  pushPattern = pushPattern.replace(/document.getElementById\((?:"|')title(?:"|')\).innerHTML\s*=.*$/m, 'document.getElementById("title").innerHTML = "Fepper - " + pattern;');
+  replaced = /document.getElementById\((?:"|')title(?:"|')\).innerHTML\s*=.*;\s*$/m;
+  replacement = 'document.getElementById("title").innerHTML = "Fepper" + (pattern ? " - " + pattern : "");';
+  pushPattern = '(' + urlHandler.pushPattern.toString() + ')';
+  pushPattern = pushPattern.replace(replaced, replacement);
   urlHandler.pushPattern = eval(pushPattern);
 
   // Iterate through bps in order to create event listeners that resize
