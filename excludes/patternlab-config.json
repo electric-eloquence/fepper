@@ -6,20 +6,20 @@
       "data" : "./source/_data/",
       "styleguide" : "./core/styleguide/",
       "patternlabFiles" : "./core/",
-      "js" : "./source/js",
-      "images" : "./source/images",
-      "fonts" : "./source/fonts",
-      "css" : "./source/css/"
+      "js" : "./source/_scripts",
+      "images" : "./source/_assets",
+      "fonts" : "./source/_styles/fonts",
+      "css" : "./source/_styles/"
     },
     "public" : {
       "root" : "./public/",
       "patterns" : "./public/patterns/",
       "data" : "./public/data/",
       "styleguide" : "./public/styleguide/",
-      "js" : "./public/js",
-      "images" : "./public/images",
-      "fonts" : "./public/fonts",
-      "css" : "./public/css"
+      "js" : "./public/_scripts",
+      "images" : "./public/_assets",
+      "fonts" : "./public/_styles/fonts",
+      "css" : "./public/_styles"
     }
   },
   "styleGuideExcludes": [
@@ -28,7 +28,7 @@
   ],
   "defaultPattern": "all",
   "ignored-extensions" : ["scss", "DS_Store", "less"],
-  "ignored-directories" : ["scss"],
+  "ignored-directories" : ["css-processors"],
   "debug": false,
   "ishControlsVisible": {
     "s": true,
