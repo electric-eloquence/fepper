@@ -3,7 +3,7 @@
 # A frontend prototyper for the rapid prototyping of websites
 
 ### Child projects
-* [Fepper Minimal](https://github.com/electric-eloquence/fepper-minimal) - no unnecessary assets, styles, or Pattern Lab demo.
+* [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no unnecessary assets, styles, or Pattern Lab demo.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - templates configured for Drupal 8, along with a Drupal theme built to accommodate those templates.
 * [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) - templates configured for WordPress, along with a WordPress theme built to accommodate those templates.
 
@@ -23,6 +23,7 @@
 * [HTML Scraper](#html-scraper)
 * [variables.styl](#variables.styl)
 * [Extensions](#extensions)
+* [Mobile Devices](#mobile-devices)
 * [More Documentation](#more-documentation)
 * [Contribute](#contribute)
 
@@ -271,6 +272,44 @@ Custom extensions:
 * Write custom extensions within an appropriately named directory just under the `extend/custom` directory.
 * They must include a file ending in "~extend.js" in order for Fepper to recognize their tasks.
 * Add the tasks to `extend/custom.js` (and `extend/auxiliary/auxiliary_custom.js` if necessary) in order for Fepper to run them.
+
+### <a id="mobile-devices"></a>Mobile Devices
+The best way to browse the Fepper UI on a mobile device is through the wireless 
+connection on your development machine. These are the instructions for doing 
+this on a Mac:
+
+If your Mac is connected to the Internet wirelessly:
+
+* Open System Preferences
+* Click Network
+* In the left pane, select Wi-Fi
+* In the right pane, underneath Status, the IP address will be displayed
+* On your mobile device, connect to the same wireless network that your Mac is connected to
+* Browse http://{IP address}:3000
+* Change the port number if Fepper is listening on a different port
+
+If your Mac is connected to the Internet through a wire:
+
+* In the top menu bar, turn Wi-Fi off
+* Open System Preferences
+* Click Sharing
+* In the left pane, select Internet Sharing
+* In the right pane, on "Share your connection from:", select the interface which is connected to the Internet
+* On "To computers using:", check Wi-Fi
+* Click "Wi-Fi Options..."
+* This will show your Mac's name as the wireless network name
+* Add security if you are in a public space
+* Click OK
+* Back in the System Preferences main window, in the left pane, check to activate Internet Sharing
+* In the dialog that appears, click "Turn Wi-Fi On"
+* In the next dialog, click Start
+* The Wi-Fi icon in the top menu bar should now be gray with a white up-arrow
+* Back in the System Preferences main window, click Network
+* In the left pane, select your wired connection
+* In the right pane, underneath Status, the IP address will be displayed
+* On your mobile device, connect to the wireless network that is the same name as your Mac
+* Browse http://{IP address}:3000
+* Change the port number if Fepper is listening on a different port
 
 ### <a id="more-documentation"></a>More Documentation
 * [default.pref.yml](https://github.com/electric-eloquence/fepper/blob/master/excludes/default.pref.yml)
