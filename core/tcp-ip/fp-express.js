@@ -58,7 +58,7 @@ exports.main = function () {
   app.post('/html-scraper', htmlScraperPost.main);
 
   // Fepper static files.
-  app.use('/fepper-core', express.static(rootDir + '/core/lib/webserved'));
+  app.use('/fepper-core', express.static(rootDir + '/core/webserved'));
 
   // For everything else, document root = Pattern Lab.
   app.use(express.static(rootDir + '/' + conf.pub));
