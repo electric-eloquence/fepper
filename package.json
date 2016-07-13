@@ -4,7 +4,8 @@
   "description": "A Front End Prototyper for the rapid prototyping of websites",
   "main": "./index.js",
   "scripts": {
-    "postinstall": "if [ ! -d extend ]; then cp -pR excludes/extend extend; fi && if [ ! -f conf.yml ]; then cp excludes/default.conf.yml conf.yml; fi && if [ ! -f pref.yml ]; then cp excludes/default.pref.yml pref.yml; fi && gulp install > install.log",
+    "install-base": "./core/misc/install-base.sh",
+    "postinstall": "./core/misc/install.sh",
     "test": "gulp test"
   },
   "repository": {
