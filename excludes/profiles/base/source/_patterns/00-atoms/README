@@ -1,0 +1,2 @@
+This directory is necessary for the global head and foot to work. It will not 
+appear in the Pattern Lab UI toolbar so long as patterns are not added to it.
