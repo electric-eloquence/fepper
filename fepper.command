@@ -5,7 +5,7 @@ root_dir=$(dirname $0)
 cd $root_dir
 
 # Run installer or default task.
-if [[ ! -f ${root_dir}/conf.yml || ! -f ${root_dir}/patternlab-node/config.json ]]; then
+if [[ ! -f ${root_dir}/conf.yml || ! -f ${root_dir}/ui/patternlab-config.json ]]; then
   npm install
 else
   node ${root_dir}/index.js

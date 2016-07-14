@@ -53,7 +53,7 @@
   * Or enter `fp` on the command line.
 * Open http://localhost:3000 in a browser if it doesn't open automatically.
 * Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
-* Start editing files in `patternlab-node/source`. Changes should automatically appear in the browser.
+* Start editing files in `ui/source`. Changes should automatically appear in the browser.
   * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).  
 * To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
 
@@ -98,15 +98,15 @@ for those directories to get processed and copied to the backend.
 * If using Git for version control, directories named "ignore" will be ignored.
 
 ### <a id="global-data"></a>Global Data
-Edit `patternlab-node/source/_data/_data.json` to globally populate Mustache 
-templates with data. Manual edits to `patternlab-node/source/_data/data.json` 
-will get overwritten on compilation.
+Edit `ui/source/_data/_data.json` to globally populate Mustache templates with 
+data. Manual edits to `ui/source/_data/data.json` will get overwritten on 
+compilation.
 
 ### <a id="partial-data"></a>Partial Data
 Underscore-prefixed .json files within 
-`patternlab-node/source/_patterns` will be concatenated to the output of 
-`_data.json`, the whole in turn getting compiled into `data.json`, the final 
-source of globally scoped data. 
+`ui/source/_patterns` will be concatenated to the output of `_data.json`, the 
+whole in turn getting compiled into `data.json`, the final source of globally 
+scoped data. 
 
 _Partial data_ is distinct from _pattern data_. For example, `00-homepage.json` 
 is _pattern data_ and specific to the `00-homepage` pattern. No other pattern 
@@ -115,20 +115,19 @@ another pattern. However, `_00-homepage.json` is _partial data_ and will get
 concatenated to the _global data_ outputted to `data.json`. `_00-homepage.json` 
 will be picked up by all patterns.
 
-* __DO NOT EDIT patternlab-node/source/_data/data.json__
-* __DO PUT GLOBAL DATA IN patternlab-node/source/_data/_data.json__
-* __DO LIBERALLY USE PARTIAL DATA IN patternlab-node/source/_patterns FOR ORGANIZATIONAL SANITY__
+* __DO NOT EDIT ui/source/_data/data.json__
+* __DO PUT GLOBAL DATA IN ui/source/_data/_data.json__
+* __DO LIBERALLY USE PARTIAL DATA IN ui/source/_patterns FOR ORGANIZATIONAL SANITY__
 
 ### <a id="static-site-generation"></a>Static Site Generation
-Running `fp static` will generate a complete static site based on the files 
-in `patternlab-node/source/_patterns/04-pages`. The site will be viewable at
-http://localhost:3000/static/. An `index.html` 
-will be generated based on `04-pages-00-homepage` or whatever is defined as the 
-homepage in `_data.json`. If the links are relative and they work correctly in 
-the Pattern Lab UI, they will work correctly in the static site even if the 
-`static` directory is moved and renamed. The only caveat is that links to other 
-pages in the `patterns` directory must start with `../04-pages-` and not 
-`../../patterns/04-pages-`.
+Running `fp static` will generate a complete static site based on the files in 
+`ui/source/_patterns/04-pages`. The site will be viewable at http://localhost:3000/static/. 
+An `index.html` will be generated based on `04-pages-00-homepage` or whatever is 
+defined as the homepage in `_data.json`. If the links are relative and they work 
+correctly in the Pattern Lab UI, they will work correctly in the static site 
+even if the `static` directory is moved and renamed. The only caveat is that 
+links to other pages in the `patterns` directory must start with `../04-pages-` 
+and not `../../patterns/04-pages-`.
 
 ### <a id="the-backend"></a>The Backend
 Fepper can almost as easily work with a CMS backend such as Drupal or WordPress, 
@@ -150,7 +149,7 @@ backend web application.
 Pattern Lab's Mustache templates can be translated into templates compatible 
 with your backend. Mustache tags just need to be replaced with tags the backend 
 can use. Put these translations into YAML files named similarly to the Mustache 
-files in `patternlab-node/source/_patterns/03-templates`. Follow the example in 
+files in `ui/source/_patterns/03-templates`. Follow the example in 
 `test/files/_patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
 
 Follow these rules for setting up keys and values:
@@ -192,12 +191,12 @@ INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 
 ### <a id="github-pages"></a>GitHub Pages
 If you have checked your Fepper instance into a repository in your GitHub 
-account, you may run `fp publish` to publish `patternlab-node/public` to GitHub 
-Pages. The Pattern Lab UI and Fepper static files will then be viewable from the 
-Web at `http://{user}.github.io/{repo}`. Normally, this is all that is needed. 
-However, if you are using `webserved_dirs`, you will need to supply a 
-`gh_pages_prefix` preference in `pref.yml`. This preference needs to be set to 
-the name of your GitHub repository.
+account, you may run `fp publish` to publish `ui/public` to GitHub Pages. The 
+Pattern Lab UI and Fepper static files will then be viewable from the Web at 
+`http://{user}.github.io/{repo}`. Normally, this is all that is needed. However, 
+if you are using `webserved_dirs`, you will need to supply a `gh_pages_prefix` 
+preference in `pref.yml`. This preference needs to be set to the name of your 
+GitHub repository.
 
 ### <a id="mustache-browser"></a>Mustache Browser
 Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
@@ -232,10 +231,10 @@ correctly indent the Mustache code. However, this beautification may also render
 some attributes of the Mustache code a little different than the original HTML.
 
 ### <a id="variables.styl"></a>variables.styl
-`patternlab-node/source/_scripts/src/variables.styl` is a file containing 
-variables that can be shared across the Stylus CSS preprocessor, browser 
-JavaScripts, and PHP backends (and possibly other language backends as well). It 
-ships with these values:
+`ui/source/_scripts/src/variables.styl` is a file containing variables that can 
+be shared across the Stylus CSS preprocessor, browser JavaScripts, and PHP 
+backends (and possibly other language backends as well). It ships with these 
+values:
 
 ```
 bp_lg_max = -1
@@ -251,12 +250,12 @@ must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS
 processors and tries to keep the amount of NPMs to download to a minimum, so it 
 does not ship with Stylus (or any other CSS pre/post-processor) configured. 
 However, since Stylus allows for this easy sharing of variables, Fepper does 
-ship with a `patternlab-node/source/css-processors/stylus` directory. In order 
-to compile its Stylus into the stock Pattern Lab CSS, run `npm install` in the 
-`extend` directory. Then, uncomment the `css-process` tasks in 
-`extend/custom.js`. The Stylus files are written in the terse, Python-like, 
-indentation-based syntax; however, the more verbose, CSS-like syntax (with curly 
-braces, colons, and semi-colons) is perfectly valid as well.
+ship with a `ui/source/css-processors/stylus` directory. In order to compile its 
+Stylus into the stock Pattern Lab CSS, run `npm install` in the `extend` 
+directory. Then, uncomment the `css-process` tasks in `extend/custom.js`. The 
+Stylus files are written in the terse, Python-like, indentation-based syntax; 
+however, the more verbose, CSS-like syntax (with curly braces, colons, and 
+semi-colons) is perfectly valid as well.
 
 ### <a id="extensions"></a>Extensions
 The `extend` directory is purposed for extending Fepper's functionality. 
