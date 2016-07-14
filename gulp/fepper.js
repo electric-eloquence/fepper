@@ -104,7 +104,7 @@ gulp.task('fepper:publish', publishTask);
 
 var publishArgs1 = ['.', rootDir + '/.publish'];
 var publishTask1 = gulpUtils.fsContextClosure(pathIn, tasks, 'publish', pathOut, publishArgs1);
-gulp.task('fepper:publish:pl', publishTask1);
+gulp.task('fepper:publish:ui', publishTask1);
 
 var staticGenerateTask = gulpUtils.fsContextClosure(pathIn, tasks, 'staticGenerate', pathOut);
 gulp.task('fepper:static-generate', staticGenerateTask);
