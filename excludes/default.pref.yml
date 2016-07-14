@@ -12,9 +12,8 @@ backend:
     #   settings.
     # - Do not include a leading dot in the templates_ext setting.
     # - Note that JavaScripts will only be synced if they are at least one
-    #   directory below patternlab-php/source/js. In other words, place
-    #   JavaScripts you wish to ignore directly in patternlab-php/source/js and
-    #   no deeper.
+    #   directory below ui/source/js. In other words, place JavaScripts you wish
+    #   to ignore directly in ui/source/js and no deeper.
     # - Use the fp syncback task to perform the sync.
     #
     # - Examples:
