@@ -8,7 +8,7 @@
 Thumbs.db
 ignore/
 node_modules/
-!/excludes/extend/node_modules/
-patternlab-node/public/*
-!patternlab-node/public/styleguide/
-patternlab-node/source/
+ui/patternlab-config.json
+ui/public/*
+!ui/public/styleguide/
+ui/source/
