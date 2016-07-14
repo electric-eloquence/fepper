@@ -22,7 +22,7 @@ gulp.task('install:copy', function () {
     fs.statSync(conf.src);
   }
   catch (err) {
-    // Only copy excludes/profiles/main/source if patternlab-node/source doesn't
+    // Only copy excludes/profiles/main/source if ui/source doesn't
     // exist.
     if (err.code === 'ENOENT') {
       return gulp.src('./excludes/profiles/main/source/**')
