@@ -1,6 +1,6 @@
 /**
  * Supplying Stylus tasks for the custom extension example because of Stylus's
- * compatibility with JavaScript and PHP. See patternlab-node/source/_scripts/src/variables.styl
+ * compatibility with JavaScript and PHP. See ui/source/_scripts/src/variables.styl
  */
 'use strict';
 
