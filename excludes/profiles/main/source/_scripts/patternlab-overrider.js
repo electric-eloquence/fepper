@@ -30,11 +30,11 @@ function sizeiframe(e) {
 
   for (j in bpObj) {
     if (sgSize === j) {
-      var maxViewportWidth = 2600; // Defined in patternlab-node/public/js/styleguide.js
-      var minViewportWidth = 240; // Defined in patternlab-node/public/js/styleguide.js
+      var maxViewportWidth = 2600; // Defined in ui/public/js/styleguide.js
+      var minViewportWidth = 240; // Defined in ui/public/js/styleguide.js
       var size = bpObj[j];
       var theSize;
-      var viewportResizeHandleWidth = 14; // Defined in patternlab-node/public/js/styleguide.js
+      var viewportResizeHandleWidth = 14; // Defined in ui/public/js/styleguide.js
 
       if (size > maxViewportWidth) {
         // If the entered size is larger than the max allowed viewport size, cap
