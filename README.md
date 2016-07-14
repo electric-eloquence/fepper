@@ -2,7 +2,7 @@
 
 # A frontend prototyper for the rapid prototyping of websites
 
-### Child projects
+### Downstream projects
 * [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no unnecessary assets, styles, or Pattern Lab demo.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - templates configured for Drupal 8, along with a Drupal theme built to accommodate those templates.
 * [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) - templates configured for WordPress, along with a WordPress theme built to accommodate those templates.
@@ -62,11 +62,10 @@ The easiest way to update Fepper is with Git. This generally means forking an
 Electric Eloquence Fepper repository at your project's onset, and pulling from 
 the master branch of the main upstream repository when updates are released.
 
-All updates must pull from 
-https://github.com/electric-eloquence/fepper 
-even if your original installation was forked from a child project. Pulling 
-from a child project's repository may overwrite custom code specific to your 
-project so don't do it.
+All updates must pull from https://github.com/electric-eloquence/fepper even if 
+your original installation was forked from a downstream repository. Pulling from 
+a downstream repository may overwrite custom code specific to your project so 
+don't do it!
 
 If not updating with Git, you'll need to copy the latest package over the old. 
 Be sure to take care that "dot"-prefixed hidden files at the root level are 
@@ -124,10 +123,10 @@ Running `fp static` will generate a complete static site based on the files in
 `ui/source/_patterns/04-pages`. The site will be viewable at http://localhost:3000/static/. 
 An `index.html` will be generated based on `04-pages-00-homepage` or whatever is 
 defined as the homepage in `_data.json`. If the links are relative and they work 
-correctly in the Pattern Lab UI, they will work correctly in the static site 
-even if the `static` directory is moved and renamed. The only caveat is that 
-links to other pages in the `patterns` directory must start with `../04-pages-` 
-and not `../../patterns/04-pages-`.
+correctly in the Fepper UI, they will work correctly in the static site even if 
+the `static` directory is moved and renamed. The only caveat is that links to 
+other pages in the `patterns` directory must start with `../04-pages-` and not 
+`../../patterns/04-pages-`.
 
 ### <a id="the-backend"></a>The Backend
 Fepper can almost as easily work with a CMS backend such as Drupal or WordPress, 
@@ -146,9 +145,9 @@ backend web application.
 * Files prefixed by "__" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
 
 ### <a id="templater"></a>Templater
-Pattern Lab's Mustache templates can be translated into templates compatible 
-with your backend. Mustache tags just need to be replaced with tags the backend 
-can use. Put these translations into YAML files named similarly to the Mustache 
+Fepper's Mustache templates can be translated into templates compatible with 
+your backend. Mustache tags just need to be replaced with tags the backend can 
+use. Put these translations into YAML files named similarly to the Mustache 
 files in `ui/source/_patterns/03-templates`. Follow the example in 
 `test/files/_patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
 
@@ -159,7 +158,7 @@ Follow these rules for setting up keys and values:
 * Leave other control structures within the key, i.e., !#/>^{}
 * Escape parentheses and question marks with two backslashes.
 * Wrap the key in double quotes.
-* Follow the closing quote with a colon, space, and pipe.
+* Follow the closing quote with a colon, space, pipe, and the numeral 2.
 * Indent each line of the value by at least two spaces.
 
 Run `fp syncback` or `fp template` to execute the Templater. 
@@ -191,21 +190,25 @@ INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 
 ### <a id="github-pages"></a>GitHub Pages
 If you have checked your Fepper instance into a repository in your GitHub 
-account, you may run `fp publish` to publish `ui/public` to GitHub Pages. The 
-Pattern Lab UI and Fepper static files will then be viewable from the Web at 
-`http://{user}.github.io/{repo}`. Normally, this is all that is needed. However, 
-if you are using `webserved_dirs`, you will need to supply a `gh_pages_prefix` 
-preference in `pref.yml`. This preference needs to be set to the name of your 
-GitHub repository.
+account, you may run `fp publish` to publish `ui/public/static` to GitHub Pages. 
+The static site will then be viewable from the Web at `http://{user}.github.io/{repo}`. 
+(This requires that you previously ran `fp static` in order to view anything 
+meaningful.) Normally, this is all that is needed. However, if you are using 
+`webserved_dirs`, you will need to supply a `gh_pages_prefix` preference in 
+`pref.yml`. This preference needs to be set to the name of your GitHub 
+repository.
+
+In addition, if you want to publish the entire Fepper UI, you can similarly run
+`fp publish:ui`. However, this will overwrite the static site on GitHub Pages if 
+you previously ran `fp publish`.
 
 ### <a id="mustache-browser"></a>Mustache Browser
-Mustache code can be viewed in the Pattern Lab UI by clicking the eyeball icon 
-in the upper right, then clicking Code, and then clicking the Mustache tab in 
-the bottom pane. The Mustache tags are hot-linked, and if they are written in 
-the verbose syntax, clicking on them will open that Mustache file and display 
-its code in the Pattern Lab UI, with its Mustache tags hot-linked as well. The 
-Mustache tags must be coded in the verbose-pathed manner: 
-`{{> 02-organisms/00-global/00-header }}`
+Mustache code can be viewed in the Fepper UI by clicking the eyeball icon in the 
+upper right, then clicking Code, and then clicking the Mustache tab in the 
+bottom pane. The Mustache tags are hot-linked, and if they are written in the 
+verbose syntax, clicking on them will open that Mustache file and display its 
+code in the Fepper UI, with its Mustache tags hot-linked as well. The Mustache 
+tags must be coded in the verbose-pathed manner: `{{> 02-organisms/00-global/00-header }}`
 
 The path must be correct; however, the `.mustache` extension is optional. The 
 default homepage is a working example.
@@ -214,7 +217,7 @@ default homepage is a working example.
 Fepper can scrape and import Mustache templates and JSON data files from actual 
 web pages. A common use-case is to scrape pages from a backend populated with 
 CMS content in order to auto-generate data, and to replicate the HTML structure. 
-To open the Scraper, click Scrape in the Pattern Lab UI, and then click HTML 
+To open the Scraper, click Scrape in the Fepper UI, and then click HTML 
 Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
 selector you wish to target (prepended with "#" for IDs and "." for classes). 
 Classnames and tagnames may be appended with array index notation ([n]). 
