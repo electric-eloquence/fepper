@@ -9,26 +9,26 @@ var rootDir = utils.rootDir();
 
 var pathIn = rootDir + '/' + conf.pln;
 var pathOut = rootDir;
-var FpUi = require('../core/fp-ui/fp-ui');
-var fpUi = new FpUi(rootDir, conf);
+var Ui = require('../core/ui/ui');
+var ui = new Ui(rootDir, conf);
 
-var buildTask = gulpUtils.fsContextClosure(pathIn, fpUi, 'build', pathOut);
+var buildTask = gulpUtils.fsContextClosure(pathIn, ui, 'build', pathOut);
 gulp.task('patternlab:build', buildTask);
 
-var cleanTask = gulpUtils.fsContextClosure(pathIn, fpUi, 'clean', pathOut);
+var cleanTask = gulpUtils.fsContextClosure(pathIn, ui, 'clean', pathOut);
 gulp.task('patternlab:clean', cleanTask);
 
-var copyTask = gulpUtils.fsContextClosure(pathIn, fpUi, 'copy', pathOut);
+var copyTask = gulpUtils.fsContextClosure(pathIn, ui, 'copy', pathOut);
 gulp.task('patternlab:copy', copyTask);
 
-var copyStylesTask = gulpUtils.fsContextClosure(pathIn, fpUi, 'copyStyles', pathOut);
+var copyStylesTask = gulpUtils.fsContextClosure(pathIn, ui, 'copyStyles', pathOut);
 gulp.task('patternlab:copy-styles', copyStylesTask);
 
 gulp.task('patternlab:help', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
     // No easy way to use the closure when passing params.
-    fpUi.build('help');
+    ui.build('help');
     resolve();
   });
   p.then(function () {
@@ -45,7 +45,7 @@ gulp.task('patternlab:only-patterns', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
     // No easy way to use the closure when passing params.
-    fpUi.build('only-patterns');
+    ui.build('only-patterns');
     resolve();
   });
   p.then(function () {
@@ -62,7 +62,7 @@ gulp.task('patternlab:v', function (cb) {
   var p = new Promise(function (resolve, reject) {
     process.chdir(pathIn);
     // No easy way to use the closure when passing params.
-    fpUi.build('v');
+    ui.build('v');
     resolve();
   });
   p.then(function () {

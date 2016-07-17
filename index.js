@@ -7,13 +7,13 @@ var cp = require('child_process');
 var utils = require('./core/lib/utils');
 utils.conf();
 
-var argv = [];
+var argv = ['--gulpfile', 'tasker.js'];
 var i;
-var j = 1;
+var j = 3;
 var quoted = false;
 
 // Set up array of args for submission to Gulp.
-argv[0] = process.argv[2] ? process.argv[2] : 'default';
+argv[2] = process.argv[2] ? process.argv[2] : 'default';
 
 // Args containing spaces are wrapped in double quotes by the fp bash script.
 // Now, parse the process.argv array for those wrapped args, and create a new
