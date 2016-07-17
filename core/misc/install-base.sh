@@ -5,4 +5,4 @@ if [ ! -d ui/source ]; then
   echo "$out" > install.log
 fi
 npm install
-gulp data
+./node_modules/.bin/gulp --gulpfile tasker.js data

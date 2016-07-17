@@ -9,5 +9,5 @@ if [ ! -f pref.yml ]; then
   cp excludes/default.pref.yml pref.yml;
 fi
 if [ ! -f install.log ]; then
-  gulp install > install.log
+  ./node_modules/.bin/gulp --gulpfile tasker.js install > install.log
 fi
