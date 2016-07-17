@@ -16,7 +16,7 @@ utils.conf();
 utils.pref();
 
 // Require tasks in task directories.
-requireDir('./gulp');
+requireDir('./tasker');
 requireDir('./extend/auxiliary');
 require('./extend/contrib');
 require('./extend/custom');

@@ -8,7 +8,7 @@ var conf = global.conf;
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
-var utilsGulp = require('../../../gulp/utils');
+var utilsGulp = require('../../../tasker/utils');
 
 gulp.task('css-process', function () {
   return gulp.src('./' + conf.src + '/css-processors/stylus/*.styl')
