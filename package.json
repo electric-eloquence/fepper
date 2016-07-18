@@ -6,7 +6,7 @@
   "scripts": {
     "install-base": "./core/misc/install-base.sh",
     "postinstall": "./core/misc/install.sh",
-    "test": "gulp test"
+    "test": "gulp --gulpfile tasker.js test"
   },
   "repository": {
     "type": "git",
