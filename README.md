@@ -53,12 +53,16 @@
   * Or enter `fp` on the command line.
 * Open http://localhost:3000 in a browser if it doesn't open automatically.
 * Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
-* Start editing files in `ui/source`. Changes should automatically appear in the browser.
+* Start editing files in `source`. Changes should automatically appear in the browser.
   * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).  
 * To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
 
 ### <a id="update"></a>Update
-The easiest way to update Fepper is with Git. This generally means forking an 
+In most cases, you can simply copy the latest package over the old. If there are 
+issues with this, you might need to trash the old `app` and `public` directories 
+and replace them with the new.
+
+A superior way to update Fepper is with Git. This generally means forking an 
 Electric Eloquence Fepper repository at your project's onset, and pulling from 
 the master branch of the main upstream repository when updates are released.
 
@@ -66,11 +70,6 @@ All updates must pull from https://github.com/electric-eloquence/fepper even if
 your original installation was forked from a downstream repository. Pulling from 
 a downstream repository may overwrite custom code specific to your project so 
 don't do it!
-
-If not updating with Git, you'll need to copy the latest package over the old. 
-Be sure to take care that "dot"-prefixed hidden files at the root level are 
-_not_ overwritten. These are important configuration files specific to each 
-user's instance.
 
 ### <a id="configure"></a>Configure
 Edit `pref.yml` to customize preferences and to view further documentation in 
@@ -97,13 +96,13 @@ for those directories to get processed and copied to the backend.
 * If using Git for version control, directories named "ignore" will be ignored.
 
 ### <a id="global-data"></a>Global Data
-Edit `ui/source/_data/_data.json` to globally populate Mustache templates with 
-data. Manual edits to `ui/source/_data/data.json` will get overwritten on 
+Edit `source/_data/_data.json` to globally populate Mustache templates with 
+data. Manual edits to `source/_data/data.json` will get overwritten on 
 compilation.
 
 ### <a id="partial-data"></a>Partial Data
 Underscore-prefixed .json files within 
-`ui/source/_patterns` will be concatenated to the output of `_data.json`, the 
+`source/_patterns` will be concatenated to the output of `_data.json`, the 
 whole in turn getting compiled into `data.json`, the final source of globally 
 scoped data. 
 
@@ -114,13 +113,13 @@ another pattern. However, `_00-homepage.json` is _partial data_ and will get
 concatenated to the _global data_ outputted to `data.json`. `_00-homepage.json` 
 will be picked up by all patterns.
 
-* __DO NOT EDIT ui/source/_data/data.json__
-* __DO PUT GLOBAL DATA IN ui/source/_data/_data.json__
-* __DO LIBERALLY USE PARTIAL DATA IN ui/source/_patterns FOR ORGANIZATIONAL SANITY__
+* __DO NOT EDIT source/_data/data.json__
+* __DO PUT GLOBAL DATA IN source/_data/_data.json__
+* __DO LIBERALLY USE PARTIAL DATA IN source/_patterns FOR ORGANIZATIONAL SANITY__
 
 ### <a id="static-site-generation"></a>Static Site Generation
 Running `fp static` will generate a complete static site based on the files in 
-`ui/source/_patterns/04-pages`. The site will be viewable at http://localhost:3000/static/. 
+`source/_patterns/04-pages`. The site will be viewable at http://localhost:3000/static/. 
 An `index.html` will be generated based on `04-pages-00-homepage` or whatever is 
 defined as the homepage in `_data.json`. If the links are relative and they work 
 correctly in the Fepper UI, they will work correctly in the static site even if 
@@ -148,7 +147,7 @@ backend web application.
 Fepper's Mustache templates can be translated into templates compatible with 
 your backend. Mustache tags just need to be replaced with tags the backend can 
 use. Put these translations into YAML files named similarly to the Mustache 
-files in `ui/source/_patterns/03-templates`. Follow the example in 
+files in `source/_patterns/03-templates`. Follow the example in 
 `test/files/_patterns/03-templates/00-homepage.yml` for the correct YAML syntax. 
 
 Follow these rules for setting up keys and values:
@@ -190,7 +189,7 @@ INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 
 ### <a id="github-pages"></a>GitHub Pages
 If you have checked your Fepper instance into a repository in your GitHub 
-account, you may run `fp publish` to publish `ui/public/static` to GitHub Pages. 
+account, you may run `fp publish` to publish `public/static` to GitHub Pages. 
 The static site will then be viewable from the Web at `http://{user}.github.io/{repo}`. 
 (This requires that you previously ran `fp static` in order to view anything 
 meaningful.) Normally, this is all that is needed. However, if you are using 
@@ -234,7 +233,7 @@ correctly indent the Mustache code. However, this beautification may also render
 some attributes of the Mustache code a little different than the original HTML.
 
 ### <a id="variables.styl"></a>variables.styl
-`ui/source/_scripts/src/variables.styl` is a file containing variables that can 
+`source/_scripts/src/variables.styl` is a file containing variables that can 
 be shared across the Stylus CSS preprocessor, browser JavaScripts, and PHP 
 backends (and possibly other language backends as well). It ships with these 
 values:
@@ -253,7 +252,7 @@ must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS
 processors and tries to keep the amount of NPMs to download to a minimum, so it 
 does not ship with Stylus (or any other CSS pre/post-processor) configured. 
 However, since Stylus allows for this easy sharing of variables, Fepper does 
-ship with a `ui/source/css-processors/stylus` directory. In order to compile its 
+ship with a `source/css-processors/stylus` directory. In order to compile its 
 Stylus into the stock Pattern Lab CSS, run `npm install` in the `extend` 
 directory. Then, uncomment the `css-process` tasks in `extend/custom.js`. The 
 Stylus files are written in the terse, Python-like, indentation-based syntax; 
