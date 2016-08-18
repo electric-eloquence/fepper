@@ -2,11 +2,11 @@
   "name": "fepper",
   "version": "0.0.0",
   "description": "A Front End Prototyper for the rapid prototyping of websites",
-  "main": "./index.js",
+  "main": "./app/index.js",
   "scripts": {
-    "install-base": "./core/misc/install-base.sh",
-    "postinstall": "./core/misc/install.sh",
-    "test": "gulp --gulpfile tasker.js test"
+    "install-base": "./app/core/misc/install-base.sh",
+    "postinstall": "./app/core/misc/install.sh",
+    "test": "gulp --gulpfile ./app/tasker.js test"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,8 @@
     "js-beautify": "^1.6.2",
     "js-yaml": "^3.2.7",
     "json5": "^0.5.0",
+    "lodash": "^4.14.2",
+    "markdown-it": "^7.0.0",
     "mocha": "^2.4.5",
     "open": "0.0.5",
     "pagedown": "^1.1.0",
