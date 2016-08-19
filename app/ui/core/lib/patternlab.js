@@ -12,6 +12,7 @@
 
 var diveSync = require('diveSync'),
   glob = require('glob'),
+  he = require('html-entities').AllHtmlEntities,
   _ = require('lodash'),
   path = require('path');
 
@@ -257,6 +258,7 @@ var patternlab_engine = function (config) {
     var pattern_assembler = new pa(),
       pattern_exporter = new pe(),
       lineage_hunter = new lh(),
+      entity_encoder = new he(),
       patterns_dir = paths.source.patterns;
 
     pattern_assembler.combine_listItems(patternlab);
@@ -335,8 +337,8 @@ var patternlab_engine = function (config) {
       //render the extendedTemplate with all data
       pattern.patternPartialCode = pattern_assembler.renderPattern(pattern, pattern.allData);
 
-      //todo see if this is still needed
-      //pattern.patternPartialCodeE = entity_encoder.encode(pattern.patternPartialCode);
+      //render the escaped extendedTemplate for the HTML viewer
+      pattern.patternPartialCodeE = entity_encoder.encode(pattern.patternPartialCode);
 
       // stringify this data for individual pattern rendering and use on the styleguide
       // see if patternData really needs these other duped values
@@ -369,17 +371,21 @@ var patternlab_engine = function (config) {
       var footerPartial = pattern_assembler.renderPattern(patternlab.footer, {
         isPattern: pattern.isPattern,
         patternData: pattern.allData.patternData,
-        cacheBuster: patternlab.cacheBuster
+        patternPartial: pattern.patternPartial,
+        lineage: JSON.stringify(pattern.patternLineages),
+        lineageR: JSON.stringify(pattern.patternLineagesR),
+        patternState: pattern.patternState
       });
 
-      var footerHTML = patternlab.userFoot.replace('{{{ patternLabFoot }}}', patternlab.footer);
+      var footerHTML = patternlab.userFoot.replace('{{{ patternLabFoot }}}', footerPartial);
       footerHTML = pattern_assembler.renderPattern(footerHTML, pattern.allData);
 
       //default the output suffixes if not present
       var outputFileSuffixes = {
         rendered: '',
         rawTemplate: '',
-        markupOnly: '.markup-only'
+        markupOnly: '.markup-only',
+        escaped: '.escaped'
       }
       outputFileSuffixes = _.extend(outputFileSuffixes, patternlab.config.outputFileSuffixes);
 
@@ -388,10 +394,13 @@ var patternlab_engine = function (config) {
       fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rendered + '.html'), patternPage);
 
       //write the mustache file too
-      fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rawTemplate + pattern.fileExtension), pattern.template);
+      fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rawTemplate + pattern.fileExtension), entity_encoder.encode(pattern.template));
 
-      //write the encoded version too
+      //write the markup-only version too
       fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.markupOnly + '.html'), pattern.patternPartialCode);
+
+      //write the escaped html too
+      fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.escaped + '.html'), pattern.patternPartialCodeE);
 
       return true;
     });
