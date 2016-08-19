@@ -1,5 +1,7 @@
 'use strict';
 
+const conf = global.conf;
+
 const fs = require('fs');
 
 const htmlObj = require('../lib/html');
@@ -108,11 +110,12 @@ module.exports = class {
         try {
           // Requires verbosely pathed Mustache partial syntax.
           let partial = this.partialTagToPath(req.query.partial.trim());
+          let fullPath = utils.pathResolve(`${conf.ui.paths.source.patterns}/${partial}`);
 
           // Check if query string correlates to actual Mustache file.
-          let stats = fs.statSync(utils.pathResolve(partial));
+          let stats = fs.statSync(fullPath);
           if (stats.isFile()) {
-            fs.readFile(this.workDir + '/' + partial, this.conf.enc, function (err, data) {
+            fs.readFile(fullPath, conf.enc, function (err, data) {
               // Render the Mustache code if it does.
               // First, link the Mustache tags.
               data = this.toHtmlEntitiesAndLinks(data);

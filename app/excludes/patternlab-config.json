@@ -52,6 +52,8 @@
     "views-code": false,
     "views-new": false,
     "tools-all": false,
+    "tools-sync": true,
+    "tools-shortcuts": true,
     "tools-docs": false
   },
   "ishMinimum": "240",
