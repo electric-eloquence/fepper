@@ -163,7 +163,7 @@ gulp.task('restart', function (cb) {
 gulp.task('static', function (cb) {
   runSequence(
     ['contrib:static:preprocess', 'custom:static:preprocess'],
-    'lint',
+//    'lint',
     'minify',
     'fepper:static-generate',
     ['contrib:static', 'custom:static'],
@@ -174,7 +174,7 @@ gulp.task('static', function (cb) {
 gulp.task('syncback', function (cb) {
   runSequence(
     ['contrib:syncback:preprocess', 'custom:syncback:preprocess'],
-    'lint',
+//    'lint',
     'minify',
     'frontend-copy',
     'template',
