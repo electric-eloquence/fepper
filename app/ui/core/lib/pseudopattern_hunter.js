@@ -3,8 +3,7 @@
 var pseudopattern_hunter = function () {
 
   function findpseudopatterns(currentPattern, patternlab) {
-    var glob = require('glob'),
-      fs = require('fs-extra'),
+    var fs = require('fs-extra'),
       pa = require('./pattern_assembler'),
       lh = require('./lineage_hunter'),
       Pattern = require('./object_factory').Pattern,
@@ -16,23 +15,20 @@ var pseudopattern_hunter = function () {
     var lineage_hunter = new lh();
     var paths = patternlab.config.paths;
 
-    //look for a pseudo pattern by checking if there is a file containing same
-    //name, with ~ in it, ending in .json
-    var needle = currentPattern.subdir + '/' + currentPattern.fileName + '~*.json';
-    var pseudoPatterns = glob.sync(needle, {
-      cwd: paths.source.patterns,
-      debug: false,
-      nodir: true
-    });
-
-    if (pseudoPatterns.length > 0) {
-      for (var i = 0; i < pseudoPatterns.length; i++) {
+    //look for a pseudopattern by checking if there is a file containing same
+    //name, with ~ in it, ending in .json. if found, fill out that pattern
+    for (var i = 0; i < patternlab.patterns.length; i++) {
+      var patternVariant = patternlab.patterns[i];
+      if (
+        patternVariant.relPath.indexOf(currentPattern.subdir + '/' + currentPattern.fileName + '~') === 0 &&
+        patternVariant.relPath.slice(-5) === '.json'
+      ) {
         if (patternlab.config.debug) {
           console.log('found pseudoPattern variant of ' + currentPattern.patternPartial);
         }
 
-        //we want to do everything we normally would here, except instead read the pseudoPattern data
-        var variantFilename = path.resolve(paths.source.patterns, pseudoPatterns[i]);
+        //we want to do everything we normally would here, except instead read the pseudopattern data
+        var variantFilename = path.resolve(patternlab.config.paths.source.patterns, patternVariant.relPath);
         var variantFileStr = '';
         var variantLocalData = {};
         var variantAllData = {};
@@ -51,30 +47,22 @@ var pseudopattern_hunter = function () {
         plutils.mergeData(currentPattern.jsonFileData, variantLocalData);
         plutils.mergeData(currentPattern.allData, variantAllData);
 
-        var variantName = pseudoPatterns[i].substring(pseudoPatterns[i].indexOf('~') + 1).split('.')[0];
-        var variantFilePath = path.join(currentPattern.subdir, currentPattern.fileName + '~' + variantName + '.json');
-        var patternVariant = Pattern.create(variantFilePath, variantLocalData, {
-          //use the same template as the non-variant
-          template: currentPattern.template,
-          fileExtension: currentPattern.fileExtension,
-          extendedTemplate: currentPattern.extendedTemplate,
-          isPseudoPattern: true,
-          basePattern: currentPattern,
-          allData: variantAllData,
-          dataKeys: pattern_assembler.get_data_keys(variantLocalData),
-
-          // use the same template engine as the non-variant
-          engine: currentPattern.engine
-        });
+        //fill out the properties of this pseudopattern
+        patternVariant.jsonFileData = variantLocalData;
+        patternVariant.template = currentPattern.template;
+        patternVariant.fileExtension = currentPattern.fileExtension;
+        patternVariant.extendedTemplate = currentPattern.extendedTemplate;
+        patternVariant.isPseudoPattern = true;
+        patternVariant.basePattern = currentPattern;
+        patternVariant.allData = variantAllData;
+        patternVariant.dataKeys = pattern_assembler.get_data_keys(variantLocalData);
+        patternVariant.engine = currentPattern.engine;
 
         //process the companion markdown file if it exists
         pattern_assembler.parse_pattern_markdown(patternVariant, patternlab);
 
         //find pattern lineage
         lineage_hunter.find_lineage(patternVariant, patternlab);
-
-        //add to patternlab object so we can look these up later.
-        pattern_assembler.addPattern(patternVariant, patternlab);
       }
     }
   }

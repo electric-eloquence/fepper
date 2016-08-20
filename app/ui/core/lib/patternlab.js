@@ -297,7 +297,8 @@ var patternlab_engine = function (config) {
     pattern_assembler.parse_data_links(patternlab);
 
     //cascade any patternStates
-    lineage_hunter.cascade_pattern_states(patternlab);
+    //commenting out - not sure what this accomplishes
+    //lineage_hunter.cascade_pattern_states(patternlab);
 
     //delete the contents of config.patterns.public before writing
     if (deletePatternDir) {
