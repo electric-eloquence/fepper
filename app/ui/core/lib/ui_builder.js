@@ -154,8 +154,8 @@ function buildNavigation(patternlab) {
 
     var isExcluded = isPatternExcluded(pattern);
 
-    //add to patternPaths
     if (!isExcluded) {
+      //add to patternPaths
       addToPatternPaths(patternlab, pattern);
 
       //add the patternState if it exists
@@ -167,22 +167,21 @@ function buildNavigation(patternlab) {
       flatPatternItem = patternSubTypeName === pattern.patternGroup;
     }
 
-    //if it is flat - we should not add the pattern to patternPaths
-    if (flatPatternItem) {
-      if (!isExcluded) {
+    //need to define patternTypeItemsIndex and patternSubType whether or not excluded
+    var patternTypeItemsIndex = patternType.patternTypeItemsIndex.indexOf(patternSubTypeName);
+    if (patternTypeItemsIndex === -1) {
+      patternSubType = new of.oPatternSubType(patternSubTypeName);
+    }
+
+    if (!isExcluded) {
+      //if it is flat - we should not add the pattern to patternPaths
+      if (flatPatternItem) {
         //add the patternSubType to patternItems
         patternType.patternItems.push(patternSubTypeItem);
-      }
 
-    } else {
-      // skip underscore-prefixed files
-      if (!isExcluded) {
-        // only do this if pattern is included
-        //check to see if patternSubType exists
-        var patternTypeItemsIndex = patternType.patternTypeItemsIndex.indexOf(patternSubTypeName);
+      } else {
+        //check again whether the patternSubType exists
         if (patternTypeItemsIndex === -1) {
-          patternSubType = new of.oPatternSubType(patternSubTypeName);
-
           //add the patternSubType and patternSubTypeItem
           patternSubType.patternSubtypeItems.push(patternSubTypeItem);
           patternSubType.patternSubtypeItemsIndex.push(patternSubTypeItemName);
