@@ -276,6 +276,7 @@ var pattern_assembler = function () {
 
     //if file is named in the syntax for variants
     if (patternEngines.isPseudoPatternJSON(filename)) {
+      addPattern(currentPattern, patternlab);
       return currentPattern;
     }
 
@@ -392,7 +393,9 @@ var pattern_assembler = function () {
     //only do this at the top level of recursion
     var level;
     if (typeof levelParam === 'undefined') {
-      pseudopattern_hunter.find_pseudopatterns(currentPattern, patternlab);
+      if (!patternEngines.isPseudoPatternJSON(currentPattern.relPath)) {
+        pseudopattern_hunter.find_pseudopatterns(currentPattern, patternlab);
+      }
       level = 1;
     } else {
       level++;
@@ -404,12 +407,12 @@ var pattern_assembler = function () {
     //expand any partials present in this pattern; that is, drill down into the
     //template and replace their calls in this template with rendered results
     if (currentPattern.engine.expandPartials && (currentPattern.patternPartials !== null && currentPattern.patternPartials.length > 0)) {
+      //find pattern lineage
+      lineage_hunter.find_lineage(currentPattern, patternlab);
+
       // eslint-disable-next-line
       expandPartials(patternlab, currentPattern, level);
     }
-
-    //find pattern lineage
-    lineage_hunter.find_lineage(currentPattern, patternlab);
   }
 
   function expandPartials(patternlab, currentPattern, level) {
