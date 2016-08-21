@@ -1,3 +1,4 @@
-Put custom JavaScripts in ui/source/_scripts/src. Include these js files at the bottom of ui/source/_patterns/00-atoms/00-meta/_01-foot.mustache.
+Put custom JavaScripts in source/_scripts/src. Include these js files at the bottom of source/_meta/_01-foot.mustache.
 
-Note: files placed in the top level of ui/source/js will be ignored by `fp syncback`. In order to sync js files, they must be placed at least one directory beneath ui/source/js.
+Note: files placed in the top level of source/_scripts will be ignored by `fp syncback` and other syncing commands.
+In order to sync js files, they must be placed at least one directory beneath source/_scripts.
