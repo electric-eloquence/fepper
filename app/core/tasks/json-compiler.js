@@ -30,7 +30,7 @@ exports.main = function () {
   // Delete (optional) closing curly brace from _data.json.
   tmp = fs.readFileSync(globals, conf.enc);
   // Delete curly brace and any whitespace at end of file.
-  tmp = tmp.replace(/}\s*$/, '');
+  tmp = tmp.replace(/\}\s*$/, '');
   tmp = tmp.replace(/\s*$/, '');
   jsonStr += tmp;
   // Only add comma if _data.json and _appendix.json have data.
@@ -54,18 +54,21 @@ exports.main = function () {
   for (let i = 0; i < partials.length; i++) {
     tmp = fs.readFileSync(partials[i], conf.enc);
     // Delete curly brace and any whitespace at beginning of file.
-    tmp = tmp.replace(/^\s*{/, '');
-    tmp = tmp.replace(/^\s*\n/, '');
-    // Delete curly brace and any whitespace at end of file.
-    tmp = tmp.replace(/}\s*$/, '');
-    tmp = tmp.replace(/\n\s*$/, '');
+    let openRegex = /^\s*\{/;
+    if (openRegex.test(tmp)) {
+      tmp = tmp.replace(openRegex, '');
+      tmp = tmp.replace(/^\s*\n/, '');
+      // Delete curly brace and any whitespace at end of file.
+      tmp = tmp.replace(/\}\s*$/, '');
+      tmp = tmp.replace(/\n\s*$/, '');
+    }
     jsonStr += tmp + ',\n';
   }
 
   // Delete (optional) opening curly brace from _appendix.json.
   tmp = fs.readFileSync(appendix, conf.enc);
   // Delete curly brace and any whitespace at beginning of file.
-  tmp = tmp.replace(/^\s*{/, '');
+  tmp = tmp.replace(/^\s*\{/, '');
   tmp = tmp.replace(/^\s*\n/, '');
   jsonStr += tmp;
 
