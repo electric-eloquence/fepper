@@ -389,14 +389,20 @@ var pattern_assembler = function () {
     //we are processing a markdown only pattern
     if (currentPattern.engine === null) { return; }
 
-    //look for a pseudo pattern by checking if there is a file containing same name, with ~ in it, ending in .json
-    //only do this at the top level of recursion
     var level;
     if (typeof levelParam === 'undefined') {
-      if (!patternEngines.isPseudoPatternJSON(currentPattern.relPath)) {
+      //only do the following at the top level of recursion
+      //check if this is a pseudopattern by checking if this is a file containing same name, with ~ in it, ending in .json
+      //if so, return
+      if (patternEngines.isPseudoPatternJSON(currentPattern.relPath)) {
+        return;
+
+      //else look for a pseudopattern variants of this pattern
+      } else {
         pseudopattern_hunter.find_pseudopatterns(currentPattern, patternlab);
       }
       level = 1;
+
     } else {
       level++;
     }

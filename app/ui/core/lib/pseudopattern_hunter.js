@@ -19,8 +19,9 @@ var pseudopattern_hunter = function () {
     //name, with ~ in it, ending in .json. if found, fill out that pattern
     for (var i = 0; i < patternlab.patterns.length; i++) {
       var patternVariant = patternlab.patterns[i];
+      var fileName = currentPattern.fileName[0] === '_' ? currentPattern.fileName.slice(1) : currentPattern.fileName;
       if (
-        patternVariant.relPath.indexOf(currentPattern.subdir + '/' + currentPattern.fileName + '~') === 0 &&
+        patternVariant.relPath.indexOf(currentPattern.subdir + '/' + fileName + '~') === 0 &&
         patternVariant.relPath.slice(-5) === '.json'
       ) {
         if (patternlab.config.debug) {
