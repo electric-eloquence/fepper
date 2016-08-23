@@ -60,7 +60,7 @@ module.exports = class {
    */
   spanTokensStrip(code) {
     code = code.replace(/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/g, '$1');
-    if (code.search(/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/) > -1) {
+    if (/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/.test(code)) {
       code = this.spanTokensStrip(code);
     }
 
