@@ -32,7 +32,7 @@ exports.mustacheRecurse = function (file, patternDir) {
       // extension. We do NOT want to recurse EVERY included partial because
       // then the outputted file will not contain any partials, which defeats
       // the purpose of recursing templates in the first place.
-      if (codeSplit[i].search(/^>\s*[\w\-\.\/~]+\.mustache\s*\}\}/) > -1) {
+      if (/^>\s*[\w\-\.\/~]+\.mustache\s*\}\}/.test(codeSplit[i])) {
         let partial = codeSplit[i].split('}}');
         partial[0] = partial[0].replace(/^>\s*/, '').trim();
         let partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], patternDir);
