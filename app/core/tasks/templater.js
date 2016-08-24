@@ -18,7 +18,10 @@ const yaml = require('js-yaml');
 
 const utils = require('../lib/utils');
 
-exports.mustacheRecurse = function (file, patternDir) {
+const patternDir = path.normalize(utils.pathResolve(conf.ui.paths.source.patterns));
+const sourceDir = patternDir + '/03-templates';
+
+exports.mustacheRecurse = function (file) {
   var code;
   var code1 = '';
 
@@ -75,9 +78,7 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
   var data = null;
   var dest;
   var mustacheFile;
-  var patternDir = utils.pathResolve(conf.ui.paths.source.patterns);
-  var sourceDir = patternDir + '/03-templates';
-  var sourceDir1 = sourceDir;
+  var sourceDirParam = sourceDir;
   var stats = null;
   var stats1 = null;
   var templatesDir = '';
@@ -131,7 +132,7 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
         // Do not maintain nested directory structure in backend if
         // templates_dir is set in exceptional YAML file.
         if (templatesDir) {
-          sourceDir1 = path.dirname(mustacheFile);
+          sourceDirParam = path.dirname(mustacheFile);
         }
         // Unset templates_dir in local YAML data.
         delete data.templates_dir;
@@ -159,27 +160,27 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
 
   if (templatesDir && templatesExt) {
     // Recurse through Mustache templates (sparingly. See comment above.)
-    code = exports.mustacheRecurse(mustacheFile, patternDir);
+    code = exports.mustacheRecurse(mustacheFile);
     // Iterate through tokens and replace keys for values in the code.
     code = exports.tokensReplace(data, code);
     // Write compiled templates.
-    dest = exports.templatesWrite(mustacheFile, sourceDir1, templatesDir, templatesExt, code);
+    dest = exports.templatesWrite(mustacheFile, sourceDirParam, templatesDir, templatesExt, code);
 
     // Log to console.
     utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
   }
 };
 
-exports.templatesGlob = function (sourceDir) {
+exports.templatesGlob = function () {
   var globbed = glob.sync(sourceDir + '/*.mustache');
   var globbed1 = glob.sync(sourceDir + '/!(_nosync)/**/*.mustache');
 
   return globbed.concat(globbed1);
 };
 
-exports.templatesWrite = function (file, sourceDir, templatesDir, templatesExt, code) {
+exports.templatesWrite = function (file, sourceDirParam, templatesDir, templatesExt, code) {
   // Determine destination for token-replaced code.
-  var dest = file.replace(sourceDir, '');
+  var dest = file.replace(sourceDirParam, '');
 
   // Replace underscore prefixes.
   dest = dest.replace(/\/_([^\/]+)$/, '/$1');
@@ -220,9 +221,7 @@ exports.tokensReplace = function (tokens, code) {
 };
 
 exports.main = function () {
-  var patternDir = utils.pathResolve(conf.ui.paths.source.patterns);
-  var sourceDir = patternDir + '/03-templates';
-  var files = exports.templatesGlob(sourceDir);
+  var files = exports.templatesGlob();
   var templatesDirDefault = utils.backendDirCheck(pref.backend.synced_dirs.templates_dir);
   var templatesExtDefault = utils.extCheck(pref.backend.synced_dirs.templates_ext);
 
