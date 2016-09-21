@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html class="{{ html_class }}">
 <head>
-  {{! Redirect away from default Pattern Lab landing page (which loads every
-      pattern and crushes browsers in large projects.) Do this before
-      downloading significant amounts of the page's data. }}
-  <script type="text/javascript">
-  if (
-    window.location.pathname === '/styleguide/html/styleguide.html' &&
-    document.referrer === window.location.protocol + '//' + window.location.host + '/' &&
-    '{{ homepage }}'.length
-  ) {
-    window.location = '../../patterns/{{ homepage }}/{{ homepage }}.html';
-  }
-  </script>
-
   <title>{{ title }}</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width" />
