@@ -1,23 +1,26 @@
 'use strict';
 
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var yaml = require('js-yaml');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const path = require('path');
 
-var utils = require('../core/lib/utils');
-var enc = utils.conf().enc;
-var rootDir = utils.rootDir();
+global.appDir = path.normalize(`${__dirname}/../..`);
+global.rootDir = path.normalize(`${__dirname}/../../..`);
+global.workDir = path.normalize(`${__dirname}/..`);
 
-var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-var conf = yaml.safeLoad(confYml);
-var frontendCopier = require(rootDir + '/core/tasks/frontend-copier');
-var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
-var pref = yaml.safeLoad(prefYml);
-var testDir = rootDir + '/' + conf.test_dir;
-var assetsTargetDir = testDir + '/backend/' + pref.backend.synced_dirs.assets_dir;
-var scriptsTargetDir = testDir + '/backend/' + pref.backend.synced_dirs.scripts_dir;
-var scriptsTargetAlt = scriptsTargetDir + '-alt';
-var stylesTargetDir = testDir + '/backend/' + pref.backend.synced_dirs.styles_dir;
+const utils = require(`${global.appDir}/core/lib/utils`);
+utils.conf();
+utils.pref();
+const conf = global.conf;
+const pref = global.pref;
+const enc = conf.enc;
+
+const frontendCopier = require(`${global.appDir}/core/tasks/frontend-copier`);
+const assetsTargetDir = `${global.workDir}/backend/${pref.backend.synced_dirs.assets_dir}`;
+const scriptsTargetDir = `${global.workDir}/backend/${pref.backend.synced_dirs.scripts_dir}`;
+const scriptsTargetAlt = `${scriptsTargetDir}-alt`;
+const stylesTargetDir = `${global.workDir}/backend/${pref.backend.synced_dirs.styles_dir}`;
+const testDir = global.workDir;
 
 describe('Frontend Copier', function () {
   it('should copy frontend files to the backend', function () {
@@ -33,9 +36,9 @@ describe('Frontend Copier', function () {
     fs.removeSync(stylesTargetDir + '-alt/*.*');
 
     // Run frontend copier.
-    frontendCopier.main(testDir, conf, pref, 'assets');
-    frontendCopier.main(testDir, conf, pref, 'scripts');
-    frontendCopier.main(testDir, conf, pref, 'styles');
+    frontendCopier.main('assets');
+    frontendCopier.main('scripts');
+    frontendCopier.main('styles');
 
     var assetCopied = fs.statSync(assetsTargetDir + '/logo.png');
     var scriptCopied = fs.statSync(scriptsTargetDir + '/fepper-obj.js');

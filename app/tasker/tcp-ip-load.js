@@ -4,7 +4,6 @@ const conf = global.conf;
 
 const gulp = require('gulp');
 
-const utils = require('../core/lib/utils');
 const Tasks = require('../core/tasks/tasks');
 const TcpIp = require('../core/tcp-ip/tcp-ip');
 

@@ -1,23 +1,25 @@
 'use strict';
 
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var glob = require('glob');
-var yaml = require('js-yaml');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const glob = require('glob');
+const path = require('path');
 
-var utils = require('../core/lib/utils');
-var enc = 'utf8';
-var rootDir = __dirname;
+global.appDir = path.normalize(`${__dirname}/../..`);
+global.rootDir = path.normalize(`${__dirname}/../../..`);
+global.workDir = path.normalize(`${__dirname}/..`);
 
-var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-var conf = yaml.safeLoad(confYml);
-var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
-var pref = yaml.safeLoad(prefYml);
-var testDir = rootDir + '/' + conf.test_dir;
-var ghPagesDir = testDir + '/' + pref.gh_pages_src;
-var publisher = require(rootDir + '/core/tasks/publisher');
-var Tasks = require(rootDir + '/core/tasks/tasks');
-var tasks = new Tasks(testDir, conf, pref);
+const utils = require(`${global.appDir}/core/lib/utils`);
+utils.conf();
+utils.pref();
+const conf = global.conf;
+const pref = global.pref;
+const enc = conf.enc;
+
+const ghPagesDir = `${global.workDir}/${pref.gh_pages_src}`;
+const publisher = require(`${global.appDir}/core/tasks/publisher`);
+const Tasks = require(`${global.appDir}/core/tasks/tasks`);
+const tasks = new Tasks();
 
 describe('Publisher', function () {
   // Get array of truncated dirnames.
@@ -32,7 +34,7 @@ describe('Publisher', function () {
   });
 
   it('should glob the specified patterns directory', function () {
-    var files = publisher.filesGet(testDir + '/' + conf.pub + '/patterns');
+    var files = publisher.filesGet(`${global.workDir}/${conf.ui.paths.public.patterns}`);
 
     expect(files).to.not.be.empty;
   });
@@ -44,12 +46,12 @@ describe('Publisher', function () {
   });
 
   it('should prefix webserved_dirs with gh_pages_prefix', function () {
-    var fileBeforePath = testDir + '/' + conf.pub + '/patterns/00-elements-03-images-00-logo/00-elements-03-images-00-logo.html';
+    var fileBeforePath = `${global.workDir}/${conf.ui.paths.public.patterns}/00-elements-03-images-00-logo/00-elements-03-images-00-logo.html`;
     var fileBefore = fs.readFileSync(fileBeforePath);
     var fileAfterPath = ghPagesDir + '/00-elements-03-images-00-logo/00-elements-03-images-00-logo.html';
 
     fs.copySync(fileBeforePath, fileAfterPath);
-    publisher.filesProcess('.', [fileAfterPath], webservedDirs, pref.gh_pages_prefix, testDir);
+    publisher.filesProcess('.', [fileAfterPath], webservedDirs, pref.gh_pages_prefix, ghPagesDir);
     var fileAfter = fs.readFileSync(fileAfterPath);
 
     expect(fileAfter).to.not.equal('');

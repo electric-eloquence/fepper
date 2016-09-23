@@ -2,7 +2,6 @@
 
 var fs = require('fs-extra');
 var JSON = require('json5');
-var path = require('path');
 var util = require('util');
 var yaml = require('js-yaml');
 
@@ -24,7 +23,7 @@ exports.conf = function () {
 
   // Get default confs for Fepper core.
   try {
-    yml = fs.readFileSync(__dirname + '/../../excludes/default.conf.yml', enc);
+    yml = fs.readFileSync(global.appDir + '/excludes/default.conf.yml', enc);
     defaults = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -35,7 +34,7 @@ exports.conf = function () {
 
   // Get default confs for UI.
   try {
-    defaults.ui = require(__dirname + '/../../excludes/patternlab-config.json');
+    defaults.ui = require(global.appDir + '/excludes/patternlab-config.json');
   }
   catch (err) {
     exports.error(err);
@@ -48,7 +47,7 @@ exports.conf = function () {
 
   // Get custom confs for Fepper core.
   try {
-    yml = fs.readFileSync(__dirname + '/../../../conf.yml', enc);
+    yml = fs.readFileSync(global.workDir + '/conf.yml', enc);
     conf = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -59,7 +58,7 @@ exports.conf = function () {
 
   // Retrieve custom values for UI.
   try {
-    confStr = fs.readFileSync(__dirname + '/../../../patternlab-config.json', enc);
+    confStr = fs.readFileSync(global.workDir + '/patternlab-config.json', enc);
     conf.ui = JSON.parse(confStr);
   }
   catch (err) {
@@ -95,7 +94,7 @@ exports.pref = function () {
   var yml;
 
   try {
-    yml = fs.readFileSync(__dirname + '/../../excludes/default.pref.yml', enc);
+    yml = fs.readFileSync(global.appDir + '/excludes/default.pref.yml', enc);
     defaults = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -107,7 +106,7 @@ exports.pref = function () {
   defaults.gh_pages_src = null;
 
   try {
-    yml = fs.readFileSync(__dirname + '/../../../pref.yml', enc);
+    yml = fs.readFileSync(global.workDir + '/pref.yml', enc);
     pref = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -222,7 +221,7 @@ exports.extCheck = function (ext) {
 
 exports.pathResolve = function (relPath) {
   return global.workDir + '/' + relPath;
-}
+};
 
 // ///////////////////////////////////////////////////////////////////////////
 // Logging.

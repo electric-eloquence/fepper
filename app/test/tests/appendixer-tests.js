@@ -1,19 +1,22 @@
 'use strict';
 
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var yaml = require('js-yaml');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const path = require('path');
 
-var utils = require('../core/lib/utils');
-var enc = utils.conf().enc;
-var rootDir = utils.rootDir();
+global.appDir = path.normalize(`${__dirname}/../..`);
+global.rootDir = path.normalize(`${__dirname}/../../..`);
+global.workDir = path.normalize(`${__dirname}/..`);
 
-var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-var conf = yaml.safeLoad(yml);
-var testDir = rootDir + '/' + conf.test_dir;
-var appendixFile = testDir + '/' + conf.src + '/_data/_appendix.json';
-var Tasks = require(rootDir + '/core/tasks/tasks');
-var tasks = new Tasks(testDir, conf);
+const utils = require(`${global.appDir}/core/lib/utils`);
+utils.conf();
+utils.pref();
+const conf = global.conf;
+const enc = conf.enc;
+
+const appendixFile = `${global.workDir}/${conf.ui.paths.source.root}/_data/_appendix.json`;
+const Tasks = require(`${global.appDir}/core/tasks/tasks`);
+const tasks = new Tasks();
 
 describe('Appendixer', function () {
   // Clear out _appendix.json.
