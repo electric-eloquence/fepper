@@ -8,11 +8,3 @@ kill_zombies: true
 # timeout_main sets the number of milliseconds to wait for asynchronous tasks to
 # complete, particularly the wait before Fepper opens in a browser.
 timeout_main: 500
-
-# It is not a good idea to change the following values.
-enc: utf8
-pln: .
-bld: core/lib
-pub: public
-src: source
-test_dir: test/files

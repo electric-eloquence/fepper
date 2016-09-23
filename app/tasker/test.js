@@ -49,6 +49,6 @@ gulp.task('test:eslint-test', function () {
 });
 
 gulp.task('test:mocha', function () {
-  return gulp.src('./test/*-tests.js', {read: false})
+  return gulp.src('./test/tests/*-tests.js', {read: false})
     .pipe(plugins.mocha());
 });

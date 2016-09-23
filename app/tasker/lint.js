@@ -1,6 +1,5 @@
 'use strict';
 
-const conf = global.conf;
 const pubDir = global.conf.ui.paths.public;
 const srcDir = global.conf.ui.paths.source;
 

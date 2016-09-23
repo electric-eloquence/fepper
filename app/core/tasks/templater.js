@@ -18,8 +18,8 @@ const yaml = require('js-yaml');
 
 const utils = require('../lib/utils');
 
-const patternDir = path.normalize(utils.pathResolve(conf.ui.paths.source.patterns));
-const sourceDir = patternDir + '/03-templates';
+const patternsDir = path.normalize(utils.pathResolve(conf.ui.paths.source.patterns));
+const sourceDir = patternsDir + '/03-templates';
 
 exports.mustacheRecurse = function (file) {
   var code;
@@ -38,7 +38,7 @@ exports.mustacheRecurse = function (file) {
       if (/^>\s*[\w\-\.\/~]+\.mustache\s*\}\}/.test(codeSplit[i])) {
         let partial = codeSplit[i].split('}}');
         partial[0] = partial[0].replace(/^>\s*/, '').trim();
-        let partialCode = exports.mustacheRecurse(patternDir + '/' + partial[0], patternDir);
+        let partialCode = exports.mustacheRecurse(patternsDir + '/' + partial[0], patternsDir);
         code1 += partialCode;
         for (let j = 0; j < partial.length; j++) {
           if (j > 0) {

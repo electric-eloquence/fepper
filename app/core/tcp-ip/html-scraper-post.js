@@ -357,7 +357,7 @@ exports.main = function (req, res) {
       fileName = req.body.filename;
     }
 
-    templateDir = conf.src + '/_patterns/98-scrape';
+    templateDir = utils.pathResolve(conf.ui.paths.source.patterns + '/98-scrape');
     fileMustache = exports.newlineFormat(req.body.mustache);
     fileJson = exports.newlineFormat(req.body.json);
     exports.filesWrite(templateDir, fileName, fileMustache, fileJson, res);

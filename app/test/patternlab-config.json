@@ -1,21 +1,27 @@
 {
   "paths" : {
     "source" : {
-      "root": "./source/",
-      "patterns" : "./source/_patterns/",
-      "data" : "./source/_data/",
-      "styleguide" : "./core/styleguide/",
-      "patternlabFiles" : "./core/",
+      "root": "./source",
+      "patterns" : "./source/_patterns",
+      "data" : "./source/_data",
+      "meta": "./source/_meta",
+      "annotations" : "./source/_annotations",
+      "styleguide" : "./app/ui/core/styleguide",
+      "patternlabFiles" : "./app/ui/core/templates",
       "js" : "./source/_scripts",
       "images" : "./source/_assets",
       "fonts" : "./source/_styles/fonts",
-      "css" : "./source/_styles/"
+      "css" : "./source/_styles",
+      "templates" : "./source/_patterns/03-templates",
+      "pages" : "./source/_patterns/04-pages",
+      "scrape" : "./source/_patterns/98-scrape"
     },
     "public" : {
-      "root" : "./public/",
-      "patterns" : "./public/patterns/",
-      "data" : "./public/data/",
-      "styleguide" : "./public/styleguide/",
+      "root" : "./public",
+      "patterns" : "./public/patterns",
+      "data" : "./public/styleguide/data",
+      "annotations" : "./public/annotations",
+      "styleguide" : "./public/styleguide",
       "js" : "./public/_scripts",
       "images" : "./public/_assets",
       "fonts" : "./public/_styles/fonts",
@@ -23,31 +29,32 @@
     }
   },
   "styleGuideExcludes": [
-    "templates",
-    "pages"
   ],
-  "defaultPattern": "all",
-  "ignored-extensions" : ["scss", "DS_Store", "less"],
+  "defaultPattern": "pages-homepage",
+  "defaultShowPatternInfo": false,
+  "cleanPublic" : true,
+  "patternExtension": "mustache",
+  "ignored-extensions" : ["yml"],
   "ignored-directories" : ["css-processors"],
   "debug": false,
-  "ishControlsVisible": {
-    "s": true,
-    "m": true,
-    "l": true,
-    "full": true,
-    "random": false,
-    "disco": false,
-    "hay": false,
-    "mqs": false,
-    "find": true,
-    "views-all": true,
-    "views-annotations": true,
-    "views-code": true,
-    "views-new": true,
-    "tools-all": true,
-    "tools-sync": false,
+  "ishControlsHide": {
+    "s": false,
+    "m": false,
+    "l": false,
+    "full": false,
+    "random": true,
+    "disco": true,
+    "hay": true,
+    "mqs": true,
+    "find": false,
+    "views-all": false,
+    "views-annotations": false,
+    "views-code": false,
+    "views-new": false,
+    "tools-all": false,
+    "tools-sync": true,
     "tools-shortcuts": true,
-    "tools-docs": true
+    "tools-docs": false
   },
   "ishMinimum": "240",
   "ishMaximum": "2600",
@@ -56,5 +63,11 @@
   },
   "patternExportPatternPartials": [],
   "patternExportDirectory": "./pattern_exports/",
-  "cacheBust": true
+  "cacheBust": true,
+  "starterkitSubDir": "",
+  "outputFileSuffixes": {
+    "rendered": "",
+    "rawTemplate": "",
+    "markupOnly": ".markup-only"
+  }
 }

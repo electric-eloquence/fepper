@@ -1,25 +1,28 @@
 'use strict';
 
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var yaml = require('js-yaml');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const path = require('path');
 
-var utils = require('../core/lib/utils');
-var enc = utils.conf().enc;
-var rootDir = utils.rootDir();
+global.appDir = path.normalize(`${__dirname}/../..`);
+global.rootDir = path.normalize(`${__dirname}/../../..`);
+global.workDir = path.normalize(`${__dirname}/..`);
 
-var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-var conf = yaml.safeLoad(yml);
-var testDir = rootDir + '/' + conf.test_dir;
-var MustacheBrowser = require(rootDir + '/core/tcp-ip/mustache-browser');
-var mustacheBrowser = new MustacheBrowser(testDir + '/' + conf.src + '/_patterns', conf);
+const utils = require(`${global.appDir}/core/lib/utils`);
+utils.conf();
+utils.pref();
+const conf = global.conf;
+const enc = conf.enc;
 
-var mustache = '<section id="one" class="test">{{> 02-components/00-global/00-header(\'partial?\': true) }}</section><section id="two" class="test">{{> 02-components/00-global/01-footer.mustache }}</section><script></script><textarea></textarea></body></html>';
-var htmlEntitiesAndLinks = mustacheBrowser.toHtmlEntitiesAndLinks(mustache);
-var partialTag = '{{> 02-components/00-global/00-header(\'partial?\': true) }}';
-var partialTag1 = '{{> 02-components/00-global/00-footer.mustache }}';
-var partialPath = mustacheBrowser.partialTagToPath(partialTag);
-var partialPath1 = mustacheBrowser.partialTagToPath(partialTag1);
+const MustacheBrowser = require(`${global.appDir}/core/tcp-ip/mustache-browser`);
+const mustacheBrowser = new MustacheBrowser();
+
+const mustache = '<section id="one" class="test">{{> 02-components/00-global/00-header(\'partial?\': true) }}</section><section id="two" class="test">{{> 02-components/00-global/01-footer.mustache }}</section><script></script><textarea></textarea></body></html>';
+const htmlEntitiesAndLinks = mustacheBrowser.toHtmlEntitiesAndLinks(mustache);
+const partialTag = '{{> 02-components/00-global/00-header(\'partial?\': true) }}';
+const partialTag1 = '{{> 02-components/00-global/00-footer.mustache }}';
+const partialPath = mustacheBrowser.partialTagToPath(partialTag);
+const partialPath1 = mustacheBrowser.partialTagToPath(partialTag1);
 
 describe('Mustache Browser', function () {
   it('should replace angle brackets with HTML entities', function () {
