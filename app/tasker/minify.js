@@ -1,6 +1,5 @@
 'use strict';
 
-const conf = global.conf;
 const srcDir = global.conf.ui.paths.source;
 
 const gulp = require('gulp');

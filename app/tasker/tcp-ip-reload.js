@@ -36,9 +36,10 @@ gulp.task('tcp-ip-reload:watch', function () {
     gulp.watch(utils.pathResolve(srcDir.data) + '/listitems.json', ['patternlab:build']);
     gulp.watch(utils.pathResolve(srcDir.annotations) + '/annotations.json', ['patternlab:build']);
     gulp.watch(utils.pathResolve(srcDir.meta) + '/**/*.mustache', ['patternlab:build']);
-    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/!(_*).json', ['patternlab:build']);
+//    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/!(_*).json', ['patternlab:build']);
     gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/_*.json', ['data']);
-    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/*.mustache', ['patternlab:build']);
+//    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/*.mustache', ['patternlab:build']);
+    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**', ['patternlab:build']);
     gulp.watch(utils.pathResolve(srcDir.js) + '/**', ['patternlab:copy']);
     gulp.watch(utils.pathResolve(srcDir.css) + '/**', ['patternlab:copy-styles']);
     gulp.watch(utils.pathResolve(srcDir.root) + '/static/**', ['patternlab:copy']);

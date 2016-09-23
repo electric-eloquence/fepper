@@ -8,6 +8,8 @@
  */
 'use strict';
 
+const conf = global.conf;
+const pref = global.pref;
 const workDir = global.workDir;
 
 const fs = require('fs-extra');

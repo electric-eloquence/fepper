@@ -8,6 +8,7 @@ const htmlObj = require('../lib/html');
 const utils = require('../lib/utils');
 
 module.exports = class {
+
   /**
    * Message indicating inability to match a partial to a Mustache file.
    *

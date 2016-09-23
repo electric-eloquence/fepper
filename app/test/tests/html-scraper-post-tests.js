@@ -1,22 +1,25 @@
 'use strict';
 
-var cheerio = require('cheerio');
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var yaml = require('js-yaml');
+const cheerio = require('cheerio');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const path = require('path');
 
-var utils = require('../core/lib/utils');
-var enc = utils.conf().enc;
-var rootDir = utils.rootDir();
+global.appDir = path.normalize(`${__dirname}/../..`);
+global.rootDir = path.normalize(`${__dirname}/../../..`);
+global.workDir = path.normalize(`${__dirname}/..`);
 
-var htmlScraperPost = require(rootDir + '/core/tcp-ip/html-scraper-post');
-var req = {body: {target: '', url: ''}};
-var yml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-var conf = yaml.safeLoad(yml);
-var testDir = rootDir + '/' + conf.test_dir;
-var scrapeDir = testDir + '/' + conf.src + '/_patterns/98-scrape';
+const utils = require('../../core/lib/utils');
+utils.conf();
+utils.pref();
+const conf = global.conf;
+const enc = conf.enc;
 
-var html = `
+const htmlScraperPost = require(`${global.appDir}/core/tcp-ip/html-scraper-post`);
+const req = {body: {target: '', url: ''}};
+const scrapeDir = `${global.workDir}/${conf.ui.paths.source.patterns}/_patterns/98-scrape`;
+
+const html = `
 <body>
 <section id="one" class="test">Foo</section>
 <section id="two" class="test">Bar</section>
@@ -34,8 +37,8 @@ var html = `
 <!-- comment -->
 </body>
 `;
-var jsons = htmlScraperPost.htmlToJsons(html);
-var $ = cheerio.load(html);
+const jsons = htmlScraperPost.htmlToJsons(html);
+const $ = cheerio.load(html);
 
 describe('HTML Scraper Post', function () {
   describe('CSS Selector Validator', function () {

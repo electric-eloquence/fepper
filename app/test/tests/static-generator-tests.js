@@ -1,22 +1,24 @@
 'use strict';
 
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var yaml = require('js-yaml');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const path = require('path');
 
-var utils = require('../core/lib/utils');
-var enc = utils.conf().enc;
-var rootDir = utils.rootDir();
+global.appDir = path.normalize(`${__dirname}/../..`);
+global.rootDir = path.normalize(`${__dirname}/../../..`);
+global.workDir = path.normalize(`${__dirname}/..`);
 
-var staticGenerator = require(rootDir + '/core/tasks/static-generator');
-var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-var conf = yaml.safeLoad(confYml);
-var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
-var pref = yaml.safeLoad(prefYml);
-var testDir = rootDir + '/' + conf.test_dir;
-var publicDir = testDir + '/public';
-var staticDir = testDir + '/source/static';
-var ui = fs.readJsonSync(rootDir + '/test/patternlab-config.json');
+const utils = require(`${global.appDir}/core/lib/utils`);
+utils.conf();
+utils.pref();
+const conf = global.conf;
+const pref = global.pref;
+const enc = conf.enc;
+
+const staticGenerator = require(`${global.appDir}/core/tasks/static-generator`);
+const patternsDir = `${global.workDir}/${conf.ui.paths.public.patterns}`;
+const publicDir = `${global.workDir}/${conf.ui.paths.public.root}`;
+const staticDir = `${global.workDir}/${conf.ui.paths.source.root}/static`;
 
 describe('Static Generator', function () {
   it('should copy assets to the static dir', function () {
@@ -94,7 +96,7 @@ describe('Static Generator', function () {
     // Get empty string for comparison.
     var indexBefore = fs.readFileSync(testFile, conf.enc);
     // Compile pages dir.
-    staticGenerator.pagesDirCompile(testDir, publicDir + '/patterns', staticDir, conf, ui);
+    staticGenerator.pagesDirCompile(patternsDir, staticDir);
     // Check test file.
     var indexAfter = fs.readFileSync(testFile, conf.enc);
 
@@ -110,7 +112,7 @@ describe('Static Generator', function () {
     // Get empty string for comparison.
     var indexBefore = fs.readFileSync(testFile, conf.enc);
     // Compile pages dir.
-    staticGenerator.pagesDirCompile(testDir, publicDir + '/patterns', staticDir, conf, ui);
+    staticGenerator.pagesDirCompile(patternsDir, staticDir);
     // Check test file.
     var indexAfter = fs.readFileSync(testFile, conf.enc);
 

@@ -24,7 +24,7 @@ exports.main = function (frontendType) {
   var frontendGlob = frontendDir;
   var i;
   var scriptsTarget;
-  var srcDir = utils.pathResolve(conf.ui.paths.source.root);
+  var srcDir = path.normalize(utils.pathResolve(conf.ui.paths.source.root));
   var srcDir1;
   var stats;
   var stats1;
