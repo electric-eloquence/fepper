@@ -1,7 +1,5 @@
 'use strict';
 
-const conf = global.conf;
-const pref = global.pref;
 const appDir = global.appDir;
 const workDir = global.workDir;
 
@@ -67,20 +65,6 @@ gulp.task('fepper:copy-styles', function (cb) {
 });
 
 gulp.task('fepper:data', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    tasks.appendix();
-    resolve();
-  });
-  p.then(function () {
-    // No easy way to use the closure when chaining promised functions.
-    p1();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
-
   var p1 = function () {
     var p2 = new Promise(function (resolve, reject) {
       tasks.jsonCompile();
@@ -95,6 +79,20 @@ gulp.task('fepper:data', function (cb) {
       cb();
     });
   };
+
+  var p = new Promise(function (resolve, reject) {
+    process.chdir(pathIn);
+    tasks.appendix();
+    resolve();
+  });
+  p.then(function () {
+    // No easy way to use the closure when chaining promised functions.
+    p1();
+  })
+  .catch(function (reason) {
+    utils.error(reason);
+    cb();
+  });
 });
 
 var patternOverrideTask = gulpUtils.fsContextClosure(pathIn, tasks, 'patternOverride', pathOut);

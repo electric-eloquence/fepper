@@ -1,6 +1,5 @@
 'use strict';
 
-const conf = global.conf;
 const appDir = global.appDir;
 const workDir = global.workDir;
 

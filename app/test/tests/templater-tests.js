@@ -1,28 +1,31 @@
 'use strict';
 
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var yaml = require('js-yaml');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const path = require('path');
 
-var utils = require('../core/lib/utils');
-var enc = utils.conf().enc;
-var rootDir = utils.rootDir();
+global.appDir = path.normalize(`${__dirname}/../..`);
+global.rootDir = path.normalize(`${__dirname}/../../..`);
+global.workDir = path.normalize(`${__dirname}/..`);
 
-var templater = require(rootDir + '/core/tasks/templater');
-var confYml = fs.readFileSync(rootDir + '/test/conf.yml', enc);
-var conf = yaml.safeLoad(confYml);
-var prefYml = fs.readFileSync(rootDir + '/test/pref.yml', enc);
-var pref = yaml.safeLoad(prefYml);
-var testDir = rootDir + '/' + conf.test_dir;
-var patternDir = testDir + '/' + conf.src + '/_patterns';
-var templatesDir = testDir + '/backend/' + pref.backend.synced_dirs.templates_dir;
-var templatesAlt = templatesDir + '-alt';
+const utils = require(`${global.appDir}/core/lib/utils`);
+utils.conf();
+utils.pref();
+const conf = global.conf;
+const pref = global.pref;
+const enc = conf.enc;
+
+const templater = require(`${global.appDir}/core/tasks/templater`);
+const patternsDir = `${global.workDir}/${conf.ui.paths.source.patterns}`;
+const templatesDir = `${global.workDir}/backend/${pref.backend.synced_dirs.templates_dir}`;
+const templatesAlt = `${templatesDir}-alt`;
+
 
 describe('Templater', function () {
   it('should recurse through Mustache partials', function () {
-    var fileFurthest = patternDir + '/00-elements/03-images/00-logo.mustache';
-    var fileRoot = patternDir + '/03-templates/00-homepage.mustache';
-    var code = templater.mustacheRecurse(fileRoot, conf, patternDir);
+    var fileFurthest = patternsDir + '/00-elements/03-images/00-logo.mustache';
+    var fileRoot = patternsDir + '/03-templates/00-homepage.mustache';
+    var code = templater.mustacheRecurse(fileRoot, conf, patternsDir);
     var partial = fs.readFileSync(fileFurthest, conf.enc);
 
     // Should contain fileFurthest.
@@ -42,7 +45,7 @@ describe('Templater', function () {
     fs.removeSync(templatesAlt + '/*');
 
     // Run templater.
-    templater.main(testDir, conf, pref);
+    templater.main();
 
     var templateTranslated = fs.statSync(templatesDir + '/00-homepage.tpl.php');
     var templateTranslatedAlt = fs.statSync(templatesAlt + '/02-templater-alt.twig');

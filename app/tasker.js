@@ -11,14 +11,14 @@ const path = require('path');
 const requireDir = require('require-dir');
 const runSequence = require('run-sequence');
 
-const utils = require('./core/lib/utils');
-
 // Set global.conf, global.pref, global.rootDir, and global.workDir.
-utils.conf();
-utils.pref();
 global.appDir = __dirname;
 global.rootDir = path.normalize(__dirname + '/..');
 global.workDir = global.rootDir;
+
+const utils = require('./core/lib/utils');
+utils.conf();
+utils.pref();
 
 // Require tasks in task directories.
 requireDir('./tasker');

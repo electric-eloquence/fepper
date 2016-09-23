@@ -21,7 +21,7 @@ exports.stylesDirCopy = function (publicDir, staticDir) {
   fs.copySync(publicDir + '/_styles', staticDir + '/_styles');
 };
 
-exports.pagesDirCompile = function (patternDir, staticDir) {
+exports.pagesDirCompile = function (patternsDir, staticDir) {
   var dataJson = utils.data();
   var dirs = [];
   var f;
@@ -32,7 +32,7 @@ exports.pagesDirCompile = function (patternDir, staticDir) {
   var tmpStr = '';
 
   // Glob page files in public/patterns.
-  dirs = glob.sync(patternDir + '/*([0-9])?(-)pages-*');
+  dirs = glob.sync(patternsDir + '/*([0-9])?(-)pages-*');
 
   for (i = 0; i < dirs.length; i++) {
     tmpArr = glob.sync(dirs[i] + '/*');
@@ -59,7 +59,7 @@ exports.pagesDirCompile = function (patternDir, staticDir) {
 };
 
 exports.main = function () {
-  var patternDir = utils.pathResolve(conf.ui.paths.public.patterns);
+  var patternsDir = utils.pathResolve(conf.ui.paths.public.patterns);
   var publicDir = utils.pathResolve(conf.ui.paths.public.root);
   var staticDir = utils.pathResolve(conf.ui.paths.source.root + '/static');
   var webservedDirsFull;
@@ -71,7 +71,7 @@ exports.main = function () {
   exports.stylesDirCopy(publicDir, staticDir);
 
   // Copy pages directory.
-  exports.pagesDirCompile(patternDir, staticDir);
+  exports.pagesDirCompile(patternsDir, staticDir);
 
   // Copy webserved directories.
   if (Array.isArray(pref.backend.webserved_dirs)) {
