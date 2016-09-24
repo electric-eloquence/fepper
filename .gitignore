@@ -1,8 +1,7 @@
 .*.swp
 .DS_Store
 .publish/
-/app/test/public/_scripts/pattern-overrider.js
-/app/test/source/static/_scripts/pattern-overrider.js
+/app/test/**/pattern-overrider.js
 /backend/*
 /conf.yml
 /extend/
