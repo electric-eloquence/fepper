@@ -250,18 +250,18 @@ var pattern_assembler = function () {
         var proposedDirectory = path.resolve(patternlab.config.paths.source.patterns, fileObject.dir, fileObject.name);
         var proposedDirectoryStats = fs.statSync(proposedDirectory);
         if (proposedDirectoryStats.isDirectory()) {
-          var subTypeMarkdownFileContents = fs.readFileSync(proposedDirectory + '.md', 'utf8');
-          var subTypeMarkdown = markdown_parser.parse(subTypeMarkdownFileContents);
-          var subTypePattern = new Pattern(relPath);
-          subTypePattern.patternSectionSubtype = true;
-          subTypePattern.patternLink = subTypePattern.name + '/index.html';
-          subTypePattern.patternDesc = subTypeMarkdown.markdown;
-          subTypePattern.patternPartial = 'viewall-' + subTypePattern.patternPartial;
-          subTypePattern.isPattern = false;
-          subTypePattern.engine = null;
+          var subtypeMarkdownFileContents = fs.readFileSync(proposedDirectory + '.md', 'utf8');
+          var subtypeMarkdown = markdown_parser.parse(subtypeMarkdownFileContents);
+          var subtypePattern = new Pattern(relPath);
+          subtypePattern.patternSectionSubtype = true;
+          subtypePattern.patternLink = subtypePattern.name + '/index.html';
+          subtypePattern.patternDesc = subtypeMarkdown.markdown;
+          subtypePattern.patternPartial = 'viewall-' + subtypePattern.patternPartial;
+          subtypePattern.isPattern = false;
+          subtypePattern.engine = null;
 
-          addSubtypePattern(subTypePattern, patternlab);
-          return subTypePattern;
+          addSubtypePattern(subtypePattern, patternlab);
+          return subtypePattern;
         }
       } catch (err) {
         // no file exists, meaning it's a pattern markdown file
@@ -269,7 +269,6 @@ var pattern_assembler = function () {
           console.log(err);
         }
       }
-
     }
 
     //extract some information
@@ -282,6 +281,22 @@ var pattern_assembler = function () {
 
     //make a new Pattern Object
     var currentPattern = new Pattern(relPath);
+
+    //create subtypePattern if it doesn't already exist
+    var subtypeKey = 'viewall-' + currentPattern.patternGroup + '-' + currentPattern.patternSubGroup;
+    if (currentPattern.patternSubGroup && !patternlab.subtypePatterns[subtypeKey]) {
+      var subtypePattern = {
+        subdir: currentPattern.subdir,
+        patternName: currentPattern.patternSubGroup,
+        patternLink: currentPattern.flatPatternPath + '/index.html',
+        patternGroup: currentPattern.patternGroup,
+        patternSubGroup: currentPattern.patternSubGroup,
+        flatPatternPath: currentPattern.flatPatternPath,
+        patternPartial: subtypeKey,
+        patternSectionSubtype: true
+      };
+      addSubtypePattern(subtypePattern, patternlab);
+    }
 
     //if file is named in the syntax for variants
     if (patternEngines.isPseudoPatternJSON(filename)) {
