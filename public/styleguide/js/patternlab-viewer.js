@@ -337,7 +337,7 @@ var urlHandler = {
       if (history.pushState !== undefined) {
         history.pushState(data, null, addressReplacement);
       }
-      document.getElementById("title").innerHTML = "Pattern Lab - "+pattern;
+      document.getElementById("title").innerHTML = "Fepper - "+pattern;
       if (document.getElementById("sg-raw") !== undefined) {
         document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(pattern));
       }
@@ -368,7 +368,7 @@ var urlHandler = {
     
     var obj = JSON.stringify({ "event": "patternLab.updatePath", "path": iFramePath });
     document.getElementById("sg-viewport").contentWindow.postMessage( obj, urlHandler.targetOrigin);
-    document.getElementById("title").innerHTML = "Pattern Lab - "+patternName;
+    document.getElementById("title").innerHTML = "Fepper - "+patternName;
     document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(patternName));
     
     /*
@@ -1827,7 +1827,7 @@ window.addEventListener("message", receiveIframeMessage, false);
   if (patternName !== "all") {
     patternPath = urlHandler.getFileName(patternName);
     iFramePath  = (patternPath !== "") ? baseIframePath+patternPath+"?"+Date.now() : iFramePath;
-    document.getElementById("title").innerHTML = "Pattern Lab - "+patternName;
+    document.getElementById("title").innerHTML = "Fepper - "+patternName;
     history.replaceState({ "pattern": patternName }, null, null);
   }
 
