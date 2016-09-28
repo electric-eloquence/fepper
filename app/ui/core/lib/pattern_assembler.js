@@ -413,14 +413,16 @@ var pattern_assembler = function () {
     var level;
     if (typeof levelParam === 'undefined') {
       //only do the following at the top level of recursion
-      //check if this is a pseudopattern by checking if this is a file containing same name, with ~ in it, ending in .json
-      //if so, return
-      if (patternEngines.isPseudoPatternJSON(currentPattern.relPath)) {
-        return;
-
-      //else look for a pseudopattern variants of this pattern
-      } else {
+      //the tilde suffix will sort pseudopatterns after basePatterns
+      //so first, check if this is not a pseudopattern (therefore a basePattern) and look for its pseudopattern variants
+      if (!patternEngines.isPseudoPatternJSON(currentPattern.relPath)) {
         pseudopattern_hunter.find_pseudopatterns(currentPattern, patternlab);
+
+      //else, we've identified a pseudopattern by checking if this is a file containing same name, with ~ in it, ending in .json
+      //copy its basePattern.extendedTemplate to extendedTemplate and return
+      } else {
+        currentPattern.extendedTemplate = currentPattern.basePattern.extendedTemplate;
+        return;
       }
       level = 1;
 
