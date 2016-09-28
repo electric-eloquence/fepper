@@ -32,7 +32,7 @@ exports.pagesDirCompile = function (patternsDir, staticDir) {
   var tmpStr = '';
 
   // Glob page files in public/patterns.
-  dirs = glob.sync(patternsDir + '/*([0-9])?(-)pages-*');
+  dirs = glob.sync(patternsDir + '/04-pages-*');
 
   for (i = 0; i < dirs.length; i++) {
     tmpArr = glob.sync(dirs[i] + '/*');
@@ -43,16 +43,39 @@ exports.pagesDirCompile = function (patternsDir, staticDir) {
 
   for (i = 0; i < files.length; i++) {
     f = files[i];
-    if ((f.indexOf('html') === f.length - 4) && (f.indexOf('escaped.html') !== f.length - 12) && path.basename(f) !== 'index.html') {
+    if (
+      (f.indexOf('html') === f.length - 4) &&
+      (f.indexOf('escaped.html') !== f.length - 12) &&
+      (f.indexOf('markup-only.html') !== f.length - 16) &&
+      path.basename(f) !== 'index.html'
+    ) {
       tmpStr = fs.readFileSync(f, conf.enc);
+
+      // Strip Pattern Lab css and js.
+      tmpStr = tmpStr.replace(/\s*<!\-\- Begin Pattern Lab \(Required for Pattern Lab to run properly\) \-\->[\S\s]*?<!\-\- End Pattern Lab \-\->/g, '');
+      // Strip cacheBuster params.
+      tmpStr = tmpStr.replace(/((href|src)="[^"]*)\?\d*"/g, '$1"');
       // Fix paths.
-      tmpStr = tmpStr.replace(/(href|src)\s*=\s*("|')..\/..\//g, '$1="');
-      // Strip prefix from page filenames.
-      tmpStr = tmpStr.replace(/(href\s*=\s*)("|').*(\/|&#x2F;)[\d-]*pages-/g, '$1$2');
-      fs.writeFileSync(staticDir + '/' + f.replace(/^.*\/[\d-]*pages-/, ''), tmpStr);
+      tmpStr = tmpStr.replace(/(href|src)\s*=\s*("|')..\/..\//g, '$1=$2');
+      // Strip addition js.
+      tmpStr = tmpStr.replace(/\s*<script src="_scripts\/pattern\-overrider.js"><\/script>/, '');
+      // Replace homepage filename with "index.html"
+      if (dataJson.homepage) {
+        let homepageRegex = new RegExp('(href\\s*=\\s*)"[^"]*(\\/|&#x2F;)' + dataJson.homepage, 'g');
+        tmpStr = tmpStr.replace(homepageRegex, '$1"index');
+        homepageRegex = new RegExp('(href\\s*=\\s*)\'[^\']*(\\/|&#x2F;)' + dataJson.homepage, 'g');
+        tmpStr = tmpStr.replace(homepageRegex, '$1\'index');
+      }
+      // Strip prefix from remaining page filenames.
+      tmpStr = tmpStr.replace(/(href\s*=\s*)"[^"]*(\/|&#x2F;)04\-pages\-/g, '$1"');
+      tmpStr = tmpStr.replace(/(href\s*=\s*)'[^']*(\/|&#x2F;)04\-pages\-/g, '$1\'');
+
       // Copy homepage to index.html.
-      if (dataJson.homepage && f.indexOf(dataJson.homepage + '.html') !== -1) {
+      if (dataJson.homepage && f.indexOf(dataJson.homepage + '.html') === (f.length - dataJson.homepage.length - 5)) {
         fs.writeFileSync(staticDir + '/index.html', tmpStr);
+      }
+      else {
+        fs.writeFileSync(staticDir + '/' + f.replace(/^.*\/04\-pages\-/, ''), tmpStr);
       }
     }
   }
@@ -64,6 +87,10 @@ exports.main = function () {
   var staticDir = utils.pathResolve(conf.ui.paths.source.root + '/static');
   var webservedDirsFull;
   var webservedDirsShort;
+
+  // Delete old static dir. Then, recreate it.
+  fs.removeSync(staticDir);
+  fs.mkdirSync(staticDir);
 
   // Copy asset directories.
   exports.assetsDirCopy(publicDir, staticDir);

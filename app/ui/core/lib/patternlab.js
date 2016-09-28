@@ -375,7 +375,8 @@ var patternlab_engine = function (config) {
         patternPartial: pattern.patternPartial,
         lineage: JSON.stringify(pattern.patternLineages),
         lineageR: JSON.stringify(pattern.patternLineagesR),
-        patternState: pattern.patternState
+        patternState: pattern.patternState,
+        cacheBuster: patternlab.cacheBuster
       });
 
       var footerHTML = patternlab.userFoot.replace('{{{ patternLabFoot }}}', footerPartial);
