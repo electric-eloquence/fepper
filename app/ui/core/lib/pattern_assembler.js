@@ -410,8 +410,8 @@ var pattern_assembler = function () {
       currentPattern.allData = plutils.mergeData(patternlab.data, currentPattern.jsonFileData);
     }
 
-    var level;
-    if (typeof levelParam === 'undefined') {
+    var level = levelParam ? levelParam : 0;
+    if (!level) {
       //only do the following at the top level of recursion
       //the tilde suffix will sort pseudopatterns after basePatterns
       //so first, check if this is not a pseudopattern (therefore a basePattern) and look for its pseudopattern variants
@@ -424,11 +424,8 @@ var pattern_assembler = function () {
         currentPattern.extendedTemplate = currentPattern.basePattern.extendedTemplate;
         return;
       }
-      level = 1;
-
-    } else {
-      level++;
     }
+    level++;
 
     //find how many partials there may be for the given pattern
     currentPattern.patternPartials = currentPattern.findPartials();
