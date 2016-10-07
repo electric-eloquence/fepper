@@ -410,7 +410,7 @@ var pattern_assembler = function () {
       currentPattern.allData = plutils.mergeData(patternlab.data, currentPattern.jsonFileData);
     }
 
-    var level = levelParam ? levelParam : 0;
+    var level = levelParam || 0;
     if (!level) {
       //only do the following at the top level of recursion
       //the tilde suffix will sort pseudopatterns after basePatterns
