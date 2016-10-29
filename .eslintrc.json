@@ -74,6 +74,10 @@
     "strict": 2,
     "yoda": [2, "never"],
     // Warnings.
+    "max-len": [1, 120, 4, {
+      "ignoreUrls": true,
+      "ignoreComments": false
+    }],
     "max-nested-callbacks": [1, 4],
     "no-unused-expressions": 1,
     "no-use-before-define": 1,
