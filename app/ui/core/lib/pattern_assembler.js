@@ -535,7 +535,6 @@ var pattern_assembler = function () {
       renderPartials(tmpPartial, pattern, patternlab);
       pattern.extendedTemplate = extendPartials(tmpPartial, pattern.engine);
 
-      var list_item_hunter = new lih();
       list_item_hunter.process_list_item_partials(pattern, patternlab);
     }
 

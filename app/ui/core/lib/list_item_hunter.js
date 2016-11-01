@@ -18,97 +18,60 @@ var list_item_hunter = function () {
     return pattern.extendedTemplate.substring(pattern.extendedTemplate.indexOf(liMatch) + liMatch.length, pattern.extendedTemplate.indexOf(end));
   }
 
-  function preprocessListItemPartials(pattern) {
-    //find any listitem blocks
-    var matches = pattern.findListItems();
-
-    if (matches !== null) {
-      matches.forEach(function (liMatch) {
-        var end = getEnd(liMatch);
-        var patternBlock = getPatternBlock(pattern, liMatch, end);
-        var partials = pattern.engine.findPartials(patternBlock);
-
-        //escape listitem blocks with partials
-        if (partials) {
-          var liMatchEscaped = '\u0002' + liMatch.slice(2);
-          var endEscaped = '\u0002' + end.slice(2);
-          var find = liMatch + patternBlock + end;
-          var replace = liMatchEscaped + patternBlock + endEscaped;
-
-          pattern.extendedTemplate = pattern.extendedTemplate.replace(find, replace);
-        }
-      });
-    }
-  }
-
-  function postprocessListItemPartials(pattern) {
-    //find any listitem blocks
-    var matches = pattern.extendedTemplate.match(/\u0002(.|\s)*?\}\}/g);
-
-    if (matches !== null) {
-      matches.forEach(function (liMatch) {
-        var replace = '{{' + liMatch.slice(1);
-
-        pattern.extendedTemplate = pattern.extendedTemplate.replace(liMatch, replace);
-      });
-    }
-  }
-
   function processListItemPartials(pattern, patternlab) {
-    preprocessListItemPartials(pattern);
+    var i;
+    var j;
 
     //find any listitem blocks
-    var matches = pattern.findListItems();
+    var matches = pattern.findListItems() || [];
 
-    if (matches !== null) {
-      matches.forEach(function (liMatch) {
+    for (i = 0; i < matches.length; i++) {
+      var liMatch = matches[i];
 
+      if (patternlab.config.debug) {
+        console.log('found listItem of size ' + liMatch + ' inside ' + pattern.patternPartial);
+      }
+
+      //find the boundaries of the block
+      var loopNumberString = liMatch.split('.')[1].split('}')[0].trim();
+      var end = getEnd(liMatch);
+      var patternBlock = getPatternBlock(pattern, liMatch, end).trim();
+
+      //build arrays that repeat the block, however large we need to
+      var repeatedBlockTemplate = [];
+      var repeatedBlockHtml = '';
+
+      for (j = 0; j < items.indexOf(loopNumberString); j++) {
         if (patternlab.config.debug) {
-          console.log('found listItem of size ' + liMatch + ' inside ' + pattern.patternPartial);
+          console.log('list item(s) in pattern', pattern.patternPartial, 'adding', patternBlock, 'to repeatedBlockTemplate');
         }
+        repeatedBlockTemplate.push(patternBlock);
+      }
 
-        //find the boundaries of the block
-        var loopNumberString = liMatch.split('.')[1].split('}')[0].trim();
-        var end = getEnd(liMatch);
-        var patternBlock = getPatternBlock(pattern, liMatch, end).trim();
+      var listData = pattern.listitems;
 
-        //build arrays that repeat the block, however large we need to
-        var repeatedBlockTemplate = [];
-        var repeatedBlockHtml = '';
-        for (var i = 0; i < items.indexOf(loopNumberString); i++) {
-          if (patternlab.config.debug) {
-            console.log('list item(s) in pattern', pattern.patternPartial, 'adding', patternBlock, 'to repeatedBlockTemplate');
-          }
-          repeatedBlockTemplate.push(patternBlock);
-        }
+      //iterate over each copied block, rendering its contents along with pattenlab.listitems[i]
+      for (j = 0; j < repeatedBlockTemplate.length; j++) {
 
-        var listData = pattern.listitems;
+        var thisBlockTemplate = repeatedBlockTemplate[j];
+        var thisBlockHTML = "";
 
-        //iterate over each copied block, rendering its contents along with pattenlab.listitems[i]
-        for (var i = 0; i < repeatedBlockTemplate.length; i++) {
+        //combine listItem data with pattern data with global data
+        var itemData = listData['' + items.indexOf(loopNumberString)]; //this is a property like "2"
+        var allData = plutils.mergeData(pattern.allData, itemData !== undefined ? itemData[j] : {}); //itemData could be undefined if the listblock contains no partial, just markup
+        allData.link = extend({}, patternlab.data.link);
 
-          var thisBlockTemplate = repeatedBlockTemplate[i];
-          var thisBlockHTML = "";
+        //just render with mergedData
+        thisBlockHTML = pattern_assembler.renderPattern(thisBlockTemplate, allData);
 
-          //combine listItem data with pattern data with global data
-          var itemData = listData['' + items.indexOf(loopNumberString)]; //this is a property like "2"
-          var allData = plutils.mergeData(pattern.allData, itemData !== undefined ? itemData[i] : {}); //itemData could be undefined if the listblock contains no partial, just markup
-          allData.link = extend({}, patternlab.data.link);
+        //add the rendered HTML to our string
+        repeatedBlockHtml = repeatedBlockHtml + thisBlockHTML;
+      }
 
-          //just render with mergedData
-          thisBlockHTML = pattern_assembler.renderPattern(thisBlockTemplate, allData);
-
-          //add the rendered HTML to our string
-          repeatedBlockHtml = repeatedBlockHtml + thisBlockHTML;
-        }
-
-        //replace the block with our generated HTML
-        var repeatingBlock = pattern.extendedTemplate.substring(pattern.extendedTemplate.indexOf(liMatch), pattern.extendedTemplate.indexOf(end) + end.length);
-        pattern.extendedTemplate = pattern.extendedTemplate.replace(repeatingBlock, repeatedBlockHtml);
-      });
+      //replace the block with our generated HTML
+      var repeatingBlock = pattern.extendedTemplate.substring(pattern.extendedTemplate.indexOf(liMatch), pattern.extendedTemplate.indexOf(end) + end.length);
+      pattern.extendedTemplate = pattern.extendedTemplate.replace(repeatingBlock, repeatedBlockHtml);
     }
-
-    postprocessListItemPartials(pattern);
   }
 
   return {
