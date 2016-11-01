@@ -11,15 +11,16 @@ var Pattern = function (relPath, data) {
   // root of the pattern tree. Parse out the path parts and save the useful ones.
   var pathObj = path.parse(path.normalize(relPath));
   this.relPath = path.normalize(relPath); // '00-atoms/00-global/00-colors.mustache'
-  this.fileName = pathObj.name;     // '00-colors'
+  this.relPathTrunc = pathObj.dir + '/' + pathObj.name; // '00-atoms/00-global/00-colors'
   this.subdir = pathObj.dir;        // '00-atoms/00-global'
+  this.fileName = pathObj.name;     // '00-colors'
   this.fileExtension = pathObj.ext; // '.mustache'
 
   // this is the unique name, subDir + fileName (sans extension)
   this.name = this.subdir.replace(/[\/\\]/g, '-') + '-' + this.fileName.replace(/~/g, '-'); // '00-atoms-00-global-00-colors'
 
   // the JSON used to render values in the pattern
-  this.jsonFileData = data || {};
+  this.jsonFileData = data || null;
 
   // strip leading "00-" from the file name and flip tildes to dashes
   this.patternBaseName = this.fileName.replace(/^\d*\-/, '').replace('~', '-'); // 'colors'
@@ -56,9 +57,11 @@ var Pattern = function (relPath, data) {
   this.lineageRIndex = [];
   this.isPseudoPattern = false;
   this.engine = patternEngines.getEngineForPattern(this);
-  this.patternPartials = null;
+  this.patternPartials = {}; // TODO: to delete
+  this.partialObj = {};
   this.allData = null;
-  this.dataKeys = [];
+  this.dataKeys = null;
+  this.dataKeysRegex= null;
 };
 
 // Pattern methods
@@ -74,11 +77,13 @@ Pattern.prototype = {
     return null;
   },
 
+/*
   registerPartial: function (patternlab) {
     if (this.engine && typeof this.engine.registerPartial === 'function') {
       this.engine.registerPartial(this, patternlab);
     }
   },
+*/
 
   // the finders all delegate to the PatternEngine, which also encapsulates all
   // appropriate regexes

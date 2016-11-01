@@ -82,17 +82,7 @@ var list_item_hunter = function () {
           repeatedBlockTemplate.push(patternBlock);
         }
 
-        //check for a local listitems.json file
-        var listData;
-        try {
-          listData = JSON5.parse(JSON5.stringify(patternlab.listitems));
-        } catch (err) {
-          console.log('There was an error parsing JSON for ' + pattern.relPath);
-          console.log(err);
-        }
-
-        listData = plutils.mergeData(listData, pattern.listitems);
-        listData = pattern_assembler.parse_data_links_specific(patternlab, listData, 'listitems.json + any pattern listitems.json');
+        var listData = pattern.listitems;
 
         //iterate over each copied block, rendering its contents along with pattenlab.listitems[i]
         for (var i = 0; i < repeatedBlockTemplate.length; i++) {
@@ -115,7 +105,6 @@ var list_item_hunter = function () {
         //replace the block with our generated HTML
         var repeatingBlock = pattern.extendedTemplate.substring(pattern.extendedTemplate.indexOf(liMatch), pattern.extendedTemplate.indexOf(end) + end.length);
         pattern.extendedTemplate = pattern.extendedTemplate.replace(repeatingBlock, repeatedBlockHtml);
-
       });
     }
 
