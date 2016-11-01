@@ -221,6 +221,8 @@ function buildNavigation(patternlab) {
       patternType.patternItems.push(viewAllPatternItem);
       patternlab.viewAllPaths[pattern.patternGroup].viewall = flatPatternPath;
     }
+
+    patternlab.patterns[i] = null;
   }
 
   return patternTypeIndex;
