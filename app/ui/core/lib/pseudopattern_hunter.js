@@ -6,6 +6,7 @@ var pseudopattern_hunter = function () {
     var fs = require('fs-extra'),
       pa = require('./pattern_assembler'),
       lh = require('./lineage_hunter'),
+      lih = require('./list_item_hunter'),
       Pattern = require('./object_factory').Pattern,
       plutils = require('./utilities'),
       path = require('path'),
@@ -13,6 +14,7 @@ var pseudopattern_hunter = function () {
 
     var pattern_assembler = new pa();
     var lineage_hunter = new lh();
+    var list_item_hunter = new lih();
     var paths = patternlab.config.paths;
     var hasPseudoPattern = false;
     var patternVariants = [];
@@ -60,6 +62,9 @@ var pseudopattern_hunter = function () {
         patternVariant.allData = variantAllData;
         patternVariant.dataKeys = pattern_assembler.get_data_keys(variantLocalData);
         patternVariant.engine = pattern.engine;
+
+        //process listitems
+        list_item_hunter.process_list_item_partials(patternVariant, patternlab);
 
         //process the companion markdown file if it exists
         pattern_assembler.parse_pattern_markdown(patternVariant, patternlab);
