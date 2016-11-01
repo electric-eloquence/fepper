@@ -12,7 +12,6 @@
 
 var diveSync = require('diveSync'),
   glob = require('glob'),
-  he = require('html-entities').AllHtmlEntities,
   _ = require('lodash'),
   path = require('path');
 
@@ -44,56 +43,10 @@ function processAllPatternsIterative(pattern_assembler, patterns_dir, patternlab
   );
 }
 
-function preprocessPatternlabPartials(pattern_assembler, list_item_hunter, patternlab) {
-  // get the templating engine used for this implementation of pattern lab
-  var engine;
-  var i;
-  for (i = 0; i < patternlab.patterns.length; i++) {
-    if (patternlab.patterns[i].isPattern) {
-      engine = patternlab.patterns[i].engine;
-      break;
-    }
-  }
-
-  // push list item keywords into dataKeys property
-  for (i = 0; i < list_item_hunter.items.length; i++) {
-    patternlab.dataKeys.push('listItems.' + list_item_hunter.items[i]);
-    patternlab.dataKeys.push('listitems.' + list_item_hunter.items[i]);
-  }
-
-  // create properties to later escape all tags that match keys in the JSON
-  // data so these tags persist through recursive partial includes.
-  patternlab.dataKeysEscape = '';
-  var dataKey;
-  for (var i = 0; i < patternlab.dataKeys.length; i++) {
-    dataKey = patternlab.dataKeys[i];
-    if (engine && typeof engine.escapeReservedRegexChars === 'function') {
-      dataKey = engine.escapeReservedRegexChars(dataKey);
-    }
-    patternlab.dataKeysEscape += dataKey;
-    if (i < patternlab.dataKeys.length - 1) {
-      patternlab.dataKeysEscape += '|';
-    }
-  }
-
-  // preprocess partials so they can be recursively included respecting any parameters they may be submitting
-  if (engine && typeof engine.preprocessPartials === 'function') {
-    engine.preprocessPartials(pattern_assembler, patternlab);
-  }
-}
-
 function processAllPatternsRecursive(pattern_assembler, patterns_dir, patternlab) {
-  diveSync(
-    patterns_dir,
-    function (err, file) {
-      //log any errors
-      if (err) {
-        console.log(err);
-        return;
-      }
-      pattern_assembler.process_pattern_recursive(path.relative(patterns_dir, file), patternlab);
-    }
-  );
+  for (var i = 0; i < patternlab.patterns.length; i++) {
+    pattern_assembler.process_pattern_recursive(patternlab.patterns[i], i, patternlab);
+  }
 }
 
 var patternlab_engine = function (config) {
@@ -120,7 +73,6 @@ var patternlab_engine = function (config) {
 
 
   function help() {
-
     console.log('');
 
     console.log('|=======================================|');
@@ -224,14 +176,6 @@ var patternlab_engine = function (config) {
       patternlab.data = {};
     }
     try {
-      //create this properties to later escape all tags that match keys in the
-      //JSON data so these tags persist through recursive partial includes.
-      patternlab.dataKeys = pattern_assembler.get_data_keys(patternlab.data);
-    } catch (ex) {
-      plutils.logRed(ex);
-      patternlab.dataKeys = [];
-    }
-    try {
       patternlab.listitems = fs.readJSONSync(path.resolve(paths.source.data, 'listitems.json'));
     } catch (ex) {
       plutils.logRed('missing or malformed' + paths.source.data + 'listitems.json  Pattern Lab may not work without this file.');
@@ -258,19 +202,26 @@ var patternlab_engine = function (config) {
     var pattern_assembler = new pa(),
       pattern_exporter = new pe(),
       lineage_hunter = new lh(),
-      entity_encoder = new he(),
+      list_item_hunter = new lih(),
       patterns_dir = paths.source.patterns;
 
     pattern_assembler.combine_listItems(patternlab);
 
+    var Pattern = require('./object_factory').Pattern;
+    var patternEngines = require('./pattern_engines');
+    var dummyPattern = Pattern.createEmpty();
+    var engine = patternEngines.getEngineForPattern(dummyPattern);
+
     // diveSync once to perform iterative populating of patternlab object
     processAllPatternsIterative(pattern_assembler, patterns_dir, patternlab);
 
-    preprocessPatternlabPartials(pattern_assembler, list_item_hunter, patternlab);
+    // push list item keywords into dataKeys property
+    patternlab.dataKeys = ['styleModifier'].concat(pattern_assembler.get_data_keys(patternlab.data));
 
-    //diveSync again to recursively include partials, filling out the
-    //extendedTemplate property of the patternlab.patterns elements
-    processAllPatternsRecursive(pattern_assembler, patterns_dir, patternlab);
+    for (var i = 0; i < list_item_hunter.items.length; i++) {
+      patternlab.dataKeys.push('listItems.' + list_item_hunter.items[i]);
+      patternlab.dataKeys.push('listitems.' + list_item_hunter.items[i]);
+    }
 
     //set user defined head and foot if they exist
     try {
@@ -292,14 +243,6 @@ var patternlab_engine = function (config) {
       }
     }
 
-    //now that all the main patterns are known, look for any links that might be within data and expand them
-    //we need to do this before expanding patterns & partials into extendedTemplates, otherwise we could lose the data -> partial reference
-    pattern_assembler.parse_data_links(patternlab);
-
-    //cascade any patternStates
-    //commenting out - not sure what this accomplishes
-    //lineage_hunter.cascade_pattern_states(patternlab);
-
     //delete the contents of config.patterns.public before writing
     if (deletePatternDir) {
       fs.removeSync(paths.public.patterns);
@@ -313,99 +256,25 @@ var patternlab_engine = function (config) {
     } else {
       head = patternlab.header;
     }
+    patternlab.footer = patternlab.footer.replace('{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}', '\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}');
 
-    //render all patterns last, so lineageR works
-    patternlab.patterns.forEach(function (pattern) {
+    //diveSync again to recursively include partials, filling out the
+    //extendedTemplate property of the patternlab.patterns elements
+    processAllPatternsRecursive(pattern_assembler, patterns_dir, patternlab);
+    patternlab.footer = patternlab.footer.replace('\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}', '{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}');
 
-      if (!pattern.isPattern) {
-        return false;
-      }
+    for (var i = 0; i < patternlab.patterns.length; i++) {
+      var pattern = patternlab.patterns[i];
 
-      pattern.header = head;
-
-      //todo move this into lineage_hunter
-      pattern.patternLineages = pattern.lineage;
-      pattern.patternLineageExists = pattern.lineage.length > 0;
-      pattern.patternLineagesR = pattern.lineageR;
-      pattern.patternLineageRExists = pattern.lineageR.length > 0;
-      pattern.patternLineageEExists = pattern.patternLineageExists || pattern.patternLineageRExists;
-
-      //set cacheBuster property
-      pattern.allData.cacheBuster = patternlab.cacheBuster;
-
-      var headHTML = pattern_assembler.renderPattern(pattern.header, pattern.allData);
-
-      //render the extendedTemplate with all data
-      pattern.patternPartialCode = pattern_assembler.renderPattern(pattern, pattern.allData);
-
-      //render the escaped extendedTemplate for the HTML viewer
-      pattern.patternPartialCodeE = entity_encoder.encode(pattern.patternPartialCode);
-
-      // stringify this data for individual pattern rendering and use on the styleguide
-      // see if patternData really needs these other duped values
-      pattern.allData.patternData = JSON.stringify({
-        cssEnabled: false,
-        patternLineageExists: pattern.patternLineageExists,
-        patternLineages: pattern.patternLineages,
-        lineage: pattern.patternLineages,
-        patternLineageRExists: pattern.patternLineageRExists,
-        patternLineagesR: pattern.patternLineagesR,
-        lineageR: pattern.patternLineagesR,
-        patternLineageEExists: pattern.patternLineageExists || pattern.patternLineageRExists,
-        patternDesc: pattern.patternDescExists ? pattern.patternDesc : '',
-        patternBreadcrumb:
-          pattern.patternGroup === pattern.patternSubGroup ?
-          {
-            patternType: pattern.patternGroup
-          } : {
-            patternType: pattern.patternGroup,
-            patternSubtype: pattern.patternSubGroup
-          },
-        patternExtension: pattern.fileExtension.substr(1), //remove the dot because styleguide asset default adds it for us
-        patternName: pattern.patternName,
-        patternPartial: pattern.patternPartial,
-        patternState: pattern.patternState,
-        extraOutput: {}
-      });
+      //skip unprocessed patterns
+      if (!pattern.footer) { continue; }
 
       //set the pattern-specific footer by compiling the general-footer with data, and then adding it to the meta footer
-      var footerPartial = pattern_assembler.renderPattern(patternlab.footer, {
-        isPattern: pattern.isPattern,
-        patternData: pattern.allData.patternData,
-        patternPartial: pattern.patternPartial,
-        lineage: JSON.stringify(pattern.patternLineages),
-        lineageR: JSON.stringify(pattern.patternLineagesR),
-        patternState: pattern.patternState,
-        cacheBuster: patternlab.cacheBuster
-      });
+      var footerHTML = pattern.footer.replace('\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}', '{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}');
+      footerHTML = engine.renderPattern(footerHTML, {lineageR: JSON.stringify(pattern.patternLineagesR)});
 
-      var footerHTML = patternlab.userFoot.replace('{{{ patternLabFoot }}}', footerPartial);
-      footerHTML = pattern_assembler.renderPattern(footerHTML, pattern.allData);
-
-      //default the output suffixes if not present
-      var outputFileSuffixes = {
-        rendered: '',
-        rawTemplate: '',
-        markupOnly: '.markup-only',
-        escaped: '.escaped'
-      }
-      outputFileSuffixes = _.extend(outputFileSuffixes, patternlab.config.outputFileSuffixes);
-
-      //write the compiled template to the public patterns directory
-      var patternPage = headHTML + pattern.patternPartialCode + footerHTML;
-      fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rendered + '.html'), patternPage);
-
-      //write the mustache file too
-      fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rawTemplate + pattern.fileExtension), entity_encoder.encode(pattern.template));
-
-      //write the markup-only version too
-      fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.markupOnly + '.html'), pattern.patternPartialCode);
-
-      //write the escaped html too
-      fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.escaped + '.html'), pattern.patternPartialCodeE);
-
-      return true;
-    });
+      fs.appendFileSync(paths.public.patterns + pattern.patternLink, footerHTML);
+    }
 
     //export patterns if necessary
     pattern_exporter.export_patterns(patternlab);
@@ -443,7 +312,6 @@ var patternlab_engine = function (config) {
 // have a better way to do this
 patternlab_engine.build_pattern_data = buildPatternData;
 patternlab_engine.process_all_patterns_iterative = processAllPatternsIterative;
-patternlab_engine.preprocess_patternlab_partials = preprocessPatternlabPartials;
 patternlab_engine.process_all_patterns_recursive = processAllPatternsRecursive;
 
 module.exports = patternlab_engine;
