@@ -61,7 +61,6 @@ var Pattern = function (relPath, data) {
   this.partialObj = {};
   this.allData = null;
   this.dataKeys = null;
-  this.dataKeysRegex= null;
 };
 
 // Pattern methods
