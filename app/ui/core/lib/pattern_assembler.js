@@ -2,7 +2,6 @@
 
 var path = require('path'),
   fs = require('fs-extra'),
-  he = require('html-entities').AllHtmlEntities,
   Pattern = require('./object_factory').Pattern,
   pph = require('./pseudopattern_hunter'),
   mp = require('./markdown_parser'),
@@ -446,7 +445,6 @@ var pattern_assembler = function () {
 
     //MAIN EXECUTION
 
-    var entity_encoder = new he();
     var lineage_hunter = new lh();
     var list_item_hunter = new lih();
     var pseudopattern_hunter = new pph();
@@ -596,7 +594,7 @@ var pattern_assembler = function () {
     fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rendered + '.html'), patternPage);
 
     //write the mustache file too
-    fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rawTemplate + pattern.fileExtension), entity_encoder.encode(pattern.template));
+    fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rawTemplate + pattern.fileExtension), pattern.template);
 
     //write the markup-only version too
     fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.markupOnly + '.html'), pattern.patternPartialCode);
