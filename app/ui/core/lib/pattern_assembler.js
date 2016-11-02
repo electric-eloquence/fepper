@@ -10,7 +10,6 @@ var path = require('path'),
   patternEngines = require('./pattern_engines'),
   lh = require('./lineage_hunter'),
   lih = require('./list_item_hunter'),
-  ph = require('./partial_hunter'),
   JSON5 = require('json5'),
   _ = require('lodash');
 
@@ -81,6 +80,8 @@ var pattern_assembler = function () {
         }
       }
     }
+    //unset listItemArray to free memory
+    container.listItemArray = null;
   }
 
   /*
@@ -361,18 +362,8 @@ var pattern_assembler = function () {
     //add pattern to patternlab.patterns array
     addPattern(pattern, patternlab);
 
-    //save the partialObj interface to this pattern
-    pattern.partialObj = {
-      key: '',
-      partial: '',
-      params: null,
-      content: pattern.template.replace(/(>|\})\s+(<|\{)/g, '$1 $2').replace(/\s*\n/g, ''),
-      contentRendered: '',
-      nestedDataKeys: [],
-      nestedPartials: []
-    };
-    pattern.partialObj.nestedDataKeys = pattern.partialObj.content.match(/\{\{#[\S\s]+?\}\}/g) || [];
-    pattern.partialObj.nestedDataKeys = pattern.partialObj.nestedDataKeys.concat(pattern.template.match(/\{\{\^[\S\s]+?\}\}/g) || []);
+    //save a partialObj interface to this pattern
+    pattern.partialObj = pattern.engine.newPartialObj('', null, pattern.template);
 
     return pattern;
   }
@@ -509,7 +500,7 @@ var pattern_assembler = function () {
 
       list_item_hunter.process_list_item_partials(pattern, patternlab);
 
-    //else, we've identified a pseudopattern by checking if this is a file containing same name, with ~ in it, ending in .json
+    //identified a pseudopattern by checking if this is a file containing same name, with ~ in it, ending in .json
     //copy its basePattern.extendedTemplate to extendedTemplate and return
     } else {
       pattern.extendedTemplate = pattern.basePattern.extendedTemplate;
@@ -533,7 +524,6 @@ var pattern_assembler = function () {
       head = patternlab.header;
     }
 
-    //todo move this into lineage_hunter
     pattern.patternLineages = pattern.lineage;
     pattern.patternLineageExists = pattern.lineage.length > 0;
     pattern.patternLineagesR = pattern.lineageR;
@@ -548,8 +538,8 @@ var pattern_assembler = function () {
     var headHTML = renderPattern(head, pattern.allData);
     pattern.patternPartialCode = renderPattern(pattern, pattern.allData);
 
-    // stringify this data for individual pattern rendering and use on the styleguide
-    // see if patternData really needs these other duped values
+    //stringify these data for individual pattern rendering and use on the styleguide
+    //see if patternData really needs these other duped values
     pattern.allData.patternData = JSON.stringify({
       cssEnabled: false,
       patternLineageExists: pattern.patternLineageExists,
@@ -568,7 +558,7 @@ var pattern_assembler = function () {
           patternType: pattern.patternGroup,
           patternSubtype: pattern.patternSubGroup
         },
-      patternExtension: pattern.fileExtension.substr(1), //remove the dot because styleguide asset default adds it for us
+      patternExtension: pattern.fileExtension.substr(1), //remove the dot because styleguide asset default adds it
       patternName: pattern.patternName,
       patternPartial: pattern.patternPartial,
       patternState: pattern.patternState,
