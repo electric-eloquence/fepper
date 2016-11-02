@@ -216,7 +216,9 @@ var codeViewer = {
 	* if the mustache tab is the current active tab it adds the content to the default code container
 	*/
 	saveMustache: function() {
-		codeViewer.mustache = this.responseText;
+		var encoded = this.responseText;
+		encoded = he.encode(encoded);
+		codeViewer.mustache = encoded;
 		if (codeViewer.tabActive == "m") {
 			codeViewer.activateDefaultTab("m",this.responseText);
 		}
