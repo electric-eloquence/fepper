@@ -203,7 +203,7 @@ var codeViewer = {
 	*/
 	saveEncoded: function() {
 		var encoded = this.responseText;
-		encoded = html_beautify(encoded);
+		encoded = html_beautify(encoded, { indent_size: 2 });
 		encoded = he.encode(encoded);
 		codeViewer.encoded = encoded;
 		if (codeViewer.tabActive == "e") {
