@@ -362,7 +362,8 @@ var pattern_assembler = function () {
     addPattern(pattern, patternlab);
 
     //save a partialObj interface to this pattern
-    pattern.partialObj = pattern.engine.newPartialObj('', null, pattern.template);
+    //save it as a stringified JSON so it can parsed into an object (and thereby cloned, not referenced) when needed
+    pattern.partialObj = JSON.stringify(pattern.engine.newPartialObj('', null, pattern.template));
 
     return pattern;
   }
@@ -413,7 +414,7 @@ var pattern_assembler = function () {
           nestedPattern = getPartial(nestedPatternName, patternlab);
           if (nestedPattern) {
             try {
-              engine.registerPartial(key, nestedPattern, patternlab);
+              engine.registerPartial(key, nestedPattern, patternlab, getPartial);
             } catch (err) {
               console.log(err);
               continue;
@@ -490,7 +491,7 @@ var pattern_assembler = function () {
         });
       }
 
-      var tmpPartial = JSON.parse(JSON.stringify(pattern.partialObj));
+      var tmpPartial = JSON.parse(pattern.partialObj);
       tmpPartial.key = '{{> ' + pattern.relPathTrunc + ' }}';
       tmpPartial.partial = pattern.relPathTrunc;
       renderPartials(tmpPartial, pattern, patternlab);
@@ -618,6 +619,7 @@ var pattern_assembler = function () {
           case 'isPattern':
           case 'patternState':
           case 'template':
+          case 'partialObj':
           case 'patternLineagesR':
           case 'lineageR':
           case 'lineageRIndex':
