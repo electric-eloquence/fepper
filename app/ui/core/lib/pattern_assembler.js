@@ -379,7 +379,8 @@ var pattern_assembler = function () {
 
   function processPatternRecursive(pattern, patternIndex, patternlab, partial) {
     function renderPartials(currentPartial, currentPattern, patternlab) {
-      var contentRendered;
+      var contentRendered = currentPartial.content;
+      var dataKey;
       var engine = currentPattern.engine;
       var i;
       var newPartial;
@@ -387,9 +388,6 @@ var pattern_assembler = function () {
       var nestedPatternName;
       var nestedPatternNameMatch;
       var nestedPartials;
-      var nestedDataKeys;
-      var contentRendered = currentPartial.content;
-      var dataKey;
 
       var unusedDataKeys = currentPartial.nestedDataKeys.filter(function (value) {
         dataKey = value.slice(3, -2).trim();
@@ -457,6 +455,7 @@ var pattern_assembler = function () {
 
     //MAIN EXECUTION
 
+    var entity_encoder = new he();
     var lineage_hunter = new lh();
     var list_item_hunter = new lih();
     var pseudopattern_hunter = new pph();
@@ -464,7 +463,6 @@ var pattern_assembler = function () {
     var i;
     var j;
     var hasPseudoPattern = 0;
-    var isPseudoPattern = false;
 
     //skip markdown patterns
     if (pattern.engine === null) { return; }
@@ -503,11 +501,18 @@ var pattern_assembler = function () {
         });
       }
 
+      var tmpPartial = JSON.parse(JSON.stringify(pattern.partialObj));
+      tmpPartial.key = '{{> ' + pattern.relPathTrunc + ' }}';
+      tmpPartial.partial = pattern.relPathTrunc;
+      renderPartials(tmpPartial, pattern, patternlab);
+      pattern.extendedTemplate = extendPartials(tmpPartial, pattern.engine);
+
+      list_item_hunter.process_list_item_partials(pattern, patternlab);
+
     //else, we've identified a pseudopattern by checking if this is a file containing same name, with ~ in it, ending in .json
     //copy its basePattern.extendedTemplate to extendedTemplate and return
     } else {
       pattern.extendedTemplate = pattern.basePattern.extendedTemplate;
-      isPseudoPattern = true;
 
       //clear basePattern.extendedTemplate if no more pseudoPatterns of this basePattern
       if (
@@ -521,38 +526,12 @@ var pattern_assembler = function () {
       }
     }
 
-    var key;
-    var partialRegexes;
-    var partialStrEscaped;
-    var tmpPartial;
-    var tmpPartialKey;
-
-    if (!isPseudoPattern) {
-      var engine = pattern.engine;
-      tmpPartial = JSON.parse(JSON.stringify(pattern.partialObj));
-      tmpPartial.key = '{{> ' + pattern.relPathTrunc + ' }}';
-      tmpPartial.partial = pattern.relPathTrunc;
-      renderPartials(tmpPartial, pattern, patternlab);
-      pattern.extendedTemplate = extendPartials(tmpPartial, pattern.engine);
-
-      list_item_hunter.process_list_item_partials(pattern, patternlab);
-    }
-
     var head;
     if (patternlab.userHead) {
       head = patternlab.userHead.replace('{{{ patternLabHead }}}', patternlab.header);
     } else {
       head = patternlab.header;
     }
-
-    var entity_encoder = new he();
-    var paths = patternlab.config.paths;
-
-    if (!pattern.isPattern) {
-      return;
-    }
-
-    pattern.header = head;
 
     //todo move this into lineage_hunter
     pattern.patternLineages = pattern.lineage;
@@ -561,12 +540,12 @@ var pattern_assembler = function () {
     pattern.patternLineageRExists = pattern.lineageR.length > 0;
     pattern.patternLineageEExists = pattern.patternLineageExists || pattern.patternLineageRExists;
 
-    //set cacheBuster property
+    //set cacheBuster property if not already set
     if (!pattern.allData.cacheBuster) {
       pattern.allData.cacheBuster = patternlab.cacheBuster;
     }
 
-    var headHTML = renderPattern(pattern.header, pattern.allData);
+    var headHTML = renderPattern(head, pattern.allData);
     pattern.patternPartialCode = renderPattern(pattern, pattern.allData);
 
     // stringify this data for individual pattern rendering and use on the styleguide
@@ -621,6 +600,7 @@ var pattern_assembler = function () {
     outputFileSuffixes = _.extend(outputFileSuffixes, patternlab.config.outputFileSuffixes);
 
     //write the compiled template to the public patterns directory
+    var paths = patternlab.config.paths;
     var patternPage = pattern.header + pattern.patternPartialCode;
 
     fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rendered + '.html'), patternPage);
@@ -631,10 +611,9 @@ var pattern_assembler = function () {
     //write the markup-only version too
     fs.outputFileSync(paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.markupOnly + '.html'), pattern.patternPartialCode);
 
-
     //free memory
-    for (i in pattern) {
-      if (pattern.hasOwnProperty(i)) {
+    for (var key in pattern) {
+      if (pattern.hasOwnProperty(key)) {
         switch (key) {
           case 'relPath':
           case 'relPathTrunc':
@@ -669,7 +648,6 @@ var pattern_assembler = function () {
     if (!hasPseudoPattern) {
       pattern.extendedTemplate = '';
     }
-
   }
 
   return {
