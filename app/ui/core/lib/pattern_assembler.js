@@ -362,8 +362,23 @@ var pattern_assembler = function () {
     addPattern(pattern, patternlab);
 
     //save a partialObj interface to this pattern
+    var partialObj = {
+      key: '',
+      partial: '',
+      params: null,
+      content: pattern.template.replace(/(>|\})\s+(<|\{)/g, '$1 $2').replace(/\s*\n/g, ''),
+      contentRendered: '',
+      nestedDataKeys: [],
+      nestedPartials: []
+    };
+
+    // escape the parametered tags within partials by changing delimiters to unicodes
+    // for start-of-text and end-of-text
+    partialObj.nestedDataKeys = pattern.template.match(/\{\{#[\S\s]+?\}\}/g) || [];
+    partialObj.nestedDataKeys = partialObj.nestedDataKeys.concat(pattern.template.match(/\{\{\^[\S\s]+?\}\}/g) || []);
+
     //save it as a stringified JSON so it can parsed into an object (and thereby cloned, not referenced) when needed
-    pattern.partialObj = JSON.stringify(pattern.engine.newPartialObj('', null, pattern.template));
+    pattern.partialObj = JSON.stringify(partialObj);
 
     return pattern;
   }
