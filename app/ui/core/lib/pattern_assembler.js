@@ -439,7 +439,7 @@ var pattern_assembler = function () {
           }
         }
 
-        newPartial = _.cloneDeep(patternlab.partials[key]);
+        newPartial = JSON.parse(patternlab.partials[key]);
 
         currentPartial.nestedPartials.push(newPartial);
         renderPartials(newPartial, currentPattern, patternlab);
