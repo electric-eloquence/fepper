@@ -24,20 +24,22 @@ exports.main = function () {
 
   for (let i = 0; i < varsSplit.length; i++) {
     let varLine = varsSplit[i].trim();
-    // Skip comments.
-    if (varLine.indexOf(';') !== 0) {
-      // If there's an equal sign, replace the first equal sign with a colon.
-      if (varLine.indexOf('=') > -1) {
-        varLine = varLine.replace(/^(\w*)\s*/, '"$1"');
-        varLine = varLine.replace('=', ':');
-        jsonStr += '  ' + varLine + ',\n';
+    // Find index of the first equal sign.
+    let indexOfEqual = varLine.indexOf('=');
+
+    if (indexOfEqual > -1) {
+      if (i > 0 && jsonStr !== '{\n') {
+        jsonStr += ',\n';
+      }
+      let key = varLine.slice(0, indexOfEqual).trim();
+      let value = varLine.slice(indexOfEqual + 1).trim();
+
+      if (key) {
+        jsonStr += `  "${key}": "${value}"`;
       }
     }
   }
-  // Strip last comma.
-  jsonStr = jsonStr.replace(/,\n$/, '\n');
-  // All closing curly brace.
-  jsonStr += '}\n';
+  jsonStr += '\n}\n';
 
   // Write out to _appendix.json.
   fs.writeFileSync(appendix, jsonStr);
