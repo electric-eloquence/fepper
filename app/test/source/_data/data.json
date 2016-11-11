@@ -9,9 +9,9 @@
   },
   "description" : "So, setting about it as methodically as men might smoke out a wasps' nest, the Martians spread this strange stifling vapour over the Londonward country. The horns of the crescent slowly moved apart, until at last they formed a line from Hanwell to Coombe and Malden. All night through their destructive tubes advanced.",
   "url" : "#",
-  "bp_lg_max": -1,
-  "bp_lg_min": 1024,
-  "bp_md_min": 768,
-  "bp_sm_min": 480,
-  "bp_xs_min": 0
+  "bp_lg_max": "-1",
+  "bp_lg_min": "1024",
+  "bp_md_min": "768",
+  "bp_sm_min": "480",
+  "bp_xs_min": "0"
 }
