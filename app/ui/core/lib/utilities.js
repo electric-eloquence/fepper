@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-var fs = require('fs-extra'),
-  path = require('path');
+var fs = require('fs-extra');
+var path = require('path');
 
 var util = {
   // http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
   shuffle: function (o) {
-    /*eslint-disable curly*/
+    /* eslint-disable curly */
     for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
   },
@@ -27,7 +27,7 @@ var util = {
    * @returns {Object} obj2
    */
   mergeData: function (obj1, obj2) {
-    /*eslint-disable no-param-reassign, guard-for-in*/
+    /* eslint-disable no-param-reassign, guard-for-in */
     if (typeof obj2 === 'undefined') {
       obj2 = {};
     }
@@ -71,7 +71,7 @@ var util = {
       var filename = path.join(dir, list[i]);
       var stat = fs.statSync(filename);
 
-      if (filename === "." || filename === "..") {
+      if (filename === '.' || filename === '..') {
         // pass these files
       } else if (stat.isDirectory()) {
         this.emptyDirectory(filename);

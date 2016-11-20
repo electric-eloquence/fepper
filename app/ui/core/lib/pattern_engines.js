@@ -69,17 +69,14 @@ function loadAllEngines(enginesObject) {
     // find all engine-named things in this directory and try to load them,
     // unless it's already been loaded.
     enginesInThisDir.forEach(function (engineDiscovery) {
-      var errorMessage;
-      var successMessage = "good to go";
-
       try {
         // give it a try! load 'er up. But not if we already have, of course.
         if (enginesObject[engineDiscovery.name]) {
-          throw new Error("already loaded, skipping.");
+          throw new Error('already loaded, skipping.');
         }
         enginesObject[engineDiscovery.name] = require(engineDiscovery.modulePath);
       } catch (err) {
-        errorMessage = err.message;
+        console.error(err.message);
       }
     });
   });

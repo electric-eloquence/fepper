@@ -1,26 +1,26 @@
-/* 
- * patternlab-node - v2.3.0 - 2016 
- * 
- * Brian Muenzenmeyer, Geoff Pursell, and the web community.
- * Licensed under the MIT license. 
- * 
- * Many thanks to Brad Frost and Dave Olsen for inspiration, encouragement, and advice. 
+/*
+ * patternlab-node - v2.3.0 - 2016
+ *
+ * Brian Muenzenmeyer, Geoff Pursell, and the web community
+ * Licensed under the MIT license.
+ *
+ * Many thanks to Brad Frost and Dave Olsen for inspiration, encouragement, and advice.
  *
  */
 
-"use strict";
+'use strict';
 
-var diveSync = require('diveSync'),
-  glob = require('glob'),
-  _ = require('lodash'),
-  path = require('path');
+var diveSync = require('diveSync');
+var glob = require('glob');
+var _ = require('lodash');
+var path = require('path');
 
 // GTP: these two diveSync pattern processors factored out so they can be reused
 // from unit tests to reduce code dupe!
 
 function buildPatternData(dataFilesPath, fs) {
   var dataFilesPath = dataFilesPath;
-  var dataFiles = glob.sync(dataFilesPath + '*.json', {"ignore" : [dataFilesPath + 'listitems.json']});
+  var dataFiles = glob.sync(dataFilesPath + '*.json', {ignore: [dataFilesPath + 'listitems.json']});
   var mergeObject = {}
   dataFiles.forEach(function (filePath) {
     var jsonData = fs.readJSONSync(path.resolve(filePath), 'utf8')
@@ -33,34 +33,33 @@ function processAllPatternsIterative(pattern_assembler, patterns_dir, patternlab
   diveSync(
     patterns_dir,
     function (err, file) {
-      //log any errors
+      // log any errors
       if (err) {
         console.log(err);
         return;
       }
-      pattern_assembler.process_pattern_iterative(path.relative(patterns_dir, file), patternlab);
+      pattern_assembler.processPatternIterative(path.relative(patterns_dir, file), patternlab);
     }
   );
 }
 
 function processAllPatternsRecursive(pattern_assembler, patterns_dir, patternlab) {
   for (var i = 0; i < patternlab.patterns.length; i++) {
-    pattern_assembler.process_pattern_recursive(patternlab.patterns[i], i, patternlab);
+    pattern_assembler.processPatternRecursive(patternlab.patterns[i], i, patternlab);
   }
 }
 
 var patternlab_engine = function (config) {
   'use strict';
 
-  var fs = require('fs-extra'),
-    pa = require('./pattern_assembler'),
-    pe = require('./pattern_exporter'),
-    lh = require('./lineage_hunter'),
-    lih = require('./list_item_hunter'),
-    buildFrontEnd = require('./ui_builder'),
-    plutils = require('./utilities'),
-    sm = require('./starterkit_manager'),
-    patternlab = {};
+  var fs = require('fs-extra');
+  var pa = require('./pattern_assembler');
+  var pe = require('./pattern_exporter');
+  var lih = require('./list_item_hunter');
+  var buildFrontEnd = require('./ui_builder');
+  var plutils = require('./utilities');
+  var sm = require('./starterkit_manager');
+  var patternlab = {};
 
   patternlab.package = fs.readJSONSync(path.resolve(__dirname, '../../package.json'));
   patternlab.config = config || fs.readJSONSync(path.resolve(__dirname, '../../patternlab-config.json'));
@@ -73,6 +72,7 @@ var patternlab_engine = function (config) {
 
 
   function help() {
+    /* eslint-disable max-len */
     console.log('');
 
     console.log('|=======================================|');
@@ -123,6 +123,8 @@ var patternlab_engine = function (config) {
     console.log('Visit https://github.com/pattern-lab/patternlab-node/wiki to view the changelog, roadmap, and other info.');
     console.log('');
     console.log('===============================');
+
+    /* eslint-enable max-len */
   }
 
   function printDebug() {
@@ -137,7 +139,7 @@ var patternlab_engine = function (config) {
       return value;
     }
 
-    //debug file can be written by setting flag on patternlab-config.json
+    // debug file can be written by setting flag on patternlab-config.json
     if (patternlab.config.debug) {
       console.log('writing patternlab debug file to ./patternlab.json');
       fs.outputFileSync('./patternlab.json', JSON.stringify(patternlab, propertyStringReplacer, 3));
@@ -172,24 +174,32 @@ var patternlab_engine = function (config) {
     try {
       patternlab.data = buildPatternData(paths.source.data, fs);
     } catch (ex) {
-      plutils.logRed('missing or malformed' + paths.source.data + 'data.json  Pattern Lab may not work without this file.');
+      plutils.logRed('missing or malformed' + paths.source.data +
+        'data.json  Pattern Lab may not work without this file.');
       patternlab.data = {};
     }
     try {
       patternlab.listitems = fs.readJSONSync(path.resolve(paths.source.data, 'listitems.json'));
     } catch (ex) {
-      plutils.logRed('missing or malformed' + paths.source.data + 'listitems.json  Pattern Lab may not work without this file.');
+      plutils.logRed('missing or malformed' + paths.source.data +
+        'listitems.json  Pattern Lab may not work without this file.');
       patternlab.listitems = {};
     }
     try {
-      patternlab.header = fs.readFileSync(path.resolve(paths.source.patternlabFiles, 'partials', 'general-header.mustache'), 'utf8');
-      patternlab.footer = fs.readFileSync(path.resolve(paths.source.patternlabFiles, 'partials', 'general-footer.mustache'), 'utf8');
-      patternlab.patternSection = fs.readFileSync(path.resolve(paths.source.patternlabFiles, 'partials', 'patternSection.mustache'), 'utf8');
-      patternlab.patternSectionSubType = fs.readFileSync(path.resolve(paths.source.patternlabFiles, 'partials', 'patternSectionSubtype.mustache'), 'utf8');
-      patternlab.viewAll = fs.readFileSync(path.resolve(paths.source.patternlabFiles, 'viewall.mustache'), 'utf8');
+      patternlab.header = fs.readFileSync(
+        path.resolve(paths.source.patternlabFiles, 'partials', 'general-header.mustache'), 'utf8');
+      patternlab.footer = fs.readFileSync(
+        path.resolve(paths.source.patternlabFiles, 'partials', 'general-footer.mustache'), 'utf8');
+      patternlab.patternSection = fs.readFileSync(
+        path.resolve(paths.source.patternlabFiles, 'partials', 'patternSection.mustache'), 'utf8');
+      patternlab.patternSectionSubType = fs.readFileSync(
+        path.resolve(paths.source.patternlabFiles, 'partials', 'patternSectionSubtype.mustache'), 'utf8');
+      patternlab.viewAll = fs.readFileSync(
+        path.resolve(paths.source.patternlabFiles, 'viewall.mustache'), 'utf8');
     } catch (ex) {
       console.log(ex);
-      plutils.logRed('\nERROR: missing an essential file from ' + paths.source.patternlabFiles + '. Pattern Lab won\'t work without this file.\n');
+      plutils.logRed('\nERROR: missing an essential file from ' + paths.source.patternlabFiles +
+        '. Pattern Lab won\'t work without this file.\n');
       process.exit(1);
     }
     patternlab.patterns = [];
@@ -199,13 +209,12 @@ var patternlab_engine = function (config) {
 
     setCacheBust();
 
-    var pattern_assembler = new pa(),
-      pattern_exporter = new pe(),
-      lineage_hunter = new lh(),
-      list_item_hunter = new lih(),
-      patterns_dir = paths.source.patterns;
+    var pattern_assembler = new pa();
+    var pattern_exporter = new pe();
+    var list_item_hunter = new lih();
+    var patterns_dir = paths.source.patterns;
 
-    pattern_assembler.combine_listItems(patternlab);
+    pattern_assembler.buildListItems(patternlab);
 
     var Pattern = require('./object_factory').Pattern;
     var patternEngines = require('./pattern_engines');
@@ -216,67 +225,71 @@ var patternlab_engine = function (config) {
     processAllPatternsIterative(pattern_assembler, patterns_dir, patternlab);
 
     // push list item keywords into dataKeys property
-    patternlab.dataKeys = ['styleModifier'].concat(pattern_assembler.get_data_keys(patternlab.data));
+    patternlab.dataKeys = ['styleModifier'].concat(pattern_assembler.getDataKeys(patternlab.data));
 
     for (var i = 0; i < list_item_hunter.items.length; i++) {
       patternlab.dataKeys.push('listItems.' + list_item_hunter.items[i]);
       patternlab.dataKeys.push('listitems.' + list_item_hunter.items[i]);
     }
 
-    //set user defined head and foot if they exist
+    // set user defined head and foot if they exist
     try {
       patternlab.userHead = fs.readFileSync(path.resolve(paths.source.meta, '_00-head.mustache'), 'utf8');
-    }
-    catch (ex) {
+    } catch (ex) {
       if (patternlab.config.debug) {
         console.log(ex);
-        console.log('Could not find optional user-defined header, usually found at ./source/_meta/_00-head.mustache. It was likely deleted.');
+        var warnHead = 'Could not find optional user-defined header, usually found at ';
+        warnHead += './source/_meta/_00-head.mustache. It was likely deleted.';
+        console.log(warnHead);
       }
     }
     try {
       patternlab.userFoot = fs.readFileSync(path.resolve(paths.source.meta, '_01-foot.mustache'), 'utf8');
-    }
-    catch (ex) {
+    } catch (ex) {
       if (patternlab.config.debug) {
         console.log(ex);
-        console.log('Could not find optional user-defined footer, usually found at ./source/_meta/_01-foot.mustache. It was likely deleted.');
+        var warnFoot = 'Could not find optional user-defined footer, usually found at ';
+        warnFoot += './source/_meta/_01-foot.mustache. It was likely deleted.';
+        console.log(warnFoot);
       }
     }
 
-    //delete the contents of config.patterns.public before writing
+    // delete the contents of config.patterns.public before writing
     if (deletePatternDir) {
       fs.removeSync(paths.public.patterns);
       fs.emptyDirSync(paths.public.patterns);
     }
 
-    //set pattern-specific header if necessary
-    var head;
-    if (patternlab.userHead) {
-      head = patternlab.userHead.replace('{{{ patternLabHead }}}', patternlab.header);
-    } else {
-      head = patternlab.header;
-    }
-    patternlab.footer = patternlab.footer.replace('{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}', '\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}');
+    patternlab.footer = patternlab.footer.replace(
+      '{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}',
+      '\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}'
+    );
 
-    //diveSync again to recursively include partials, filling out the
-    //extendedTemplate property of the patternlab.patterns elements
+    // diveSync again to recursively include partials, filling out the
+    // extendedTemplate property of the patternlab.patterns elements
     processAllPatternsRecursive(pattern_assembler, patterns_dir, patternlab);
-    patternlab.footer = patternlab.footer.replace('\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}', '{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}');
+    patternlab.footer = patternlab.footer.replace(
+      '\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}',
+      '{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}'
+    );
 
     for (var i = 0; i < patternlab.patterns.length; i++) {
       var pattern = patternlab.patterns[i];
 
-      //skip unprocessed patterns
+      // skip unprocessed patterns
       if (!pattern.footer) { continue; }
 
-      //set the pattern-specific footer by compiling the general-footer with data, and then adding it to the meta footer
-      var footerHTML = pattern.footer.replace('\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}', '{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}');
+      // set the pattern-specific footer by compiling the general-footer with data and then adding it to the meta footer
+      var footerHTML = pattern.footer.replace(
+        '\u0002# lineageR }} = \u0002{ lineageR }}}\u0002/ lineageR }}',
+        '{{# lineageR }} = {{{ lineageR }}}{{/ lineageR }}'
+      );
       footerHTML = engine.renderPattern(footerHTML, {lineageR: JSON.stringify(pattern.patternLineagesR)});
 
       fs.appendFileSync(paths.public.patterns + pattern.patternLink, footerHTML);
     }
 
-    //export patterns if necessary
+    // export patterns if necessary
     pattern_exporter.export_patterns(patternlab);
   }
 
@@ -310,8 +323,8 @@ var patternlab_engine = function (config) {
 // export these free functions so they're available without calling the exported
 // function, for use in reducing code dupe in unit tests. At least, until we
 // have a better way to do this
-patternlab_engine.build_pattern_data = buildPatternData;
-patternlab_engine.process_all_patterns_iterative = processAllPatternsIterative;
-patternlab_engine.process_all_patterns_recursive = processAllPatternsRecursive;
+patternlab_engine.buildPatternData = buildPatternData;
+patternlab_engine.processAllPatternsIterative = processAllPatternsIterative;
+patternlab_engine.processAllPatternRecursive = processAllPatternsRecursive;
 
 module.exports = patternlab_engine;
