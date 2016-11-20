@@ -1,11 +1,11 @@
-"use strict";
+'use strict"'
 
-var path = require('path'),
-  glob = require('glob'),
-  fs = require('fs-extra'),
-  JSON5 = require('json5'),
-  _ = require('lodash'),
-  mp = require('./markdown_parser');
+var path = require('path');
+var glob = require('glob');
+var fs = require('fs-extra');
+var JSON5 = require('json5');
+var _ = require('lodash');
+var mp = require('./markdown_parser');
 
 var annotations_exporter = function (pl) {
 
@@ -15,7 +15,7 @@ var annotations_exporter = function (pl) {
   Returns the array of comments that used to be wrapped in raw JS.
    */
   function parseAnnotationsJS() {
-    //attempt to read the file
+    // attempt to read the file
     try {
       var oldAnnotations = fs.readFileSync(path.resolve(paths.source.annotations, 'annotations.js'), 'utf8');
     } catch (ex) {
@@ -25,7 +25,7 @@ var annotations_exporter = function (pl) {
       return [];
     }
 
-    //parse as JSON by removing the old wrapping js syntax. comments and the trailing semi-colon
+    // parse as JSON by removing the old wrapping js syntax. comments and the trailing semi-colon
     oldAnnotations = oldAnnotations.replace('var comments = ', '');
     oldAnnotations = oldAnnotations.replace('};', '}');
 
@@ -56,7 +56,7 @@ var annotations_exporter = function (pl) {
     return function (filePath) {
       var annotationsMD = fs.readFileSync(path.resolve(filePath), 'utf8');
 
-    //take the annotation snippets and split them on our custom delimiter
+    // take the annotation snippets and split them on our custom delimiter
       var annotationsYAML = annotationsMD.split('~*~');
       for (var i = 0; i < annotationsYAML.length; i++) {
         var annotation = buildAnnotationMD(annotationsYAML[i], markdown_parser)

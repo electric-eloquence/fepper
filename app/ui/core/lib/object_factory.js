@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var patternEngines = require('./pattern_engines');
 var path = require('path');
@@ -17,7 +17,8 @@ var Pattern = function (relPath, data) {
   this.fileExtension = pathObj.ext; // '.mustache'
 
   // this is the unique name, subDir + fileName (sans extension)
-  this.name = this.subdir.replace(/[\/\\]/g, '-') + '-' + this.fileName.replace(/~/g, '-'); // '00-atoms-00-global-00-colors'
+  // '00-atoms-00-global-00-colors'
+  this.name = this.subdir.replace(/[\/\\]/g, '-') + '-' + this.fileName.replace(/~/g, '-');
 
   // the JSON used to render values in the pattern
   this.jsonFileData = data || null;
@@ -28,11 +29,12 @@ var Pattern = function (relPath, data) {
   // Fancy name. No idea how this works. 'Colors'
   this.patternName = this.patternBaseName.split('-').reduce(function (val, working) {
     return val.charAt(0).toUpperCase() + val.slice(1) + ' ' + working.charAt(0).toUpperCase() + working.slice(1);
-  }, '').trim(); //this is the display name for the ui. strip numeric + hyphen prefixes
+  }, '').trim(); // this is the display name for the ui. strip numeric + hyphen prefixes
 
   // calculated path from the root of the public directory to the generated html
   // file for this pattern
-  this.patternLink = this.name + path.sep + this.name + '.html'; // '00-atoms-00-global-00-colors/00-atoms-00-global-00-colors.html'
+  // '00-atoms-00-global-00-colors/00-atoms-00-global-00-colors.html'
+  this.patternLink = this.name + path.sep + this.name + '.html';
 
   // the top-level pattern group this pattern belongs to. 'atoms'
   this.patternGroup = this.subdir.split(path.sep)[0].replace(/^\d*-/, '');
@@ -57,8 +59,7 @@ var Pattern = function (relPath, data) {
   this.lineageRIndex = [];
   this.isPseudoPattern = false;
   this.engine = patternEngines.getEngineForPattern(this);
-  this.patternPartials = {}; // TODO: to delete
-  this.partialObj = {};
+  this.partialInterface = '';
   this.allData = null;
   this.dataKeys = null;
 };
@@ -66,7 +67,6 @@ var Pattern = function (relPath, data) {
 // Pattern methods
 
 Pattern.prototype = {
-
   // render method on oPatterns; this acts as a proxy for the PatternEngine's
   // render function
   render: function (data, partials) {
@@ -75,14 +75,6 @@ Pattern.prototype = {
     }
     return null;
   },
-
-/*
-  registerPartial: function (patternlab) {
-    if (this.engine && typeof this.engine.registerPartial === 'function') {
-      this.engine.registerPartial(this, patternlab);
-    }
-  },
-*/
 
   // the finders all delegate to the PatternEngine, which also encapsulates all
   // appropriate regexes
@@ -124,7 +116,6 @@ Pattern.create = function (relPath, data, customProps) {
   return extend(newPattern, customProps);
 };
 
-
 var oPatternType = function (name) {
   this.patternTypeLC = name;
   this.patternTypeUC = name.split('-').reduce(function (val, working) {
@@ -136,7 +127,6 @@ var oPatternType = function (name) {
   this.patternItemsIndex = [];
 };
 
-
 var oPatternSubType = function (name) {
   this.patternSubtypeLC = name;
   this.patternSubtypeUC = name.split('-').reduce(function (val, working) {
@@ -146,7 +136,6 @@ var oPatternSubType = function (name) {
   this.patternSubtypeItemsIndex = [];
 };
 
-
 var oPatternSubTypeItem = function (name) {
   this.patternPath = '';
   this.patternPartialCode = '';
@@ -154,7 +143,6 @@ var oPatternSubTypeItem = function (name) {
     return val.charAt(0).toUpperCase() + val.slice(1) + ' ' + working.charAt(0).toUpperCase() + working.slice(1);
   }, '').trim();
 };
-
 
 module.exports = {
   Pattern: Pattern,

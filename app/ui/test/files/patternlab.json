@@ -1,0 +1,21 @@
+{
+  "config": {
+    "debug": false,
+    "paths": {
+      "source": {
+        "patterns": "./test/files/_patterns"
+      }
+    },
+    "patternStates": {
+      "pages-homepage-emergency": "inprogress"
+    }
+  },
+  "data": {
+    "message": "",
+    "link": []
+  },
+  "patterns": [],
+  "subtypePatterns": {},
+  "partials": {},
+  "dataKeys": []
+}

@@ -1,26 +1,21 @@
-"use strict";
+'use strict';
 
 var pseudopattern_hunter = function () {
 
   function findpseudopatterns(pattern, patternlab) {
-    var fs = require('fs-extra'),
-      pa = require('./pattern_assembler'),
-      lh = require('./lineage_hunter'),
-      lih = require('./list_item_hunter'),
-      Pattern = require('./object_factory').Pattern,
-      plutils = require('./utilities'),
-      path = require('path'),
-      JSON5 = require('json5');
+    var fs = require('fs-extra');
+    var pa = require('./pattern_assembler');
+    var lih = require('./list_item_hunter');
+    var plutils = require('./utilities');
+    var path = require('path');
+    var JSON5 = require('json5');
 
     var pattern_assembler = new pa();
-    var lineage_hunter = new lh();
     var list_item_hunter = new lih();
-    var paths = patternlab.config.paths;
-    var hasPseudoPattern = false;
     var patternVariants = [];
 
-    //look for a pseudopattern by checking if there is a file containing same
-    //name, with ~ in it, ending in .json. if found, fill out that pattern
+    // look for a pseudopattern by checking if there is a file containing same
+    // name, with ~ in it, ending in .json. if found, fill out that pattern
     for (var i = 0; i < patternlab.patterns.length; i++) {
       var patternVariant = patternlab.patterns[i];
       var fileName = pattern.fileName[0] === '_' ? pattern.fileName.slice(1) : pattern.fileName;
@@ -32,8 +27,7 @@ var pseudopattern_hunter = function () {
           console.log('found pseudoPattern variant of ' + pattern.patternPartial);
         }
 
-        //we want to do everything we normally would here, except instead read the pseudopattern data
-        hasPseudoPattern = true;
+        // we want to do everything we normally would here, except instead read the pseudopattern data
         var variantFilename = path.resolve(patternlab.config.paths.source.patterns, patternVariant.relPath);
         var variantFileStr = '';
         var variantLocalData = {};
@@ -42,17 +36,17 @@ var pseudopattern_hunter = function () {
           variantFileStr = fs.readFileSync(variantFilename, 'utf8');
           variantLocalData = JSON5.parse(variantFileStr);
 
-          //clone. do not reference
+          // clone. do not reference
           variantAllData = JSON5.parse(variantFileStr);
         } catch (err) {
           console.log('There was an error parsing pseudopattern JSON for ' + pattern.relPath);
           console.log(err);
         }
 
-        //extend any existing data with variant data
+        // extend any existing data with variant data
         plutils.mergeData(pattern.allData, variantAllData);
 
-        //fill out the properties of this pseudopattern
+        // fill out the properties of this pseudopattern
         patternVariant.jsonFileData = variantLocalData;
         patternVariant.template = pattern.template;
         patternVariant.fileExtension = pattern.fileExtension;
@@ -60,14 +54,14 @@ var pseudopattern_hunter = function () {
         patternVariant.isPseudoPattern = true;
         patternVariant.basePattern = pattern;
         patternVariant.allData = variantAllData;
-        patternVariant.dataKeys = pattern_assembler.get_data_keys(variantLocalData);
+        patternVariant.dataKeys = pattern_assembler.getDataKeys(variantLocalData);
         patternVariant.engine = pattern.engine;
 
-        //process listitems
-        list_item_hunter.process_list_item_partials(patternVariant, patternlab);
+        // process listitems
+        list_item_hunter.processListItemPartials(patternVariant, patternlab);
 
-        //process the companion markdown file if it exists
-        pattern_assembler.parse_pattern_markdown(patternVariant, patternlab);
+        // process the companion markdown file if it exists
+        pattern_assembler.parsePatternMarkdown(patternVariant, patternlab);
 
         patternVariants.push(patternVariant);
       }
