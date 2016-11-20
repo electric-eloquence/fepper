@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 var starterkit_manager = function (pl) {
-  var path = require('path'),
-    fs = require('fs-extra'),
-    util = require('./utilities'),
-    paths = pl.config.paths;
+  var path = require('path');
+  var fs = require('fs-extra');
+  var util = require('./utilities');
+  var paths = pl.config.paths;
 
   function loadStarterKit(starterkitName, clean) {
     try {

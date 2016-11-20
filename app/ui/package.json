@@ -3,18 +3,8 @@
   "description": "Pattern Lab is a collection of tools to help you create atomic design systems. This is the node command line interface (CLI).",
   "version": "2.3.0",
   "main": "./core/lib/patternlab.js",
-  "dependencies": {
-    "diveSync": "^0.3.0",
-    "fs-extra": "^0.30.0",
-    "glob": "^7.0.0",
-    "json5": "^0.5.0",
-    "lodash": "~4.13.1",
-    "markdown-it": "^6.0.1",
-    "patternengine-node-mustache": "^1.0.0"
-  },
   "devDependencies": {
-    "grunt": "~1.0.1",
-    "grunt-contrib-concat": "^1.0.1",
+    "grunt": "^1.0.1",
     "grunt-contrib-nodeunit": "^1.0.0",
     "grunt-eslint": "^18.0.0"
   },
@@ -41,7 +31,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "grunt travis --verbose"
+    "test": "grunt test --verbose"
   },
   "engines": {
     "node": ">=4.0"
