@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var md = require('markdown-it')();
 
@@ -8,12 +8,12 @@ var markdown_parser = function () {
     var returnObject = {};
 
     try {
-      //for each block process the yaml frontmatter and markdown
+      // for each block process the yaml frontmatter and markdown
       var frontmatterRE = /---\r?\n{1}([\s\S]*)---\r?\n{1}([\s\S]*)+/gm;
       var chunks = frontmatterRE.exec(block);
       if (chunks && chunks[1]) {
 
-        //convert each yaml frontmatter key / value into an object key
+        // convert each yaml frontmatter key / value into an object key
         var frontmatter = chunks[1];
         var frontmatterLines = frontmatter.split(/\n/gm);
         for (var j = 0; j < frontmatterLines.length; j++) {
@@ -21,7 +21,7 @@ var markdown_parser = function () {
           var frontmatterLine = frontmatterLines[j];
           if (frontmatterLine.length > 0) {
 
-            var frontmatterLineChunks = frontmatterLine.split(':'); //test this
+            var frontmatterLineChunks = frontmatterLine.split(':'); // test this
             var frontmatterKey = frontmatterLineChunks[0].toLowerCase().trim();
             var frontmatterValueString = frontmatterLineChunks[1].trim();
 
@@ -32,10 +32,10 @@ var markdown_parser = function () {
       }
 
       if (chunks && chunks[2]) {
-        //parse the actual markdown
+        // parse the actual markdown
         returnObject.markdown = md.render(chunks[2]);
       } else {
-        //assume the passed in block is raw markdown
+        // assume the passed in block is raw markdown
         returnObject.markdown = md.render(block);
       }
     } catch (ex) {
@@ -44,7 +44,7 @@ var markdown_parser = function () {
       return undefined;
     }
 
-    //return the frontmatter keys and markdown for a consumer to decide what to do with
+    // return the frontmatter keys and markdown for a consumer to decide what to do with
     return returnObject;
   }
 
