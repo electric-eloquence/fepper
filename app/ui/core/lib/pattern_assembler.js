@@ -464,7 +464,14 @@ var pattern_assembler = function () {
 
     var unusedDataKeys = partial.nestedDataKeys.filter(function (value) {
       dataKey = value.slice(3, -2).trim();
-      return !~(pattern.dataKeys.indexOf(dataKey));
+
+      if (value[2] === '^') {
+        // retain all false conditions so their vars don't need to be explicitly defined as false.
+        return false;
+      } else {
+        // return false if in pattern.dataKeys, true if not.
+        return !~(pattern.dataKeys.indexOf(dataKey));
+      }
     });
 
     for (i = 0; i < unusedDataKeys.length; i++) {
