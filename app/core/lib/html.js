@@ -2,6 +2,7 @@
  * @file
  * Exports the HTML for assembly and token-replacement by the server app.
  */
+ /* eslint-disable max-len */
 'use strict';
 
 exports.head = `
