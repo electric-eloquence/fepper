@@ -1,17 +1,30 @@
 'use strict';
 
 const beautify = require('js-beautify').html;
-const cheerio = require('cheerio');
 const fs = require('fs');
+const he = require('he');
 const html2json = require('html2json').html2json;
 const json2html = require('html2json').json2html;
 const request = require('request');
 
-const htmlObj = require('../lib/html');
 const utils = require('../lib/utils');
 const conf = utils.conf();
 
-var jsonForDataEmpty = {html: [{}]};
+var req;
+var res;
+
+class HtmlObj {
+  constructor() {
+    this.node = 'root';
+    this.child = [];
+  }
+}
+
+class JsonForData {
+  constructor() {
+    this.html = [{}];
+  }
+}
 
 /**
  * @param {string} str - The text requiring sane newlines.
@@ -28,7 +41,7 @@ exports.newlineFormat = function (str) {
  * @return {string} Sanitized HTML.
  */
 exports.dataArrayToJson = function (dataArr) {
-  var jsonForData = jsonForDataEmpty;
+  var jsonForData = new JsonForData();
 
   for (let i = 0; i < dataArr.length; i++) {
     for (let j in dataArr[i]) {
@@ -42,17 +55,168 @@ exports.dataArrayToJson = function (dataArr) {
 };
 
 /**
+ * @param {string} target - CSS selector plus optional array index.
+ * @return {object} An object storing properties of the selector.
+ */
+exports.elementParse = function (target) {
+  var selectorName;
+  var selectorType;
+  var targetSplit = exports.targetValidate(target);
+
+  switch (targetSplit[0][0]) {
+    case '#':
+      selectorName = targetSplit[0].slice(1);
+      selectorType = 'id';
+      break;
+    case '.':
+      selectorName = targetSplit[0].slice(1);
+      selectorType = 'class';
+      break;
+    default:
+      selectorName = targetSplit[0];
+      selectorType = 'tag';
+  }
+
+  return {name: selectorName, type: selectorType, index: targetSplit[1]};
+};
+
+/**
+ * Recurse through the object returned by html2json to find the selected element(s).
+ *
+ * @param {string|object} selectorParam - At level 0, a CSS selector. At deeper levels, the selector object.
+ * @param {string} html2jsonObj - The object returned by html2json.
+ * @param {string} persistentObjParam - A mutating object presisting to return results. Not submitted at level 0.
+ * @param {string} levelParam - The level of recursion. Not submitted at level 0.
+ * @return {object} An html2json object containing the matched elements. Only returns at level 0.
+ */
+exports.elementSelect = function (selectorParam, html2jsonObj, persistentObjParam, levelParam) {
+  // Validate 1st param.
+  // Validate 2nd param.
+  if (!html2jsonObj || html2jsonObj.constructor !== Object || !Array.isArray(html2jsonObj.child)) {
+    return null;
+  }
+
+  var selectorObj;
+  var persistentObj = persistentObjParam || new HtmlObj();
+  var level = levelParam || 0;
+
+  if (typeof selectorParam === 'string') {
+    selectorObj = exports.elementParse(selectorParam);
+  }
+  else if (selectorParam && selectorParam.constructor === Object) {
+    selectorObj = selectorParam;
+  }
+  else {
+    return null;
+  }
+
+  var selectorName = selectorObj.name;
+  var selectorType = selectorObj.type;
+  var selectorIndex = selectorObj.index;
+  persistentObj.index = selectorIndex;
+
+  for (let i = 0; i < html2jsonObj.child.length; i++) {
+    let child = html2jsonObj.child[i];
+
+    if (!child || child.constructor !== Object) {
+      continue;
+    }
+
+    if (child.node !== 'element') {
+      continue;
+    }
+
+    // If the element matches selector, push that node onto persistentObj.child.
+    let matched = false;
+    switch (selectorType) {
+      case 'tag':
+        if (child.tag && child.tag === selectorName) {
+          persistentObj.child.push(child);
+          matched = true;
+        }
+        break;
+      case 'id':
+        if (child.attr && child.attr.id && child.attr.id === selectorName) {
+          persistentObj.child.push(child);
+          matched = true;
+        }
+        break;
+      case 'class':
+        if (child.attr && child.attr.class && child.attr.class.indexOf(selectorName) > -1) {
+          persistentObj.child.push(child);
+          matched = true;
+        }
+        break;
+    }
+
+    if (matched) {
+      persistentObj.child.push({node: 'text', text: '\n'});
+    }
+
+    // Else if recursable, recurse.
+    else if (Array.isArray(child.child) && child.child.length) {
+      exports.elementSelect(selectorObj, child, persistentObj, level + 1);
+    }
+  }
+
+  if (!level) {
+    return persistentObj;
+  }
+};
+
+/**
+ * Iterate through collection of selected elements. If an index is specified, skip until that index is iterated upon.
+ *
+ * @param {string} html2jsonObj - An html2json object.
+ * @param {string} targetIndex - Optional user submitted index from which the node in html2jsonObj is selected.
+ * @return {object} An object containing an html2json object containing all nodes, and another containg only one.
+ */
+exports.targetHtmlGet = function (html2jsonObj) {
+  var allObj = new HtmlObj();
+  var children = html2jsonObj.child;
+  var elIndex = 0;
+  var firstObj = new HtmlObj();
+
+  for (let i = 0; i < children.length; i++) {
+    let elObj = children[i];
+
+    if (elObj.node === 'element') {
+      if (html2jsonObj.index === -1 || html2jsonObj.index === elIndex) {
+        let flag = `\n<!-- BEGIN ARRAY ELEMENT ${elIndex} -->\n`;
+        let curr = allObj.child.length - 1;
+
+        if (!elIndex || elIndex === html2jsonObj.index) {
+          firstObj.child.push(elObj);
+          // TODO: maybe use a factory for this
+          firstObj.child.push({node: 'text', text: '\n'});
+        }
+        else if (curr > -1) {
+          allObj.child[curr].text = flag;
+        }
+
+        allObj.child.push(elObj);
+        allObj.child.push({node: 'text', text: '\n'});
+      }
+      elIndex++;
+    }
+  }
+
+  return {all: json2html(allObj), first: json2html(firstObj)};
+};
+
+/**
  * @param {string} templateDir - Write destination directory.
  * @param {string} fileName - Filename.
  * @param {string} fileMustache - Mustache file's content.
  * @param {string} fileJson - JSON file's content.
- * @param {object} res - response object.
  */
-exports.filesWrite = function (templateDir, fileName, fileMustache, fileJson, res) {
+exports.filesWrite = function (templateDir, fileName, fileMustache, fileJson) {
   try {
     fs.writeFileSync(templateDir + '/' + fileName + '.mustache', fileMustache);
     fs.writeFileSync(templateDir + '/' + fileName + '.json', fileJson);
-    exports.redirectWithMsg(res, 'success', 'Go+back+to+the+Pattern+Lab+tab+and+refresh+the+browser+to+check+that+your+template+appears+under+the+Scrape+menu.');
+    var msg = 'Go+back+to+the+Pattern+Lab+tab+and+refresh+the+browser+to+check+that+your+template+appears+under+the+';
+    msg += 'Scrape+menu.';
+    exports.redirectWithMsg('success', msg);
 
     return;
   }
@@ -189,16 +353,18 @@ exports.jsonToMustache = function (jsonForMustache) {
   return mustache;
 };
 
-exports.outputHtml = function (jsonForData, htmlObj, targetHtml, mustache, req, res, $) {
+exports.outputHtml = function (jsonForData, targetHtmlParam, mustache) {
   var dataStr = JSON.stringify(jsonForData, null, 2);
+  var htmlObj = require('../lib/html');
   var output = '';
+
+  var targetHtml = he.encode(targetHtmlParam).replace(/\n/g, '<br>');
 
   output += htmlObj.headWithMsg;
   output += '<section>\n';
   output += htmlObj.scraperTitle;
   output += htmlObj.reviewerPrefix;
-  // HTML entities.
-  output += $('<div/>').text(targetHtml).html().replace(/\n/g, '<br>');
+  output += '<div>' + targetHtml + '</div>';
   output += htmlObj.reviewerSuffix;
   output += htmlObj.importerPrefix;
   output += mustache;
@@ -218,107 +384,111 @@ exports.outputHtml = function (jsonForData, htmlObj, targetHtml, mustache, req, 
   res.end(output);
 };
 
-exports.redirectWithMsg = function (res, type, msg, target, url) {
+exports.redirectWithMsg = function (type, msg, target, url) {
   if (res) {
     var msgType = type[0].toUpperCase() + type.slice(1);
 
     target = typeof target === 'string' ? target : '';
     url = typeof url === 'string' ? url : '';
-    res.writeHead(303, {Location: 'html-scraper?msg_class=' + type + '&message=' + msgType + '! ' + msg + '&target=' + target + '&url=' + url});
+    res.writeHead(
+      303,
+      {
+        Location:
+          'html-scraper?msg_class=' + type + '&message=' + msgType + '! ' + msg + '&target=' + target + '&url=' + url
+      }
+    );
     res.end();
   }
 };
 
-exports.targetHtmlGet = function ($targetEl, targetIndex, $) {
-  // Iterate through the collection of selected elements. If an index
-  // is specified, skip until that index is iterated upon.
-  var $el;
-  var innerHtml;
-  var j = 0;
-  var outerHtml;
-  var targetFirst;
-  var targetHtml = '';
+exports.targetValidate = function (targetParam) {
+  var target = targetParam.trim();
+  var bracketOpenPos = target.indexOf('[');
+  var bracketClosePos = target.indexOf(']');
+  var targetIndex = -1;
+  var targetIndexStr;
+  var targetName = target;
 
-  $targetEl.each(function (i, el) {
-    if (targetIndex === '' || parseInt(targetIndex, 10) === i) {
-      $el = $(el);
-      // Cheerio hack for getting outerHTML.
-      innerHtml = $el.html();
-      outerHtml = $el.html(innerHtml) + '\n';
-      if (j === 0) {
-        targetFirst = outerHtml;
-      }
-      else {
-        targetHtml += '<!-- BEGIN ARRAY ELEMENT ' + j + ' -->\n';
-      }
-      targetHtml += outerHtml;
-      j++;
+  // Slice target param to extract targetName and targetIndexStr if submitted.
+  if (bracketOpenPos > -1) {
+    if (bracketClosePos === target.length - 1) {
+      targetIndexStr = target.slice(bracketOpenPos + 1, bracketClosePos);
+      targetName = target.slice(0, bracketOpenPos);
     }
-  });
+    else {
+      if (req) {
+        exports.redirectWithMsg('error', 'Incorrect+submission.', req.body.target, req.body.url);
+      }
+      return [];
+    }
+  }
 
-  return {all: targetHtml, first: targetFirst};
-};
-
-exports.targetValidate = function (target, res, req) {
-  // Split at array index, if any.
-  var targetSplit = target.split('[', 2);
-  targetSplit[1] = targetSplit[1] ? targetSplit[1] : '';
-
-  // Validate that targetSplit[0] is a css selector.
-  if (!targetSplit[0].match(/^(#|\.)?[a-z][\w#\-\.]*$/i)) {
-    exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+  // Validate that targetName is a css selector.
+  if (!targetName.match(/^(#|\.)?[a-z][\w#\-\.]*$/i)) {
+    if (req) {
+      exports.redirectWithMsg('error', 'Incorrect+submission.', req.body.target, req.body.url);
+    }
     return [];
   }
 
-  // Remove closing bracket from targetSplit[1] and validate it is an integer.
-  targetSplit[1] = targetSplit[1].slice(0, targetSplit[1].length - 1);
-  if (!targetSplit[1].match(/\d*/)) {
-    exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
-    return [];
+  // If targetIndexStr if submitted, validate it is an integer.
+  if (targetIndexStr) {
+    if (targetIndexStr.match(/\d+/)) {
+      targetIndex = parseInt(targetIndexStr, 10);
+    }
+    else {
+      if (req) {
+        exports.redirectWithMsg('error', 'Incorrect+submission.', req.body.target, req.body.url);
+      }
+      return [];
+    }
   }
 
-  return targetSplit;
+  return [targetName, targetIndex];
 };
 
-exports.main = function (req, res) {
-  var $;
+exports.main = function (reqParam, resParam) {
   var fileMustache;
   var fileJson;
   var fileName;
+  var html2jsonObj;
   var jsonForData;
   var jsonForMustache;
+  var jsonFromHtml;
   var mustache;
   var target;
-  var targetBase;
-  var $targetEl;
   var targetFirst;
   var targetHtml;
   var targetHtmlObj;
-  var targetIndex;
-  var targetSplit;
   var templateDir;
+
+  // Set req and res in outer scope.
+  req = reqParam;
+  res = resParam;
 
   // HTML scraper action on submission of URL.
   if (typeof req.body.url === 'string' && req.body.url.trim() && typeof req.body.target === 'string') {
     try {
       request(req.body.url, function (error, response, body) {
         if (error || response.statusCode !== 200) {
-          exports.redirectWithMsg(res, 'error', 'Not+getting+a+valid+response+from+that+URL.', req.body.target, req.body.url);
+          exports
+            .redirectWithMsg('error', 'Not+getting+a+valid+response+from+that+URL.', req.body.target, req.body.url);
           return;
         }
 
-        $ = cheerio.load(body);
-        jsonForData = jsonForDataEmpty;
+        jsonForData = new JsonForData();
+        jsonFromHtml = html2json(body);
         mustache = '';
-        target = req.body.target.trim();
-        targetSplit = exports.targetValidate(target, res, req);
-        targetBase = targetSplit[0];
-        targetIndex = targetSplit[1];
+        target = req.body.target;
         targetHtml = '';
-        $targetEl = $(targetBase);
+        html2jsonObj = exports.elementSelect(target, jsonFromHtml);
 
-        if ($targetEl.length) {
-          targetHtmlObj = exports.targetHtmlGet($targetEl, targetIndex, $);
+        if (!html2jsonObj) {
+          exports.redirectWithMsg('error', 'Incorrect+submission.', req.body.target, req.body.url);
+          return;
+        }
+        else if (html2jsonObj.child.length) {
+          targetHtmlObj = exports.targetHtmlGet(html2jsonObj);
 
           // Sanitize scraped HTML.
           targetHtml = exports.htmlSanitize(targetHtmlObj.all);
@@ -338,7 +508,7 @@ exports.main = function (req, res) {
         }
 
         // Output Mustache.
-        exports.outputHtml(jsonForData, htmlObj, targetHtml, mustache, req, res, $);
+        exports.outputHtml(jsonForData, targetHtml, mustache);
       });
     }
     catch (err) {
@@ -350,7 +520,7 @@ exports.main = function (req, res) {
   else if (typeof req.body.filename === 'string' && req.body.filename !== '') {
     // Limit filename characters.
     if (!exports.isFilenameValid(req.body.filename)) {
-      exports.redirectWithMsg(res, 'error', 'Please+enter+a+valid+filename!.', req.body.target, req.body.url);
+      exports.redirectWithMsg('error', 'Please+enter+a+valid+filename!.', req.body.target, req.body.url);
       return;
     }
     else {
@@ -360,13 +530,13 @@ exports.main = function (req, res) {
     templateDir = utils.pathResolve(conf.ui.paths.source.patterns + '/98-scrape');
     fileMustache = exports.newlineFormat(req.body.mustache);
     fileJson = exports.newlineFormat(req.body.json);
-    exports.filesWrite(templateDir, fileName, fileMustache, fileJson, res);
+    exports.filesWrite(templateDir, fileName, fileMustache, fileJson);
   }
 
   // If no form variables sent, redirect back with GET.
   else {
     try {
-      exports.redirectWithMsg(res, 'error', 'Incorrect+submission.', req.body.target, req.body.url);
+      exports.redirectWithMsg('error', 'Incorrect+submission.', req.body.target, req.body.url);
       return;
     }
     catch (err) {
