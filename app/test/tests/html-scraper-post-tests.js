@@ -1,8 +1,8 @@
 'use strict';
 
-const cheerio = require('cheerio');
 const expect = require('chai').expect;
 const fs = require('fs-extra');
+const html2json = require('html2json').html2json;
 const path = require('path');
 
 global.appDir = path.normalize(`${__dirname}/../..`);
@@ -19,7 +19,7 @@ const htmlScraperPost = require(`${global.appDir}/core/tcp-ip/html-scraper-post`
 const req = {body: {target: '', url: ''}};
 const scrapeDir = `${global.workDir}/${conf.ui.paths.source.patterns}/_patterns/98-scrape`;
 
-const html = `
+const htmlConst = `
 <body>
 <section id="one" class="test">Foo</section>
 <section id="two" class="test">Bar</section>
@@ -37,8 +37,8 @@ const html = `
 <!-- comment -->
 </body>
 `;
-const jsons = htmlScraperPost.htmlToJsons(html);
-const $ = cheerio.load(html);
+const jsonFromHtmlConst = html2json(htmlConst);
+const jsons = htmlScraperPost.htmlToJsons(htmlConst);
 
 describe('HTML Scraper Post', function () {
   describe('CSS Selector Validator', function () {
@@ -47,7 +47,7 @@ describe('HTML Scraper Post', function () {
       var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
       expect(selectorSplit[0]).to.equal('.class_test-0');
-      expect(selectorSplit[1]).to.equal('');
+      expect(selectorSplit[1]).to.equal(-1);
     });
 
     it('should identify the CSS class and index', function () {
@@ -55,7 +55,7 @@ describe('HTML Scraper Post', function () {
       var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
       expect(selectorSplit[0]).to.equal('.class_test-0');
-      expect(selectorSplit[1]).to.equal('0');
+      expect(selectorSplit[1]).to.equal(0);
     });
 
     it('should identify the CSS id with no index', function () {
@@ -63,7 +63,7 @@ describe('HTML Scraper Post', function () {
       var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
       expect(selectorSplit[0]).to.equal('#id_test-0');
-      expect(selectorSplit[1]).to.equal('');
+      expect(selectorSplit[1]).to.equal(-1);
     });
 
     it('should identify the CSS id and index', function () {
@@ -71,7 +71,7 @@ describe('HTML Scraper Post', function () {
       var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
       expect(selectorSplit[0]).to.equal('#id_test-0');
-      expect(selectorSplit[1]).to.equal('1');
+      expect(selectorSplit[1]).to.equal(1);
     });
 
     it('should identify the HTML tag with no index', function () {
@@ -79,7 +79,7 @@ describe('HTML Scraper Post', function () {
       var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
       expect(selectorSplit[0]).to.equal('h1');
-      expect(selectorSplit[1]).to.equal('');
+      expect(selectorSplit[1]).to.equal(-1);
     });
 
     it('should identify the CSS id and index', function () {
@@ -87,14 +87,14 @@ describe('HTML Scraper Post', function () {
       var selectorSplit = htmlScraperPost.targetValidate(selector, null, req);
 
       expect(selectorSplit[0]).to.equal('h1');
-      expect(selectorSplit[1]).to.equal('2');
+      expect(selectorSplit[1]).to.equal(2);
     });
   });
 
   describe('Target HTML Getter', function () {
     it('should get all selectors of a given class if given no index', function () {
-      var $targetEl = $('.test');
-      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+      var html2jsonObj = htmlScraperPost.elementSelect('.test', jsonFromHtmlConst);
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet(html2jsonObj);
 
       expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
 <!-- BEGIN ARRAY ELEMENT 1 -->
@@ -110,24 +110,26 @@ describe('HTML Scraper Post', function () {
     });
 
     it('should get one selector of a given class if given an index', function () {
-      var $targetEl = $('.test');
-      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, 1, $);
+      var html2jsonObj = htmlScraperPost.elementSelect('.test[1]', jsonFromHtmlConst);
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet(html2jsonObj);
 
       expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
       expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
     });
 
     it('should get one selector of a given id', function () {
-      var $targetEl = $('#one');
-      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+      var jsonFromHtml = html2json(htmlConst);
+      var html2jsonObj = htmlScraperPost.elementSelect('#one', jsonFromHtml);
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet(html2jsonObj);
 
       expect(targetHtmlObj.all).to.equal('<section id="one" class="test">Foo</section>\n');
       expect(targetHtmlObj.first).to.equal('<section id="one" class="test">Foo</section>\n');
     });
 
     it('should get all selectors of a given tagname if given no index', function () {
-      var $targetEl = $('section');
-      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+      var jsonFromHtml = html2json(htmlConst);
+      var html2jsonObj = htmlScraperPost.elementSelect('section', jsonFromHtml);
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet(html2jsonObj);
 
       expect(targetHtmlObj.all).to.equal(`<section id="one" class="test">Foo</section>
 <!-- BEGIN ARRAY ELEMENT 1 -->
@@ -149,8 +151,9 @@ describe('HTML Scraper Post', function () {
     });
 
     it('should get one selector of a given tagname if given an index', function () {
-      var $targetEl = $('section');
-      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, 1, $);
+      var jsonFromHtml = html2json(htmlConst);
+      var html2jsonObj = htmlScraperPost.elementSelect('section[1]', jsonFromHtml);
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet(html2jsonObj);
 
       expect(targetHtmlObj.all).to.equal('<section id="two" class="test">Bar</section>\n');
       expect(targetHtmlObj.first).to.equal('<section id="two" class="test">Bar</section>\n');
@@ -158,7 +161,7 @@ describe('HTML Scraper Post', function () {
   });
 
   describe('HTML Sanitizer', function () {
-    var htmlSan = htmlScraperPost.htmlSanitize(html);
+    var htmlSan = htmlScraperPost.htmlSanitize(htmlConst);
 
     it('should replace script tags with code tags', function () {
       expect(htmlSan).to.equal(`
@@ -179,15 +182,15 @@ describe('HTML Scraper Post', function () {
 <!-- comment -->
 </body>
 `);
-      expect(html).to.contain('script');
-      expect(html).to.not.contain('code');
+      expect(htmlConst).to.contain('script');
+      expect(htmlConst).to.not.contain('code');
       expect(htmlSan).to.not.contain('script');
       expect(htmlSan).to.contain('code');
     });
 
     it('should replace textarea tags with figure tags', function () {
-      expect(html).to.contain('textarea');
-      expect(html).to.not.contain('figure');
+      expect(htmlConst).to.contain('textarea');
+      expect(htmlConst).to.not.contain('figure');
       expect(htmlSan).to.not.contain('textarea');
       expect(htmlSan).to.contain('figure');
     });
@@ -205,7 +208,7 @@ describe('HTML Scraper Post', function () {
     });
   });
 
-  describe('Array to JSON Converter', function () {
+  describe('HTML to JSON Converter', function () {
     it('should return a JSON object of data pulled from non-empty elements', function () {
       expect(jsons.jsonForData).to.be.an('object');
       expect(jsons.jsonForData.html[0].one).to.equal('Foo');
@@ -224,17 +227,18 @@ describe('HTML Scraper Post', function () {
       expect(typeof jsons.jsonForData.html[0].textarea).to.equal('undefined');
     });
 
+
     it('should create multiple array elements when the selector targets multiple DOM elements', function () {
-      var html = `
+      var  htmlVar = `
 <section class="test">Foo</section>
 <section class="test">Bar</section>
 <section class="test">Foot</section>
 <section class="test">Barf</section>
 <section class="test">Bazm</section>
 `;
-      var $ = cheerio.load(html);
-      var $targetEl = $('.test');
-      var targetHtmlObj = htmlScraperPost.targetHtmlGet($targetEl, '', $);
+      var jsonFromHtml = html2json(htmlVar);
+      var html2jsonObj = htmlScraperPost.elementSelect('.test', jsonFromHtml);
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet(html2jsonObj);
       var targetHtml = htmlScraperPost.htmlSanitize(targetHtmlObj.all);
       var jsonForData = htmlScraperPost.htmlToJsons(targetHtml).jsonForData;
 
@@ -244,6 +248,29 @@ describe('HTML Scraper Post', function () {
       expect(jsonForData.html[2].test).to.equal('Foot');
       expect(jsonForData.html[3].test).to.equal('Barf');
       expect(jsonForData.html[4].test).to.equal('Bazm');
+    });
+
+
+    it('should recursively retrieve nested HTML data from within a selected element', function () {
+      var htmlVar = `
+<section id="test1">Foot</section>
+<section id="test2">
+  <div class="nested">
+    <div class="nested-further">Barf</div>
+  </div>
+</section>
+<section id="test3">Bazm</section>
+`;
+
+      var jsonFromHtml = html2json(htmlVar);
+      var html2jsonObj = htmlScraperPost.elementSelect('#test2', jsonFromHtml);
+      var targetHtmlObj = htmlScraperPost.targetHtmlGet(html2jsonObj);
+      var targetHtml = htmlScraperPost.htmlSanitize(targetHtmlObj.all);
+      var jsonForData = htmlScraperPost.htmlToJsons(targetHtml).jsonForData;
+
+      expect(targetHtml).to.equal('<section id="test2">\n  <div class="nested">\n    <div class="nested-further">Barf</div>\n  </div>\n</section>\n');
+      expect(jsonForData).to.be.an('object');
+      expect(jsonForData.html[0].nested_further).to.equal('Barf');
     });
   });
 
