@@ -51,8 +51,11 @@ exports.pagesDirCompile = function (patternsDir, staticDir) {
     ) {
       tmpStr = fs.readFileSync(f, conf.enc);
 
+      /* eslint-disable max-len */
       // Strip Pattern Lab css and js.
       tmpStr = tmpStr.replace(/\s*<!\-\- Begin Pattern Lab \(Required for Pattern Lab to run properly\) \-\->[\S\s]*?<!\-\- End Pattern Lab \-\->/g, '');
+
+      /* eslint-enable max-len */
       // Strip cacheBuster params.
       tmpStr = tmpStr.replace(/((href|src)="[^"]*)\?\d*"/g, '$1"');
       // Fix paths.
