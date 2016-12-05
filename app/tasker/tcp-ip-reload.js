@@ -31,20 +31,17 @@ gulp.task('tcp-ip-reload:injectStyles', function () {
 gulp.task('tcp-ip-reload:watch', function () {
   // Need delay in order for launch to succeed consistently.
   setTimeout(function () {
-    gulp.watch(utils.pathResolve(srcDir.images) + '/**', ['patternlab:copy']);
-    gulp.watch(utils.pathResolve(srcDir.data) + '/_data.json', ['data']);
-    gulp.watch(utils.pathResolve(srcDir.data) + '/listitems.json', ['patternlab:build']);
-    gulp.watch(utils.pathResolve(srcDir.annotations) + '/annotations.json', ['patternlab:build']);
-    gulp.watch(utils.pathResolve(srcDir.meta) + '/**/*.mustache', ['patternlab:build']);
-//    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/!(_*).json', ['patternlab:build']);
-    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/_*.json', ['data']);
-//    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**/*.mustache', ['patternlab:build']);
-    gulp.watch(utils.pathResolve(srcDir.patterns) + '/**', ['patternlab:build']);
-    gulp.watch(utils.pathResolve(srcDir.js) + '/**', ['patternlab:copy']);
-    gulp.watch(utils.pathResolve(srcDir.css) + '/**', ['patternlab:copy-styles']);
-    gulp.watch(utils.pathResolve(srcDir.root) + '/static/**', ['patternlab:copy']);
-    gulp.watch(utils.pathResolve(pubDir.root) + '/!(_styles|patterns|styleguide)/**', ['tcp-ip-reload:assetsScripts']);
-    gulp.watch(utils.pathResolve(pubDir.css) + '/**/*.css', ['tcp-ip-reload:injectStyles']);
-    gulp.watch(utils.pathResolve(pubDir.root) + '/index.html', ['tcp-ip-reload:index']);
+    gulp.watch('**', {cwd: utils.pathResolve(srcDir.images)}, ['patternlab:copy']);
+    gulp.watch('_data.json', {cwd: utils.pathResolve(srcDir.data)}, ['data']);
+    gulp.watch('listitems.json', {cwd: utils.pathResolve(srcDir.data)}, ['patternlab:build']);
+    gulp.watch('annotations.json', {cwd: utils.pathResolve(srcDir.annotations)}, ['patternlab:build']);
+    gulp.watch('**/*.mustache', {cwd: utils.pathResolve(srcDir.meta)}, ['patternlab:build']);
+    gulp.watch('**', {cwd: utils.pathResolve(srcDir.patterns)}, ['data']);
+    gulp.watch('**', {cwd: utils.pathResolve(srcDir.js)}, ['patternlab:copy']);
+    gulp.watch('**', {cwd: utils.pathResolve(srcDir.css)}, ['patternlab:copy-styles']);
+    gulp.watch('static/**', {cwd: utils.pathResolve(srcDir.root)}, ['patternlab:copy']);
+    gulp.watch('!(_styles|patterns|styleguide)/**', {cwd: utils.pathResolve(pubDir.root)}, ['tcp-ip-reload:assetsScripts']);
+    gulp.watch('**/*.css', {cwd: utils.pathResolve(pubDir.css)}, ['tcp-ip-reload:injectStyles']);
+    gulp.watch('index.html', {cwd: utils.pathResolve(pubDir.root)}, ['tcp-ip-reload:index']);
   }, conf.timeout_main);
 });
