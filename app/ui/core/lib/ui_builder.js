@@ -436,9 +436,8 @@ function buildFrontEnd(patternlab) {
   try {
     patternlabSiteHtml = fs.readFileSync(path.resolve(paths.source.styleguide, 'index.html'), 'utf8');
   } catch (error) {
-    console.log(error);
     console.log('\nERROR: Could not load one or more styleguidekit assets from', paths.source.styleguide, '\n');
-    process.exit(1);
+    throw error;
   }
   fs.outputFileSync(path.resolve(paths.public.root, 'index.html'), patternlabSiteHtml);
 
