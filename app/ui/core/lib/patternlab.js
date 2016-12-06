@@ -197,10 +197,9 @@ var patternlab_engine = function (config) {
       patternlab.viewAll = fs.readFileSync(
         path.resolve(paths.source.patternlabFiles, 'viewall.mustache'), 'utf8');
     } catch (ex) {
-      console.log(ex);
       plutils.logRed('\nERROR: missing an essential file from ' + paths.source.patternlabFiles +
         '. Pattern Lab won\'t work without this file.\n');
-      process.exit(1);
+      throw ex;
     }
     patternlab.patterns = [];
     patternlab.subtypePatterns = {};
