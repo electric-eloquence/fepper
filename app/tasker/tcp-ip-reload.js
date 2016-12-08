@@ -35,13 +35,13 @@ gulp.task('tcp-ip-reload:watch', function () {
     gulp.watch('_data.json', {cwd: utils.pathResolve(srcDir.data)}, ['data']);
     gulp.watch('listitems.json', {cwd: utils.pathResolve(srcDir.data)}, ['patternlab:build']);
     gulp.watch('annotations.json', {cwd: utils.pathResolve(srcDir.annotations)}, ['patternlab:build']);
-    gulp.watch('**/*.mustache', {cwd: utils.pathResolve(srcDir.meta)}, ['patternlab:build']);
+    gulp.watch('**', {cwd: utils.pathResolve(srcDir.meta)}, ['patternlab:build']);
     gulp.watch('**', {cwd: utils.pathResolve(srcDir.patterns)}, ['data']);
     gulp.watch('**', {cwd: utils.pathResolve(srcDir.js)}, ['patternlab:copy']);
     gulp.watch('**', {cwd: utils.pathResolve(srcDir.css)}, ['patternlab:copy-styles']);
     gulp.watch('static/**', {cwd: utils.pathResolve(srcDir.root)}, ['patternlab:copy']);
     gulp.watch('!(_styles|patterns|styleguide)/**', {cwd: utils.pathResolve(pubDir.root)}, ['tcp-ip-reload:assetsScripts']);
-    gulp.watch('**/*.css', {cwd: utils.pathResolve(pubDir.css)}, ['tcp-ip-reload:injectStyles']);
+    gulp.watch('**', {cwd: utils.pathResolve(pubDir.css)}, ['tcp-ip-reload:injectStyles']);
     gulp.watch('index.html', {cwd: utils.pathResolve(pubDir.root)}, ['tcp-ip-reload:index']);
   }, conf.timeout_main);
 });
