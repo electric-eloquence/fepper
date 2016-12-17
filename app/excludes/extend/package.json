@@ -10,6 +10,6 @@
     "node": ">=4.0.0"
   },
   "devDependencies": {
-    "gulp-stylus": "^2.4.0"
+    "fp-stylus": "~0.0.5"
   }
 }

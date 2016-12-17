@@ -21,10 +21,6 @@ module.exports = class {
     require('./pattern-overrider').main();
   }
 
-  publish(publishGlob, test) {
-    require('./publisher').main(publishGlob, test);
-  }
-
   staticGenerate() {
     require('./static-generator').main();
   }
