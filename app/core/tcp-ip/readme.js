@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const pagedown = require('pagedown');
+const marked = require('marked');
 
 const utils = require('../lib/utils');
 const conf = utils.conf();
@@ -10,8 +10,7 @@ const htmlObj = require('../lib/html');
 
 exports.main = function (req, res) {
   fs.readFile(utils.pathResolve('README.md'), conf.enc, function (err, dat) {
-    var converter = new pagedown.Converter();
-    var htmlMd = converter.makeHtml(dat);
+    var htmlMd = marked(dat);
     var output = htmlObj.head;
 
     output += htmlMd + '\n';

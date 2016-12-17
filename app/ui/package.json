@@ -6,7 +6,7 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-nodeunit": "^1.0.0",
-    "grunt-eslint": "^18.0.0"
+    "grunt-eslint": "^19.0.0"
   },
   "keywords": [
     "Pattern Lab",

@@ -61,14 +61,3 @@ templater:
   # translating to the backend's templating language. However, if the backend's
   # templating language happens to be Mustache, set this value to true.
   retain_mustache: false
-
-# It is not a good idea to change the following value, but you can comment out
-# gh_pages_src to surpress publishing the Fepper public dir to GitHub Pages.
-# This may be desired if you only wish to publish a Fepper subsite and not the
-# global site.
-gh_pages_src: .publish/fepper-gh-pages
-
-# If using webserved_dirs and publishing to GitHub Pages, the repository name
-# must be prefixed to the src of the files in webserved_dirs. Do not include a 
-# leading or trailing slash.
-gh_pages_prefix: github-repository-name

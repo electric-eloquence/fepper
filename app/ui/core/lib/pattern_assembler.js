@@ -10,7 +10,6 @@ var patternEngines = require('./pattern_engines');
 var lh = require('./lineage_hunter');
 var lih = require('./list_item_hunter');
 var JSON5 = require('json5');
-var _ = require('lodash');
 
 var pattern_assembler = function () {
   // HELPER FUNCTIONS
@@ -368,7 +367,8 @@ var pattern_assembler = function () {
         // not a file
       }
       if (listJsonFileStats && listJsonFileStats.isFile()) {
-        pattern.listitems = fs.readJSONSync(listJsonFileName);
+        jsonFileStr = fs.readFileSync(listJsonFileName, 'utf8');
+        pattern.listitems = JSON5.parse(jsonFileStr);
         if (patternlab.config.debug) {
           console.log('found pattern-specific listitems.json for ' + pattern.patternPartial);
         }
@@ -635,10 +635,9 @@ var pattern_assembler = function () {
     var outputFileSuffixes = {
       rendered: '',
       rawTemplate: '',
-      markupOnly: '.markup-only',
-      escaped: '.escaped'
-    }
-    outputFileSuffixes = _.extend(outputFileSuffixes, patternlab.config.outputFileSuffixes);
+      markupOnly: '.markup-only'
+    };
+    plutils.mergeData(patternlab.config.outputFileSuffixes, outputFileSuffixes);
 
     // write the compiled template to the public patterns directory
     var paths = patternlab.config.paths;

@@ -13,19 +13,9 @@ gulp.task('contrib:data:preprocess', [
 gulp.task('contrib:frontend-copy:preprocess', [
 ]);
 
-// Probably no use-case for preprocessing lint tasks, but here just in case.
-gulp.task('contrib:lint:preprocess', [
-]);
-
-gulp.task('contrib:minify:preprocess', [
-]);
-
 gulp.task('contrib:once:preprocess', [
 // Uncomment if you're enabling multisite.
 //  'multisite:patternlab-override'
-]);
-
-gulp.task('contrib:publish:preprocess', [
 ]);
 
 gulp.task('contrib:static:preprocess', [

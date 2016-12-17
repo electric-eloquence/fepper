@@ -9,9 +9,15 @@
       "styleguide" : "./app/ui/core/styleguide",
       "patternlabFiles" : "./app/ui/core/templates",
       "js" : "./source/_scripts",
+      "jsBld" : "./source/_scripts/bld",
+      "jsSrc" : "./source/_scripts/src",
       "images" : "./source/_assets",
-      "fonts" : "./source/_styles/fonts",
+      "imagesBld" : "./source/_assets/bld",
+      "imagesSrc" : "./source/_assets/src",
+      "fonts" : "./source/_styles/bld/fonts",
       "css" : "./source/_styles",
+      "cssBld" : "./source/_styles/bld",
+      "cssSrc" : "./source/_styles/src",
       "templates" : "./source/_patterns/03-templates",
       "pages" : "./source/_patterns/04-pages",
       "scrape" : "./source/_patterns/98-scrape"
@@ -24,8 +30,8 @@
       "styleguide" : "./public/styleguide",
       "js" : "./public/_scripts",
       "images" : "./public/_assets",
-      "fonts" : "./public/_styles/fonts",
-      "css" : "./public/_styles"
+      "fonts" : "./public/_styles/bld/fonts",
+      "css" : "./public/_styles/bld"
     }
   },
   "styleGuideExcludes": [
