@@ -40,7 +40,11 @@ gulp.task('tcp-ip-reload:watch', function () {
     gulp.watch('**', {cwd: utils.pathResolve(srcDir.js)}, ['patternlab:copy']);
     gulp.watch('**', {cwd: utils.pathResolve(srcDir.css)}, ['patternlab:copy-styles']);
     gulp.watch('static/**', {cwd: utils.pathResolve(srcDir.root)}, ['patternlab:copy']);
-    gulp.watch('!(_styles|patterns|styleguide)/**', {cwd: utils.pathResolve(pubDir.root)}, ['tcp-ip-reload:assetsScripts']);
+    gulp.watch(
+      '!(_styles|patterns|styleguide)/**',
+      {cwd: utils.pathResolve(pubDir.root)},
+      ['tcp-ip-reload:assetsScripts']
+    );
     gulp.watch('**', {cwd: utils.pathResolve(pubDir.css)}, ['tcp-ip-reload:injectStyles']);
     gulp.watch('index.html', {cwd: utils.pathResolve(pubDir.root)}, ['tcp-ip-reload:index']);
   }, conf.timeout_main);
