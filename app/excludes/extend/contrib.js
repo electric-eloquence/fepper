@@ -17,27 +17,9 @@ gulp.task('contrib:frontend-copy', [
 //  'multisite:frontend-copy:subsite1'
 ]);
 
-gulp.task('contrib:lint', [
-// Uncomment if you wish to enable this.
-//  'multisite:lint'
-]);
-
-gulp.task('contrib:minify', [
-// Uncomment if you wish to enable this.
-//  'multisite:minify'
-]);
-
 gulp.task('contrib:once', [
 // Uncomment if you wish to enable this.
 //  'multisite:once'
-]);
-
-// You can only publish one site at a time. If the contrib:publish task is to
-// be enabled, the core fepper:publish task should be disabled by unsetting
-// the gh_pages_src setting in pref.yml.
-gulp.task('contrib:publish', [
-// Uncomment if you wish to enable this.
-//  'multisite:publish:subsite1'
 ]);
 
 gulp.task('contrib:static', [

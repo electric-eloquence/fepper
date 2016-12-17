@@ -17,7 +17,6 @@
 * [Static Site Generation](#static-site-generation)
 * [The Backend](#the-backend)
 * [Webserved Directories](#webserved-directories)
-* [GitHub Pages](#github-pages)
 * [Templater](#templater)
 * [Mustache Browser](#mustache-browser)
 * [HTML Scraper](#html-scraper)
@@ -30,12 +29,9 @@
 ### <a id="install"></a>Install
 * On Mac OS X:
   * Install [Homebrew](http://brew.sh).
-* On other Unix-like OSs:
-  * Permissions might need to be reworked in order to globally install NPMs.
-  * It is a bad practice to run npm as root.
-  * If necessary, recursively chown the global node_modules directory with the standard user's ownership.
-* On non-Unix-like OSs:
-  * Sorry, but Fepper is not supported on non-Unix-like OSs.
+* On other OSs:
+  * If the OS can run Node.js, it can run Fepper. However, the `fp` command is dependent on BASH.
+  * Using Fepper on other OSs implies that you know what you are doing.
 * Install Node.js and NPM (Node Package Manager).
   * Requires Node.js v4.0.0 at the very least.
   * On a Mac: `brew install node`
@@ -85,13 +81,10 @@ for those directories to get processed and copied to the backend.
 * These other utility tasks are runnable on the command line:
   * `fp data` to force compile data.json.
   * `fp frontend-copy` to copy assets, scripts, and styles to the backend.
-  * `fp lint` to lint HTML, JavaScripts, and JSON.
-  * `fp minify` to minify JavaScripts.
   * `fp once` to clean the public folder and do a one-off Fepper build.
-  * `fp publish` to publish the public folder to GitHub Pages.
   * `fp restart` to restart after shutdown, but without opening the browser.
   * `fp static` to generate a static site from the 04-pages directory.
-  * `fp syncback` combines lint, minify, frontend-copy, and template.
+  * `fp syncback` combines frontend-copy and template. Linting and script-building extensions should also run here.
   * `fp template` translates templates for the backend and copies them there.
 * If using Git for version control, directories named "ignore" will be ignored.
 
@@ -187,20 +180,6 @@ SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE
 INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 ```
 
-### <a id="github-pages"></a>GitHub Pages
-If you have checked your Fepper instance into a repository in your GitHub 
-account, you may run `fp publish` to publish `public/static` to GitHub Pages. 
-The static site will then be viewable from the Web at `http://{user}.github.io/{repo}`. 
-(This requires that you previously ran `fp static` in order to view anything 
-meaningful.) Normally, this is all that is needed. However, if you are using 
-`webserved_dirs`, you will need to supply a `gh_pages_prefix` preference in 
-`pref.yml`. This preference needs to be set to the name of your GitHub 
-repository.
-
-In addition, if you want to publish the entire Fepper UI, you can similarly run
-`fp publish:ui`. However, this will overwrite the static site on GitHub Pages if 
-you previously ran `fp publish`.
-
 ### <a id="mustache-browser"></a>Mustache Browser
 Mustache code can be viewed in the Fepper UI by clicking the eyeball icon in the 
 upper right, then clicking Code, and then clicking the Mustache tab in the 
@@ -252,8 +231,8 @@ must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS
 processors and tries to keep the amount of NPMs to download to a minimum, so it 
 does not ship with Stylus (or any other CSS pre/post-processor) configured. 
 However, since Stylus allows for this easy sharing of variables, Fepper does 
-ship with a `source/css-processors/stylus` directory. In order to compile its 
-Stylus into the stock Pattern Lab CSS, run `npm install` in the `extend` 
+ship with a `source/_styles/src/stylus` directory. In order to compile it to 
+CSS in the `source/_styles/bld` directory, run `npm install` in the `extend` 
 directory. Then, uncomment the `css-process` tasks in `extend/custom.js`. The 
 Stylus files are written in the terse, Python-like, indentation-based syntax; 
 however, the more verbose, CSS-like syntax (with curly braces, colons, and 
@@ -287,7 +266,7 @@ If your Mac is connected to the Internet wirelessly:
 * In the left pane, select Wi-Fi
 * In the right pane, underneath Status, the IP address will be displayed
 * On your mobile device, connect to the same wireless network that your Mac is connected to
-* Browse http://{IP address}:3000
+* Browse http:&#x2F;&#x2F;[IP address]:3000
 * Change the port number if Fepper is listening on a different port
 
 If your Mac is connected to the Internet through a wire:
@@ -310,7 +289,7 @@ If your Mac is connected to the Internet through a wire:
 * In the left pane, select your wired connection
 * In the right pane, underneath Status, the IP address will be displayed
 * On your mobile device, connect to the wireless network that is the same name as your Mac
-* Browse http://{IP address}:3000
+* Browse http:&#x2F;&#x2F;[IP address]:3000
 * Change the port number if Fepper is listening on a different port
 
 ### <a id="more-documentation"></a>More Documentation

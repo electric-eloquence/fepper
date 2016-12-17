@@ -3,25 +3,53 @@
 const conf = global.conf;
 const pref = global.pref;
 
+const diveSync = require('diveSync');
 const fs = require('fs-extra');
 const glob = require('glob');
 const path = require('path');
 
 const utils = require('../lib/utils');
 
-exports.assetsDirCopy = function (publicDir, staticDir) {
-  fs.copySync(publicDir + '/_assets', staticDir + '/_assets');
+const patternsDir = utils.pathResolve(conf.ui.paths.public.patterns);
+const sourceDir = utils.pathResolve(conf.ui.paths.public.root, true);
+const staticSuffix = 'static';
+const staticDir = utils.pathResolve(`${conf.ui.paths.source.root}/${staticSuffix}`);
+
+const assetsDir = utils.pathResolve(conf.ui.paths.public.images, true);
+const assetsSuffix = assetsDir.replace(`${sourceDir}/`, '');
+const scriptsDir = utils.pathResolve(conf.ui.paths.public.js, true);
+const stylesDir = utils.pathResolve(conf.ui.paths.public.css, true);
+const stylesSuffix = stylesDir.replace(`${sourceDir}/`, '');
+
+exports.assetsDirCopy = function () {
+  fs.copySync(assetsDir, `${staticDir}/${assetsSuffix}`);
 };
 
-exports.scriptsDirCopy = function (publicDir, staticDir) {
-  fs.copySync(publicDir + '/_scripts', staticDir + '/_scripts');
+exports.scriptsDirCopy = function () {
+  diveSync(
+    scriptsDir,
+    {
+      recursive: false,
+      directories: true,
+      filter: function (path, dir) {
+        return dir;
+      }
+    },
+    function (err, file) {
+      if (err) {
+        throw err;
+      }
+      var suffix = file.replace(`${sourceDir}/`, '');
+      fs.copySync(file, `${staticDir}/${suffix}`);
+    }
+  );
 };
 
-exports.stylesDirCopy = function (publicDir, staticDir) {
-  fs.copySync(publicDir + '/_styles', staticDir + '/_styles');
+exports.stylesDirCopy = function () {
+  fs.copySync(stylesDir, `${staticDir}/${stylesSuffix}`);
 };
 
-exports.pagesDirCompile = function (patternsDir, staticDir) {
+exports.pagesDirCompile = function () {
   var dataJson = utils.data();
   var dirs = [];
   var f;
@@ -45,7 +73,6 @@ exports.pagesDirCompile = function (patternsDir, staticDir) {
     f = files[i];
     if (
       (f.indexOf('html') === f.length - 4) &&
-      (f.indexOf('escaped.html') !== f.length - 12) &&
       (f.indexOf('markup-only.html') !== f.length - 16) &&
       path.basename(f) !== 'index.html'
     ) {
@@ -85,9 +112,6 @@ exports.pagesDirCompile = function (patternsDir, staticDir) {
 };
 
 exports.main = function () {
-  var patternsDir = utils.pathResolve(conf.ui.paths.public.patterns);
-  var publicDir = utils.pathResolve(conf.ui.paths.public.root);
-  var staticDir = utils.pathResolve(conf.ui.paths.source.root + '/static');
   var webservedDirsFull;
   var webservedDirsShort;
 
@@ -96,12 +120,12 @@ exports.main = function () {
   fs.mkdirSync(staticDir);
 
   // Copy asset directories.
-  exports.assetsDirCopy(publicDir, staticDir);
-  exports.scriptsDirCopy(publicDir, staticDir);
-  exports.stylesDirCopy(publicDir, staticDir);
+  exports.assetsDirCopy();
+  exports.scriptsDirCopy();
+  exports.stylesDirCopy();
 
   // Copy pages directory.
-  exports.pagesDirCompile(patternsDir, staticDir);
+  exports.pagesDirCompile();
 
   // Copy webserved directories.
   if (Array.isArray(pref.backend.webserved_dirs)) {

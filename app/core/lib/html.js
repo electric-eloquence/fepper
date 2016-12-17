@@ -34,14 +34,14 @@ exports.landingBody = `
       <form action="/html-scraper" method="post"{{ attributes }}>
         <div>
           <label for="url">Enter URL:</label>
-          <input name="url" type="text" value="{{ url }}" style="width: 100%;" />
+          <input name="url" type="text" value="{{ url }}" style="width: 100%;">
         </div>
         <div>
           <label for="target">Target Selector:</label>
-          <input name="target" type="text" value="{{ target }}" style="width: 100%;" />
+          <input name="target" type="text" value="{{ target }}" style="width: 100%;">
         </div>
         <div class="cf" style="padding-top: 10px;">
-          <input name="url-form" type="submit" value="Submit" style="float: left;" />
+          <input name="url-form" type="submit" value="Submit" style="float: left;">
           <button id="help-button" style="float: right;" onclick="return toggleHelp();">Help</button>
         </div>
       </form>
@@ -62,7 +62,7 @@ exports.importerPrefix = `
       <form action="/html-scraper" method="post" name="importer" onsubmit="return validateForm();" style="margin-bottom: 20px;">
         <div>Yes, import into Fepper.</div>
         <label for="import-form">Enter a filename to save this under:</label>
-        <input name="filename" type="text" value="" style="width: 100%" />
+        <input name="filename" type="text" value="" style="width: 100%">
         <textarea name="mustache" style="display: none;">`;
 
 exports.json = `
@@ -71,7 +71,7 @@ exports.json = `
 
 exports.importerSuffix = `
         </textarea>
-        <input name="import-form" type="submit" value="Submit" style="margin-top: 10px;" />
+        <input name="import-form" type="submit" value="Submit" style="margin-top: 10px;">
       </form>
       <h3>Otherwise, correct the URL and Target Selector and submit again.</h3>
 

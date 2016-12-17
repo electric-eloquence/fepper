@@ -6,7 +6,7 @@
   },
   "img": {
     "landscape_16x9": {
-      "src": "../../_assets/sample/landscape-16x9-mountains.jpg",
+      "src": "../../_assets/src/sample/landscape-16x9-mountains.jpg",
       "alt": "Mountains"
     }
   }

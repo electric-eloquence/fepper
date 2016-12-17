@@ -261,7 +261,7 @@ exports.parameter_hunter = {
     jsonEval(param);
 
     // assert
-    console.log('\nPattern Lab should catch JSON.parse() errors and output useful debugging information...');
+    console.log('\nPattern Lab should catch JSON5.parse() errors and output useful debugging information...');
 
     test.done();
   },

@@ -18,8 +18,8 @@ const yaml = require('js-yaml');
 
 const utils = require('../lib/utils');
 
-const patternsDir = path.normalize(utils.pathResolve(conf.ui.paths.source.patterns));
-const sourceDir = patternsDir + '/03-templates';
+const patternsDir = utils.pathResolve(conf.ui.paths.source.patterns, true);
+const srcDir = `${patternsDir}/03-templates`;
 
 exports.mustacheRecurse = function (file) {
   var code;
@@ -78,7 +78,7 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
   var data = null;
   var dest;
   var mustacheFile;
-  var sourceDirParam = sourceDir;
+  var srcDirParam = srcDir;
   var stats = null;
   var stats1 = null;
   var templatesDir = '';
@@ -132,7 +132,7 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
         // Do not maintain nested directory structure in backend if
         // templates_dir is set in exceptional YAML file.
         if (templatesDir) {
-          sourceDirParam = path.dirname(mustacheFile);
+          srcDirParam = path.dirname(mustacheFile);
         }
         // Unset templates_dir in local YAML data.
         delete data.templates_dir;
@@ -164,7 +164,7 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
     // Iterate through tokens and replace keys for values in the code.
     code = exports.tokensReplace(data, code);
     // Write compiled templates.
-    dest = exports.templatesWrite(mustacheFile, sourceDirParam, templatesDir, templatesExt, code);
+    dest = exports.templatesWrite(mustacheFile, srcDirParam, templatesDir, templatesExt, code);
 
     // Log to console.
     utils.log('Template \x1b[36m%s\x1b[0m synced.', dest.replace(workDir, '').replace(/^\//, ''));
@@ -172,15 +172,15 @@ exports.templateProcess = function (file, templatesDirDefault, templatesExtDefau
 };
 
 exports.templatesGlob = function () {
-  var globbed = glob.sync(sourceDir + '/*.mustache');
-  var globbed1 = glob.sync(sourceDir + '/!(_nosync)/**/*.mustache');
+  var globbed = glob.sync(srcDir + '/*.mustache');
+  var globbed1 = glob.sync(srcDir + '/!(_nosync)/**/*.mustache');
 
   return globbed.concat(globbed1);
 };
 
-exports.templatesWrite = function (file, sourceDirParam, templatesDir, templatesExt, code) {
+exports.templatesWrite = function (file, srcDirParam, templatesDir, templatesExt, code) {
   // Determine destination for token-replaced code.
-  var dest = file.replace(sourceDirParam, '');
+  var dest = file.replace(srcDirParam, '');
 
   // Replace underscore prefixes.
   dest = dest.replace(/\/_([^\/]+)$/, '/$1');

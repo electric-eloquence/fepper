@@ -1,6 +1,6 @@
 'use strict';
 
-var md = require('markdown-it')();
+var md = require('marked');
 
 var markdown_parser = function () {
 
@@ -33,10 +33,10 @@ var markdown_parser = function () {
 
       if (chunks && chunks[2]) {
         // parse the actual markdown
-        returnObject.markdown = md.render(chunks[2]);
+        returnObject.markdown = md(chunks[2]);
       } else {
         // assume the passed in block is raw markdown
-        returnObject.markdown = md.render(block);
+        returnObject.markdown = md(block);
       }
     } catch (ex) {
       console.log(ex);

@@ -4,7 +4,7 @@
       "url": "../04-pages-02-articles-00-article/04-pages-02-articles-00-article.html",
       "img": {
         "landscape_16x9": {
-          "src": "../../_assets/sample/landscape-16x9-mountains.jpg",
+          "src": "../../_assets/src/sample/landscape-16x9-mountains.jpg",
           "alt": "Mountains"
         }
       },
@@ -18,7 +18,7 @@
       "url": "../04-pages-02-articles-00-article-1/04-pages-02-articles-00-article-1.html",
       "img": {
         "landscape_4x3": {
-          "src": "../../_assets/sample/tout-4x3-climber.jpg",
+          "src": "../../_assets/src/sample/tout-4x3-climber.jpg",
           "alt": "Climber"
         }
       },
@@ -30,7 +30,7 @@
       "url": "../04-pages-02-articles-00-article-2/04-pages-02-articles-00-article-2.html",
       "img": {
         "landscape_4x3": {
-          "src": "../../_assets/sample/tout-4x3-stream.jpg",
+          "src": "../../_assets/src/sample/tout-4x3-stream.jpg",
           "alt": "Stream hiking"
         }
       },
@@ -42,7 +42,7 @@
       "url": "../04-pages-02-articles-00-article-3/04-pages-02-articles-00-article-3.html",
       "img": {
         "landscape_4x3": {
-          "src": "../../_assets/sample/tout-4x3-climbers.jpg",
+          "src": "../../_assets/src/sample/tout-4x3-climbers.jpg",
           "alt": "Explore hiking trails"
         }
       },
@@ -56,7 +56,7 @@
       "url": "../04-pages-02-articles-00-article-4/04-pages-02-articles-00-article-4.html",
       "img": {
         "square": {
-          "src": "../../_assets/sample/thumb-square-river.jpg",
+          "src": "../../_assets/src/sample/thumb-square-river.jpg",
           "alt": "Post Thumbnail"
         }
       },
@@ -71,7 +71,7 @@
       "url": "../04-pages-02-articles-00-article-5/04-pages-02-articles-00-article-5.html",
       "img": {
         "square": {
-          "src": "../../_assets/sample/thumb-square-ivy.jpg",
+          "src": "../../_assets/src/sample/thumb-square-ivy.jpg",
           "alt": "Ivy"
         }
       },
@@ -86,7 +86,7 @@
       "url": "../04-pages-02-articles-00-article-6/04-pages-02-articles-00-article-6.html",
       "img": {
         "square": {
-          "src": "../../_assets/sample/thumb-square-yosemite.jpg",
+          "src": "../../_assets/src/sample/thumb-square-yosemite.jpg",
           "alt": "Yosemite"
         }
       },
@@ -101,7 +101,7 @@
       "url": "../04-pages-02-articles-00-article-7/04-pages-02-articles-00-article-7.html",
       "img": {
         "square": {
-          "src": "../../_assets/sample/thumb-square-fire.jpg",
+          "src": "../../_assets/src/sample/thumb-square-fire.jpg",
           "alt": "Fire"
         }
       },
@@ -116,7 +116,7 @@
       "url": "../04-pages-02-articles-00-article-8/04-pages-02-articles-00-article-8.html",
       "img": {
         "square": {
-          "src": "../../_assets/sample/thumb-square-gear.jpg",
+          "src": "../../_assets/src/sample/thumb-square-gear.jpg",
           "alt": "Camping Gear"
         }
       },
