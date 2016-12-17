@@ -13,17 +13,7 @@ gulp.task('custom:data:preprocess', [
 gulp.task('custom:frontend-copy:preprocess', [
 ]);
 
-// Probably no use-case for preprocessing lint tasks, but here just in case.
-gulp.task('custom:lint:preprocess', [
-]);
-
-gulp.task('custom:minify:preprocess', [
-]);
-
 gulp.task('custom:once:preprocess', [
-]);
-
-gulp.task('custom:publish:preprocess', [
 ]);
 
 gulp.task('custom:static:preprocess', [

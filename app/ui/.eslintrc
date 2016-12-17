@@ -72,7 +72,7 @@
     "one-var": [1, "never"],
     "quotes": [1, "single"],
     "radix": 2,
-    "semi": [0, "never"],
+    "semi": [2, "always"],
     "strict": 0,
     "space-before-blocks": 1,
     "space-before-function-paren": [1, {

@@ -2,6 +2,7 @@
 
 var fs = require('fs-extra');
 var JSON = require('json5');
+var path = require('path');
 var util = require('util');
 var yaml = require('js-yaml');
 
@@ -23,12 +24,12 @@ exports.conf = function () {
 
   // Get default confs for Fepper core.
   try {
-    yml = fs.readFileSync(global.appDir + '/excludes/default.conf.yml', enc);
+    yml = fs.readFileSync(global.appDir + '/excludes/conf.yml', enc);
     defaults = yaml.safeLoad(yml);
   }
   catch (err) {
     exports.error(err);
-    exports.error('Missing or malformed app/excludes/defaults.conf.yml! Exiting!');
+    exports.error('Missing or malformed app/excludes/conf.yml! Exiting!');
     return;
   }
 
@@ -94,12 +95,12 @@ exports.pref = function () {
   var yml;
 
   try {
-    yml = fs.readFileSync(global.appDir + '/excludes/default.pref.yml', enc);
+    yml = fs.readFileSync(global.appDir + '/excludes/pref.yml', enc);
     defaults = yaml.safeLoad(yml);
   }
   catch (err) {
     exports.error(err);
-    exports.error('Missing or malformed excludes/defaults.pref.yml! Exiting!');
+    exports.error('Missing or malformed excludes/pref.yml! Exiting!');
     return;
   }
 
@@ -219,8 +220,13 @@ exports.extCheck = function (ext) {
   return '';
 };
 
-exports.pathResolve = function (relPath) {
-  return global.workDir + '/' + relPath;
+exports.pathResolve = function (relPath, normalize) {
+  if (normalize) {
+    return path.normalize(`${global.workDir}/${relPath}`);
+  }
+  else {
+    return `${global.workDir}/${relPath}`;
+  }
 };
 
 // ///////////////////////////////////////////////////////////////////////////
@@ -290,18 +296,17 @@ exports.webservedDirnamesTruncate = function (webservedDirsFull) {
 };
 
 /**
- * Copy webserved_dirs to gh_pages_src.
+ * Copy webserved_dirs to static site dir.
  *
  * @param {array} webservedDirsFull - Path to directories webserved by Fepper.
  * @param {array} webservedDirsShort - Path to directories webserved by Fepper
- *   truncated for publishing to GitHub Pages.
- * @param {string} ghPagesSrc - The directory that holds the processed code to
- *   be published to GitHub Pages.
+ *   truncated for publishing to static site.
+ * @param {string} staticDir - The destination directory.
  */
-exports.webservedDirsCopy = function (webservedDirsFull, webservedDirsShort, ghPagesSrc) {
+exports.webservedDirsCopy = function (webservedDirsFull, webservedDirsShort, staticDir) {
   var i;
 
   for (i = 0; i < webservedDirsFull.length; i++) {
-    fs.copySync(exports.pathResolve('backend/' + webservedDirsFull[i]), ghPagesSrc + '/' + webservedDirsShort[i]);
+    fs.copySync(exports.pathResolve('backend/' + webservedDirsFull[i]), staticDir + '/' + webservedDirsShort[i]);
   }
 };

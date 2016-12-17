@@ -280,15 +280,18 @@ function buildViewAllHTML(patternlab, patterns, patternPartial) {
 
   var patternsPlusSubtype = insertPatternSubtypeDocumentationPattern(patternlab, patterns, patternPartial);
 
-  var viewAllHTML = pattern_assembler.renderPattern(patternlab.viewAll,
+  var viewAllHTML = pattern_assembler.renderPattern(
+    patternlab.viewAll,
     {
       partials: patternsPlusSubtype,
       patternPartial: patternPartial,
       cacheBuster: patternlab.cacheBuster
-    }, {
+    },
+    {
       patternSection: patternlab.patternSection,
       patternSectionSubtype: patternlab.patternSectionSubType
-    });
+    }
+  );
   return viewAllHTML;
 }
 
@@ -400,7 +403,7 @@ function buildFrontEnd(patternlab) {
   patternlab.patternTypeIndex = [];
   patternlab.patternPaths = {};
   patternlab.viewAllPaths = {};
-  patternlab.data.cacheBuster = patternlab.cacheBuster
+  patternlab.data.cacheBuster = patternlab.cacheBuster;
 
   // check if patterns are excluded, if not add them to styleguidePatterns
   styleguidePatterns = assembleStyleguidePatterns(patternlab);
@@ -413,14 +416,17 @@ function buildFrontEnd(patternlab) {
   var footerHTML = buildFooterHTML(patternlab, null);
 
   // build the styleguide
-  var styleguideHtml = pattern_assembler.renderPattern(patternlab.viewAll,
+  var styleguideHtml = pattern_assembler.renderPattern(
+    patternlab.viewAll,
     {
       partials: styleguidePatterns,
       cacheBuster: patternlab.cacheBuster
-    }, {
+    },
+    {
       patternSection: patternlab.patternSection,
       patternSectionSubtype: patternlab.patternSectionSubType
-    });
+    }
+  );
 
   fs.outputFileSync(
     path.resolve(paths.public.styleguide, 'html/styleguide.html'), headerHTML + styleguideHtml + footerHTML);

@@ -1,10 +1,9 @@
-'use strict"'
+'use strict';
 
 var path = require('path');
 var glob = require('glob');
 var fs = require('fs-extra');
 var JSON5 = require('json5');
-var _ = require('lodash');
 var mp = require('./markdown_parser');
 
 var annotations_exporter = function (pl) {
@@ -59,11 +58,11 @@ var annotations_exporter = function (pl) {
     // take the annotation snippets and split them on our custom delimiter
       var annotationsYAML = annotationsMD.split('~*~');
       for (var i = 0; i < annotationsYAML.length; i++) {
-        var annotation = buildAnnotationMD(annotationsYAML[i], markdown_parser)
+        var annotation = buildAnnotationMD(annotationsYAML[i], markdown_parser);
         annotations.push(annotation);
       }
       return false;
-    }
+    };
   }
 
   /*
@@ -72,7 +71,7 @@ var annotations_exporter = function (pl) {
   function parseAnnotationsMD() {
     var markdown_parser = new mp();
     var annotations = [];
-    var mdFiles = glob.sync(paths.source.annotations + '/*.md')
+    var mdFiles = glob.sync(paths.source.annotations + '/*.md');
 
     mdFiles.forEach(parseMDFile(annotations, markdown_parser));
     return annotations;
@@ -81,7 +80,21 @@ var annotations_exporter = function (pl) {
   function gatherAnnotations() {
     var annotationsJS = parseAnnotationsJS();
     var annotationsMD = parseAnnotationsMD();
-    return _.unionBy(annotationsJS, annotationsMD, 'el');
+
+    // first, get all elements unique to annotationsJS
+    var annotationsUnique = annotationsJS.filter(function (annotationJsObj) {
+      var unique = true;
+      annotationsMD.forEach(function (annotationMdObj) {
+        if (annotationJsObj.el === annotationMdObj.el) {
+          unique = false;
+          return;
+        }
+      });
+      return unique;
+    });
+
+    // then, concat all elements in annotationsMD and return
+    return annotationsUnique.concat(annotationsMD);
   }
 
   return {

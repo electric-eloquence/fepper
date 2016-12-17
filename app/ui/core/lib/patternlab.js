@@ -12,8 +12,9 @@
 
 var diveSync = require('diveSync');
 var glob = require('glob');
-var _ = require('lodash');
+var JSON5 = require('json5');
 var path = require('path');
+var plutils = require('./utilities');
 
 // GTP: these two diveSync pattern processors factored out so they can be reused
 // from unit tests to reduce code dupe!
@@ -21,11 +22,12 @@ var path = require('path');
 function buildPatternData(dataFilesPath, fs) {
   var dataFilesPath = dataFilesPath;
   var dataFiles = glob.sync(dataFilesPath + '*.json', {ignore: [dataFilesPath + 'listitems.json']});
-  var mergeObject = {}
+  var mergeObject = {};
   dataFiles.forEach(function (filePath) {
-    var jsonData = fs.readJSONSync(path.resolve(filePath), 'utf8')
-    mergeObject = _.merge(mergeObject, jsonData)
-  })
+    var jsonFileStr = fs.readFileSync(path.resolve(filePath), 'utf8');
+    var jsonData = JSON5.parse(jsonFileStr);
+    plutils.mergeData(jsonData, mergeObject);
+  });
   return mergeObject;
 }
 
@@ -57,12 +59,17 @@ var patternlab_engine = function (config) {
   var pe = require('./pattern_exporter');
   var lih = require('./list_item_hunter');
   var buildFrontEnd = require('./ui_builder');
-  var plutils = require('./utilities');
   var sm = require('./starterkit_manager');
   var patternlab = {};
 
-  patternlab.package = fs.readJSONSync(path.resolve(__dirname, '../../package.json'));
-  patternlab.config = config || fs.readJSONSync(path.resolve(__dirname, '../../patternlab-config.json'));
+  var jsonFileStr = fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8');
+  patternlab.package = JSON5.parse(jsonFileStr);
+  if (config) {
+    patternlab.config = config;
+  } else {
+    jsonFileStr = fs.readFileSync(path.resolve(__dirname, '../../patternlab-config.json'), 'utf8');
+    patternlab.config = JSON5.parse(jsonFileStr);
+  }
 
   var paths = patternlab.config.paths;
 
@@ -179,7 +186,8 @@ var patternlab_engine = function (config) {
       patternlab.data = {};
     }
     try {
-      patternlab.listitems = fs.readJSONSync(path.resolve(paths.source.data, 'listitems.json'));
+      jsonFileStr = fs.readFileSync(path.resolve(paths.source.data, 'listitems.json'), 'utf8');
+      patternlab.listitems = JSON5.parse(jsonFileStr);
     } catch (ex) {
       plutils.logRed('missing or malformed' + paths.source.data +
         'listitems.json  Pattern Lab may not work without this file.');

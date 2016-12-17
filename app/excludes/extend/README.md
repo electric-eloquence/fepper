@@ -1,7 +1,7 @@
 # Extensions
-A Stylus CSS preprocessing extension is included with Fepper. In order to enable 
-it, run `npm install` in this directory. Then, uncomment the `css-process` tasks 
-in `custom.js`.
+Fepper comes configured with a Stylus CSS preprocessing extension. It still 
+needs to be installed. To do so, run `npm install` in this directory. Then, 
+uncomment the `stylus` tasks in `contrib.js`.
 
 ### Contributed extensions
 * Install and update contributed extensions with NPM.

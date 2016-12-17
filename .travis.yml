@@ -4,4 +4,7 @@ node_js:
   - "4.0.0"
 before_script:
   - npm install -g gulp
+  - npm install gulp-eslint
+  - npm install gulp-mocha
+  - npm install chai
 script: gulp --gulpfile ./app/tasker.js test
