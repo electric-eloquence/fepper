@@ -229,6 +229,21 @@ exports.pathResolve = function (relPath, normalize) {
   }
 };
 
+exports.upsearch = function (fileName, workDirParam) {
+  var dirMatch;
+  var workDir = path.normalize(`${workDirParam}/..`);
+  var files = fs.readdirSync(workDir);
+
+  if (files.indexOf(fileName) > -1) {
+    return workDir;
+  }
+  else if (workDir !== '/') {
+    dirMatch = upsearch(fileName, workDir);
+  }
+
+  return dirMatch;
+};
+
 // ///////////////////////////////////////////////////////////////////////////
 // Logging.
 // ///////////////////////////////////////////////////////////////////////////
