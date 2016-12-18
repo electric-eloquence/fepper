@@ -238,7 +238,7 @@ exports.upsearch = function (fileName, workDirParam) {
     return workDir;
   }
   else if (workDir !== '/') {
-    dirMatch = upsearch(fileName, workDir);
+    dirMatch = exports.upsearch(fileName, workDir);
   }
 
   return dirMatch;
