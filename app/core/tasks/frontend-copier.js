@@ -62,6 +62,7 @@ exports.main = function (frontendType) {
   var frontendDataKey = `${frontendType}_dir`;
   var frontendDir = `_${frontendType}`;
   var i;
+  var regexExt = /\.[a-z]+$/;
   var srcDir;
   var stats;
   var stats1;
@@ -84,12 +85,13 @@ exports.main = function (frontendType) {
         // Fail gracefully.
       }
 
-      // Exclude directories and files prefixed by __ or suffixed by .yml.
+      // Exclude directories, files prefixed by __ or suffixed by .yml, and readme files.
       if (
         !stats ||
         !stats.isFile() ||
         path.basename(files[i]).slice(0, 2) === '__' ||
-        files[i].slice(-4) === '.yml'
+        files[i].slice(-4) === '.yml' ||
+        path.basename(files[i]).replace(regexExt, '') === 'README'
       ) {
         continue;
       }
@@ -99,9 +101,8 @@ exports.main = function (frontendType) {
       targetDir = '';
 
       // Check for file-specific YAML file.
-      let regex = /\.[a-z]+$/;
-      if (regex.test(files[i])) {
-        ymlFile = files[i].replace(regex, '.yml');
+      if (regexExt.test(files[i])) {
+        ymlFile = files[i].replace(regexExt, '.yml');
       }
 
       // Read and process YAML file if it exists.
