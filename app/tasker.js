@@ -16,7 +16,7 @@ const utils = require('./core/lib/utils');
 
 // Set global.conf, global.pref, global.rootDir, and global.workDir.
 global.appDir = __dirname;
-global.rootDir = utils.upsearch('fepper.command', __dirname);
+global.rootDir = utils.findup('fepper.command', __dirname);
 global.workDir = global.rootDir;
 
 utils.conf();
