@@ -229,8 +229,8 @@ exports.pathResolve = function (relPath, normalize) {
   }
 };
 
-exports.upsearch = function (fileName, workDirParam) {
-  var dirMatch;
+exports.findup = function (fileName, workDirParam) {
+  var dirMatch = null;
   var workDir = path.normalize(`${workDirParam}/..`);
   var files = fs.readdirSync(workDir);
 
@@ -238,7 +238,10 @@ exports.upsearch = function (fileName, workDirParam) {
     return workDir;
   }
   else if (workDir !== '/') {
-    dirMatch = exports.upsearch(fileName, workDir);
+    dirMatch = exports.findup(fileName, workDir);
+  }
+  else {
+    return null;
   }
 
   return dirMatch;
