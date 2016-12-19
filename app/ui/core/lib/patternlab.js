@@ -22,13 +22,13 @@ var plutils = require('./utilities');
 function buildPatternData(dataFilesPath, fs) {
   var dataFilesPath = dataFilesPath;
   var dataFiles = glob.sync(dataFilesPath + '*.json', {ignore: [dataFilesPath + 'listitems.json']});
-  var mergeObject = {};
+  var mergedObject = {};
   dataFiles.forEach(function (filePath) {
     var jsonFileStr = fs.readFileSync(path.resolve(filePath), 'utf8');
     var jsonData = JSON5.parse(jsonFileStr);
-    plutils.mergeData(jsonData, mergeObject);
+    plutils.mergeData(jsonData, mergedObject);
   });
-  return mergeObject;
+  return mergedObject;
 }
 
 function processAllPatternsIterative(pattern_assembler, patterns_dir, patternlab) {
