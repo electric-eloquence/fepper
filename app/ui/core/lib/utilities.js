@@ -24,6 +24,7 @@ var util = {
    *
    * @param {Object} obj1 If obj1 has properties obj2 doesn't, add to obj2.
    * @param {Object} obj2 This object's properties have priority over obj1.
+   *   Since obj2 gets mutated, the return value is only necessary for the purpose of referencing to a new variable.
    * @returns {Object} obj2
    */
   mergeData: function (obj1, obj2) {
