@@ -30,7 +30,7 @@ exports.main = function () {
     for (let i = 0; i < webservedDirs.length; i++) {
       let webservedDirSplit = webservedDirs[i].split('/');
       webservedDirSplit.shift();
-      app.use('/' + webservedDirSplit.join('/'), express.static(utils.pathResolve('backend/' + webservedDirs[i])));
+      app.use('/' + webservedDirSplit.join('/'), express.static(utils.pathResolve(`backend/${webservedDirs[i]}`)));
     }
   }
 
@@ -56,7 +56,7 @@ exports.main = function () {
   app.post('/html-scraper', htmlScraperPost.main);
 
   // Fepper static files.
-  app.use('/fepper-core', express.static(global.appDir + '/core/webserved'));
+  app.use('/fepper-core', express.static(`${global.appDir}/core/webserved`));
 
   // For everything else, document root = Pattern Lab.
   app.use(express.static(utils.pathResolve(conf.ui.paths.public.root)));

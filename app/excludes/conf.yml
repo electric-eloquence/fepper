@@ -1,11 +1,14 @@
-app_dir: app
 express_port: 3000
 livereload_port: 35729
 
-# kill_zombies will kill lingering Node and Gulp processes. However, if you wish
-# to run multiple Fepper instances, you'll need to set this to false.
+# kill_zombies will kill lingering Node and Gulp processes. However, if you wish to run multiple Fepper instances, 
+# you'll need to set this to false.
 kill_zombies: true
 
-# timeout_main sets the number of milliseconds to wait for asynchronous tasks to
-# complete, particularly the wait before Fepper opens in a browser.
+# timeout_main sets the number of milliseconds to wait for asynchronous tasks to complete, particularly the wait before 
+# Fepper opens in a browser.
 timeout_main: 500
+
+# It might be desirable to keep and run the app in node_modules/fepper-npm so as to leave core updates out of an 
+# implementation's version control. For now, app_dir will default to app but this legacy may become deprecated.
+app_dir: app
