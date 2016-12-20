@@ -3,10 +3,12 @@
 const conf = global.conf;
 const pref = global.pref;
 
+const beautify = require('js-beautify').html;
 const diveSync = require('diveSync');
 const fs = require('fs-extra');
 const glob = require('glob');
 const path = require('path');
+const RcLoader = require('rcloader');
 
 const utils = require('../lib/utils');
 
@@ -14,6 +16,7 @@ const patternsDir = utils.pathResolve(conf.ui.paths.public.patterns);
 const sourceDir = utils.pathResolve(conf.ui.paths.public.root, true);
 const staticSuffix = 'static';
 const staticDir = utils.pathResolve(`${conf.ui.paths.source.root}/${staticSuffix}`);
+const workDir = global.workDir;
 
 const assetsDir = utils.pathResolve(conf.ui.paths.public.images, true);
 const assetsSuffix = assetsDir.replace(`${sourceDir}/`, '');
@@ -59,6 +62,10 @@ exports.pagesDirCompile = function () {
   var tmpArr = [];
   var tmpStr = '';
 
+  // Load js-beautify with options configured in .jsbeautifyrc
+  var rcLoader = new RcLoader('.jsbeautifyrc', {});
+  var rcOpts = rcLoader.for(workDir, {lookup: true});
+
   // Glob page files in public/patterns.
   dirs = glob.sync(patternsDir + '/04-pages-*');
 
@@ -99,6 +106,9 @@ exports.pagesDirCompile = function () {
       // Strip prefix from remaining page filenames.
       tmpStr = tmpStr.replace(/(href\s*=\s*)"[^"]*(\/|&#x2F;)04\-pages\-/g, '$1"');
       tmpStr = tmpStr.replace(/(href\s*=\s*)'[^']*(\/|&#x2F;)04\-pages\-/g, '$1\'');
+
+      // Load .jsbeautifyrc and beautify html
+      tmpStr = beautify(tmpStr, rcOpts) + '\n';
 
       // Copy homepage to index.html.
       if (dataJson.homepage && f.indexOf(dataJson.homepage + '.html') === (f.length - dataJson.homepage.length - 5)) {
