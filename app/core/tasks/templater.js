@@ -19,7 +19,7 @@ const yaml = require('js-yaml');
 const utils = require('../lib/utils');
 
 const patternsDir = utils.pathResolve(conf.ui.paths.source.patterns, true);
-const srcDir = `${patternsDir}/03-templates`;
+const srcDir = utils.pathResolve(conf.ui.paths.source.templates, true);
 
 exports.mustacheRecurse = function (file) {
   var code;

@@ -40,6 +40,6 @@ module.exports = class {
   }
 
   copyStyles() {
-    fs.copySync(utils.pathResolve(srcDir.css), utils.pathResolve(pubDir.css));
+    fs.copySync(utils.pathResolve(srcDir.cssBld), utils.pathResolve(pubDir.css));
   }
 };

@@ -20,7 +20,7 @@ exports.main = function (req, res) {
 
   output += '<link rel="stylesheet" href="/fepper-core/style.css" media="all"\n>';
   output += '<section>\n';
-  output += '<div class="' + msgClass + '">' + message + '</div>\n';
+  output += `<div class="${msgClass}">${message}</div>\n`;
   output += htmlObj.scraperTitle;
   output += htmlObj.landingBody;
   output += '</section>';

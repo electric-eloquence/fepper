@@ -7,7 +7,7 @@ const open = require('open');
 
 exports.main = function () {
   var origin = 'http://localhost:' + conf.express_port;
-  var log = './install.log';
+  var log = `${global.workDir}/install.log`;
   var stats;
 
   try {
