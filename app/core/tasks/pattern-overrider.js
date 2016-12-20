@@ -15,7 +15,7 @@ const path = require('path');
 const utils = require('../lib/utils');
 
 exports.main = function () {
-  var dest = utils.pathResolve(conf.ui.paths.public.js + '/pattern-overrider.js');
+  var dest = utils.pathResolve(`${conf.ui.paths.public.js}/pattern-overrider.js`);
 
   // Backticked multi-line string.
   var output = `// Mustache code browser.
