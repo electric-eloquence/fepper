@@ -21,10 +21,10 @@ var ae = require('../core/lib/annotation_exporter')(patternlab);
 
 exports.annotaton_exporter = {
 
-  'converts old JSON annotations into new format': function (test) {
+  'converts old JS annotations into new format': function (test) {
     // arrange
     // act
-    var annotations = ae.gatherJSON();
+    var annotations = ae.gatherJS();
 
     // assert
     test.equals(annotations.length, 2);
