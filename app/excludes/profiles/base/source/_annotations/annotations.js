@@ -1,7 +1,7 @@
 var comments = {
 "comments" : [
 	{
-		"el": "",
+		"el": null,
 		"title" : "",
 		"comment": ""
 	}
