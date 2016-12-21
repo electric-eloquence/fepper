@@ -530,7 +530,7 @@ var pattern_assembler = function () {
     return extendedTemplate;
   }
 
-  function processPatternRecursive(pattern, patternIndex, patternlab, partial) {
+  function processPatternRecursive(pattern, patternIndex, patternlab) {
     var list_item_hunter = new lih();
 
     var hasPseudoPattern = 0;
