@@ -10,7 +10,7 @@ var srcDir = conf.ui.paths.source;
 
 module.exports = class {
   build(arg) {
-    var patternlab = require(utils.pathResolve(conf.ui.paths.core.lib + '/patternlab.js'))(conf.ui);
+    var patternlab = require(utils.pathResolve(`${conf.ui.paths.core.lib}/patternlab.js`))(conf.ui);
 
     if (typeof arg === 'undefined') {
       patternlab.build(function () {});
@@ -36,7 +36,7 @@ module.exports = class {
   copy() {
     fs.copySync(utils.pathResolve(srcDir.images), utils.pathResolve(pubDir.images));
     fs.copySync(utils.pathResolve(srcDir.js), utils.pathResolve(pubDir.js));
-    fs.copySync(utils.pathResolve(srcDir.root + '/static'), utils.pathResolve(pubDir.root + '/static'));
+    fs.copySync(utils.pathResolve(`${srcDir.root}/static`), utils.pathResolve(`${pubDir.root}/static`));
   }
 
   copyStyles() {
