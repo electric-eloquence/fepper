@@ -73,8 +73,6 @@ exports.conf = function () {
     conf.ui.paths.core = {
       lib: './app/ui/core/lib'
     };
-    conf.ui.paths.source.data += '/';
-    conf.ui.paths.public.patterns += '/';
   }
   catch (err) {
     exports.error('Missing or malformed app/excludes/patternlab-config.json! Exiting!');

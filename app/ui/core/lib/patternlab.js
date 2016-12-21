@@ -16,9 +16,9 @@ var JSON5 = require('json5');
 var path = require('path');
 var plutils = require('./utilities');
 
-function buildPatternData(dataFilesPath, fs) {
-  var dataFilesPath = dataFilesPath;
-  var dataFiles = glob.sync(dataFilesPath + '*.json', {ignore: [dataFilesPath + 'listitems.json']});
+function buildPatternData(dataFilesPathParam, fs) {
+  var dataFilesPath = path.resolve(dataFilesPathParam);
+  var dataFiles = glob.sync(dataFilesPath + '/*.json', {ignore: [dataFilesPath + 'listitems.json']});
   var mergedObject = {};
   dataFiles.forEach(function (filePath) {
     var jsonFileStr = fs.readFileSync(path.resolve(filePath), 'utf8');
@@ -308,7 +308,7 @@ var patternlab_engine = function (configParam) {
       );
       footerHTML = engine.renderPattern(footerHTML, {lineageR: JSON.stringify(pattern.patternLineagesR)});
 
-      fs.appendFileSync(paths.public.patterns + pattern.patternLink, footerHTML);
+      fs.appendFileSync(path.resolve(paths.public.patterns, pattern.patternLink), footerHTML);
     }
 
     // export patterns if necessary
