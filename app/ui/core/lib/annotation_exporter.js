@@ -11,31 +11,29 @@ var annotations_exporter = function (pl) {
   var paths = pl.config.paths;
 
   /*
-  Returns the array of comments that used to be wrapped in raw JS.
+  Returns the array of comments wrapped in JSON format.
    */
-  function parseAnnotationsJS() {
+  function parseAnnotationsJSON() {
     // attempt to read the file
     try {
-      var oldAnnotations = fs.readFileSync(path.resolve(paths.source.annotations, 'annotations.js'), 'utf8');
+      var oldAnnotations = fs.readFileSync(path.resolve(paths.source.annotations, 'annotations.json'), 'utf8');
     } catch (ex) {
       if (pl.config.debug) {
-        console.log('annotations.js file missing from ' + paths.source.annotations + '. This may be expected.');
+        console.log('annotations.json file missing from ' + paths.source.annotations + '. This may be expected.');
       }
       return [];
     }
 
-    // parse as JSON by removing the old wrapping js syntax. comments and the trailing semi-colon
-    oldAnnotations = oldAnnotations.replace('var comments = ', '');
-    oldAnnotations = oldAnnotations.replace('};', '}');
-
     try {
       var oldAnnotationsJSON = JSON5.parse(oldAnnotations);
     } catch (ex) {
-      console.log('There was an error parsing JSON for ' + paths.source.annotations + 'annotations.js');
+      console.log('There was an error parsing JSON for ' + paths.source.annotations + 'annotations.json');
       console.log(ex);
       return [];
     }
-    return oldAnnotationsJSON.comments;
+
+    var retVal = oldAnnotationsJSON.comments || [];
+    return retVal;
   }
 
   function buildAnnotationMD(annotationsYAML, markdown_parser) {
@@ -78,11 +76,11 @@ var annotations_exporter = function (pl) {
   }
 
   function gatherAnnotations() {
-    var annotationsJS = parseAnnotationsJS();
+    var annotationsJSON = parseAnnotationsJSON();
     var annotationsMD = parseAnnotationsMD();
 
-    // first, get all elements unique to annotationsJS
-    var annotationsUnique = annotationsJS.filter(function (annotationJsObj) {
+    // first, get all elements unique to annotationsJSON
+    var annotationsUnique = annotationsJSON.filter(function (annotationJsObj) {
       var unique = true;
       annotationsMD.forEach(function (annotationMdObj) {
         if (annotationJsObj.el === annotationMdObj.el) {
@@ -101,8 +99,8 @@ var annotations_exporter = function (pl) {
     gather: function () {
       return gatherAnnotations();
     },
-    gatherJS: function () {
-      return parseAnnotationsJS();
+    gatherJSON: function () {
+      return parseAnnotationsJSON();
     },
     gatherMD: function () {
       return parseAnnotationsMD();
