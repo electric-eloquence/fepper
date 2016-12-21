@@ -38,7 +38,25 @@ function copyFile(file, srcDir, cb) {
   }
 }
 
-function taskRun() {
+new Promise(function (resolve) {
+  copyFile('conf.yml', excludesDir, resolve);
+})
+.then(function () {
+  return new Promise(function (resolve) {
+    copyDir('extend', excludesDir, resolve);
+  });
+})
+.then(function () {
+  return new Promise(function (resolve) {
+    copyFile('patternlab-config.json', excludesDir, resolve);
+  });
+})
+.then(function () {
+  return new Promise(function (resolve) {
+    copyFile('pref.yml', excludesDir, resolve);
+  });
+})
+.then(function () {
   exec('./node_modules/.bin/gulp --gulpfile app/tasker.js install', (err, stdout, stderr) => {
     if (err) {
       throw err;
@@ -53,26 +71,4 @@ function taskRun() {
       fs.appendFileSync('install.log', stderr);
     }
   });
-}
-
-function copyPref() {
-  copyFile('pref.yml', excludesDir, taskRun);
-}
-
-function copyPlConf() {
-  copyFile('patternlab-config.json', excludesDir, copyPref);
-}
-
-function copyExtend() {
-  copyDir('extend', excludesDir, copyPlConf);
-}
-
-function copyConf() {
-  copyFile('conf.yml', excludesDir, copyExtend);
-}
-
-function init() {
-  copyConf();
-}
-
-init();
+});

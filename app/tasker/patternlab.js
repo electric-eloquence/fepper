@@ -1,77 +1,42 @@
 'use strict';
 
-const appDir = global.appDir;
-const workDir = global.workDir;
-
 const gulp = require('gulp');
 
-const gulpUtils = require('./utils');
-const utils = require('../core/lib/utils');
 const Ui = require('../core/ui/ui');
 
-var pathIn = workDir;
-var pathOut = appDir;
 var ui = new Ui();
 
-var buildTask = gulpUtils.fsContextClosure(pathIn, ui, 'build', pathOut);
-gulp.task('patternlab:build', buildTask);
+gulp.task('patternlab:build', function (cb) {
+  ui.build();
+  cb();
+});
 
-var cleanTask = gulpUtils.fsContextClosure(pathIn, ui, 'clean', pathOut);
-gulp.task('patternlab:clean', cleanTask);
+gulp.task('patternlab:clean', function (cb) {
+  ui.clean();
+  cb();
+});
 
-var copyTask = gulpUtils.fsContextClosure(pathIn, ui, 'copy', pathOut);
-gulp.task('patternlab:copy', copyTask);
+gulp.task('patternlab:copy', function (cb) {
+  ui.copy();
+  cb();
+});
 
-var copyStylesTask = gulpUtils.fsContextClosure(pathIn, ui, 'copyStyles', pathOut);
-gulp.task('patternlab:copy-styles', copyStylesTask);
+gulp.task('patternlab:copy-styles', function (cb) {
+  ui.copyStyles();
+  cb();
+});
 
 gulp.task('patternlab:help', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    // No easy way to use the closure when passing params.
-    ui.build('help');
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
+  ui.build('help');
+  cb();
 });
 
 gulp.task('patternlab:patternsonly', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    // No easy way to use the closure when passing params.
-    ui.build('patternsonly');
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
+  ui.build('patternsonly');
+  cb();
 });
 
 gulp.task('patternlab:v', function (cb) {
-  var p = new Promise(function (resolve, reject) {
-    process.chdir(pathIn);
-    // No easy way to use the closure when passing params.
-    ui.build('v');
-    resolve();
-  });
-  p.then(function () {
-    process.chdir(pathOut);
-    cb();
-  })
-  .catch(function (reason) {
-    utils.error(reason);
-    cb();
-  });
+  ui.build('v');
+  cb();
 });

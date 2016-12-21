@@ -64,7 +64,12 @@ function findEngineModulesInDirectory(dir) {
 function loadAllEngines(enginesObject) {
 
   enginesDirectories.forEach(function (engineDirectory) {
-    var enginesInThisDir = findEngineModulesInDirectory(engineDirectory.path);
+    var enginesInThisDir;
+    try {
+      enginesInThisDir = findEngineModulesInDirectory(engineDirectory.path);
+    } catch (err) {
+      return;
+    }
 
     // find all engine-named things in this directory and try to load them,
     // unless it's already been loaded.
