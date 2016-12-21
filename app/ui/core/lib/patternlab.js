@@ -16,9 +16,6 @@ var JSON5 = require('json5');
 var path = require('path');
 var plutils = require('./utilities');
 
-// GTP: these two diveSync pattern processors factored out so they can be reused
-// from unit tests to reduce code dupe!
-
 function buildPatternData(dataFilesPath, fs) {
   var dataFilesPath = dataFilesPath;
   var dataFiles = glob.sync(dataFilesPath + '*.json', {ignore: [dataFilesPath + 'listitems.json']});
@@ -51,9 +48,7 @@ function processAllPatternsRecursive(pattern_assembler, patterns_dir, patternlab
   }
 }
 
-var patternlab_engine = function (config) {
-  'use strict';
-
+var patternlab_engine = function (configParam) {
   var fs = require('fs-extra');
   var pa = require('./pattern_assembler');
   var pe = require('./pattern_exporter');
@@ -61,6 +56,26 @@ var patternlab_engine = function (config) {
   var buildFrontEnd = require('./ui_builder');
   var sm = require('./starterkit_manager');
   var patternlab = {};
+
+
+  // Fepper-defined global.rootDir allows portability of Pattern Lab.
+  var rootDir = global.rootDir || '';
+  // Clone and mutate the config object to facilitate this portability.
+  var config = JSON.parse(JSON.stringify(configParam));
+  if (rootDir) {
+    var pathsSource = config.paths.source;
+    for (var pathSrc in pathsSource) {
+      if (pathsSource.hasOwnProperty(pathSrc)) {
+        pathsSource[pathSrc] = rootDir + '/' + pathsSource[pathSrc];
+      }
+    }
+    var pathsPublic = config.paths.public;
+    for (var pathPub in pathsPublic) {
+      if (pathsPublic.hasOwnProperty(pathPub)) {
+        pathsPublic[pathPub] = rootDir + '/' + pathsPublic[pathPub];
+      }
+    }
+  }
 
   var jsonFileStr = fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8');
   patternlab.package = JSON5.parse(jsonFileStr);
