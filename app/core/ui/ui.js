@@ -4,14 +4,15 @@ const fs = require('fs-extra');
 
 const utils = require('../lib/utils');
 
-var conf = global.conf;
-var pubDir = conf.ui.paths.public;
-var srcDir = conf.ui.paths.source;
+const conf = global.conf;
+const pubDir = conf.ui.paths.public;
+const srcDir = conf.ui.paths.source;
+const workDir = global.workDir;
+
+const patternlab = require(utils.pathResolve(`${conf.ui.paths.core.lib}/patternlab.js`))(conf.ui, workDir);
 
 module.exports = class {
   build(arg) {
-    var patternlab = require(utils.pathResolve(`${conf.ui.paths.core.lib}/patternlab.js`))(conf.ui);
-
     if (typeof arg === 'undefined') {
       patternlab.build(function () {});
     }

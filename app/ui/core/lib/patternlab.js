@@ -48,7 +48,7 @@ function processAllPatternsRecursive(pattern_assembler, patterns_dir, patternlab
   }
 }
 
-var patternlab_engine = function (configParam) {
+var patternlab_engine = function (configParam, configDirParam) {
   var fs = require('fs-extra');
   var pa = require('./pattern_assembler');
   var pe = require('./pattern_exporter');
@@ -57,22 +57,21 @@ var patternlab_engine = function (configParam) {
   var sm = require('./starterkit_manager');
   var patternlab = {};
 
-
-  // Fepper-defined global.rootDir allows portability of Pattern Lab.
-  var rootDir = global.rootDir || '';
+  // The configDir can be submitted as a param to resolve relative paths in configParam.
+  var configDir = configDirParam || '';
   // Clone and mutate the config object to facilitate this portability.
   var config = JSON.parse(JSON.stringify(configParam));
-  if (rootDir) {
+  if (configDir) {
     var pathsSource = config.paths.source;
     for (var pathSrc in pathsSource) {
       if (pathsSource.hasOwnProperty(pathSrc)) {
-        pathsSource[pathSrc] = rootDir + '/' + pathsSource[pathSrc];
+        pathsSource[pathSrc] = configDir + '/' + pathsSource[pathSrc];
       }
     }
     var pathsPublic = config.paths.public;
     for (var pathPub in pathsPublic) {
       if (pathsPublic.hasOwnProperty(pathPub)) {
-        pathsPublic[pathPub] = rootDir + '/' + pathsPublic[pathPub];
+        pathsPublic[pathPub] = configDir + '/' + pathsPublic[pathPub];
       }
     }
   }
