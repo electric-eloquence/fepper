@@ -351,8 +351,14 @@ function buildViewAllPages(mainPageHeadHtml, patternlab, styleguidePatterns) {
 
       // render the viewall template
       viewAllHTML = buildViewAllHTML(patternlab, viewAllPatterns, patternPartial);
-      fs.outputFileSync(paths.public.patterns + pattern.subdir.slice(0, pattern.subdir.indexOf(pattern.patternGroup) +
-        pattern.patternGroup.length) + '/index.html', mainPageHeadHtml + viewAllHTML + footerHTML);
+      fs.outputFileSync(
+        path.resolve(
+          paths.public.patterns,
+          pattern.subdir.slice(0, pattern.subdir.indexOf(pattern.patternGroup) + pattern.patternGroup.length),
+          'index.html'
+        ),
+        mainPageHeadHtml + viewAllHTML + footerHTML
+      );
 
     // create the view all for the subsection
     // check if the current sub section is different from the previous one
@@ -387,7 +393,13 @@ function buildViewAllPages(mainPageHeadHtml, patternlab, styleguidePatterns) {
       viewAllHTML = buildViewAllHTML(patternlab, viewAllPatterns, patternPartial);
 
       fs.outputFileSync(
-        paths.public.patterns + pattern.flatPatternPath + '/index.html', mainPageHeadHtml + viewAllHTML + footerHTML);
+        path.resolve(
+          paths.public.patterns,
+          pattern.flatPatternPath,
+          'index.html'
+        ),
+        mainPageHeadHtml + viewAllHTML + footerHTML
+      );
     }
   }
 }

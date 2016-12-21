@@ -644,19 +644,28 @@ var pattern_assembler = function () {
     var patternPage = pattern.header + pattern.patternPartialCode;
 
     fs.outputFileSync(
-      paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.rendered + '.html'), patternPage);
+      path.resolve(
+        paths.public.patterns,
+        pattern.patternLink.replace('.html', outputFileSuffixes.rendered + '.html')
+      ),
+      patternPage
+    );
 
     // write the mustache file too
     fs.outputFileSync(
-      paths.public.patterns + pattern.patternLink.replace(
-        '.html', outputFileSuffixes.rawTemplate + pattern.fileExtension
+      path.resolve(
+        paths.public.patterns,
+        pattern.patternLink.replace('.html', outputFileSuffixes.rawTemplate + pattern.fileExtension)
       ),
       pattern.template
     );
 
     // write the markup-only version too
     fs.outputFileSync(
-      paths.public.patterns + pattern.patternLink.replace('.html', outputFileSuffixes.markupOnly + '.html'),
+      path.resolve(
+        paths.public.patterns,
+        pattern.patternLink.replace('.html', outputFileSuffixes.markupOnly + '.html')
+      ),
       pattern.patternPartialCode
     );
 
