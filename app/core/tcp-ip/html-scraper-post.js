@@ -8,7 +8,7 @@ const json2html = require('html2json').json2html;
 const request = require('request');
 
 const utils = require('../lib/utils');
-const conf = utils.conf();
+const conf = global.conf;
 
 var req;
 var res;
@@ -27,11 +27,11 @@ class JsonForData {
 }
 
 /**
- * @param {string} str - The text requiring sane newlines.
+ * @param {string} strParam - The text requiring sane newlines.
  * @return {string} A line feed at the end and stripped of carriage returns.
  */
-exports.newlineFormat = function (str) {
-  str = str.replace(/\r/g, '') + '\n';
+exports.newlineFormat = function (strParam) {
+  var str = strParam.replace(/\r/g, '') + '\n';
 
   return str;
 };
@@ -228,11 +228,11 @@ exports.filesWrite = function (templateDir, fileName, fileMustache, fileJson) {
 /**
  * Sanitize scraped HTML.
  *
- * @param {string} html - raw HTML.
+ * @param {string} htmlParam - raw HTML.
  * @return {string} Sanitized HTML.
  */
-exports.htmlSanitize = function (html) {
-  html = html.replace(/<script(.*?)>/g, '<code$1>');
+exports.htmlSanitize = function (htmlParam) {
+  var html = htmlParam.replace(/<script(.*?)>/g, '<code$1>');
   html = html.replace(/<\/script(.*?)>/g, '</code$1>');
   html = html.replace(/<textarea(.*?)>/g, '<figure$1>');
   html = html.replace(/<\/textarea(.*?)>/g, '</figure$1>');
@@ -267,7 +267,8 @@ exports.isFilenameValid = function (fileName) {
   return fileName.match(/^[A-Za-z0-9][\w\-\.]*$/) ? true : false;
 };
 
-exports.jsonRecurse = function (jsonObj, dataObj, dataKeys, inc) {
+exports.jsonRecurse = function (jsonObj, dataObj, dataKeys, incParam) {
+  var inc = incParam;
   var tmpObj;
   var suffix;
   var suffixInt;
@@ -384,12 +385,12 @@ exports.outputHtml = function (jsonForData, targetHtmlParam, mustache) {
   res.end(output);
 };
 
-exports.redirectWithMsg = function (type, msg, target, url) {
+exports.redirectWithMsg = function (type, msg, targetParam, urlParam) {
   if (res) {
     var msgType = type[0].toUpperCase() + type.slice(1);
 
-    target = typeof target === 'string' ? target : '';
-    url = typeof url === 'string' ? url : '';
+    var target = typeof targetParam === 'string' ? targetParam : '';
+    var url = typeof urlParam === 'string' ? urlParam : '';
     res.writeHead(
       303,
       {
@@ -527,7 +528,7 @@ exports.main = function (reqParam, resParam) {
       fileName = req.body.filename;
     }
 
-    templateDir = utils.pathResolve(conf.ui.paths.source.patterns + '/98-scrape');
+    templateDir = utils.pathResolve(conf.ui.paths.source.scrape);
     fileMustache = exports.newlineFormat(req.body.mustache);
     fileJson = exports.newlineFormat(req.body.json);
     exports.filesWrite(templateDir, fileName, fileMustache, fileJson);

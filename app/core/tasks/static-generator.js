@@ -12,11 +12,10 @@ const RcLoader = require('rcloader');
 
 const utils = require('../lib/utils');
 
+const appDir = global.appDir;
 const patternsDir = utils.pathResolve(conf.ui.paths.public.patterns);
 const sourceDir = utils.pathResolve(conf.ui.paths.public.root, true);
-const staticSuffix = 'static';
-const staticDir = utils.pathResolve(`${conf.ui.paths.source.root}/${staticSuffix}`);
-const workDir = global.workDir;
+const staticDir = utils.pathResolve(conf.ui.paths.source.static, true);
 
 const assetsDir = utils.pathResolve(conf.ui.paths.public.images, true);
 const assetsSuffix = assetsDir.replace(`${sourceDir}/`, '');
@@ -59,15 +58,22 @@ exports.pagesDirCompile = function () {
   var files = [];
   var i;
   var j;
+  var pagesPrefix;
+  var regex;
+  var regexStr;
   var tmpArr = [];
   var tmpStr = '';
 
+  let srcPages = path.normalize(conf.ui.paths.source.pages);
+  let srcPatterns = `${path.normalize(conf.ui.paths.source.patterns)}/`;
+  pagesPrefix = path.normalize(srcPages.replace(srcPatterns, ''));
+
   // Load js-beautify with options configured in .jsbeautifyrc
   var rcLoader = new RcLoader('.jsbeautifyrc', {});
-  var rcOpts = rcLoader.for(workDir, {lookup: true});
+  var rcOpts = rcLoader.for(appDir, {lookup: true});
 
   // Glob page files in public/patterns.
-  dirs = glob.sync(patternsDir + '/04-pages-*');
+  dirs = glob.sync(`${patternsDir}/${pagesPrefix}-*`);
 
   for (i = 0; i < dirs.length; i++) {
     tmpArr = glob.sync(dirs[i] + '/*');
@@ -104,18 +110,27 @@ exports.pagesDirCompile = function () {
         tmpStr = tmpStr.replace(homepageRegex, '$1\'index');
       }
       // Strip prefix from remaining page filenames.
-      tmpStr = tmpStr.replace(/(href\s*=\s*)"[^"]*(\/|&#x2F;)04\-pages\-/g, '$1"');
-      tmpStr = tmpStr.replace(/(href\s*=\s*)'[^']*(\/|&#x2F;)04\-pages\-/g, '$1\'');
+      regexStr = '(href\\s*=\\s*)"[^"]*(/|&#x2F;)';
+      regexStr += utils.escapeReservedRegexChars(pagesPrefix + '-');
+      regex = new RegExp(regexStr, 'g');
+      tmpStr = tmpStr.replace(regex, '$1"');
+      regexStr = '(href\\s*=\\s*)\'[^\']*(/|&#x2F;)';
+      regex = utils.escapeReservedRegexChars(pagesPrefix + '-');
+      regex = new RegExp(regexStr, 'g');
+      tmpStr = tmpStr.replace(regex, '$1\'');
 
       // Load .jsbeautifyrc and beautify html
       tmpStr = beautify(tmpStr, rcOpts) + '\n';
 
       // Copy homepage to index.html.
-      if (dataJson.homepage && f.indexOf(dataJson.homepage + '.html') === (f.length - dataJson.homepage.length - 5)) {
-        fs.writeFileSync(staticDir + '/index.html', tmpStr);
+      if (dataJson.homepage && f.indexOf(`${dataJson.homepage}.html`) === (f.length - dataJson.homepage.length - 5)) {
+        fs.writeFileSync(`${staticDir}/index.html`, tmpStr);
       }
       else {
-        fs.writeFileSync(staticDir + '/' + f.replace(/^.*\/04\-pages\-/, ''), tmpStr);
+        regexStr = '^.*\\/';
+        regexStr += utils.escapeReservedRegexChars(pagesPrefix + '-');
+        regex = new RegExp(regexStr);
+        fs.writeFileSync(`${staticDir}/${f.replace(regex, '')}`, tmpStr);
       }
     }
   }

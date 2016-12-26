@@ -110,7 +110,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 4;
+  z-index: 1;
   width: 100%;
   /**
   * All lists appearing in the header
@@ -154,7 +154,7 @@
   text-transform: uppercase;
   z-index: 2;
 }
-@media all and (min-width: 42em) {
+@media all and (min-width: 60.01em) {
   .sg-nav-toggle {
     display: none;
   }
@@ -163,7 +163,7 @@
 /**
 * Navigation container
 */
-@media all and (max-width: 42em) {
+@media all and (max-width: 60em) {
   .sg-nav-container {
     overflow: hidden;
     max-height: 0;
@@ -171,6 +171,13 @@
             transition: max-height 0.1s ease-out;
   }
   .sg-nav-container.active {
+    max-height: 50em;
+  }
+}
+
+@media all and (min-width: 42.01em) and (max-width: 60em) {
+  .sg-nav-container.active {
+    overflow: visible;
     max-height: 50em;
   }
 }
@@ -1215,7 +1222,6 @@
   padding: 1em;
   bottom: 0;
   left: 0;
-  z-index: 4;
   width: 100%;
   height: 50%;
   overflow-y: auto;

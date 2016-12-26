@@ -37,7 +37,7 @@ module.exports = class {
   copy() {
     fs.copySync(utils.pathResolve(srcDir.images), utils.pathResolve(pubDir.images));
     fs.copySync(utils.pathResolve(srcDir.js), utils.pathResolve(pubDir.js));
-    fs.copySync(utils.pathResolve(`${srcDir.root}/static`), utils.pathResolve(`${pubDir.root}/static`));
+    fs.copySync(utils.pathResolve(srcDir.static), utils.pathResolve(pubDir.static));
   }
 
   copyStyles() {

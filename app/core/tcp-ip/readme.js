@@ -4,7 +4,7 @@ const fs = require('fs');
 const marked = require('marked');
 
 const utils = require('../lib/utils');
-const conf = utils.conf();
+const conf = global.conf;
 
 const htmlObj = require('../lib/html');
 

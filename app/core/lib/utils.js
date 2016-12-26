@@ -1,12 +1,11 @@
 'use strict';
 
-var fs = require('fs-extra');
-var JSON = require('json5');
-var path = require('path');
-var util = require('util');
-var yaml = require('js-yaml');
+const fs = require('fs-extra');
+const JSON = require('json5');
+const path = require('path');
+const yaml = require('js-yaml');
 
-var enc = 'utf8';
+const enc = 'utf8';
 
 // ///////////////////////////////////////////////////////////////////////////
 // Conf and global vars.
@@ -24,7 +23,7 @@ exports.conf = function () {
 
   // Get default confs for Fepper core.
   try {
-    yml = fs.readFileSync(global.appDir + '/excludes/conf.yml', enc);
+    yml = fs.readFileSync(`${global.appDir}/excludes/conf.yml`, enc);
     defaults = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -35,7 +34,7 @@ exports.conf = function () {
 
   // Get default confs for UI.
   try {
-    defaults.ui = require(global.appDir + '/excludes/patternlab-config.json');
+    defaults.ui = require(`${global.appDir}/excludes/patternlab-config.json`);
   }
   catch (err) {
     exports.error(err);
@@ -93,7 +92,7 @@ exports.pref = function () {
   var yml;
 
   try {
-    yml = fs.readFileSync(global.appDir + '/excludes/pref.yml', enc);
+    yml = fs.readFileSync(`${global.appDir}/excludes/pref.yml`, enc);
     defaults = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -105,7 +104,7 @@ exports.pref = function () {
   defaults.gh_pages_src = null;
 
   try {
-    yml = fs.readFileSync(global.workDir + '/pref.yml', enc);
+    yml = fs.readFileSync(`${global.workDir}/pref.yml`, enc);
     pref = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -125,7 +124,7 @@ exports.data = function () {
   var dataStr;
 
   try {
-    dataStr = fs.readFileSync(exports.pathResolve(global.conf.ui.paths.source.data + '/data.json'), enc);
+    dataStr = fs.readFileSync(exports.pathResolve(`${global.conf.ui.paths.source.data}/data.json`), enc);
     data = JSON.parse(dataStr);
   }
   catch (err) {
@@ -147,8 +146,6 @@ exports.data = function () {
  * @return {object} The mutated obj2 object.
  */
 exports.mergeObjects = function (obj1, obj2) {
-  obj2 = obj2 || {};
-
   for (var i in obj1) {
     if (obj1.hasOwnProperty(i)) {
       try {
@@ -178,6 +175,10 @@ exports.mergeObjects = function (obj1, obj2) {
   return obj2;
 };
 
+exports.escapeReservedRegexChars = function (regexStr) {
+  return regexStr.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&');
+};
+
 // ///////////////////////////////////////////////////////////////////////////
 // File system utilities.
 // ///////////////////////////////////////////////////////////////////////////
@@ -186,7 +187,7 @@ exports.backendDirCheck = function (backendDir) {
   var stats;
 
   if (typeof backendDir === 'string') {
-    fullPath = exports.pathResolve('backend/' + backendDir.trim());
+    fullPath = `${exports.pathResolve(global.conf.backend_dir)}/${backendDir.trim()}`;
 
     try {
       stats = fs.statSync(fullPath);
@@ -246,7 +247,7 @@ exports.findup = function (fileName, workDirParam) {
 // ///////////////////////////////////////////////////////////////////////////
 // Logging.
 // ///////////////////////////////////////////////////////////////////////////
-exports.console = console;
+exports.console = console; // To not trigger eslint errors on assignment.
 
 exports.isTest = function () {
   var isGulp = false;
@@ -269,9 +270,9 @@ exports.isTest = function () {
   return isTest;
 };
 
-exports.i = function (obj, showHidden, depth) {
-  depth = depth ? depth : null;
-  return util.inspect(obj, showHidden, depth);
+exports.i = function (obj, depthParam, showHidden) {
+  var depth = depthParam ? depthParam : null;
+  return exports.console.dir(obj, {showHidden: showHidden, depth: depth});
 };
 
 exports.error = exports.console.error;
@@ -321,6 +322,9 @@ exports.webservedDirsCopy = function (webservedDirsFull, webservedDirsShort, sta
   var i;
 
   for (i = 0; i < webservedDirsFull.length; i++) {
-    fs.copySync(exports.pathResolve('backend/' + webservedDirsFull[i]), staticDir + '/' + webservedDirsShort[i]);
+    fs.copySync(
+      `${exports.pathResolve(global.conf.backend_dir)}/${webservedDirsFull[i]}`,
+      `${staticDir}/${webservedDirsShort[i]}`
+    );
   }
 };

@@ -34,12 +34,12 @@ module.exports = class {
   /**
    * Strip Mustache tag to only the partial path.
    *
-   * @param {string} partial - Mustache syntax.
+   * @param {string} partialParam - Mustache syntax.
    * @return {string} Partial path.
    */
-  partialTagToPath(partial) {
+  partialTagToPath(partialParam) {
     // Strip opening Mustache braces and control character.
-    partial = partial.replace(/^\{\{>\s*/, '');
+    var partial = partialParam.replace(/^\{\{>\s*/, '');
     // Strip parentheses-wrapped parameter submission.
     partial = partial.replace(/\([\S\s]*?\)/, '');
     // Strip colon/pipe-delimited style modifier.
@@ -56,11 +56,11 @@ module.exports = class {
   /**
    * Recursively strip token span tags output by the Pattern Lab code viewer.
    *
-   * @param {string} code - HTML/Mustache.
+   * @param {string} codeParam - HTML/Mustache.
    * @return {string} Stripped code.
    */
-  spanTokensStrip(code) {
-    code = code.replace(/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/g, '$1');
+  spanTokensStrip(codeParam) {
+    var code = codeParam.replace(/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/g, '$1');
     if (/<span class="token [\S\s]*?>([\S\s]*?)<\/span>/.test(code)) {
       code = this.spanTokensStrip(code);
     }
@@ -75,13 +75,13 @@ module.exports = class {
    * @return {string} Viewable and linkable code.
    */
   toHtmlEntitiesAndLinks(data) {
-    data = data.replace(/"/g, '&quot;');
-    data = data.replace(/</g, '&lt;');
-    data = data.replace(/>/g, '&gt;');
-    data = data.replace(/\{\{&gt;[\S\s]*?\}\}/g, '<a href="?partial=$&">$&</a>');
-    data = data.replace(/\n/g, '<br>');
+    var entitiesAndLinks = data.replace(/"/g, '&quot;');
+    entitiesAndLinks = entitiesAndLinks.replace(/</g, '&lt;');
+    entitiesAndLinks = entitiesAndLinks.replace(/>/g, '&gt;');
+    entitiesAndLinks = entitiesAndLinks.replace(/\{\{&gt;[\S\s]*?\}\}/g, '<a href="?partial=$&">$&</a>');
+    entitiesAndLinks = entitiesAndLinks.replace(/\n/g, '<br>');
 
-    return data;
+    return entitiesAndLinks;
   }
 
   main() {
@@ -119,11 +119,11 @@ module.exports = class {
             fs.readFile(fullPath, conf.enc, function (err, data) {
               // Render the Mustache code if it does.
               // First, link the Mustache tags.
-              data = this.toHtmlEntitiesAndLinks(data);
+              let entitiesAndLinks = this.toHtmlEntitiesAndLinks(data);
               // Render the output with HTML head and foot.
               let output = htmlObj.head;
               output += `<h1>${partial}</h1>`;
-              output += data;
+              output += entitiesAndLinks;
               output += htmlObj.foot;
               output = output.replace('{{ title }}', 'Fepper Mustache Browser');
               res.end(output);
