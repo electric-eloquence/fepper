@@ -4,17 +4,16 @@
     {{# emergency }}
       {{> 01-compounds/07-messaging/00-alert }}
     {{/ emergency }}
-    {{# hero }}
-      {{> 01-compounds/02-blocks/02-block-hero }}
-    {{/ hero }}
 
-    <div class="g g-3up">
+    <section class="hero-and-insets">
+      {{# hero }}
+        {{> 01-compounds/02-blocks/02-block-hero }}
+      {{/ hero }}
+
       {{# touts }}
-        <div class="gi">
-          {{> 01-compounds/02-blocks/05-inset-block }}
-        </div>
+        {{> 01-compounds/02-blocks/05-inset-block }}
       {{/ touts }}
-    </div><!--end 3up-->
+    </section>
 
     <hr>
 

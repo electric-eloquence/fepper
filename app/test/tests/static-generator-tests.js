@@ -19,7 +19,7 @@ const enc = conf.enc;
 const staticGenerator = require(`${global.appDir}/core/tasks/static-generator`);
 
 const patternsDir = `${global.workDir}/${conf.ui.paths.source.patterns}`;
-const staticDir = path.normalize(`${global.workDir}/${conf.ui.paths.source.root}/static`);
+const staticDir = path.normalize(`${global.workDir}/${conf.ui.paths.source.static}`);
 
 const assetsSrc = path.normalize(`${global.workDir}/${conf.ui.paths.source.images}`);
 const scriptsSrc = path.normalize(`${global.workDir}/${conf.ui.paths.source.js}`);

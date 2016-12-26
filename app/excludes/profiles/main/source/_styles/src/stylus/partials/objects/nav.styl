@@ -21,11 +21,18 @@
       border: 0
 //Pagination
 .pagination
+  margin: -($pad) 0 $pad
   overflow: hidden
+  .section.comments &
+    margin: 0
   li
     float: left
     border-right: 1px solid $gray-light-2
     &:last-child
       border: 0
   a
-    padding: $pad
+    display: block
+    padding: 0 $pad
+  @media all and (max-width: $bp-small - 1px)
+    a
+      padding: 0 1.4rem
