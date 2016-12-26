@@ -26,9 +26,9 @@ utils.pref();
 requireDir('./tasker');
 
 // Optionally require auxiliary, contrib, and custom tasks.
-const auxDir = `${workDir}/extend/auxiliary`;
-const conFile = `${workDir}/extend/contrib.js`;
-const cusFile = `${workDir}/extend/custom.js`;
+const auxDir = `${utils.pathResolve(conf.extend_dir, true)}/auxiliary`;
+const conFile = `${utils.pathResolve(conf.extend_dir, true)}/contrib.js`;
+const cusFile = `${utils.pathResolve(conf.extend_dir, true)}/custom.js`;
 const auxExists = fs.existsSync(auxDir);
 const conExists = fs.existsSync(conFile);
 const cusExists = fs.existsSync(cusFile);
@@ -43,7 +43,7 @@ if (cusExists) {
 }
 
 // Search for extension tasks and require them.
-var extendPlugins = glob.sync(workDir + '/extend/*/*/*~extend.js');
+var extendPlugins = glob.sync(utils.pathResolve(conf.extend_dir) + '/*/*/*~extend.js');
 for (var i = 0; i < extendPlugins.length; i++) {
   require(extendPlugins[i]);
 }

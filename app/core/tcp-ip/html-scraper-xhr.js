@@ -1,5 +1,9 @@
 'use strict';
 
+const conf = global.conf;
+
+const path = require('path');
+
 const htmlObj = require('../lib/html');
 
 exports.main = function (req, res) {
@@ -28,7 +32,12 @@ exports.main = function (req, res) {
   output = output.replace('{{ url }}', url);
   output = output.replace('{{ target }}', target);
 
-  if (req.headers.referer.indexOf('/patterns/98-scrape-00-html-scraper/98-scrape-00-html-scraper.html') > -1) {
+  let srcPatterns = `${path.normalize(conf.ui.paths.source.patterns)}/`;
+  let srcScrape = path.normalize(conf.ui.paths.source.scrape);
+  var scrapePrefix = path.normalize(srcScrape.replace(srcPatterns, ''));
+  var scrapePath = `/patterns/${scrapePrefix}-00-html-scraper/${scrapePrefix}-00-html-scraper.html`;
+
+  if (req.headers.referer.indexOf(scrapePath) > -1) {
     output = output.replace('{{ attributes }}', ' target="_blank"');
   }
   res.end(output);

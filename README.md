@@ -27,31 +27,29 @@
 * [Contribute](#contribute)
 
 ### <a id="install"></a>Install
-* On Mac OS X:
-  * Install [Homebrew](http://brew.sh).
-* On other OSs:
-  * If the OS can run Node.js, it can run Fepper. However, the `fp` command is dependent on BASH.
-  * Using Fepper on other OSs implies that you know what you are doing.
-* Install Node.js and NPM (Node Package Manager).
-  * Requires Node.js v4.0.0 at the very least.
-  * On a Mac: `brew install node`
-  * If already installed, be sure the version is up to date: `node -v`
-  * Update if necessary: `brew update && brew upgrade node`
-  * If not on a Mac, and not using Homebrew: https://nodejs.org/en/download/package-manager/
-  * After installing Node, `npm install -g fepper-cli`
+#### Main install
 * On Mac OS X:
   * Double-click `fepper.command`
-* On other OSs (or if you prefer the command line, or want a Base install):
-  * `npm install` for a Main install - OR -
-  * `npm run install-base` for a Base install
-* After successful installation:
-  * Double-click `fepper.command` again
+  * Or on the command line, enter `./fepper.command`
+* On other OSs:
+  * If the OS can run Node.js, it can run Fepper. However, the `fp` command is dependent on BASH.
+  * Using Fepper on other OSs implies that you know what you are doing!
+* After entering your password for installation, Fepper should automatically open in a browser.
+  * Open http://localhost:3000 if it doesn't open automatically.
+* To stop Fepper, go to the command line where Fepper is running and press Ctrl+c.
+* To restart Fepper:
+  * Double-click `fepper.command` again.
   * Or enter `fp` on the command line.
-* Open http://localhost:3000 in a browser if it doesn't open automatically.
 * Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
 * Start editing files in `source`. Changes should automatically appear in the browser.
   * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).  
-* To halt Fepper, go to the command line where Fepper is running and press Ctrl+c.
+
+#### Base install
+* Comes with no unnecessary assets, styles, or Pattern Lab demo.
+* Node.js must be installed beforehand.
+* `npm install -g fepper-cli`
+* `npm run install-base`
+* `fp`
 
 ### <a id="update"></a>Update
 In most cases, you can simply copy the latest package over the old. If there are 
@@ -116,9 +114,9 @@ Running `fp static` will generate a complete static site based on the files in
 An `index.html` will be generated based on `04-pages-00-homepage` or whatever is 
 defined as the homepage in `_data.json`. If the links are relative and they work 
 correctly in the Fepper UI, they will work correctly in the static site even if 
-the `static` directory is moved and renamed. The only caveat is that links to 
-other pages in the `patterns` directory must start with `../04-pages-` and not 
-`../../patterns/04-pages-`.
+the `public/static` directory is copied and renamed. The only caveat is that 
+hard-coded links to other pages in the `patterns` directory must start with 
+`../04-pages-` and not `../../patterns/04-pages-`.
 
 ### <a id="the-backend"></a>The Backend
 Fepper can almost as easily work with a CMS backend such as Drupal or WordPress, 

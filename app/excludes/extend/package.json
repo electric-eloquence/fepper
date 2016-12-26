@@ -10,6 +10,6 @@
     "node": ">=4.0.0"
   },
   "devDependencies": {
-    "fp-stylus": "~0.0.5"
+    "fp-stylus": "~0.0.9"
   }
 }
