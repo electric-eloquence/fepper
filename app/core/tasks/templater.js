@@ -194,7 +194,8 @@ exports.templatesWrite = function (file, srcDirParam, templatesDir, templatesExt
   return dest;
 };
 
-exports.tokensReplace = function (tokens, code) {
+exports.tokensReplace = function (tokens, codeParam) {
+  var code = codeParam;
   var regex;
   var token;
   var unescaped;

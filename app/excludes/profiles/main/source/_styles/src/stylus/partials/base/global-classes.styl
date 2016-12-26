@@ -43,18 +43,14 @@
   text-align: left
 /* Display Classes */
 .hide-small
-  @media all and (max-width: $bp-med)
+  @media all and (max-width: $bp-med - 1px)
     display: none
 .hide-med
-  @media all and (min-width: $bp-med) and (max-width: $bp-large)
+  @media all and (min-width: $bp-med) and (max-width: $bp-large - 1px)
     display: none
 .hide-large
   @media all and (min-width: $bp-large)
     display: none
-.hide-large-2
-  @media all and (min-width: $bp-large-2)
-    display: none
-//
 .valid
   color: $valid
 .error

@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const utils = require('../lib/utils');
-const conf = utils.conf();
-const pref = utils.pref();
+const conf = global.conf;
+const pref = global.pref;
 
 const htmlScraper = require('./html-scraper');
 const htmlScraperPost = require('./html-scraper-post');
@@ -30,7 +30,10 @@ exports.main = function () {
     for (let i = 0; i < webservedDirs.length; i++) {
       let webservedDirSplit = webservedDirs[i].split('/');
       webservedDirSplit.shift();
-      app.use('/' + webservedDirSplit.join('/'), express.static(utils.pathResolve(`backend/${webservedDirs[i]}`)));
+      app.use(
+        `/${webservedDirSplit.join('/')}`,
+        express.static(`${utils.pathResolve(conf.backend_dir)}/${webservedDirs[i]}`)
+      );
     }
   }
 
