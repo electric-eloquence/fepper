@@ -5,7 +5,7 @@ const fs = require('fs');
 const copy = require('./copy/copy');
 
 /**
- * Copy the named dir from immediately within srcDir to cwd.
+ * If the named dir does not exist in cwd, copy it from immediately within srcDir to cwd.
  * @param {string} dir - The dir to be copied.
  * @param {string} srcDir - The parent directory of dir.
  * @param {function} cb - The callback.
@@ -27,7 +27,7 @@ exports.dir = function (dir, srcDir, cb) {
 };
 
 /**
- * Copy the named file from immediately within srcDir to cwd.
+ * If the named file does not exist in cwd, copy it from immediately within srcDir to cwd.
  * @param {string} file - The file to be copied.
  * @param {string} srcDir - The parent directory of file.
  * @param {function} cb - The callback.
