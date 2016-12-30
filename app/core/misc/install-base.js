@@ -3,60 +3,49 @@
 const exec = require('child_process').exec;
 const fs = require('fs');
 
-const copy = require('./copy');
-
-const excludesDir = 'app/excludes';
+const sourceDir = 'source';
 
 new Promise(function (resolve) {
-  var baseDir = 'source';
-
-  if (!fs.existsSync(baseDir)) {
-    copy(`${excludesDir}/profiles/base/${baseDir}`, baseDir, (err) => {
-      if (err) {
-        throw err;
-      }
-      resolve();
-    });
+  // First, create empty source dir so the postinstall script doesn't write the main profile there.
+  if (!fs.existsSync(sourceDir)) {
+    fs.mkdirSync(sourceDir);
   }
-  else {
-    resolve();
-  }
-})
-.then(function () {
-  return new Promise(function (resolve) {
-    exec('npm install', (err, stdout, stderr) => {
-      if (err) {
-        throw err;
-      }
-      if (stderr) {
 
-        /* eslint-disable no-console */
-        console.log(stderr);
-
-        /* eslint-enable no-console */
-        fs.appendFileSync('install.log', stderr);
-      }
-
-      /* eslint-disable no-console */
-      console.log(stdout);
-
-      /* eslint-enable no-console */
-      fs.writeFileSync('install.log', stdout);
-      resolve();
-    });
-  });
-})
-.then(function () {
-  exec('./node_modules/.bin/gulp --gulpfile app/tasker.js fepper:data', (err, stdout, stderr) => {
+  // Then, run npm install.
+  exec('npm install', (err, stdout, stderr) => {
     if (err) {
       throw err;
     }
+
+    if (stderr) {
+
+      /* eslint-disable no-console */
+      console.log(stderr);
+    }
+    console.log(stdout);
+
+    /* eslint-enable no-console */
+    resolve();
+  });
+})
+.then(function () {
+  // Then, delete the empty source dir so a new one can be copied over.
+  fs.rmdirSync(sourceDir);
+
+  // Then, copy over the base profile source dir.
+  exec('node_modules/.bin/gulp --gulpfile app/tasker.js install-base', (err, stdout, stderr) => {
+    if (err) {
+      throw err;
+    }
+
+    fs.writeFileSync('install.log', stdout);
     if (stderr) {
 
       /* eslint-disable no-console */
       console.log(stderr);
 
       /* eslint-enable no-console */
+      fs.appendFileSync('install.log', stderr);
     }
   });
 });

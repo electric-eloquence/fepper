@@ -10,7 +10,7 @@ const yaml = require('js-yaml');
 
 const utils = require('../lib/utils');
 
-const sourceDir = utils.pathResolve(conf.ui.paths.source.root, true);
+const sourceDir = utils.pathResolve(conf.ui.paths.source.root);
 
 exports.mapPlNomenclature = function (frontendType) {
   var plName = frontendType;
