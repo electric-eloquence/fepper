@@ -198,16 +198,16 @@ var patternlab_engine = function (configParam, configDirParam) {
     try {
       patternlab.data = buildPatternData(paths.source.data, fs);
     } catch (ex) {
-      plutils.logRed('missing or malformed' + paths.source.data +
-        'data.json  Pattern Lab may not work without this file.');
+      plutils.logRed('ERROR: missing or malformed ' + path.resolve(paths.source.data, 'data.json') +
+      '. Pattern Lab may not work without this file.');
       patternlab.data = {};
     }
     try {
       jsonFileStr = fs.readFileSync(path.resolve(paths.source.data, 'listitems.json'), 'utf8');
       patternlab.listitems = JSON5.parse(jsonFileStr);
     } catch (ex) {
-      plutils.logRed('missing or malformed' + paths.source.data +
-        'listitems.json  Pattern Lab may not work without this file.');
+      plutils.logRed('ERROR: missing or malformed ' + path.resolve(paths.source.data, 'listitems.json') +
+      '. Pattern Lab may not work without this file.');
       patternlab.listitems = {};
     }
     try {
@@ -222,8 +222,8 @@ var patternlab_engine = function (configParam, configDirParam) {
       patternlab.viewAll = fs.readFileSync(
         path.resolve(paths.source.patternlabFiles, 'viewall.mustache'), 'utf8');
     } catch (ex) {
-      plutils.logRed('\nERROR: missing an essential file from ' + paths.source.patternlabFiles +
-        '. Pattern Lab won\'t work without this file.\n');
+      plutils.logRed('ERROR: missing an essential file from ' + paths.source.patternlabFiles +
+        '. Pattern Lab won\'t work without this file.');
       throw ex;
     }
     patternlab.patterns = [];
