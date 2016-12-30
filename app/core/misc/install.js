@@ -26,7 +26,7 @@ new Promise(function (resolve) {
   });
 })
 .then(function () {
-  exec('node_modules/.bin/gulp --gulpfile app/tasker.js install', (err, stdout, stderr) => {
+  exec('./node_modules/.bin/gulp --gulpfile app/tasker.js install', (err, stdout, stderr) => {
     if (err) {
       throw err;
     }

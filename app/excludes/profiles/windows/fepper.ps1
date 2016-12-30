@@ -35,6 +35,10 @@ if ($whereNode -Like "*\node.exe")
     if (-Not (Test-Path patternlab-config.json))
     {
       cp app\excludes\patternlab-config.json .
+      if (-Not (Test-Path source))
+      {
+        cp -Recurse app\excludes\profiles\main\source .
+      }
     }
 
     if (-Not (Test-Path pref.yml))
