@@ -1,8 +1,9 @@
 'use strict';
 
-var patternEngines = require('./pattern_engines');
-var path = require('path');
 var extend = require('util')._extend;
+var path = require('path');
+var slash = require('slash');
+var patternEngines = require('./pattern_engines');
 
 // Pattern properties
 
@@ -10,9 +11,9 @@ var Pattern = function (relPath, data) {
   // We expect relPath to be the path of the pattern template, relative to the
   // root of the pattern tree. Parse out the path parts and save the useful ones.
   var pathObj = path.parse(path.normalize(relPath));
-  this.relPath = path.normalize(relPath); // '00-atoms/00-global/00-colors.mustache'
-  this.relPathTrunc = pathObj.dir + '/' + pathObj.name; // '00-atoms/00-global/00-colors'
-  this.subdir = pathObj.dir;        // '00-atoms/00-global'
+  this.relPath = slash(path.normalize(relPath)); // '00-atoms/00-global/00-colors.mustache'
+  this.relPathTrunc = slash(pathObj.dir) + '/' + pathObj.name; // '00-atoms/00-global/00-colors'
+  this.subdir = slash(pathObj.dir);        // '00-atoms/00-global'
   this.fileName = pathObj.name;     // '00-colors'
   this.fileExtension = pathObj.ext; // '.mustache'
 
@@ -34,10 +35,10 @@ var Pattern = function (relPath, data) {
   // calculated path from the root of the public directory to the generated html
   // file for this pattern
   // '00-atoms-00-global-00-colors/00-atoms-00-global-00-colors.html'
-  this.patternLink = this.name + path.sep + this.name + '.html';
+  this.patternLink = slash(this.name + path.sep + this.name + '.html');
 
   // the top-level pattern group this pattern belongs to. 'atoms'
-  this.patternGroup = this.subdir.split(path.sep)[0].replace(/^\d*-/, '');
+  this.patternGroup = pathObj.dir.split(path.sep)[0].replace(/^\d*-/, '');
 
   // the sub-group this pattern belongs to.
   this.patternSubGroup = path.basename(this.subdir).replace(/^\d*-/, ''); // 'global'

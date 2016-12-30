@@ -486,7 +486,7 @@ function buildFrontEnd(patternlab) {
   output += 'var defaultPattern = "' + (patternlab.config.defaultPattern ? patternlab.config.defaultPattern : 'all');
   output += '";' + eol;
 
-  // write all ouytput to patternlab-data
+  // write all output to patternlab-data
   fs.outputFileSync(path.resolve(paths.public.data, 'patternlab-data.js'), output);
 
   // annotations

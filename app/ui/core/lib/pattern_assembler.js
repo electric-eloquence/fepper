@@ -623,7 +623,7 @@ var pattern_assembler = function () {
       rawTemplate: '',
       markupOnly: '.markup-only'
     };
-    plutils.mergeData(patternlab.config.outputFileSuffixes, outputFileSuffixes);
+    Object.assign(outputFileSuffixes, patternlab.config.outputFileSuffixes);
 
     // write the compiled template to the public patterns directory
     var paths = patternlab.config.paths;
@@ -632,7 +632,7 @@ var pattern_assembler = function () {
     fs.outputFileSync(
       path.resolve(
         paths.public.patterns,
-        pattern.patternLink.replace('.html', outputFileSuffixes.rendered + '.html')
+        pattern.patternLink.replace(/.html$/, outputFileSuffixes.rendered + '.html')
       ),
       patternPage
     );
@@ -641,7 +641,7 @@ var pattern_assembler = function () {
     fs.outputFileSync(
       path.resolve(
         paths.public.patterns,
-        pattern.patternLink.replace('.html', outputFileSuffixes.rawTemplate + pattern.fileExtension)
+        pattern.patternLink.replace(/.html$/, outputFileSuffixes.rawTemplate + pattern.fileExtension)
       ),
       pattern.template
     );
@@ -650,7 +650,7 @@ var pattern_assembler = function () {
     fs.outputFileSync(
       path.resolve(
         paths.public.patterns,
-        pattern.patternLink.replace('.html', outputFileSuffixes.markupOnly + '.html')
+        pattern.patternLink.replace(/.html$/, outputFileSuffixes.markupOnly + '.html')
       ),
       pattern.patternPartialCode
     );
@@ -674,6 +674,7 @@ var pattern_assembler = function () {
           case 'isPattern':
           case 'patternState':
           case 'template':
+          case 'patternPartialCode':
           case 'partialInterface':
           case 'patternLineagesR':
           case 'lineageR':

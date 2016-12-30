@@ -11,13 +11,14 @@ const gulp = require('gulp');
 const path = require('path');
 const requireDir = require('require-dir');
 const runSequence = require('run-sequence');
+const slash = require('slash');
 
 const utils = require('./core/lib/utils');
 
 // Set global.conf, global.pref, global.rootDir, and global.workDir.
-global.appDir = __dirname;
-global.rootDir = utils.findup('fepper.command', __dirname);
-global.workDir = global.rootDir;
+global.appDir = slash(__dirname);
+global.rootDir = slash(utils.findup('fepper.command', __dirname));
+global.workDir = slash(global.rootDir);
 
 utils.conf();
 utils.pref();
@@ -26,9 +27,9 @@ utils.pref();
 requireDir('./tasker');
 
 // Optionally require auxiliary, contrib, and custom tasks.
-const auxDir = `${utils.pathResolve(conf.extend_dir, true)}/auxiliary`;
-const conFile = `${utils.pathResolve(conf.extend_dir, true)}/contrib.js`;
-const cusFile = `${utils.pathResolve(conf.extend_dir, true)}/custom.js`;
+const auxDir = `${utils.pathResolve(conf.extend_dir)}/auxiliary`;
+const conFile = `${utils.pathResolve(conf.extend_dir)}/contrib.js`;
+const cusFile = `${utils.pathResolve(conf.extend_dir)}/custom.js`;
 const auxExists = fs.existsSync(auxDir);
 const conExists = fs.existsSync(conFile);
 const cusExists = fs.existsSync(cusFile);
