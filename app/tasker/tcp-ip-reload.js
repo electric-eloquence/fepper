@@ -13,8 +13,13 @@ gulp.task('tcp-ip-reload:listen', function () {
   plugins.refresh.listen({port: conf.livereload_port});
 });
 
-gulp.task('tcp-ip-reload:assetsScripts', function () {
-  return gulp.src(utils.pathResolve(pubDir.root) + '/!(_styles|patterns|styleguide)/**')
+gulp.task('tcp-ip-reload:annotations', function () {
+  return gulp.src(utils.pathResolve(pubDir.annotations) + '/**')
+    .pipe(plugins.refresh());
+});
+
+gulp.task('tcp-ip-reload:assets', function () {
+  return gulp.src(utils.pathResolve(pubDir.images) + '/**')
     .pipe(plugins.refresh());
 });
 
@@ -28,24 +33,35 @@ gulp.task('tcp-ip-reload:injectStyles', function () {
     .pipe(plugins.refresh());
 });
 
+gulp.task('tcp-ip-reload:otherStyles', function () {
+  return gulp.src(utils.pathResolve(pubDir.css) + '/**/*!(.css)')
+    .pipe(plugins.refresh());
+});
+
+gulp.task('tcp-ip-reload:scripts', function () {
+  return gulp.src(utils.pathResolve(pubDir.js) + '/**')
+    .pipe(plugins.refresh());
+});
+
+// console.info(srcDir.patterns);
 gulp.task('tcp-ip-reload:watch', function () {
-  // Need delay in order for launch to succeed consistently.
+  // An option to delay launch in case other asynchronous tasks need to complete.
   setTimeout(function () {
-    gulp.watch('**', {cwd: utils.pathResolve(srcDir.images)}, ['patternlab:copy']);
-    gulp.watch('_data.json', {cwd: utils.pathResolve(srcDir.data)}, ['data']);
-    gulp.watch('listitems.json', {cwd: utils.pathResolve(srcDir.data)}, ['patternlab:build']);
-    gulp.watch('annotations.json', {cwd: utils.pathResolve(srcDir.annotations)}, ['patternlab:build']);
-    gulp.watch('**', {cwd: utils.pathResolve(srcDir.meta)}, ['patternlab:build']);
-    gulp.watch('**', {cwd: utils.pathResolve(srcDir.patterns)}, ['data']);
-    gulp.watch('**', {cwd: utils.pathResolve(srcDir.js)}, ['patternlab:copy']);
-    gulp.watch('**', {cwd: utils.pathResolve(srcDir.cssBld)}, ['patternlab:copy-styles']);
-    gulp.watch('**', {cwd: utils.pathResolve(srcDir.static)}, ['patternlab:copy']);
-    gulp.watch(
-      '!(_styles|patterns|styleguide)/**',
-      {cwd: utils.pathResolve(pubDir.root)},
-      ['tcp-ip-reload:assetsScripts']
-    );
-    gulp.watch('**', {cwd: utils.pathResolve(pubDir.css)}, ['tcp-ip-reload:injectStyles']);
-    gulp.watch('index.html', {cwd: utils.pathResolve(pubDir.root)}, ['tcp-ip-reload:index']);
+    // We cannot use absolute paths in the first param for gulp.watch. Therefore we must specify cwd in the 2nd.
+    gulp.watch(srcDir.annotations + '/**', {cwd: global.workDir}, ['patternlab:build']);
+    gulp.watch(srcDir.cssBld + '/**', {cwd: global.workDir}, ['patternlab:copy-styles']);
+    gulp.watch(srcDir.data + '/_data.json', {cwd: global.workDir}, ['data']);
+    gulp.watch(srcDir.data + '/listitems.json', {cwd: global.workDir}, ['patternlab:build']);
+    gulp.watch(srcDir.images + '/**', {cwd: global.workDir}, ['patternlab:copy']);
+    gulp.watch(srcDir.js + '/**', {cwd: global.workDir}, ['patternlab:copy']);
+    gulp.watch(srcDir.meta + '/**', {cwd: global.workDir}, ['patternlab:build']);
+    gulp.watch(srcDir.patterns + '/**', {cwd: global.workDir}, ['data']);
+    gulp.watch(srcDir.static + '/**', {cwd: global.workDir}, ['patternlab:copy']);
+    gulp.watch(pubDir.annotations + '/**', {cwd: global.workDir}, ['tcp-ip-reload:annotations']);
+    gulp.watch(pubDir.css + '/**/*.css', {cwd: global.workDir}, ['tcp-ip-reload:injectStyles']);
+    gulp.watch(pubDir.css + '/**/*!(.css)', {cwd: global.workDir}, ['tcp-ip-reload:otherStyles']);
+    gulp.watch(pubDir.images + '/**', {cwd: global.workDir}, ['tcp-ip-reload:assets']);
+    gulp.watch(pubDir.js + '/**', {cwd: global.workDir}, ['tcp-ip-reload:scripts']);
+    gulp.watch(pubDir.root + '/index.html', {cwd: global.workDir}, ['tcp-ip-reload:index']);
   }, conf.timeout_main);
 });

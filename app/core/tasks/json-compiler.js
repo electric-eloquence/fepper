@@ -27,6 +27,10 @@ exports.main = function () {
   var globals = dataDir + '/_data.json';
   var tmp;
 
+  if (!fs.existsSync(appendix) || !fs.existsSync(globals)) {
+    return;
+  }
+
   // Delete (optional) closing curly brace from _data.json.
   tmp = fs.readFileSync(globals, conf.enc);
   // Delete curly brace and any whitespace at end of file.

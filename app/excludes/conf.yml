@@ -6,8 +6,9 @@ livereload_port: 35729
 kill_zombies: true
 
 # timeout_main sets the number of milliseconds to wait for asynchronous tasks to complete, particularly the wait before 
-# Fepper opens in a browser.
-timeout_main: 500
+# Fepper opens in a browser. This was an issue in the past, but maybe remedied by smarter code. This setting remains 
+# here in case the broken browser opening becomes an issue again.
+timeout_main: 0
 
 # It might be desirable to keep and run the app in node_modules/fepper-npm so as to leave core updates out of an 
 # implementation's version control. For now, app_dir will default to app but this legacy may become deprecated.

@@ -8,7 +8,8 @@
     },
     "patternStates": {
       "pages-homepage-emergency": "inprogress"
-    }
+    },
+    "patternExportPatternPartials": ["test-styled-organism"]
   },
   "data": {
     "message": "",

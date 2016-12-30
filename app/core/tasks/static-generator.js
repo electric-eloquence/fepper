@@ -14,13 +14,13 @@ const utils = require('../lib/utils');
 
 const appDir = global.appDir;
 const patternsDir = utils.pathResolve(conf.ui.paths.public.patterns);
-const sourceDir = utils.pathResolve(conf.ui.paths.public.root, true);
-const staticDir = utils.pathResolve(conf.ui.paths.source.static, true);
+const sourceDir = utils.pathResolve(conf.ui.paths.public.root);
+const staticDir = utils.pathResolve(conf.ui.paths.source.static);
 
-const assetsDir = utils.pathResolve(conf.ui.paths.public.images, true);
+const assetsDir = utils.pathResolve(conf.ui.paths.public.images);
 const assetsSuffix = assetsDir.replace(`${sourceDir}/`, '');
-const scriptsDir = utils.pathResolve(conf.ui.paths.public.js, true);
-const stylesDir = utils.pathResolve(conf.ui.paths.public.css, true);
+const scriptsDir = utils.pathResolve(conf.ui.paths.public.js);
+const stylesDir = utils.pathResolve(conf.ui.paths.public.css);
 const stylesSuffix = stylesDir.replace(`${sourceDir}/`, '');
 
 exports.assetsDirCopy = function () {

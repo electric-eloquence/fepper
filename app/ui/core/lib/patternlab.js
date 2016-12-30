@@ -65,15 +65,18 @@ var patternlab_engine = function (configParam, configDirParam) {
     var pathsSource = config.paths.source;
     for (var pathSrc in pathsSource) {
       if (pathsSource.hasOwnProperty(pathSrc)) {
-        pathsSource[pathSrc] = configDir + '/' + pathsSource[pathSrc];
+        pathsSource[pathSrc] = path.resolve(configDir, pathsSource[pathSrc]);
       }
     }
+
     var pathsPublic = config.paths.public;
     for (var pathPub in pathsPublic) {
       if (pathsPublic.hasOwnProperty(pathPub)) {
-        pathsPublic[pathPub] = configDir + '/' + pathsPublic[pathPub];
+        pathsPublic[pathPub] = path.resolve(configDir, pathsPublic[pathPub]);
       }
     }
+
+    config.patternExportDirectory = path.resolve(configDir, config.patternExportDirectory);
   }
 
   var jsonFileStr = fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8');
@@ -231,7 +234,7 @@ var patternlab_engine = function (configParam, configDirParam) {
     setCacheBust();
 
     var pattern_assembler = new pa();
-    var pattern_exporter = new pe();
+    var pattern_exporter = new pe(configDir || process.cwd());
     var list_item_hunter = new lih();
     var patterns_dir = paths.source.patterns;
 
@@ -311,7 +314,7 @@ var patternlab_engine = function (configParam, configDirParam) {
     }
 
     // export patterns if necessary
-    pattern_exporter.export_patterns(patternlab);
+    pattern_exporter.exportPatterns(patternlab);
   }
 
   return {

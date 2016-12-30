@@ -1,39 +1,48 @@
-/* eslint-disable */
+'use strict';
 
-var fs = require('fs')
-var path = require('path')
-var ncp = require('./ncp')
-var mkdir = require('./mkdirs')
+const fs = require('fs');
 
-function copy (src, dest, options, callback) {
-  if (typeof options === 'function' && !callback) {
-    callback = options
-    options = {}
-  } else if (typeof options === 'function' || options instanceof RegExp) {
-    options = {filter: options}
+const copy = require('./copy/copy');
+
+/**
+ * Copy the named dir from immediately within srcDir to cwd.
+ * @param {string} dir - The dir to be copied.
+ * @param {string} srcDir - The parent directory of dir.
+ * @param {function} cb - The callback.
+ */
+exports.dir = function (dir, srcDir, cb) {
+  if (!fs.existsSync(dir)) {
+    copy(`${srcDir}/${dir}`, dir, (err) => {
+      if (err) {
+        throw err;
+      }
+      if (typeof cb === 'function') {
+        cb();
+      }
+    });
   }
-  callback = callback || function () {}
+  else if (typeof cb === 'function') {
+    cb();
+  }
+};
 
-  fs.lstat(src, function (err, stats) {
-    if (err) return callback(err)
-
-    var dir = null
-    if (stats.isDirectory()) {
-      var parts = dest.split(path.sep)
-      parts.pop()
-      dir = parts.join(path.sep)
-    } else {
-      dir = path.dirname(dest)
-    }
-
-    fs.exists(dir, function (dirExists) {
-      if (dirExists) return ncp(src, dest, options, callback)
-      mkdir.mkdirs(dir, function (err) {
-        if (err) return callback(err)
-        ncp(src, dest, options, callback)
-      })
-    })
-  })
-}
-
-module.exports = copy
+/**
+ * Copy the named file from immediately within srcDir to cwd.
+ * @param {string} file - The file to be copied.
+ * @param {string} srcDir - The parent directory of file.
+ * @param {function} cb - The callback.
+ */
+exports.file = function (file, srcDir, cb) {
+  if (!fs.existsSync(file)) {
+    fs.readFile(`${srcDir}/${file}`, (err, data) => {
+      if (err) {
+        throw err;
+      }
+      fs.writeFileSync(file, data);
+      cb();
+    });
+  }
+  else {
+    cb();
+  }
+};
