@@ -14,6 +14,7 @@ exports.conf = function () {
   var conf;
   var confStr;
   var defaults;
+  var defaultsStr;
   var yml;
 
   // Return if global.conf already set.
@@ -34,7 +35,9 @@ exports.conf = function () {
 
   // Get default confs for UI.
   try {
-    defaults.ui = require(`${global.appDir}/excludes/patternlab-config.json`);
+    defaultsStr = fs.readFileSync(`${global.appDir}/excludes/patternlab-config.json`);
+    defaults.ui = JSON.parse(defaultsStr);
+    exports.normalizeUiPaths(defaults.ui);
   }
   catch (err) {
     exports.error(err);
@@ -47,7 +50,7 @@ exports.conf = function () {
 
   // Get custom confs for Fepper core.
   try {
-    yml = fs.readFileSync(global.workDir + '/conf.yml', enc);
+    yml = fs.readFileSync(`${global.workDir}/conf.yml`, enc);
     conf = yaml.safeLoad(yml);
   }
   catch (err) {
@@ -58,8 +61,9 @@ exports.conf = function () {
 
   // Retrieve custom values for UI.
   try {
-    confStr = fs.readFileSync(global.workDir + '/patternlab-config.json', enc);
+    confStr = fs.readFileSync(`${global.workDir}/patternlab-config.json`, enc);
     conf.ui = JSON.parse(confStr);
+    exports.normalizeUiPaths(conf.ui);
   }
   catch (err) {
     exports.error(err);
@@ -70,7 +74,7 @@ exports.conf = function () {
   // Update Pattern Lab paths.
   try {
     conf.ui.paths.core = {
-      lib: './app/ui/core/lib'
+      lib: 'app/ui/core/lib'
     };
   }
   catch (err) {
@@ -215,6 +219,43 @@ exports.extCheck = function (ext) {
   }
 
   return '';
+};
+
+/**
+ * Because Pattern Lab :-/
+ * Need to remove leading dot-slashes from properties within the paths object in patternlab-config.json.
+ * @param {object} uiObj - The UI configuration object.
+ * @return {object} The mutated uiObj.
+ */
+exports.normalizeUiPaths = function (uiObj) {
+  if (!uiObj || !uiObj.paths || !uiObj.paths.source) {
+    throw 'Missing or malformed paths.source property!';
+  }
+
+  if (!uiObj.paths.public) {
+    throw 'Missing or malformed paths.source property!';
+  }
+
+  var sourceObj = uiObj.paths.source;
+  var publicObj = uiObj.paths.public;
+
+  for (let i in sourceObj) {
+    if (sourceObj.hasOwnProperty(i)) {
+      if (sourceObj[i].slice(0, 2) === './') {
+        sourceObj[i] = sourceObj[i].slice(2);
+      }
+    }
+  }
+
+  for (let i in publicObj) {
+    if (publicObj.hasOwnProperty(i)) {
+      if (publicObj[i].slice(0, 2) === './') {
+        publicObj[i] = publicObj[i].slice(2);
+      }
+    }
+  }
+
+  return uiObj;
 };
 
 exports.pathResolve = function (relPath, normalize) {

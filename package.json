@@ -5,6 +5,7 @@
   "main": "app/index.js",
   "scripts": {
     "install-base": "node app/core/misc/install-base.js",
+    "install-windows": "node app/core/misc/install-windows.js",
     "postinstall": "node app/core/misc/install.js",
     "test": "gulp --gulpfile app/tasker.js test"
   },
@@ -38,6 +39,7 @@
     "rcloader": "^0.2.1",
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
-    "run-sequence": "^1.1.2"
+    "run-sequence": "^1.1.2",
+    "slash": "^1.0.0"
   }
 }

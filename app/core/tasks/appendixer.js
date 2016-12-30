@@ -19,6 +19,11 @@ exports.main = function () {
   var jsonStr = '{\n';
   var appendix = utils.pathResolve(`${conf.ui.paths.source.data}/_appendix.json`);
   var varFile = utils.pathResolve(`${conf.ui.paths.source.js}/src/variables.styl`);
+
+  if (!fs.existsSync(appendix) || !fs.existsSync(varFile)) {
+    return;
+  }
+
   var vars = fs.readFileSync(varFile, conf.enc);
   var varsSplit = vars.split('\n');
 
