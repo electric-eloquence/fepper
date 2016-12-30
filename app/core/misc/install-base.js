@@ -2,6 +2,7 @@
 
 const exec = require('child_process').exec;
 const fs = require('fs');
+const path = require('path');
 
 const sourceDir = 'source';
 
@@ -33,7 +34,8 @@ new Promise(function (resolve) {
   fs.rmdirSync(sourceDir);
 
   // Then, copy over the base profile source dir.
-  exec('./node_modules/.bin/gulp --gulpfile app/tasker.js install-base', (err, stdout, stderr) => {
+  var binGulp = path.resolve('node_modules', '.bin', 'gulp');
+  exec(`${binGulp} --gulpfile app/tasker.js install-base`, (err, stdout, stderr) => {
     if (err) {
       throw err;
     }

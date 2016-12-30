@@ -1,7 +1,7 @@
-#!/usr/bin/env node
 'use strict';
 
 const cp = require('child_process');
+const path = require('path');
 
 var argv = ['--gulpfile', 'app/tasker.js'];
 
@@ -36,4 +36,4 @@ if (process.argv[3]) {
   }
 }
 
-cp.spawn('./node_modules/.bin/gulp', argv, {stdio: 'inherit'});
+cp.spawn(path.resolve('node_modules', '.bin', 'gulp'), argv, {stdio: 'inherit'});
