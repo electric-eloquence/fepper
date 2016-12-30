@@ -26,7 +26,8 @@ new Promise(function (resolve) {
   });
 })
 .then(function () {
-  exec('./node_modules/.bin/gulp --gulpfile app/tasker.js install', (err, stdout, stderr) => {
+  var binGulp = path.resolve('node_modules', '.bin', 'gulp');
+  exec(`${binGulp} --gulpfile app/tasker.js install`, (err, stdout, stderr) => {
     if (err) {
       throw err;
     }
