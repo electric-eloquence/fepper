@@ -5,9 +5,6 @@
 /conf.yml
 /install.log
 /npm-debug.log
-/public/*
-!/public/styleguide/
-/public/styleguide/data/
-/public/styleguide/html/
+/public/
 ignore/
 node_modules/
