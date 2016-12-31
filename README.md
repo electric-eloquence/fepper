@@ -62,18 +62,7 @@
   * If you Set-ExecutionPolicy to allow ps1 scripts, you can also enter `.\fepper.ps1 [task]`
 
 ### <a id="update"></a>Update
-In most cases, you can simply copy the latest package over the old. If there are 
-issues with this, you might need to trash the old `app` and `public` directories 
-and replace them with the new.
-
-A superior way to update Fepper is with Git. This generally means forking an 
-Electric Eloquence Fepper repository at your project's onset, and pulling from 
-the master branch of the main upstream repository when updates are released.
-
-All updates must pull from https://github.com/electric-eloquence/fepper even if 
-your original installation was forked from a downstream repository. Pulling from 
-a downstream repository may overwrite custom code specific to your project so 
-don't do it!
+Run `npm update` to download and install the latest core updates.
 
 ### <a id="configure"></a>Configure
 Edit `pref.yml` to customize preferences and to view further documentation in 
