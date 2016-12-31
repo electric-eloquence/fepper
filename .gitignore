@@ -1,7 +1,6 @@
 .*.swp
 .DS_Store
 .publish/
-/app/test/**/pattern-overrider.js
 /conf.yml
 /install.log
 /npm-debug.log
