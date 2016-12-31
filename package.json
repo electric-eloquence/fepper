@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "A Front End Prototyper for the rapid prototyping of websites",
   "scripts": {
-    "install-base": "node install/install-base.js",
-    "install-windows": "node install/install-windows.js",
-    "postinstall": "node install/install.js",
+    "install-base": "node run/install-base.js",
+    "install-windows": "node run/install-windows.js",
+    "postinstall": "node run/install.js",
     "test": "gulp --gulpfile node_modules/fepper/tasker.js test"
   },
   "repository": {
