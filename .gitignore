@@ -9,10 +9,7 @@
 /npm-debug.log
 /patternlab-config.json
 /pref.yml
-/public/*
-!/public/styleguide/
-/public/styleguide/data/
-/public/styleguide/html/
+/public/
 /source/
 ignore/
 node_modules/
