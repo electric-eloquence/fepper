@@ -6,11 +6,17 @@ cd $root_dir
 
 # Check if Node is installed. Install if it isn't.
 has_node=`which node`
+node_msi=node-v6.9.2.pkg
+
 if [[ $has_node != *bin/node ]]; then
-  curl -O https://nodejs.org/dist/v6.9.2/node-v6.9.2.pkg
-  sudo installer -pkg node-v6.9.2.pkg -target /
-  rm node-v6.9.2.pkg
+  curl -O https://nodejs.org/dist/v6.9.2/${$node_msi}
+  sudo installer -pkg $node_msi -target /
   sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+fi
+
+# Delete installer file.
+if [ -f $node_msi ]; then
+  rm $node_msi
 fi
 
 # Check for fepper-cli. Install if missing.
