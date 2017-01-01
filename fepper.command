@@ -6,10 +6,11 @@ cd $root_dir
 
 # Check if Node is installed. Install if it isn't.
 has_node=`which node`
-node_msi="node-v6.9.2.pkg"
+node_version="v6.9.2"
+node_msi="node-${node_version}.pkg"
 
 if [[ $has_node != *bin/node ]]; then
-  curl -O https://nodejs.org/dist/v6.9.2/${node_msi}
+  curl -O https://nodejs.org/dist/${node_version}/${node_msi}
   sudo installer -pkg $node_msi -target /
   sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
 fi
