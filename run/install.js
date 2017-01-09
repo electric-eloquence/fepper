@@ -8,19 +8,19 @@ const excludesDir = 'node_modules/fepper/excludes';
 
 var confFile = 'conf.yml';
 var confFileSrc = path.resolve(excludesDir, confFile);
-if (!fs.existsSync(confFileSrc)) {
+if (!fs.existsSync(confFile)) {
   fs.copySync(confFileSrc, confFile);
 }
 
 var plConfFile = 'patternlab-config.json';
 var plConfFileSrc = path.resolve(excludesDir, plConfFile);
-if (!fs.existsSync(plConfFileSrc)) {
+if (!fs.existsSync(plConfFile)) {
   fs.copySync(plConfFileSrc, plConfFile);
 }
 
 var prefFile = 'pref.yml';
 var prefFileSrc = path.resolve(excludesDir, prefFile);
-if (!fs.existsSync(prefFileSrc)) {
+if (!fs.existsSync(prefFile)) {
   fs.copySync(prefFileSrc, prefFile);
 }
 
