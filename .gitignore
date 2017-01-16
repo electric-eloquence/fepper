@@ -8,7 +8,8 @@
 /npm-debug.log
 /patternlab-config.json
 /pref.yml
-/public/
+/public/*
+!/public/bower.json
 /source/
 ignore/
 node_modules/

@@ -1,0 +1,6 @@
+{
+  "name": "fepper",
+  "dependencies": {
+    "fepper-ui": "*"
+  }
+}
