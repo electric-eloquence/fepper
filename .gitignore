@@ -5,8 +5,6 @@
 /install.log
 /npm-debug.log
 /public/*
-!/public/styleguide/
-/public/styleguide/data/
-/public/styleguide/html/
+!/public/bower.json
 ignore/
 node_modules/
