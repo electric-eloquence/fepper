@@ -4,7 +4,7 @@
 root_dir=$(dirname $0)
 cd $root_dir
 
-# Check if Node is installed. Install if it isn't.
+# Check if Node.js is installed. Install if it isn't.
 has_node=`which node`
 node_version="v6.9.2"
 node_msi="node-${node_version}.pkg"
@@ -20,7 +20,13 @@ if [ -f $node_msi ]; then
   rm $node_msi
 fi
 
-# Check for fepper-cli. Install if missing.
+# Check if Bower is installed. Install if it isn't.
+has_bower=`which bower`
+if [[ $has_bower != *bin/bower ]]; then
+  npm install -g bower
+fi
+
+# Check if fepper-cli is installed. Install if it isn't.
 has_fp=`which fp`
 if [[ $has_fp != *bin/fp ]]; then
   npm install -g fepper-cli
