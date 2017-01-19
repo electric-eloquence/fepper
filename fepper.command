@@ -20,12 +20,6 @@ if [ -f $node_msi ]; then
   rm $node_msi
 fi
 
-# Check if Bower is installed. Install if it isn't.
-has_bower=`which bower`
-if [[ $has_bower != *bin/bower ]]; then
-  npm install -g bower
-fi
-
 # Check if fepper-cli is installed. Install if it isn't.
 has_fp=`which fp`
 if [[ $has_fp != *bin/fp ]]; then
