@@ -5,7 +5,15 @@
     "url": "git+https://github.com/electric-eloquence/fepper-ui.git"
   },
   "license": "MIT",
-  "dev": {
-    "fepper-ui": "*"
+  "dependencies": {
+    "fepper-ui": "*",
+    "he": "^1.1.0",
+    "hogan.js": "^3.0.2",
+    "jquery": "2.1.4",
+    "js-beautify": "1.6.4",
+    "jwerty": "0.3.2",
+    "prismjs": "1.5.1",
+    "typeahead.js": "0.10.5",
+    "wolfy87-eventemitter": "4.2.11"
   }
 }
