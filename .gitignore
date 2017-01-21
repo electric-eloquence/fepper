@@ -9,7 +9,7 @@
 /patternlab-config.json
 /pref.yml
 /public/*
-!/public/bower.json
+!/public/package.json
 /source/
 ignore/
 node_modules/
