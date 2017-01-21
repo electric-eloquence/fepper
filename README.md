@@ -67,7 +67,7 @@ Run `npm update` to download and install the latest core updates.
 To update the UI:
 
 * `cd public`
-* `bower update`
+* `npm update`
 
 ### <a id="configure"></a>Configure
 Edit `pref.yml` to customize preferences and to view further documentation in 

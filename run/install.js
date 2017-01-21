@@ -1,11 +1,8 @@
 'use strict';
 
-const cp = require('child_process');
+const exec = require('child_process').exec;
 const fs = require('fs-extra');
 const path = require('path');
-
-const exec = cp.exec;
-const spawnSync = cp.spawnSync;
 
 const excludesDir = 'node_modules/fepper/excludes';
 
@@ -28,46 +25,18 @@ if (!fs.existsSync(prefFile)) {
 }
 
 var binGulp = path.resolve('node_modules', '.bin', 'gulp');
-
-new Promise(function (resolve) {
-  // Install Bower if it is not installed.
-  var bowerInstalled = spawnSync('bower', ['-v']);
-  if (bowerInstalled.error) {
-    exec('npm install -g bower', (err, stdout, stderr) => {
-      if (err) {
-        throw err;
-      }
-
-      if (stderr) {
-
-        /* eslint-disable no-console */
-        console.log(stderr);
-      }
-      console.log(stdout);
-
-      /* eslint-enable no-console */
-      resolve();
-    });
+exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js install`, (err, stdout, stderr) => {
+  if (err) {
+    throw err;
   }
-  else {
-    resolve();
+
+  fs.writeFileSync('install.log', stdout);
+  if (stderr) {
+
+    /* eslint-disable no-console */
+    console.log(stderr);
+
+    /* eslint-enable no-console */
+    fs.appendFileSync('install.log', stderr);
   }
-})
-// Then, run the gulp install task.
-.then(function () {
-  exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js install`, (err, stdout, stderr) => {
-    if (err) {
-      throw err;
-    }
-
-    fs.writeFileSync('install.log', stdout);
-    if (stderr) {
-
-      /* eslint-disable no-console */
-      console.log(stderr);
-
-      /* eslint-enable no-console */
-      fs.appendFileSync('install.log', stderr);
-    }
-  });
 });
