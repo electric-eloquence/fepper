@@ -86,7 +86,7 @@ for those directories to get processed and copied to the backend.
   * `fp once` to clean the public folder and do a one-off Fepper build.
   * `fp restart` to restart after shutdown, but without opening the browser.
   * `fp static` to generate a static site from the 04-pages directory.
-  * `fp syncback` combines frontend-copy and template. Linting and script-building extensions should also run here.
+  * `fp syncback` combines frontend-copy and template.
   * `fp template` translates templates for the backend and copies them there.
 * If using Git for version control, directories named "ignore" will be ignored.
 
