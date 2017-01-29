@@ -2,9 +2,9 @@
 .DS_Store
 .publish/
 /conf.yml
+ignore/
 /install.log
+node_modules/
 /npm-debug.log
 /public/*
 !/public/package.json
-ignore/
-node_modules/
