@@ -4,12 +4,12 @@
 /backend/*
 /conf.yml
 /extend/
+ignore/
 /install.log
+node_modules/
 /npm-debug.log
 /patternlab-config.json
 /pref.yml
 /public/*
 !/public/package.json
 /source/
-ignore/
-node_modules/
