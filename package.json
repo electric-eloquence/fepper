@@ -1,6 +1,5 @@
 {
-  "name": "fepper",
-  "description": "A Front End Prototyper for the rapid prototyping of websites",
+  "description": "Fepper: a Front End Prototyper for the rapid prototyping of websites",
   "scripts": {
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
