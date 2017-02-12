@@ -17,28 +17,19 @@
   },
   "devDependencies": {
     "body-parser": "^1.6.3",
-    "diveSync": "^0.3.0",
     "express": "^4.8.3",
     "fepper": "*",
     "fs-extra": "^0.22.1",
-    "glob": "^5.0.5",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.0.0-rc.1",
     "gulp-refresh": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "he": "^1.1.0",
-    "hogan.js": "^3.0.2",
     "html2json": "^1.0.2",
-    "js-beautify": "1.6.4",
     "js-yaml": "^3.2.7",
-    "json-eval": "^0.1.0",
-    "json5": "^0.5.0",
-    "marked": "^0.3.6",
     "open": "~0.0.5",
-    "rcloader": "^0.2.1",
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
-    "run-sequence": "^1.1.2",
-    "slash": "^1.0.0"
+    "run-sequence": "^1.1.2"
   }
 }
