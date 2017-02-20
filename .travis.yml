@@ -2,9 +2,11 @@ language: node_js
 node_js:
   - "stable"
   - "4.0.0"
-before_script:
+install:
+  - npm install
   - npm install -g gulp
   - npm install gulp-eslint
   - npm install gulp-mocha
   - npm install chai
-script: gulp --gulpfile node_modules/fepper/tasker.js test
+script:
+  - gulp --gulpfile node_modules/fepper/tasker.js test
