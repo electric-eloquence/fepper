@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Fepper: a Front End Prototyper for the rapid prototyping of websites",
   "scripts": {
     "install-base": "node run/install-base.js",
