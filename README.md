@@ -28,9 +28,12 @@
 * [Contribute](#contribute)
 
 ### <a id="install"></a>Install
-#### System Requirements
+#### System requirements
 * Unix-like or Windows OS.
 * Recommended minimum Node.js version 7.6.0.
+
+#### The simplest way to get started
+* Download the latest release at the [Releases page](https://github.com/electric-eloquence/fepper/releases).
 
 #### Main install
 * On Mac OS:
