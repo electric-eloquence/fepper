@@ -28,6 +28,10 @@
 * [Contribute](#contribute)
 
 ### <a id="install"></a>Install
+#### System Requirements
+* Unix-like or Windows OS.
+* Recommended minimum Node.js version 7.6.0.
+
 #### Main install
 * On Mac OS:
   * Double-click `fepper.command`
