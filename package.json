@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=7.6.0"
   },
   "devDependencies": {
     "body-parser": "^1.6.3",
