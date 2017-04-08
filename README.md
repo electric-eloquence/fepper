@@ -115,9 +115,9 @@ another pattern. However, `_00-homepage.json` is _partial data_ and will get
 concatenated to the _global data_ outputted to `data.json`. `_00-homepage.json` 
 will be picked up by all patterns.
 
-* __DO NOT EDIT source/_data/data.json__
-* __DO PUT GLOBAL DATA IN source/_data/_data.json__
-* __DO LIBERALLY USE PARTIAL DATA IN source/_patterns FOR ORGANIZATIONAL SANITY__
+* **DO NOT EDIT source/_data/data.json**
+* **DO PUT GLOBAL DATA IN source/_data/_data.json**
+* **DO LIBERALLY USE PARTIAL DATA IN source/_patterns FOR ORGANIZATIONAL SANITY**
 
 ### <a id="static-site-generation"></a>Static Site Generation
 Running `fp static` will generate a complete static site based on the files in 
