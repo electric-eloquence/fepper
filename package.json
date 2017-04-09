@@ -17,7 +17,7 @@
   "devDependencies": {
     "body-parser": "^1.6.3",
     "express": "^4.8.3",
-    "fepper": "^0.21.0",
+    "fepper": "^0.22.0",
     "fs-extra": "^0.22.1",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.0.0-rc.1",
