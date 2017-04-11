@@ -273,15 +273,15 @@ to `source/_ui/index/html`. Copying and modifying similarly named and pathed
 files will override the respective module in core. Additions (so long as they 
 are correctly pathed) will also be recognized.
 
-It is mandatory to componentize CSS modifications to the UI this way. While it 
+It is mandatory to componentized CSS modifications to the UI this way. While it 
 is a better practice to componentize JS this way, generic modifications to UI JS 
-can be added to `source/_scripts/ui-extender.js`.
+can also be added to `source/_scripts/ui-extender.js`.
 
 View All markup can also be overriden by copying the `.mustache` files in 
 https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall 
 and pasting them to `source/_ui/viewall`. Modifications will then be recognized 
-and displayed in the UI. Custom View All CSS can be added to regular pattern 
-styles in `source/_styles/bld`.
+and displayed in the UI. (No additions are allowed.) Custom View All CSS can be 
+added to regular pattern styles in `source/_styles/bld`.
 
 ### <a id="mobile-devices"></a>Mobile Devices
 The best way to browse the Fepper UI on a mobile device is through the wireless 
