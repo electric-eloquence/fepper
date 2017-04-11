@@ -279,6 +279,18 @@ and pasting them to `source/_ui/viewall` (nested correctly). Modifications will
 then be recognized and displayed in the UI. (No additions are allowed.) Custom 
 View All CSS can be added to regular pattern styles in `source/_styles/bld`.
 
+You will need to compile the UI and restart Fepper in order for the browser to 
+pick up custom changes to the UI:
+
+```
+fp ui:force-compile
+fp restart
+```
+
+You can compile the UI on every build by setting `compileUiOnEveryBuild` to 
+true in `patternlab-config.json`. However, this is not recommended since it 
+would be a drain on performance and simply isn't necessary on every build.
+
 ### <a id="extensions"></a>Extensions
 The `extend` directory is purposed for extending Fepper's functionality. 
 Extensions can be contributed or custom. The `extend` directory will not be 
