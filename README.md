@@ -246,6 +246,27 @@ The Stylus files are written in the terse, Python-like, indentation-based
 syntax; however, the more verbose, CSS-like syntax (with curly braces, colons, 
 and semi-colons) is perfectly valid as well.
 
+### <a id="ui-customization"></a>UI Customization
+All aspects of the UI are available for customization. For example, the toolbar 
+can accept additions, modifications, and deletions per the needs of end users. 
+The UI is built by recursive, functional React calls. The recursion tree is 
+reflected by the directory structure containing the modules which compose the 
+UI. To override any given module, copy the directory structure leading to the 
+module from https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html
+to `source/_ui/index/html`. Copying and modifying similarly named and nested 
+files will override the respective module in core. Additions (so long as they 
+are correctly nested) will also be recognized.
+
+It is mandatory to componentize CSS modifications to the UI this way. While it 
+is a better practice to componentize JS this way, generic modifications to UI JS 
+can also be added to `source/_scripts/ui-extender.js`.
+
+View All markup can also be overridden by copying the `.mustache` files in 
+https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall 
+and pasting them to `source/_ui/viewall` (nested correctly). Modifications will 
+then be recognized and displayed in the UI. (No additions are allowed.) Custom 
+View All CSS can be added to regular pattern styles in `source/_styles/bld`.
+
 ### <a id="extensions"></a>Extensions
 The `extend` directory is purposed for extending Fepper's functionality. 
 Extensions can be contributed or custom. The `extend` directory will not be 
@@ -261,27 +282,6 @@ Custom extensions:
 * Write custom extensions within an appropriately named directory just under the `extend/custom` directory.
 * They must include a file ending in "~extend.js" in order for Fepper to recognize their tasks.
 * Add the tasks to `extend/custom.js` (and `extend/auxiliary/auxiliary_custom.js` if necessary) in order for Fepper to run them.
-
-### <a id="ui-customization"></a>UI Customization
-All aspects of the UI are available for customization. For example, the toolbar 
-can accept additions, modifications, and deletions per the needs of end users. 
-The UI is built by recursive, functional React calls. The recursion tree is 
-reflected by the directory structure containing the modules which compose the 
-UI. To override any given module, copy the directory structure leading to the 
-module from https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html
-to `source/_ui/index/html`. Copying and modifying similarly named and pathed 
-files will override the respective module in core. Additions (so long as they 
-are correctly pathed) will also be recognized.
-
-It is mandatory to componentized CSS modifications to the UI this way. While it 
-is a better practice to componentize JS this way, generic modifications to UI JS 
-can also be added to `source/_scripts/ui-extender.js`.
-
-View All markup can also be overriden by copying the `.mustache` files in 
-https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall 
-and pasting them to `source/_ui/viewall`. Modifications will then be recognized 
-and displayed in the UI. (No additions are allowed.) Custom View All CSS can be 
-added to regular pattern styles in `source/_styles/bld`.
 
 ### <a id="mobile-devices"></a>Mobile Devices
 The best way to browse the Fepper UI on a mobile device is through the wireless 
