@@ -144,7 +144,7 @@ backend web application.
 * These YAML files must match the source file's name with exception of the extension. 
 * The extension must be `.yml`
 * The overriding property must only contain the lowest level key-value, not the entire hierarchy, i.e. only `assets_dir`, `scripts_dir`, or `styles_dir` 
-* Files prefixed by "__" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
+* Files prefixed by "\_\_" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
 
 ### <a id="templater"></a>Templater
 Fepper's Mustache templates can be translated into templates compatible with 
@@ -167,7 +167,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
 
 * Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
 * The default `templates_dir` and `templates_ext` settings in `pref.yml` can be overridden by similarly named settings in the template-specific YAML files. 
-* Templates prefixed by "__" will be ignored by the Templater as will files in the `_nosync` directory. 
+* Templates prefixed by "\_\_" will be ignored by the Templater as will files in the `_nosync` directory. 
 * The Templater will recurse through nested Mustache templates if the tags are written in the verbose syntax and have the `.mustache` extension, i.e. `{{> 02-organisms/00-global/00-header.mustache }}`. 
 * However, the more common inclusion use-case is to leave off the extension, and not recurse. 
 
@@ -266,26 +266,27 @@ reflected by the directory structure containing the modules which compose the
 UI. To override any given module, copy the directory structure leading to the 
 module from https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html
 to `source/_ui/index/html`. Copying and modifying similarly named and nested 
-files will override the respective module in core. Additions (so long as they 
+files will override the respective modules in core. Additions (so long as they 
 are correctly nested) will also be recognized.
 
-It is mandatory to componentize CSS modifications to the UI this way. While it 
-is a better practice to componentize JS this way, generic modifications to UI JS 
-can also be added to `source/_scripts/ui-extender.js`.
+It is mandatory to componentize style modifications to the UI this way. While it 
+is a better practice to componentize scripts this way, generic modifications to 
+UI JS can also be added to `source/_scripts/ui-extender.js`.
 
 View All markup can also be overridden by copying the `.mustache` files in 
 https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall 
 and pasting them to `source/_ui/viewall` (nested correctly). Modifications will 
 then be recognized and displayed in the UI. (No additions are allowed.) Custom 
-View All CSS can be added to regular pattern styles in `source/_styles/bld`.
+View All styles can be added to regular pattern styles in `source/_styles/bld`.
 
-You will need to compile the UI and restart Fepper in order for the browser to 
-pick up custom changes to the UI:
+You will need to compile the UI in order for the browser to pick up custom 
+changes to the UI:
 
 ```
-fp ui:force-compile
-fp restart
+fp ui:compile
 ```
+
+New UI customizations will not be picked up simply by restarting Fepper.
 
 You can compile the UI on every build by setting `compileUiOnEveryBuild` to 
 true in `patternlab-config.json`. However, this is not recommended since it 
