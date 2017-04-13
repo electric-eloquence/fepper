@@ -1,6 +1,6 @@
 ## Fepper
 
-# A frontend prototyper for the rapid prototyping of websites
+# A frontend prototyper tool for the rapid prototyping of web sites
 
 ### Downstream projects
 * [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no unnecessary assets, styles, or Pattern Lab demo.
