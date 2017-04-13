@@ -289,7 +289,7 @@ fp ui:compile
 New UI customizations will not be picked up simply by restarting Fepper.
 
 You can compile the UI on every build by setting `compileUiOnEveryBuild` to 
-true in `patternlab-config.json`. However, this is not recommended since it 
+`true` in `patternlab-config.json`. However, this is not recommended since it 
 would be a drain on performance and simply isn't necessary on every build.
 
 ### <a id="extensions"></a>Extensions
