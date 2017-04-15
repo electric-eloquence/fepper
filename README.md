@@ -70,12 +70,7 @@
   * If you Set-ExecutionPolicy to allow ps1 scripts, you can also enter `.\fepper.ps1 [task]`
 
 ### <a id="update"></a>Update
-Run `npm update` to download and install the latest core updates.
-
-To update the UI:
-
-* `cd public`
-* `npm update`
+Run `fp update` to download and install the latest core updates.
 
 ### <a id="configure"></a>Configure
 Edit `pref.yml` to customize preferences and to view further documentation in 
