@@ -37,7 +37,7 @@
 * Download the [latest release](https://github.com/electric-eloquence/fepper/releases).
 
 #### Main install
-* On Mac OS:
+* On macOS:
   * Double-click `fepper.command`
   * Or on the command line, enter `./fepper.command`
 * On other OSs:
@@ -79,7 +79,7 @@ tasks, you must supply values for the `backend.synced_dirs` preferences in order
 for those directories to get processed and copied to the backend.
 
 ### <a id="use"></a>Use
-* To launch from the Mac OS X Finder:
+* To launch from the macOS Finder:
   * Double-click `fepper.command`
 * To launch from the command line:
   * `fp`
