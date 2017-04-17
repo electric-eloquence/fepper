@@ -211,8 +211,7 @@ Upon submission, you should be able to review the scraped output on the
 subsequent page. If the output looks correct, enter a filename and submit again. 
 The Scraper will save Mustache and JSON files by that name in the 98-scrape 
 directory, also viewable under the Scrape menu of the toolbar. The Scraper will 
-correctly indent the Mustache code. However, this beautification may also render 
-some attributes of the Mustache code a little different than the original HTML.
+also correctly indent the Mustache code.
 
 ### <a id="variables.styl"></a>variables.styl
 `source/_scripts/src/variables.styl` is a file containing variables that can 
