@@ -31,5 +31,22 @@
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2"
-  }
+  },
+  "keywords": [
+    "atomic",
+    "component",
+    "design",
+    "end",
+    "fepper",
+    "front",
+    "front-end",
+    "frontend",
+    "lab",
+    "library",
+    "pattern",
+    "prototype",
+    "prototyper",
+    "prototyping",
+    "template"
+  ]
 }
