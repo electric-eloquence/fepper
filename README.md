@@ -227,7 +227,8 @@ bp_lg_max = -1
 bp_md_max = 1024
 bp_sm_max = 767
 bp_xs_max = 480
-bp_xs_min = 0
+bp_xx_max = 320
+bp_xx_min = 0
 ```
 
 It cannot contain comments, semi-colons, curly braces, etc. It is 
@@ -244,9 +245,9 @@ syntax; however, the more verbose, CSS-like syntax (with curly braces, colons,
 and semi-colons) is perfectly valid as well.
 
 The UI's viewport resizer buttons are dependent on the values in this file. The 
-default values will configure the XS, SM, and MD buttons to resize the viewport 
-to each breakpoint's assigned maximum width. The LG button will resize the 
-viewport to a width that is greater than `bp_md_max` by the distance between 
+default values will configure the XX, XS, SM, and MD buttons to resize the 
+viewport to each breakpoint's assigned maximum width. The LG button will resize 
+the viewport to a width that is greater than `bp_md_max` by the distance between 
 `bp_sm_max` and `bp_md_max`.
 
 Users have the ability to add, modify, or delete values in this file. The UI 
