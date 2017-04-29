@@ -148,7 +148,7 @@ Fepper's Mustache templates can be translated into templates compatible with
 your backend. Mustache tags just need to be replaced with tags the backend can 
 use. Put these translations into YAML files named similarly to the Mustache 
 files in `source/_patterns/03-templates`. Follow the example in 
-https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/\_patterns/03-templates/page.yml 
+https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/_patterns/03-templates/page.yml 
 for the correct YAML syntax. 
 
 Follow these rules for setting up keys and values:
