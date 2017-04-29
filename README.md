@@ -352,5 +352,5 @@ If your Mac is connected to the Internet through a wire:
 ### <a id="contribute"></a>Contribute
 Contributions and bug fixes are greatly appreciated!
 
-* Please pull request against the [dev branch](https://github.com/electric-eloquence/fepper/tree/dev).
+* Please pull request against the dev branch.
 * Please try to be both concise as well as clear on what is trying to be accomplished.
