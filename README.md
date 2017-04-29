@@ -128,7 +128,7 @@ hard-coded links to other pages in the `patterns` directory must start with
 `../04-pages-` and not `../../patterns/04-pages-`.
 
 ### <a id="the-backend"></a>The Backend
-Fepper can almost as easily work with a CMS backend such as Drupal or WordPress, 
+Fepper can very easily work with a CMS backend such as Drupal or WordPress, 
 while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
 even just a symbolic link to the codebase into the `backend` directory. Then, 
 enter the relative paths to the appropriate backend directories into `pref.yml`. 
