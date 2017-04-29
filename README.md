@@ -207,7 +207,7 @@ selector you wish to target (prepended with "#" for IDs and "." for classes).
 Classnames and tagnames may be appended with array index notation ([n]). 
 Otherwise, the Scraper will scrape all elements of that class or tag 
 sequentially. Such a loosely targeted scrape will save many of the targeted 
-fields to the JSON file, but will only save the first instance of the target to 
+fields to a JSON file, but will only save the first instance of the target to 
 a Mustache template.
 
 Upon submission, you should be able to review the scraped output on the 
