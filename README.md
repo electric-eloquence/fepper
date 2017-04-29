@@ -353,4 +353,4 @@ If your Mac is connected to the Internet through a wire:
 Contributions and bug fixes are greatly appreciated!
 
 * Please pull request against the dev branch.
-* Please try to be both concise as well as clear on what is trying to be accomplished.
+* Please try to be both clear as well as concise on what is trying to be accomplished.
