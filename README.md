@@ -269,7 +269,7 @@ are correctly nested) will also be recognized.
 
 It is mandatory to componentize style modifications to the UI this way. While it 
 is a better practice to componentize scripts this way, generic modifications to 
-UI JS can also be added to `source/_scripts/ui-extender.js`.
+UI JavaScript can also be added to `source/_scripts/ui-extender.js`.
 
 View All markup can also be overridden by copying the `.mustache` files in 
 https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall 
