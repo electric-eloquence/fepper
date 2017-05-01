@@ -352,7 +352,6 @@ If your Mac is connected to the Internet through a wire:
 * [Mustache](https://mustache.github.io/mustache.5.html)
 
 ### <a id="contribute"></a>Contribute
-Contributions and bug fixes are greatly appreciated!
+Contributions and bug reports are greatly appreciated!
 
 * Please pull request against the dev branch.
-* Please try to be both clear as well as concise on what is trying to be accomplished.
