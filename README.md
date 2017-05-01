@@ -37,11 +37,13 @@
 * Download the [latest release](https://github.com/electric-eloquence/fepper/releases).
 
 #### Main install
-* On macOS:
+* In macOS Finder:
   * Double-click `fepper.command`
-  * Or on the command line, enter `./fepper.command`
-* On other OSs:
-  * If the OS can run Node.js, it can run Fepper. However, the `fp` command is dependent on BASH.
+  * Among other things, this will install the [fepper-cli](https://www.npmjs.com/package/fepper-cli), which will give you the `fp` command.
+* On other Unix-like OSs (or if you prefer the command line):
+  * On the command line, enter `./fepper.command`
+  * If your OS can run Node.js, it can run Fepper. However, `./fepper.command` and the `fp` command are dependent on BASH.
+  * See further instructions for installation on non-BASH Windows environments.
   * Using Fepper on other OSs implies that you know what you are doing!
 * After entering your password for installation, Fepper should automatically open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
