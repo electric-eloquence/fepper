@@ -155,7 +155,7 @@ for the correct YAML syntax.
 
 Follow these rules for setting up keys and values:
 
-* Delete the outer two curly Mustache braces for keys.
+* Delete the outer curly Mustache braces for keys.
 * Trim any exterior whitespace.
 * Leave other control structures within the key, i.e., !#/>^{}
 * Escape parentheses and question marks with a backslash.
