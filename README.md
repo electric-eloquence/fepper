@@ -157,7 +157,7 @@ Follow these rules for setting up keys and values:
 
 * Delete the Mustache curly braces for keys.
 * Trim any exterior whitespace.
-* Leave other control structures within the key, i.e., !#/>^{}
+* Leave other control structures within the key, i.e., !#/>^
 * Escape parentheses and question marks with a backslash.
 * Wrap the key in single quotes.
 * Follow the closing quote with a colon, space, pipe, and the numeral 2.
