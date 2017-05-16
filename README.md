@@ -265,10 +265,10 @@ can accept additions, modifications, and deletions per the needs of end users.
 The UI is built by recursive, functional React calls. The recursion tree is 
 reflected by the directory structure containing the modules which compose the 
 UI. To override any given module, copy the directory structure leading to the 
-module from https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html
-to `source/_ui/index/html`. Copying and modifying similarly named and nested 
-files will override the respective modules in core. Additions (so long as they 
-are correctly nested) will also be recognized.
+module from https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html 
+to `source/_ui/index/html`, respective to your implementation. Modifications to 
+modules in that directory will override the corresponding modules in core. 
+Additions (so long as they are correctly nested) will also be recognized.
 
 It is mandatory to componentize style modifications to the UI this way. While it 
 is a better practice to componentize scripts this way, generic modifications to 
@@ -278,7 +278,7 @@ View All markup can also be overridden by copying the `.mustache` files in
 https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall 
 and pasting them to `source/_ui/viewall` (nested correctly). Modifications will 
 then be recognized and displayed in the UI. (No additions are allowed.) Custom 
-View All styles can be added to regular pattern styles in `source/_styles/bld`.
+View All styles can be added to regular pattern styles in `source/_styles`.
 
 You will need to compile the UI in order for the browser to pick up custom 
 changes to the UI:
