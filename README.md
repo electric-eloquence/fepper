@@ -65,7 +65,8 @@
 #### Windows install
 * Assumes you haven't checked out the Fepper-Windows project and just need to add the Windows scripts to your project.
 * Also assumes you have Node.js installed.
-* Requires PowerShell >= 3.0 and 64-bit CPU architecture.
+* Requires PowerShell >= 3.0.
+* 64-bit CPU architecture recommended.
 * Open PowerShell and enter `npm run install-windows`
 * In File Explorer, double-click `fepper.vbs` to launch the UI.
 * In PowerShell, enter `cscript .\fepper.vbs [task]` to run Fepper tasks.
