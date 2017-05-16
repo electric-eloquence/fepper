@@ -169,7 +169,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
 * Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
 * The default `templates_dir` and `templates_ext` settings in `pref.yml` can be overridden by similarly named settings in the template-specific YAML files. 
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in the `_nosync` directory. 
-* The Templater will recurse through nested Mustache templates if the tags are written in the verbose syntax and have the `.mustache` extension, i.e. `{{> 02-organisms/00-global/00-header.mustache }}`. 
+* The Templater will recurse through nested Mustache templates if the tags are written in the verbose syntax and have the `.mustache` extension, i.e. `{{> 02-components/00-global/00-header.mustache }}`. 
 * However, the more common inclusion use-case is to leave off the extension, and not recurse. 
 
 [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) and 
@@ -195,7 +195,7 @@ upper right, then clicking Code, and then clicking the Mustache tab in the
 bottom pane. The Mustache tags are hot-linked, and if they are written in the 
 verbose syntax, clicking on them will open that Mustache file and display its 
 code in the Fepper UI, with its Mustache tags hot-linked as well. The Mustache 
-tags must be coded in the verbose-pathed manner: `{{> 02-organisms/00-global/00-header }}`
+tags must be coded in the verbose-pathed manner: `{{> 02-components/00-global/00-header }}`
 
 The path must be correct; however, the `.mustache` extension is optional. The 
 default homepage is a working example.
