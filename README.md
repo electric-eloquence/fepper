@@ -87,15 +87,15 @@ for those directories to get processed and copied to the backend.
 * To launch from the command line:
   * `fp`
 * These other utility tasks are runnable on the command line:
-  * `fp data` compile data.json from underscore-prefixed .json files.
-  * `fp frontend-copy` copy assets, scripts, and styles to the backend.
-  * `fp help` print documentation of Fepper tasks.
-  * `fp once` do a one-off Fepper build to the public directory.
-  * `fp restart` restart after shutdown, but without opening the browser.
-  * `fp static` generate a static site from the 04-pages directory.
-  * `fp syncback` combine frontend-copy and template tasks.
-  * `fp template` translate templates in 03-templates for the backend and copy them there.
-  * `fp version` print versions of Fepper CLI, Fepper NPM, and Fepper UI.
+  * `fp data` - compile data.json from underscore-prefixed .json files.
+  * `fp frontend-copy` - copy assets, scripts, and styles to the backend.
+  * `fp help` - print documentation of Fepper tasks.
+  * `fp once` - do a one-off Fepper build to the public directory.
+  * `fp restart` - restart after shutdown, but without opening the browser.
+  * `fp static` - generate a static site from the 04-pages directory.
+  * `fp syncback` - combine frontend-copy and template tasks.
+  * `fp template` - translate templates in 03-templates for the backend and copy them there.
+  * `fp version` - print versions of Fepper CLI, Fepper NPM, and Fepper UI.
 * If using Git for version control, directories named "ignore" will be ignored.
 
 ### <a id="global-data"></a>Global Data
