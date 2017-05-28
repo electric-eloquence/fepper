@@ -35,7 +35,7 @@ new Promise(function (resolve) {
 
   // Then, copy over the base profile source dir.
   var binGulp = path.resolve('node_modules', '.bin', 'gulp');
-  exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js install-base`, (err, stdout, stderr) => {
+  exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js install:copy-base`, (err, stdout, stderr) => {
     if (err) {
       throw err;
     }
