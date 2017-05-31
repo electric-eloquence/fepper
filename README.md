@@ -244,7 +244,7 @@ ship with a `source/_styles/src/stylus` directory. In order to compile it to
 CSS in the `source/_styles/bld` directory, run `npm install` in the `extend` 
 directory. Then, uncomment the `stylus:`-prefixed tasks in `extend/contrib.js`. 
 The Stylus files are written in the terse, Python-like, indentation-based 
-syntax; however, the more verbose, CSS-like syntax (with curly braces, colons, 
+syntax. However, the more verbose, CSS-like syntax (with curly braces, colons, 
 and semi-colons) is perfectly valid as well.
 
 The UI's viewport resizer buttons are dependent on the values in this file. The 
@@ -254,7 +254,7 @@ the viewport to a width that is greater than `bp_md_max` by the distance between
 `bp_sm_max` and `bp_md_max`.
 
 Users have the ability to add, modify, or delete values in this file. The UI 
-will respect these changes, keeping in mind that additions must be prefixed by 
+will respect these changes; but keep in mind that additions must be prefixed by 
 `bp_` and suffixed by `_max` in order for them to appear as viewport resizer 
 buttons. A `-1` value translates to `Number.MAX_SAFE_INTEGER`, and effectively 
 means infinity.
