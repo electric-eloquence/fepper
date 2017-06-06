@@ -95,7 +95,7 @@ for those directories to get processed and copied to the backend.
   * `fp static` - generate a static site from the 04-pages directory.
   * `fp syncback` - combine frontend-copy and template tasks.
   * `fp template` - translate templates in 03-templates for the backend and copy them there.
-  * `fp version` - print versions of Fepper CLI, Fepper NPM, and Fepper UI.
+  * `fp version` - print versions of Fepper NPM, Fepper CLI, and Fepper UI.
 * If using Git for version control, directories named "ignore" will be ignored.
 
 ### <a id="global-data"></a>Global Data
