@@ -3,10 +3,16 @@
 # A frontend prototyper tool for rapid prototyping of web sites
 
 ### Downstream projects
-* [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no unnecessary assets, styles, or Pattern Lab demo.
-* [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - templates configured for Drupal 8, along with a Drupal theme built to accommodate those templates.
-* [Fepper for Windows](https://github.com/electric-eloquence/fepper-windows) - scripted to run on Windows.
-* [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) - templates configured for WordPress, along with a WordPress theme built to accommodate those templates.
+* [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no 
+  unnecessary assets, styles, or Pattern Lab demo.
+* [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - 
+  templates configured for Drupal 8, along with a Drupal theme built to 
+  accommodate those templates.
+* [Fepper for Windows](https://github.com/electric-eloquence/fepper-windows) - 
+  scripted to run on Windows.
+* [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) 
+  \- templates configured for WordPress, along with a WordPress theme built to 
+  accommodate those templates.
 
 ### Table of contents
 * [Install](#install)
@@ -39,21 +45,33 @@
 #### Main install
 * In macOS Finder:
   * Double-click `fepper.command`
-  * Among other things, this will install the [fepper-cli](https://www.npmjs.com/package/fepper-cli), which will give you the `fp` command.
+  * Among other things, this will install the [fepper-cli](https://www.npmjs.com/package/fepper-cli), 
+    which will give you the `fp` command.
+     * If opening for the first time, macOS may warn that it can't be opened 
+       because it is from an unidentified  developer.
+     * In that case, Ctrl+click `fepper.command` and click "Open"
+     * In the following prompt, click "Open" to confirm that you're sure you 
+       want to open it.
 * On other Unix-like OSs (or if you prefer the command line):
   * On the command line, enter `./fepper.command`
-  * If your OS can run Node.js, it can run Fepper. However, `./fepper.command` and the `fp` command are dependent on BASH.
+  * If your OS can run Node.js, it can run Fepper. However, `./fepper.command` 
+    and the `fp` command are dependent on BASH.
   * See further instructions for installation on non-BASH Windows environments.
   * Using Fepper on other OSs implies that you know what you are doing!
-* After entering your password for installation, Fepper should automatically open in a browser.
+* After entering your password for installation, Fepper should automatically 
+  open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
-* To stop Fepper, go to the command line where Fepper is running and press Ctrl+c.
+* To stop Fepper, go to the command line where Fepper is running and press 
+  Ctrl+c.
 * To restart Fepper:
   * Double-click `fepper.command` again.
   * Or enter `fp` on the command line.
-* Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for instructions on using Pattern Lab.
-* Start editing files in `source`. Changes should automatically appear in the browser.
-  * If changes do not appear immediately, it may be necessary to install a [LiveReload browser extension](http://livereload.com/extensions/).
+* Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for 
+  instructions on using Pattern Lab.
+* Start editing files in `source`. Changes should automatically appear in the 
+  browser.
+  * If changes do not appear immediately, it may be necessary to install a 
+    [LiveReload browser extension](http://livereload.com/extensions/).
 
 #### Base install
 * Comes with no unnecessary assets, styles, or Pattern Lab demo.
@@ -63,14 +81,16 @@
 * `fp`
 
 #### Windows install
-* Assumes you haven't checked out the Fepper-Windows project and just need to add the Windows scripts to your project.
+* Assumes you haven't checked out the Fepper-Windows project and just need to 
+  add the Windows scripts to your project.
 * Also assumes you have Node.js installed.
 * PowerShell >= 3.0 required.
 * 64-bit CPU architecture recommended.
 * Open PowerShell and enter `npm run install-windows`
 * In File Explorer, double-click `fepper.vbs` to launch the UI.
 * In PowerShell, enter `cscript .\fepper.vbs [task]` to run Fepper tasks.
-  * If you Set-ExecutionPolicy to allow ps1 scripts, you can also enter `.\fepper.ps1 [task]`
+  * If you Set-ExecutionPolicy to allow ps1 scripts, you can also enter 
+    `.\fepper.ps1 [task]`
 
 ### <a id="update"></a>Update
 Run `fp update` to download and install the latest updates.
@@ -94,7 +114,8 @@ for those directories to get processed and copied to the backend.
   * `fp restart` - restart after shutdown, but without opening the browser.
   * `fp static` - generate a static site from the 04-pages directory.
   * `fp syncback` - combine frontend-copy and template tasks.
-  * `fp template` - translate templates in 03-templates for the backend and copy them there.
+  * `fp template` - translate templates in 03-templates for the backend and copy 
+    them there.
   * `fp version` - print versions of Fepper NPM, Fepper CLI, and Fepper UI.
 * If using Git for version control, directories named "ignore" will be ignored.
 
@@ -139,12 +160,17 @@ enter the relative paths to the appropriate backend directories in `pref.yml`.
 `fp syncback` or `fp frontend-copy` to export your frontend data into your 
 backend web application.
 
-* Be sure that `backend.synced_dirs.assets_dir`, `backend.synced_dirs.scripts_dir`, and `backend.synced_dirs.styles_dir` are set in `pref.yml`. 
-* The above values set in `pref.yml` can be overridden on a per-file basis by similarly named YAML files with similarly named settings. 
-* These YAML files must match the source file's name with exception of the extension. 
+* Be sure that `backend.synced_dirs.assets_dir`, `backend.synced_dirs.scripts_dir`, 
+  and `backend.synced_dirs.styles_dir` are set in `pref.yml`. 
+* The above values set in `pref.yml` can be overridden on a per-file basis by 
+  similarly named YAML files with similarly named settings. 
+* These YAML files must match the source file's name with exception of the 
+  extension. 
 * The extension must be `.yml`
-* The overriding property must only contain the lowest level key-value, not the entire hierarchy, i.e. only `assets_dir`, `scripts_dir`, or `styles_dir` 
-* Files prefixed by "\_\_" will be ignored as will files in the `_nosync` directory at the root of the source directories. 
+* The overriding property must only contain the lowest level key-value, not the 
+  entire hierarchy, i.e. only `assets_dir`, `scripts_dir`, or `styles_dir` 
+* Files prefixed by "\_\_" will be ignored as will files in the `_nosync` 
+  directory at the root of the source directories. 
 
 ### <a id="templater"></a>Templater
 Fepper's Mustache templates can be translated into templates compatible with 
@@ -166,11 +192,17 @@ Follow these rules for setting up keys and values:
 
 Run `fp syncback` or `fp template` to execute the Templater. 
 
-* Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
-* The default `templates_dir` and `templates_ext` settings in `pref.yml` can be overridden by similarly named settings in the template-specific YAML files. 
-* Templates prefixed by "\_\_" will be ignored by the Templater as will files in the `_nosync` directory. 
-* The Templater will recurse through nested Mustache templates if the tags are written in the verbose syntax and have the `.mustache` extension, i.e. `{{> 02-components/00-global/00-header.mustache }}`. 
-* However, the more common inclusion use-case is to leave off the extension, and not recurse. 
+* Be sure that `backend.synced_dirs.templates_dir` and `backend.synced_dirs.templates_ext` 
+  are set in `pref.yml`. 
+* The default `templates_dir` and `templates_ext` settings in `pref.yml` can be 
+  overridden by similarly named settings in the template-specific YAML files. 
+* Templates prefixed by "\_\_" will be ignored by the Templater as will files in 
+  the `_nosync` directory. 
+* The Templater will recurse through nested Mustache templates if the tags are 
+  written in the verbose syntax and have the `.mustache` extension, i.e. 
+  `{{> 02-components/00-global/00-header.mustache }}`. 
+* However, the more common inclusion use-case is to leave off the extension, and 
+  not recurse. 
 
 [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) and 
 [Fepper for WordPress](https://github.com/electric-eloquence/fepper-wordpress) 
@@ -301,13 +333,17 @@ modified when updating Fepper.
 Contributed extensions:
 
 * Install and update contributed extensions with NPM.
-* Add the tasks to `extend/contrib.js` (and `extend/auxiliary/auxiliary_contrib.js` if necessary) in order for Fepper to run them.
+* Add the tasks to `extend/contrib.js` (and `extend/auxiliary/auxiliary_contrib.js` 
+  if necessary) in order for Fepper to run them.
 
 Custom extensions:
 
-* Write custom extensions within an appropriately named directory just under the `extend/custom` directory.
-* They must include a file ending in "~extend.js" in order for Fepper to recognize their tasks.
-* Add the tasks to `extend/custom.js` (and `extend/auxiliary/auxiliary_custom.js` if necessary) in order for Fepper to run them.
+* Write custom extensions within an appropriately named directory just under the 
+  `extend/custom` directory.
+* They must include a file ending in "~extend.js" in order for Fepper to 
+  recognize their tasks.
+* Add the tasks to `extend/custom.js` (and `extend/auxiliary/auxiliary_custom.js` 
+  if necessary) in order for Fepper to run them.
 
 ### <a id="mobile-devices"></a>Mobile Devices
 The best way to browse the Fepper UI on a mobile device is through the wireless 
@@ -320,7 +356,8 @@ If your Mac is connected to the Internet wirelessly:
 * Click Network
 * In the left pane, select Wi-Fi
 * In the right pane, underneath Status, the IP address will be displayed
-* On your mobile device, connect to the same wireless network that your Mac is connected to
+* On your mobile device, connect to the same wireless network that your Mac is 
+  connected to
 * Browse http:&#x2F;&#x2F;[IP address]:3000
 * Change the port number if Fepper is listening on a different port
 
@@ -330,20 +367,23 @@ If your Mac is connected to the Internet through a wire:
 * Open System Preferences
 * Click Sharing
 * In the left pane, select Internet Sharing
-* In the right pane, on "Share your connection from:", select the interface which is connected to the Internet
+* In the right pane, on "Share your connection from:", select the interface 
+  which is connected to the Internet
 * On "To computers using:", check Wi-Fi
 * Click "Wi-Fi Options..."
 * This will show your Mac's name as the wireless network name
 * Add security if you are in a public space
 * Click OK
-* Back in the System Preferences main window, in the left pane, check to activate Internet Sharing
+* Back in the System Preferences main window, in the left pane, check to 
+  activate Internet Sharing
 * In the dialog that appears, click "Turn Wi-Fi On"
 * In the next dialog, click Start
 * The Wi-Fi icon in the top menu bar should now be gray with a white up-arrow
 * Back in the System Preferences main window, click Network
 * In the left pane, select your wired connection
 * In the right pane, underneath Status, the IP address will be displayed
-* On your mobile device, connect to the wireless network that is the same name as your Mac
+* On your mobile device, connect to the wireless network that is the same name 
+  as your Mac
 * Browse http:&#x2F;&#x2F;[IP address]:3000
 * Change the port number if Fepper is listening on a different port
 
