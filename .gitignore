@@ -13,3 +13,4 @@ node_modules/
 /public/*
 !/public/package.json
 /source/
+yarn.lock
