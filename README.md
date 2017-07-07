@@ -45,8 +45,9 @@
 #### Main install
 * In macOS Finder:
   * Double-click `fepper.command`
-  * Among other things, this will install the [fepper-cli](https://www.npmjs.com/package/fepper-cli), 
-    which will give you the `fp` command.
+     * Among other things, this will install the [fepper-cli](https://www.npmjs.com/package/fepper-cli), 
+       which will give you the `fp` command.
+     * It will also install Yarn, if Yarn is not installed but Homebrew is.
   * If opening for the first time, macOS may warn that it can't be opened 
        because it is from an unidentified  developer.
      * In that case, Ctrl+click `fepper.command` and click "Open"
