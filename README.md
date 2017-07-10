@@ -53,17 +53,11 @@
      * In the following prompt, click "Open" to confirm that you're sure you 
        want to open it.
 * On other Unix-like OSs (or if you prefer the command line):
-  * With `fepper.command`:
-     * On the command line, enter `./fepper.command`
-     * If your OS can run Node.js, it can run Fepper. However, `fepper.command` 
-       and the `fp` command are dependent on BASH.
-     * See further instructions for installation on non-BASH Windows 
-       environments.
-     * Using Fepper on other OSs implies that you know what you are doing!
-  * With Yarn (many times faster than NPM):
-     * `yarn global add fepper-cli`
-     * `yarn install`
-     * `fp`
+  * On the command line, enter `./fepper.command`
+  * If your OS can run Node.js, it can run Fepper. However, `./fepper.command` 
+    and the `fp` command are dependent on BASH.
+  * See further instructions for installation on non-BASH Windows environments.
+  * Using Fepper on other OSs implies that you know what you are doing!
 * After entering your password for installation, Fepper should automatically 
   open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
