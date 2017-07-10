@@ -332,7 +332,7 @@ modified when updating Fepper.
 
 Contributed extensions:
 
-* Install and update contributed extensions with NPM.
+* Install and update contributed extensions with NPM in the `extend` directory.
 * Add the tasks to `extend/contrib.js` (and `extend/auxiliary/auxiliary_contrib.js` 
   if necessary) in order for Fepper to run them.
 
