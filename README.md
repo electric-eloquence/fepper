@@ -48,7 +48,7 @@
   * Among other things, this will install the [fepper-cli](https://www.npmjs.com/package/fepper-cli), 
     which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
-       because it is from an unidentified  developer.
+    because it is from an unidentified  developer.
      * In that case, Ctrl+click `fepper.command` and click "Open"
      * In the following prompt, click "Open" to confirm that you're sure you 
        want to open it.
@@ -185,7 +185,7 @@ Follow these rules for setting up keys and values:
 * Delete the Mustache curly braces for keys.
 * Trim any exterior whitespace.
 * Leave other control structures within the key, i.e., !#/>^
-* Escape parentheses and question marks with a backslash.
+* Escape parentheses, carets, and question marks with a backslash.
 * Wrap the key in single quotes.
 * Follow the closing quote with a colon, space, pipe, and the numeral 2.
 * Indent each line of the value by at least two spaces.
