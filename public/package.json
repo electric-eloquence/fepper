@@ -6,7 +6,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "fepper-ui": "*",
+    "fepper-ui": "^0.1.5",
     "he": "^1.1.0",
     "hogan.js": "^3.0.2",
     "jquery": "2.1.4",
