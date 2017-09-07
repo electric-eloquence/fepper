@@ -305,7 +305,7 @@ reflected by the directory structure containing the modules which compose the
 UI. To override any given module, copy the directory structure leading to the 
 module from 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html" target="_blank">
-https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html</a> 
+https&colon;//github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html</a> 
 to `source/_ui/index/html`, respective to your implementation. Modifications to 
 modules in that directory will override the corresponding modules in core. 
 Additions (so long as they are correctly nested) will also be recognized.
@@ -316,7 +316,7 @@ UI JavaScript can also be added to `source/_scripts/ui-extender.js`.
 
 View All markup can also be overridden by copying the `.mustache` files in 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall" target="_blank">
-https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall</a> 
+https&colon;//github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall</a> 
 and pasting them to `source/_ui/viewall` (nested correctly). Modifications will 
 then be recognized and displayed in the UI. (No additions are allowed.) Custom 
 View All styles can be added to regular pattern styles in `source/_styles`.
