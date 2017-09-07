@@ -40,7 +40,9 @@
 * Recommended minimum Node.js version 8.0.0.
 
 #### Simplest way to get started
-* Download the <a href="https://github.com/electric-eloquence/fepper/releases/latest" target="_blank">latest release</a>.
+* Download the 
+  <a href="https://github.com/electric-eloquence/fepper/releases/latest" target="_blank">
+  latest release</a>.
 
 #### Main install
 * In macOS Finder:
@@ -67,12 +69,13 @@
 * To restart Fepper:
   * Double-click `fepper.command` again.
   * Or enter `fp` on the command line.
-* Consult the <a href="http://patternlab.io/docs/index.html" target="_blank">Pattern Lab docs</a> 
-  for instructions on using Pattern Lab.
+* Consult the <a href="http://patternlab.io/docs/index.html" target="_blank">
+  Pattern Lab docs</a> for instructions on using Pattern Lab.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
   * If changes do not appear immediately, it may be necessary to install a 
-    <a href="http://livereload.com/extensions/" target="_blank">LiveReload browser extension</a>.
+    <a href="http://livereload.com/extensions/" target="_blank">
+    LiveReload browser extension</a>.
 
 #### Base install
 * Comes with no unnecessary assets, styles, or Pattern Lab demo.
