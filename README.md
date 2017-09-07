@@ -37,15 +37,16 @@
 ### <a id="install"></a>Install
 #### System requirements
 * Unix-like or Windows OS.
-* Recommended minimum Node.js version 7.6.0.
+* Recommended minimum Node.js version 8.0.0.
 
 #### Simplest way to get started
-* Download the [latest release](https://github.com/electric-eloquence/fepper/releases/latest).
+* Download the <a href="https://github.com/electric-eloquence/fepper/releases/latest" target="_blank">latest release</a>.
 
 #### Main install
 * In macOS Finder:
   * Double-click `fepper.command`
-  * Among other things, this will install the [fepper-cli](https://www.npmjs.com/package/fepper-cli), 
+  * Among other things, this will install the 
+    <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">fepper-cli</a>, 
     which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
     because it is from an unidentified  developer.
@@ -66,12 +67,12 @@
 * To restart Fepper:
   * Double-click `fepper.command` again.
   * Or enter `fp` on the command line.
-* Consult the [Pattern Lab docs](http://patternlab.io/docs/index.html) for 
-  instructions on using Pattern Lab.
+* Consult the <a href="http://patternlab.io/docs/index.html" target="_blank">Pattern Lab docs</a> 
+  for instructions on using Pattern Lab.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
   * If changes do not appear immediately, it may be necessary to install a 
-    [LiveReload browser extension](http://livereload.com/extensions/).
+    <a href="http://livereload.com/extensions/" target="_blank">LiveReload browser extension</a>.
 
 #### Base install
 * Comes with no unnecessary assets, styles, or Pattern Lab demo.
@@ -177,8 +178,8 @@ Fepper's Mustache templates can be translated into templates compatible with
 your backend. Mustache tags just need to be replaced with tags the backend can 
 use. Put these translations into YAML files named similarly to the Mustache 
 files in `source/_patterns/03-templates`. Follow 
-[this example](https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/_patterns/03-templates/page.yml) 
-for the correct YAML syntax. 
+<a href="https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/_patterns/03-templates/page.yml" target="_blank">
+this example</a> for the correct YAML syntax. 
 
 Follow these rules for setting up keys and values:
 
@@ -204,9 +205,11 @@ Run `fp syncback` or `fp template` to execute the Templater.
 * However, the more common inclusion use-case is to leave off the extension, and 
   not recurse. 
 
-[Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) and 
-[Fepper for WordPress](https://github.com/electric-eloquence/fepper-wordpress) 
-have working examples of templates compatible with the Templater.
+<a href="https://github.com/electric-eloquence/fepper-drupal" target="_blank">
+Fepper for Drupal</a> and 
+<a href="https://github.com/electric-eloquence/fepper-wordpress" target="_blank">
+Fepper for WordPress</a> have working examples of templates compatible with the 
+Templater.
 
 ### <a id="webserved-directories"></a>Webserved Directories
 When using a backend, assets generally need to be shared with the Fepper 
@@ -257,7 +260,7 @@ be shared across the Stylus CSS preprocessor, browser JavaScripts, and PHP
 backends (and possibly other language backends as well). It ships with these 
 values:
 
-```
+```javascript
 bp_lg_max = -1
 bp_md_max = 1024
 bp_sm_max = 767
@@ -297,7 +300,9 @@ can accept additions, modifications, and deletions per the needs of end users.
 The UI is built by recursive, functional React calls. The recursion tree is 
 reflected by the directory structure containing the modules which compose the 
 UI. To override any given module, copy the directory structure leading to the 
-module from https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html 
+module from 
+<a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html" target="_blank">
+https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html</a> 
 to `source/_ui/index/html`, respective to your implementation. Modifications to 
 modules in that directory will override the corresponding modules in core. 
 Additions (so long as they are correctly nested) will also be recognized.
@@ -307,7 +312,8 @@ is a better practice to componentize scripts this way, generic modifications to
 UI JavaScript can also be added to `source/_scripts/ui-extender.js`.
 
 View All markup can also be overridden by copying the `.mustache` files in 
-https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall 
+<a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall" target="_blank">
+https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall</a> 
 and pasting them to `source/_ui/viewall` (nested correctly). Modifications will 
 then be recognized and displayed in the UI. (No additions are allowed.) Custom 
 View All styles can be added to regular pattern styles in `source/_styles`.
@@ -388,11 +394,8 @@ If your Mac is connected to the Internet through a wire:
 * Change the port number if Fepper is listening on a different port
 
 ### <a id="more-documentation"></a>More Documentation
-* [Default pref.yml](https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml)
-* [Pattern Lab](http://patternlab.io/docs/index.html)
-* [Mustache](https://mustache.github.io/mustache.5.html)
-
-### <a id="contribute"></a>Contribute
-Contributions and bug reports are greatly appreciated!
-
-* Please pull request against the dev branch.
+* <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
+  Default pref.yml</a>
+* <a href="http://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
+* <a href="https://mustache.github.io/mustache.5.html" target="_blank">
+  Mustache</a>
