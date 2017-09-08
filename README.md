@@ -32,7 +32,6 @@
 * [Extensions](#extensions)
 * [Mobile Devices](#mobile-devices)
 * [More Documentation](#more-documentation)
-* [Contribute](#contribute)
 
 ### <a id="install"></a>Install
 #### System requirements
@@ -191,7 +190,7 @@ Follow these rules for setting up keys and values:
 * Leave other control structures within the key, i.e., !#/>^
 * Escape parentheses, carets, and question marks with a backslash.
 * Wrap the key in single quotes.
-* Follow the closing quote with a colon, space, pipe, and the numeral 2.
+* Follow the closing quote with a colon, space, pipe, the numeral 2, and a newline `: |2`
 * Indent each line of the value by at least two spaces.
 
 Run `fp syncback` or `fp template` to execute the Templater. 
