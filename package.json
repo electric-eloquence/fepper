@@ -4,7 +4,6 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
-    "prepush": "fp test",
     "test": "gulp --gulpfile node_modules/fepper/tasker.js test",
     "update": "node run/update.js"
   },
