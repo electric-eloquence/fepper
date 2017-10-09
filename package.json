@@ -4,6 +4,7 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
+    "prepush": "fp test",
     "test": "gulp --gulpfile node_modules/fepper/tasker.js test",
     "update": "node run/update.js"
   },
@@ -43,6 +44,7 @@
     "gulp-rename": "^1.2.2",
     "he": "1.1.0",
     "html2json": "^1.0.2",
+    "husky": "^0.14.3",
     "js-yaml": "^3.2.7",
     "open": "~0.0.5",
     "request": "^2.40.0",
