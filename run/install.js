@@ -1,42 +1,57 @@
 'use strict';
 
-const exec = require('child_process').exec;
+const spawnSync = require('child_process').spawnSync;
 const fs = require('fs-extra');
 const path = require('path');
+const yaml = require('js-yaml');
 
 const excludesDir = 'node_modules/fepper/excludes';
 
-var confFile = 'conf.yml';
-var confFileSrc = path.resolve(excludesDir, confFile);
+const confFile = 'conf.yml';
+const confFileSrc = path.resolve(excludesDir, confFile);
+
 if (!fs.existsSync(confFile)) {
   fs.copySync(confFileSrc, confFile);
 }
 
-var plConfFile = 'patternlab-config.json';
-var plConfFileSrc = path.resolve(excludesDir, plConfFile);
+const plConfFile = 'patternlab-config.json';
+const plConfFileSrc = path.resolve(excludesDir, plConfFile);
+
 if (!fs.existsSync(plConfFile)) {
   fs.copySync(plConfFileSrc, plConfFile);
 }
 
-var prefFile = 'pref.yml';
-var prefFileSrc = path.resolve(excludesDir, prefFile);
+const prefFile = 'pref.yml';
+const prefFileSrc = path.resolve(excludesDir, prefFile);
+
 if (!fs.existsSync(prefFile)) {
   fs.copySync(prefFileSrc, prefFile);
 }
 
-var binGulp = path.resolve('node_modules', '.bin', 'gulp');
-exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js install`, (err, stdout, stderr) => {
-  if (err) {
-    throw err;
-  }
+let conf = {};
 
-  fs.writeFileSync('install.log', stdout);
-  if (stderr) {
+// Need to read conf.yml to get the "headed" conf.
+try {
+  let yml = fs.readFileSync(confFile, 'utf8');
+  conf = yaml.safeLoad(yml);
+}
+catch (err) {
+  // eslint-disable-next-line no-console
+  console.error(err);
+}
 
-    /* eslint-disable no-console */
-    console.log(stderr);
+const argv = ['node_modules/fepper/index.js', 'install'];
 
-    /* eslint-enable no-console */
-    fs.appendFileSync('install.log', stderr);
-  }
-});
+// The "headed" conf is for internal Fepper development only. Necessary when requiring fepper-npm with `npm link`.
+if (conf.headed) {
+  argv.push('headed');
+  argv.push(process.cwd());
+}
+
+const spawnedObj = spawnSync('node', argv, {stdio: 'inherit'});
+
+fs.writeFileSync('install.log', `Process exited with status ${spawnedObj.status}.\n`);
+
+if (spawnedObj.stderr) {
+  fs.appendFileSync('install.log', `${spawnedObj.stderr}\n`);
+}
