@@ -4,7 +4,7 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
-    "test": "gulp --gulpfile node_modules/fepper/tasker.js test",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "update": "node run/update.js"
   },
   "repository": {
@@ -43,7 +43,6 @@
     "gulp-rename": "^1.2.2",
     "he": "1.1.0",
     "html2json": "^1.0.2",
-    "husky": "^0.14.3",
     "js-yaml": "^3.2.7",
     "marked": "chjj/marked#8f9d0b72f5606ed32057049f387161dd41c36ade",
     "open": "~0.0.5",
