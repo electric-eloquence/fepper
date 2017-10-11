@@ -1,53 +1,50 @@
 'use strict';
 
-const exec = require('child_process').exec;
+const spawnSync = require('child_process').spawnSync;
 const fs = require('fs');
 const path = require('path');
 
-const sourceDir = 'source';
+const sourceDir = 'source'; // Hard-coding out of necessary. No conf file available at this point of installation.
 
-new Promise(function (resolve) {
+new Promise(resolve => {
   // First, create empty source dir so the postinstall script doesn't write the main profile there.
   if (!fs.existsSync(sourceDir)) {
     fs.mkdirSync(sourceDir);
   }
 
   // Then, run npm install.
-  exec('npm install', (err, stdout, stderr) => {
-    if (err) {
-      throw err;
-    }
+  spawnSync('npm', ['install'], {stdio: 'inherit'});
 
-    if (stderr) {
-
-      /* eslint-disable no-console */
-      console.log(stderr);
-    }
-    console.log(stdout);
-
-    /* eslint-enable no-console */
-    resolve();
-  });
+  resolve();
 })
-.then(function () {
-  // Then, delete the empty source dir so a new one can be copied over.
+
+.then(() => {
+  // Check if source dir is already populated.
+  const sourceDirContent = fs.readdirSync(sourceDir);
+
+  // Quit if already populated.
+  if (sourceDirContent.length) {
+    throw `${sourceDir} already has content! Aborting base install!`;
+  }
+
+  // Delete the empty source dir so a new one can be copied over.
   fs.rmdirSync(sourceDir);
 
-  // Then, copy over the base profile source dir.
-  var binGulp = path.resolve('node_modules', '.bin', 'gulp');
-  exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js install:copy-base`, (err, stdout, stderr) => {
-    if (err) {
-      throw err;
-    }
+  // Copy over the base profile source dir.
+  const binGulp = path.resolve('node_modules', '.bin', 'gulp');
 
-    fs.writeFileSync('install.log', stdout);
-    if (stderr) {
+  const spawnedObj =
+    spawnSync(binGulp, ['--gulpfile', 'node_modules/fepper/tasker.js', 'install:copy-base'], {stdio: 'inherit'});
 
-      /* eslint-disable no-console */
-      console.log(stderr);
+  if (spawnedObj.stderr) {
+    fs.appendFileSync('install.log', `${spawnedObj.stderr}\n`);
+  }
 
-      /* eslint-enable no-console */
-      fs.appendFileSync('install.log', stderr);
-    }
-  });
+  fs.writeFileSync('install.log', `Process exited with status ${spawnedObj.status}.\n`);
+
+  spawnSync('node', ['node_modules/fepper/index.js', 'ui:compile'], {stdio: 'inherit'});
+})
+
+.catch(err => {
+  console.error('\x1b[31m' + err + '\x1b[0m');
 });

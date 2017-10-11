@@ -50,8 +50,25 @@ if (conf.headed) {
 
 const spawnedObj = spawnSync('node', argv, {stdio: 'inherit'});
 
-fs.writeFileSync('install.log', `Process exited with status ${spawnedObj.status}.\n`);
-
 if (spawnedObj.stderr) {
   fs.appendFileSync('install.log', `${spawnedObj.stderr}\n`);
+}
+
+fs.writeFileSync('install.log', `Process exited with status ${spawnedObj.status}.\n`);
+
+// Only run ui:compile if source dir is populated. (A base install will have it be empty at this point.)
+const sourceConfStr = fs.readFileSync('./patternlab-config.json', 'utf8');
+let sourceConf;
+
+try {
+  sourceConf = JSON.parse(sourceConfStr).paths.source;
+}
+catch (err) {
+  throw err;
+}
+
+const sourceDirContent = fs.readdirSync(sourceConf.root);
+
+if (sourceDirContent.length) {
+  spawnSync('node', ['node_modules/fepper/index.js', 'ui:compile'], {stdio: 'inherit'});
 }
