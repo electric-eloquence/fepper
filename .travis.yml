@@ -5,5 +5,3 @@ node_js:
 install:
   - npm install -g eslint@3.x
   - npm install
-script:
-  eslint run

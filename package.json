@@ -4,7 +4,7 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
-    "test": "echo \"No test specified\" && exit 0",
+    "test": "./node_modules/.bin/eslint run",
     "update": "node run/update.js"
   },
   "repository": {
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "body-parser": "^1.6.3",
+    "eslint": "3.x",
     "express": "^4.8.3",
     "fepper": "^0.23.0",
     "fs-extra": "^0.22.1",
@@ -43,6 +44,7 @@
     "gulp-rename": "^1.2.2",
     "he": "1.1.0",
     "html2json": "^1.0.2",
+    "husky": "^0.14.3",
     "js-yaml": "^3.2.7",
     "marked": "chjj/marked#8f9d0b72f5606ed32057049f387161dd41c36ade",
     "open": "~0.0.5",
