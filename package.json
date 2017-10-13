@@ -4,7 +4,8 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
-    "test": "./node_modules/.bin/eslint run",
+    "test": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test && npm run test-implement",
+    "test-implement": "./node_modules/.bin/mocha test/install-main-tests.js",
     "update": "node run/update.js"
   },
   "repository": {
@@ -34,7 +35,6 @@
   },
   "devDependencies": {
     "body-parser": "^1.6.3",
-    "eslint": "3.x",
     "express": "^4.8.3",
     "fepper": "^0.23.0",
     "fs-extra": "^0.22.1",
