@@ -4,8 +4,9 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
-    "test": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test && npm run test-implement",
-    "test-implement": "./node_modules/.bin/mocha test/install-main-tests.js",
+    "test": "npm run eslint && npm run test-mocha",
+    "test-eslint": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test",
+    "test-mocha": "./node_modules/.bin/mocha test/install-tests.js",
     "update": "node run/update.js"
   },
   "repository": {
