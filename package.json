@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "body-parser": "^1.6.3",
+    "chai": "4.x",
     "express": "^4.8.3",
     "fepper": "^0.23.0",
     "fs-extra": "^0.22.1",
