@@ -62,7 +62,12 @@ if (patternsDirContent.length) {
   return;
 }
 
-// Delete the empty source dir so a new one can be copied over.
+// Delete the source dir so a new one can be copied over.
+fs.unlinkSync(`${sourceDir}/_data/listitems.json`);
+fs.unlinkSync(`${sourceDir}/_data/data.json`);
+fs.rmdirSync(`${sourceDir}/_styles`);
+fs.rmdirSync(`${sourceDir}/_patterns`);
+fs.rmdirSync(`${sourceDir}/_data`);
 fs.rmdirSync(sourceDir);
 
 // Copy over the base profile source dir.
