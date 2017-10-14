@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 const exec = require('child_process').exec;
@@ -9,7 +10,6 @@ exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js update`, (err, stdout,
     throw err;
   }
 
-  /* eslint-disable no-console */
   if (stdout) {
     console.log(stdout);
   }

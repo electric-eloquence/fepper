@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 const spawnSync = require('child_process').spawnSync;
@@ -36,7 +37,6 @@ try {
   conf = yaml.safeLoad(yml);
 }
 catch (err) {
-  // eslint-disable-next-line no-console
   console.error(err);
 }
 
