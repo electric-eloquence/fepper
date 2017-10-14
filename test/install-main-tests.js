@@ -12,11 +12,11 @@ describe('Main Installer', function () {
     expect(fs.existsSync('patternlab-config.json')).to.equal(true);
   });
 
-  it('should copy pref.yml to the root directory', function () {
+  it('should complete with pref.yml in the root directory', function () {
     expect(fs.existsSync('pref.yml')).to.equal(true);
   });
 
-  it('should copy source to the root directory', function () {
+  it('should complete with source in the root directory', function () {
     expect(fs.existsSync('source')).to.equal(true);
   });
 
