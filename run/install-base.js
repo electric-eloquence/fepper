@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 
 const spawnSync = require('child_process').spawnSync;
@@ -34,17 +35,24 @@ if (!fs.existsSync(sourceDir)) {
   fs.mkdirSync(sourceDir);
 }
 
-// If node_modules dir doesn't exist, run npm install.
-if (!fs.existsSync('node_modules')) {
+// Return if node_modules is already installed. (Avoid infinite loops!)
+if (fs.existsSync('node_modules')) {
+  return;
+}
+
+// Else, run npm install.
+else {
   spawnSync('npm', ['install'], {stdio: 'inherit'});
 }
 
 // Check if source dir is already populated.
 const sourceDirContent = fs.readdirSync(sourceDir);
 
-// Quit if already populated.
+// Return if already populated.
 if (sourceDirContent.length) {
-  throw `${sourceDir} already has content! Aborting base install!`;
+  console.warn(`${sourceDir} already has content! Aborting base install!`);
+
+  return;
 }
 
 // Delete the empty source dir so a new one can be copied over.
