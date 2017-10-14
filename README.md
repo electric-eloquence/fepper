@@ -41,7 +41,7 @@
 ### <a id="install"></a>Install
 #### System requirements
 * Unix-like or Windows OS.
-* Recommended minimum Node.js version 8.0.0.
+* Recommended minimum Node.js version 8.5.0.
 
 #### Simplest way to get started
 * Download the 
