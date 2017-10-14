@@ -4,8 +4,10 @@ const spawnSync = require('child_process').spawnSync;
 const fs = require('fs');
 const path = require('path');
 
-// Run npm install.
-spawnSync('npm', ['install'], {stdio: 'inherit'});
+// If node_modules dir doesn't exist, run npm install.
+if (!fs.existsSync('node_modules')) {
+  spawnSync('npm', ['install'], {stdio: 'inherit'});
+}
 
 // Then, copy over Windows-specific files.
 const windowsFiles = [

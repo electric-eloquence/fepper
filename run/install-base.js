@@ -34,8 +34,10 @@ if (!fs.existsSync(sourceDir)) {
   fs.mkdirSync(sourceDir);
 }
 
-// Then, run npm install.
-spawnSync('npm', ['install'], {stdio: 'inherit'});
+// If node_modules dir doesn't exist, run npm install.
+if (!fs.existsSync('node_modules')) {
+  spawnSync('npm', ['install'], {stdio: 'inherit'});
+}
 
 // Check if source dir is already populated.
 const sourceDirContent = fs.readdirSync(sourceDir);
