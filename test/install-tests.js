@@ -3,7 +3,7 @@
 const expect = require('chai').expect;
 const fs = require('fs-extra');
 
-describe('Main Installer', function () {
+describe('Installer', function () {
   it('should copy conf.yml to /', function () {
     expect(fs.existsSync('conf.yml')).to.equal(true);
   });
