@@ -6,6 +6,8 @@ const path = require('path');
 
 // Return if node_modules is already installed. (Avoid infinite loops!)
 if (fs.existsSync('node_modules')) {
+  console.warn('Fepper is already installed! Aborting!');
+
   return;
 }
 
