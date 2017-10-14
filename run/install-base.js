@@ -37,7 +37,7 @@ if (!fs.existsSync(sourceDir)) {
 
 // Return if node_modules is already installed. (Avoid infinite loops!)
 if (fs.existsSync('node_modules')) {
-  console.warn(`Fepper Base already installed! Aborting!`);
+  console.warn(`Fepper already installed! Aborting!`);
 
   return;
 }
