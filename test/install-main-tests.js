@@ -31,4 +31,8 @@ describe('Main Installer', function () {
   it('should install npms in the public directory', function () {
     expect(fs.existsSync('public/node_modules')).to.equal(true);
   });
+
+  it('should compile styleguide.html to public/node_modules/fepper-ui/', function () {
+    expect(fs.existsSync('public/node_modules/fepper-ui/styleguide.html')).to.equal(true);
+  });
 });
