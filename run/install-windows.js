@@ -4,8 +4,13 @@ const spawnSync = require('child_process').spawnSync;
 const fs = require('fs');
 const path = require('path');
 
-// If node_modules dir doesn't exist, run npm install.
-if (!fs.existsSync('node_modules')) {
+// Return if node_modules is already installed. (Avoid infinite loops!)
+if (fs.existsSync('node_modules')) {
+  return;
+}
+
+// Else, run npm install.
+else {
   spawnSync('npm', ['install'], {stdio: 'inherit'});
 }
 
