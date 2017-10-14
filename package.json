@@ -4,6 +4,7 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
+    "prepush": "npm test",
     "test": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test && npm run test-implement",
     "test-implement": "./node_modules/.bin/mocha test/install-main-tests.js",
     "update": "node run/update.js"
