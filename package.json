@@ -36,8 +36,6 @@
   },
   "devDependencies": {
     "body-parser": "^1.6.3",
-    "chai": "4.x",
-    "eslint": "3.x",
     "express": "^4.8.3",
     "fepper": "^0.23.0",
     "fs-extra": "^0.22.1",
@@ -50,7 +48,6 @@
     "husky": "^0.14.3",
     "js-yaml": "^3.2.7",
     "marked": "github:chjj/marked#8f9d0b72f5606ed32057049f387161dd41c36ade",
-    "mocha": "3.x",
     "open": "~0.0.5",
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
