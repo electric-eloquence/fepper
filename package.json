@@ -4,7 +4,7 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
-    "test": "npm run eslint && npm run test-mocha",
+    "test": "npm run test-eslint && npm run test-mocha",
     "test-eslint": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test",
     "test-mocha": "./node_modules/.bin/mocha test/install-tests.js",
     "update": "node run/update.js"
