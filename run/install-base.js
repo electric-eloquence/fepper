@@ -36,7 +36,8 @@ if (!fs.existsSync(sourceDir)) {
   fs.mkdirSync(`${sourceDir}/_data`);
   fs.mkdirSync(`${sourceDir}/_patterns`);
   fs.mkdirSync(`${sourceDir}/_styles`);
-  fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '');
+  fs.writeFileSync(`${sourceDir}/_data/data.json`, '{}');
+  fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '{}');
 }
 
 // Return if node_modules is already installed. (Avoid infinite loops!)
