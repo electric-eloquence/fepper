@@ -37,6 +37,8 @@ if (!fs.existsSync(sourceDir)) {
 
 // Return if node_modules is already installed. (Avoid infinite loops!)
 if (fs.existsSync('node_modules')) {
+  console.warn(`Fepper Base already installed! Aborting!`);
+
   return;
 }
 
@@ -50,7 +52,7 @@ const sourceDirContent = fs.readdirSync(sourceDir);
 
 // Return if already populated.
 if (sourceDirContent.length) {
-  console.warn(`${sourceDir} already has content! Aborting base install!`);
+  console.warn(`${sourceDir} dir already has content! Aborting base install!`);
 
   return;
 }
