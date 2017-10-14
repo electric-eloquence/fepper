@@ -33,6 +33,10 @@ else {
 // First, create empty source dir so the postinstall script doesn't write the main profile there.
 if (!fs.existsSync(sourceDir)) {
   fs.mkdirSync(sourceDir);
+  fs.mkdirSync(`${sourceDir}/_data`);
+  fs.mkdirSync(`${sourceDir}/_patterns`);
+  fs.mkdirSync(`${sourceDir}/_styles`);
+  fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '');
 }
 
 // Return if node_modules is already installed. (Avoid infinite loops!)
@@ -47,11 +51,11 @@ else {
   spawnSync('npm', ['install'], {stdio: 'inherit'});
 }
 
-// Check if source dir is already populated.
-const sourceDirContent = fs.readdirSync(sourceDir);
+// Check if patterns dir is already populated.
+const patternsDirContent = fs.readdirSync(`${sourceDir}/_patterns`);
 
 // Return if already populated.
-if (sourceDirContent.length) {
+if (patternsDirContent.length) {
   console.warn(`${sourceDir} dir already has content! Aborting base install!`);
 
   return;
