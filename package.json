@@ -3,8 +3,8 @@
   "scripts": {
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
-    "prepush": "npm test",
     "postinstall": "node run/install.js",
+    "prepush": "npm test",
     "test": "npm run test-eslint && npm run test-mocha",
     "test-eslint": "eslint run && eslint test",
     "test-mocha": "mocha test/install-tests.js",
