@@ -49,7 +49,6 @@
     "html2json": "^1.0.2",
     "husky": "^0.14.3",
     "js-yaml": "^3.2.7",
-    "marked": "github:chjj/marked#8f9d0b72f5606ed32057049f387161dd41c36ade",
     "open": "~0.0.5",
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
