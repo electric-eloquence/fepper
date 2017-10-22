@@ -1,10 +1,5 @@
 {
-  "description": "The Fepper UI",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/electric-eloquence/fepper-ui.git"
-  },
-  "license": "MIT",
+  "description": "Fepper public directory",
   "dependencies": {
     "fepper-ui": "*",
     "he": "1.1.0",
