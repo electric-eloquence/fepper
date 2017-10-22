@@ -42,7 +42,7 @@
     "fepper": "^0.23.0",
     "fs-extra": "^0.22.1",
     "gulp": "3.9.1",
-    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-load-plugins": "^1.5.0",
     "gulp-refresh": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "he": "1.1.0",
