@@ -42,7 +42,7 @@
     "body-parser": "^1.6.3",
     "chai": "4.x",
     "express": "^4.8.3",
-    "fepper": "^0.24.0",
+    "fepper": "^0.23.0",
     "fs-extra": "^0.22.1",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.5.0",
