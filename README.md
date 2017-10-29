@@ -8,6 +8,7 @@
 <h2 align="center">A frontend prototyper tool for rapid prototyping of websites</h2>
 
 ### Downstream projects
+
 * [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no 
   unnecessary assets, styles, or Pattern Lab demo.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - 
@@ -20,6 +21,7 @@
   accommodate those templates.
 
 ### Table of contents
+
 * [Install](#install)
 * [Update](#update)
 * [Configure](#configure)
@@ -39,16 +41,20 @@
 * [More Documentation](#more-documentation)
 
 ### <a id="install"></a>Install
+
 #### System requirements
+
 * Unix-like or Windows OS.
 * Minimum supported Node.js version 8.5.0.
 
 #### Simplest way to get started
+
 * Download the 
   <a href="https://github.com/electric-eloquence/fepper/releases/latest" target="_blank">
   latest release</a>.
 
 #### Main install
+
 * In macOS Finder:
   * Double-click `fepper.command`
   * Among other things, this will install the 
@@ -82,6 +88,7 @@
     LiveReload browser extension</a>.
 
 #### Base install
+
 * Comes with no unnecessary assets, styles, or Pattern Lab demo.
 * Node.js must be installed beforehand.
 * `npm install -g fepper-cli`
@@ -89,6 +96,7 @@
 * `fp`
 
 #### Windows install
+
 * Assumes you haven't checked out the Fepper-Windows project and just need to 
   add the Windows scripts to your project.
 * Also assumes you have Node.js installed.
@@ -101,15 +109,18 @@
     `.\fepper.ps1 [task]`
 
 ### <a id="update"></a>Update
+
 Run `fp update` to download and install the latest updates.
 
 ### <a id="configure"></a>Configure
+
 Edit `pref.yml` to customize preferences and to view further documentation in 
 the comments. If you wish to use the `syncback`, `frontend-copy`, or `template` 
 tasks, you must supply values for the `backend.synced_dirs` preferences in order 
 for those directories to get processed and copied to the backend.
 
 ### <a id="use"></a>Use
+
 * To launch from the macOS Finder:
   * Double-click `fepper.command`
 * To launch from the command line:
@@ -128,11 +139,13 @@ for those directories to get processed and copied to the backend.
 * If using Git for version control, directories named "ignore" will be ignored.
 
 ### <a id="global-data"></a>Global Data
+
 Edit `source/_data/_data.json` to globally populate Mustache templates with 
 data. Manual edits to `source/_data/data.json` will get overwritten on 
 compilation.
 
 ### <a id="partial-data"></a>Partial Data
+
 Underscore-prefixed .json files within 
 `source/_patterns` will be concatenated to the output of `_data.json`, the 
 whole in turn getting compiled into `data.json`, the final source of globally 
@@ -150,6 +163,7 @@ will be picked up by all patterns.
 * **DO LIBERALLY USE PARTIAL DATA IN source/_patterns FOR ORGANIZATIONAL SANITY**
 
 ### <a id="static-site-generation"></a>Static Site Generation
+
 Running `fp static` will generate a complete static site based on the files in 
 `source/_patterns/04-pages`. The site will be viewable at 
 http://localhost:3000/static/. An `index.html` will be generated based on 
@@ -161,6 +175,7 @@ the `patterns` directory must start with `../04-pages-` and not
 `../../patterns/04-pages-`.
 
 ### <a id="the-backend"></a>The Backend
+
 Fepper can very easily work with a CMS backend such as Drupal or WordPress, 
 while not requiring Apache, MySQL, or PHP. Put the actual backend codebase or 
 even just a symbolic link to the codebase into the `backend` directory. Then, 
@@ -183,6 +198,7 @@ backend web application.
   directory at the root of the source directories. 
 
 ### <a id="templater"></a>Templater
+
 Fepper's Mustache templates can be translated into templates compatible with 
 your backend. Mustache tags just need to be replaced with tags the backend can 
 use. Put these translations into YAML files named similarly to the Mustache 
@@ -222,6 +238,7 @@ Fepper for WordPress</a> have working examples of templates compatible with the
 Templater.
 
 ### <a id="webserved-directories"></a>Webserved Directories
+
 When using a backend, assets generally need to be shared with the Fepper 
 frontend. The `syncback` and `frontend-copy` tasks copy files from Fepper to the 
 backend, but not the other way. Instead of providing a task to copy in the 
@@ -235,6 +252,7 @@ SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY SENSITIVE
 INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 
 ### <a id="mustache-browser"></a>Mustache Browser
+
 Mustache code can be viewed in the Fepper UI by clicking the eyeball icon in the 
 upper right, then clicking Code, and then clicking the Mustache tab in the 
 bottom pane. The Mustache tags are hot-linked, and if they are written in the 
@@ -247,6 +265,7 @@ The path must be correct; however, the `.mustache` extension is optional. The
 default homepage is a working example.
 
 ### <a id="html-scraper"></a>HTML Scraper
+
 Fepper can scrape and import Mustache templates and JSON data files from actual 
 web pages. A common use-case is to scrape pages from a backend populated with 
 CMS content in order to auto-generate data, and to replicate the HTML structure. 
@@ -266,6 +285,7 @@ directory, also viewable under the Scrape menu of the toolbar. The Scraper will
 also correctly indent the Mustache code.
 
 ### <a id="variables.styl"></a>variables.styl
+
 `source/_scripts/src/variables.styl` is a file containing variables that can 
 be shared across the Stylus CSS preprocessor, browser JavaScripts, and PHP 
 backends (and possibly other language backends as well). It ships with these 
@@ -306,6 +326,7 @@ buttons. A `-1` value translates to `Number.MAX_SAFE_INTEGER`, and effectively
 means infinity.
 
 ### <a id="ui-customization"></a>UI Customization
+
 All aspects of the UI are available for customization. For example, the toolbar 
 can accept additions, modifications, and deletions per the needs of end users. 
 The UI is built by recursive, functional React calls. The recursion tree is 
@@ -343,6 +364,7 @@ You can compile the UI on every build by setting `compileUiOnEveryBuild` to
 would be a drain on performance and simply isn't necessary on every build.
 
 ### <a id="extensions"></a>Extensions
+
 The `extend` directory is purposed for extending Fepper's functionality. 
 Extensions can be contributed or custom. The `extend` directory will not be 
 modified when updating Fepper.
@@ -364,6 +386,7 @@ Custom extensions:
   if necessary) in order for Fepper to run them.
 
 ### <a id="mobile-devices"></a>Mobile Devices
+
 The best way to browse the Fepper UI on a mobile device is through the wireless 
 connection on your development machine. These are the instructions for doing 
 this on a Mac:
@@ -406,6 +429,7 @@ If your Mac is connected to the Internet through a wire:
 * Change the port number if Fepper is listening on a different port
 
 ### <a id="more-documentation"></a>More Documentation
+
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
 * <a href="http://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
