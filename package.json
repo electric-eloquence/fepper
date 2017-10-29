@@ -32,6 +32,9 @@
     "template"
   ],
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/electric-eloquence/fepper/issues"
+  },
   "engines": {
     "node": ">=8.5.0"
   },
