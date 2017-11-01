@@ -1,19 +1,19 @@
 /* eslint-disable no-console */
 'use strict';
 
-const exec = require('child_process').exec;
+const spawnSync = require('child_process').spawnSync;
 const path = require('path');
 
-var binGulp = path.resolve('node_modules', '.bin', 'gulp');
-exec(`${binGulp} --gulpfile node_modules/fepper/tasker.js update`, (err, stdout, stderr) => {
-  if (err) {
-    throw err;
-  }
+const binPath = path.resolve('node_modules', '.bin');
+const fepperPath = path.resolve('node_modules', 'fepper');
+const winGulp = path.resolve(binPath, 'gulp.cmd');
 
-  if (stdout) {
-    console.log(stdout);
-  }
-  if (stderr) {
-    console.log(stderr);
-  }
-});
+let binGulp = path.resolve(binPath, 'gulp');
+
+// Spawn gulp.cmd if Windows and not BASH.
+if (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\system32\\cmd.exe') {
+  binGulp = winGulp;
+}
+
+// Spawn update task.
+spawnSync(binGulp, ['--gulpfile', path.resolve(fepperPath, 'tasker.js'), 'update'], {stdio: 'inherit'});
