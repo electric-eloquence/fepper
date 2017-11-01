@@ -30,7 +30,7 @@ const windowsFiles = [
   'fepper.vbs'
 ];
 
-const srcDir = 'node_modules/fepper/excludes/profiles/windows';
+const srcDir = path.resolve('node_modules', 'fepper', 'excludes', 'profiles', 'windows');
 
 windowsFiles.forEach(function (windowsFile) {
   fs.copyFileSync(path.resolve(srcDir, windowsFile), windowsFile);
