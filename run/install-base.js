@@ -49,7 +49,14 @@ if (fs.existsSync('node_modules')) {
 
 // Else, run npm install.
 else {
-  spawnSync('npm', ['install'], {stdio: 'inherit'});
+  let binNpm = 'npm';
+
+  // Spawn npm.cmd if Windows and not BASH.
+  if (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\system32\\cmd.exe') {
+    binNpm = 'npm.cmd';
+  }
+
+  spawnSync(binNpm, ['install'], {stdio: 'inherit'});
 }
 
 // Check if patterns dir is already populated.
@@ -70,10 +77,20 @@ fs.rmdirSync(`${sourceDir}/_patterns`);
 fs.rmdirSync(`${sourceDir}/_data`);
 fs.rmdirSync(sourceDir);
 
+const binPath = path.resolve('node_modules', '.bin');
+const fepperPath = path.resolve('node_modules', 'fepper');
+const winGulp = path.resolve(binPath, 'gulp.cmd');
+
+let binGulp = path.resolve(binPath, 'gulp');
+
+// Spawn gulp.cmd if Windows and not BASH.
+if (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\system32\\cmd.exe') {
+  binGulp = winGulp;
+}
+
 // Copy over the base profile source dir.
-const binGulp = path.resolve('node_modules', '.bin', 'gulp');
 const spawnedObj =
-  spawnSync(binGulp, ['--gulpfile', 'node_modules/fepper/tasker.js', 'install:copy-base'], {stdio: 'inherit'});
+  spawnSync(binGulp, ['--gulpfile', path.resolve(fepperPath, 'tasker.js'), 'install:copy-base'], {stdio: 'inherit'});
 
 // Output to install.log.
 const installLog = 'install.log';
@@ -87,4 +104,4 @@ if (spawnedObj.stderr) {
 fs.appendFileSync(installLog, `Process exited with status ${spawnedObj.status}.\n`);
 
 // Compile UI.
-spawnSync('node', ['node_modules/fepper/index.js', 'ui:compile'], {stdio: 'inherit'});
+spawnSync('node', [path.resolve(fepperPath, 'index.js'), 'ui:compile'], {stdio: 'inherit'});
