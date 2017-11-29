@@ -65,15 +65,16 @@
      * In that case, Ctrl+click `fepper.command` and click "Open"
      * In the following prompt, click "Open" to confirm that you're sure you 
        want to open it.
-* On other Unix-like OSs (or if you prefer the command line):
-  * On the command line, enter `./fepper.command`
-  * If your OS can run Node.js, it can run Fepper. However, `./fepper.command` 
-    and the `fp` command are dependent on BASH.
-  * See further instructions for installation on non-BASH Windows environments.
-  * Using Fepper on other OSs implies that you know what you are doing!
-* After entering your password for installation, Fepper should automatically 
-  open in a browser.
+  * Enter your password to allow installation.
+  * After installation, Fepper should automatically open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
+* On other Unix-like OSs (or if you prefer working on a BASH-like command line):
+  * Make sure you have Node.js installed.
+  * `npm install -g fepper-cli`
+  * If you are installing this way, it is implied that you know how and when to 
+    `sudo`!
+  * `npm install`
+  * `fp`
 * To stop Fepper, go to the command line where Fepper is running and press 
   Ctrl+c.
 * To restart Fepper:
