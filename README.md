@@ -84,9 +84,6 @@
   Pattern Lab docs</a> for instructions on using Pattern Lab.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
-  * If changes do not appear immediately, it may be necessary to install a 
-    <a href="http://livereload.com/extensions/" target="_blank">
-    LiveReload browser extension</a>.
 
 #### Base install
 
