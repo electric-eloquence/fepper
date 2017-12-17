@@ -71,7 +71,6 @@
 * On other Unix-like OSs (or if you prefer working on a BASH-like command line):
   * Install Node.js if it isn't installed already.
   * `npm install -g fepper-cli`
-  * (You must know how and when to `sudo`.)
   * `npm install`
   * `fp`
 * To stop Fepper, go to the command line where Fepper is running and press 
