@@ -69,9 +69,9 @@
   * After installation, Fepper should automatically open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
 * On other Unix-like OSs (or if you prefer working on a BASH-like command line):
-  * Make sure you have Node.js installed.
+  * Install Node.js if it isn't installed already.
   * `npm install -g fepper-cli`
-  * (We assume you know how and when to `sudo`.)
+  * (You must know how and when to `sudo`.)
   * `npm install`
   * `fp`
 * To stop Fepper, go to the command line where Fepper is running and press 
