@@ -101,7 +101,7 @@
 * Open PowerShell and enter `npm run install-windows`
 * In File Explorer, double-click `fepper.vbs` to launch the UI.
 * In PowerShell, enter `cscript .\fepper.vbs [task]` to run Fepper tasks.
-  * If you Set-ExecutionPolicy to allow ps1 scripts, you can also enter 
+  * If you Set-ExecutionPolicy to allow ps1 scripts, you may also enter 
     `.\fepper.ps1 [task]`
 
 ### <a id="update"></a>Update
