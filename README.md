@@ -165,9 +165,9 @@ http://localhost:3000/static/. An `index.html` will be generated based on
 `04-pages-00-homepage` or whatever is defined as the homepage in `_data.json`. 
 If the links are relative and they work correctly in the Fepper UI, they will 
 work correctly in the static site even if the `public/static` directory is 
-copied and renamed. The only caveat is that hard-coded links to other pages in 
-the `patterns` directory must start with `../04-pages-` and not 
-`../../patterns/04-pages-`.
+copied and renamed. Just be sure that hard-coded links to other pages in the 
+`patterns` directory start with `../04-pages-` and not `../../patterns/04-pages-`. 
+Also, `href` and `src` attributes _must_ be wrapped in _double-quotes_.
 
 ### <a id="the-backend"></a>The Backend
 
