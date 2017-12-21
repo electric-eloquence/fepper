@@ -6,8 +6,8 @@
     "postinstall": "node run/install.js",
     "prepush": "npm test",
     "test": "npm run test-eslint && npm run test-mocha",
-    "test-eslint": "eslint run && eslint test",
-    "test-mocha": "mocha test/install-tests.js",
+    "test-eslint": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test",
+    "test-mocha": "./node_modules/.bin/mocha test/install-tests.js",
     "update": "node run/update.js"
   },
   "repository": {
@@ -41,6 +41,7 @@
   "devDependencies": {
     "body-parser": "^1.6.3",
     "chai": "4.x",
+    "eslint": "3.x",
     "express": "^4.8.3",
     "fepper": "0.24.x",
     "fs-extra": "^0.22.1",
@@ -52,6 +53,7 @@
     "html2json": "^1.0.2",
     "husky": "^0.14.3",
     "js-yaml": "^3.2.7",
+    "mocha": "3.x",
     "open": "~0.0.5",
     "request": "^2.40.0",
     "require-dir": "^0.3.0",
