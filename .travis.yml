@@ -4,6 +4,6 @@ node_js:
   - "8.5.0"
 install:
   - npm install
-  - npm install -g eslint@3.x
-  - npm install -g mocha@3.x
+  - npm install eslint@3.x
+  - npm install mocha@3.x
   - npm install chai@4.x
