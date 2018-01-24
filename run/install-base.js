@@ -104,4 +104,4 @@ if (spawnedObj.stderr) {
 fs.appendFileSync(installLog, `Process exited with status ${spawnedObj.status}.\n`);
 
 // Compile UI.
-spawnSync('node', [path.resolve(fepperPath, 'index.js'), 'ui:compile'], {stdio: 'inherit'});
+spawnSync('node', [path.resolve(fepperPath, 'index.js'), 'ui:compileui'], {stdio: 'inherit'});
