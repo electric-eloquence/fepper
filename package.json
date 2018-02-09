@@ -39,24 +39,17 @@
     "node": ">=8.5.0"
   },
   "devDependencies": {
-    "body-parser": "^1.6.3",
     "chai": "4.x",
     "eslint": "3.x",
-    "express": "^4.8.3",
     "fepper": "^0.25.3",
     "fs-extra": "^0.22.1",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.5.0",
     "gulp-refresh": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "he": "1.1.0",
-    "html2json": "^1.0.2",
     "husky": "^0.14.3",
     "js-yaml": "^3.2.7",
-    "marked": "0.3.12",
     "mocha": "3.x",
-    "open": "~0.0.5",
-    "request": "^2.40.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2"
   }
