@@ -5,7 +5,7 @@ const spawnSync = require('child_process').spawnSync;
 const fs = require('fs');
 const path = require('path');
 
-// Only run npm install if node_modules had not already been installed. (Avoid infinite loops!)
+// Only run npm install if not already installed.
 if (!fs.existsSync('node_modules')) {
   let binNpm = 'npm';
 

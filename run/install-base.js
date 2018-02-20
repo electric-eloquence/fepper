@@ -40,18 +40,8 @@ if (!fs.existsSync(sourceDir)) {
   fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '{}');
 }
 
-// Return if node_modules is already installed. 
-// Avoid infinite loops!
-// Also, an additional install is useless in the context of installing just base patterns. If the source directory had
-// not been copied from the previous install, there are greater problems afoot!
-if (fs.existsSync('node_modules')) {
-  console.warn('Fepper is already installed! Aborting!');
-
-  return;
-}
-
-// Else, run npm install.
-else {
+// Only run npm install if not already installed.
+if (!fs.existsSync('node_modules')) {
   let binNpm = 'npm';
 
   // Spawn npm.cmd if Windows and not BASH.
