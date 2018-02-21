@@ -57,7 +57,7 @@ const patternsDirContent = fs.readdirSync(`${sourceDir}/_patterns`);
 
 // Return if already populated.
 if (patternsDirContent.length) {
-  console.warn(`${sourceDir} dir already has content! Aborting base install!`);
+  console.warn(`The ${sourceDir} directory already has content! Aborting base install!`);
 
   return;
 }
