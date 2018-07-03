@@ -62,7 +62,7 @@
     fepper-cli</a>, which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
     because it is from an unidentified  developer.
-      * In that case, Ctrl+click `fepper.command` and click "Open"
+      * In that case, ctrl+click `fepper.command` and click "Open"
       * In the following prompt, click "Open" to confirm that you're sure you 
         want to open it.
   * Enter your password to allow installation.
@@ -74,7 +74,7 @@
   * `npm install`
   * `fp`
 * To stop Fepper, go to the command line where Fepper is running and press 
-  Ctrl+c.
+  ctrl+c.
 * To restart Fepper:
   * Double-click `fepper.command` again.
   * Or enter `fp` on the command line.

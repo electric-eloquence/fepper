@@ -4,6 +4,7 @@
 .*.swp
 .DS_Store
 .publish/
+/.timestamp
 /backend/*
 /conf.yml
 /extend/
