@@ -40,9 +40,7 @@
   },
   "devDependencies": {
     "chai": "4.x",
-    "chalk": "^0.5.1",
     "eslint": "3.x",
-    "event-stream": "^3.1.7",
     "fepper": "^0.25.5",
     "fs-extra": "^0.22.1",
     "gulp": "3.9.1",
@@ -51,7 +49,6 @@
     "gulp-util": "^3.0.2",
     "husky": "^0.14.3",
     "js-yaml": "^3.12.0",
-    "mini-lr": "^0.1.8",
     "mocha": "5.x",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2"
