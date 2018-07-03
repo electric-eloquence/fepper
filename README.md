@@ -62,8 +62,8 @@
     fepper-cli</a>, which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
     because it is from an unidentified  developer.
-      * In that case, ctrl+click `fepper.command` and click Open.
-      * In the following prompt, click Open to confirm that you're sure you 
+      * In that case, ctrl+click `fepper.command` and click "Open"
+      * In the following prompt, click "Open" to confirm that you're sure you 
         want to open it.
   * Enter your password to allow installation.
   * After installation, Fepper should automatically open in a browser.
