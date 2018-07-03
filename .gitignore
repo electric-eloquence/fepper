@@ -4,6 +4,7 @@
 .*.swp
 .DS_Store
 .publish/
+/.timestamp
 /conf.yml
 /install.log
 /npm-debug.log
