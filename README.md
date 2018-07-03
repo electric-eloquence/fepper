@@ -56,14 +56,14 @@
 #### Main install
 
 * In macOS Finder:
-  * Double-click `fepper.command`
+  * Double-click `fepper.command`.
   * Among other things, this will install the 
     <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
     fepper-cli</a>, which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
     because it is from an unidentified  developer.
-      * In that case, ctrl+click `fepper.command` and click "Open"
-      * In the following prompt, click "Open" to confirm that you're sure you 
+      * In that case, ctrl+click `fepper.command` and click Open.
+      * In the following prompt, click Open to confirm that you're sure you 
         want to open it.
   * Enter your password to allow installation.
   * After installation, Fepper should automatically open in a browser.
@@ -117,7 +117,7 @@ for those directories to get processed and copied to the backend.
 ### <a id="use"></a>Use
 
 * To launch from the macOS Finder:
-  * Double-click `fepper.command`
+  * Double-click `fepper.command`.
 * To launch from the command line:
   * `fp`
 * These other utility tasks are runnable on the command line:
@@ -222,7 +222,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
   the `_nosync` directory. 
 * The Templater will recurse through nested Mustache templates if the tags are 
   written in the verbose syntax and have the `.mustache` extension, i.e. 
-  `{{> 02-components/00-global/00-header.mustache }}`. 
+  `{{> 02-components/00-global/00-header.mustache }}` 
 * However, the more common inclusion use-case is to leave off the extension, and 
   not recurse. 
 
@@ -252,12 +252,34 @@ Mustache code can be viewed in the Fepper UI by clicking the eyeball icon in the
 upper right, then clicking Code, and then clicking the Mustache tab in the 
 bottom pane. The Mustache tags are hot-linked, and if they are written in the 
 verbose syntax, clicking on them will open that Mustache file and display its 
-code in the Fepper UI, with its Mustache tags hot-linked as well. The Mustache 
-tags must be coded in the verbose-pathed manner: 
-`{{> 02-components/00-global/00-header }}`
+code in the Fepper UI, with its Mustache tags hot-linked as well.
+
+The Mustache tags must be coded in the verbose-pathed manner: 
+
+```handlebars
+{{> 02-components/00-global/00-header }}
+```
 
 The path must be correct; however, the `.mustache` extension is optional. The 
-default homepage is a working example.
+default homepage contains working examples of browsable Mustache links.
+
+Fepper's implementation of Mustache is powered by the 
+<a href="https://github.com/electric-eloquence/feplet" target="_blank">Feplet</a> 
+template engine. It goes above and beyond pure Mustache functionality by 
+allowing the passing of data parameters as follows:
+
+```handlebars
+{{> 02-components/00-global/99-example(greeting: 'Hello', place: 'World') }}
+```
+
+02-components/00-global/99-example.mustache:
+
+```handlebars
+{{ greeting }} {{ place }}
+```
+
+So long as the path is navigable, the Mustache Browser will link such 
+parameterized tags.
 
 ### <a id="html-scraper"></a>HTML Scraper
 
@@ -348,7 +370,7 @@ View All styles can be added to regular pattern styles in `source/_styles`.
 You will need to compile the UI in order for the browser to pick up custom 
 changes to the UI:
 
-```
+```bash
 fp ui:compile
 ```
 
@@ -428,5 +450,6 @@ If your Mac is connected to the Internet through a wire:
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
 * <a href="http://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
+* <a href="https://github.com/electric-eloquence/feplet" target="_blank">Feplet</a>
 * <a href="https://mustache.github.io/mustache.5.html" target="_blank">
   Mustache</a>
