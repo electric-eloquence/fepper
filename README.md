@@ -103,10 +103,6 @@
   * If you Set-ExecutionPolicy to allow ps1 scripts, you may also enter 
     `.\fepper.ps1 [task]`
 
-### <a id="update"></a>Update
-
-Run `fp update` to download and install the latest updates.
-
 ### <a id="configure"></a>Configure
 
 Edit `pref.yml` to customize preferences and to view further documentation in 
@@ -132,6 +128,10 @@ for those directories to get processed and copied to the backend.
     them there.
   * `fp version` - print versions of Fepper NPM, Fepper CLI, and Fepper UI.
 * If using Git for version control, directories named "ignore" will be ignored.
+
+### <a id="update"></a>Update
+
+Run `fp update` to download and install the latest updates.
 
 ### <a id="global-data"></a>Global Data
 
@@ -256,7 +256,7 @@ code in the Fepper UI, with its Mustache tags hot-linked as well.
 
 The Mustache tags must be coded in the verbose-pathed manner: 
 
-```handlebars
+```
 {{> 02-components/00-global/00-header }}
 ```
 
@@ -268,13 +268,13 @@ Fepper's implementation of Mustache is powered by the
 template engine. It goes above and beyond pure Mustache functionality by 
 allowing the passing of data parameters as follows:
 
-```handlebars
+```
 {{> 02-components/00-global/99-example(greeting: 'Hello', place: 'World') }}
 ```
 
 02-components/00-global/99-example.mustache:
 
-```handlebars
+```
 {{ greeting }} {{ place }}
 ```
 
@@ -308,7 +308,7 @@ be shared across the Stylus CSS preprocessor, browser JavaScripts, and PHP
 backends (and possibly other language backends as well). It ships with these 
 values:
 
-```javascript
+```
 bp_lg_max = -1
 bp_md_max = 1024
 bp_sm_max = 767
@@ -370,7 +370,7 @@ View All styles can be added to regular pattern styles in `source/_styles`.
 You will need to compile the UI in order for the browser to pick up custom 
 changes to the UI:
 
-```bash
+```
 fp ui:compile
 ```
 
