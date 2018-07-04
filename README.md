@@ -265,8 +265,8 @@ default homepage contains working examples of browsable Mustache links.
 
 Fepper's implementation of Mustache is powered by the 
 <a href="https://github.com/electric-eloquence/feplet" target="_blank">Feplet</a> 
-template engine. It goes above and beyond pure Mustache functionality by 
-allowing the passing of data parameters as follows:
+template engine. It extends Mustache functionality by allowing the passing of 
+data parameters as follows:
 
 ```
 {{> 02-components/00-global/99-example(greeting: 'Hello', place: 'World') }}
