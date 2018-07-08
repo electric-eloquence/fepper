@@ -5,6 +5,7 @@
     "he": "1.1.0",
     "hogan.js": "3.0.2",
     "jquery": "3.3.1",
+    "jquery.cookie": "1.4.1",
     "js-beautify": "1.6.4",
     "jwerty": "0.3.2",
     "prismjs": "1.5.1",
