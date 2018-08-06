@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 const spawnSync = require('child_process').spawnSync;
@@ -57,6 +56,7 @@ const patternsDirContent = fs.readdirSync(`${sourceDir}/_patterns`);
 
 // Return if already populated.
 if (patternsDirContent.length) {
+  // eslint-disable-next-line no-console
   console.warn(`The ${sourceDir} directory already has content! Aborting base install!`);
 
   return;
