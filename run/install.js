@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 const spawnSync = require('child_process').spawnSync;
@@ -39,6 +38,7 @@ try {
   conf = yaml.safeLoad(yml);
 }
 catch (err) {
+  // eslint-disable-next-line no-console
   console.error(err);
 }
 
@@ -52,11 +52,14 @@ if (conf.headed) {
 
 const spawnedObj = spawnSync('node', argv, {stdio: 'inherit'});
 
+// Output to install.log.
+const installLog = 'install.log';
+
 if (spawnedObj.stderr) {
-  fs.appendFileSync('install.log', `${spawnedObj.stderr}\n`);
+  fs.appendFileSync(installLog, `${spawnedObj.stderr}\n`);
 }
 
-fs.writeFileSync('install.log', `Process exited with status ${spawnedObj.status}.\n`);
+fs.appendFileSync(installLog, `Process exited with status ${spawnedObj.status}.\n`);
 
 // Only run ui:compileui if source dir is populated. (A base install will have it be empty at this point.)
 const confUiStr = fs.readFileSync(confUiFile, 'utf8');

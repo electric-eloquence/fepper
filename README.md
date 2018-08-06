@@ -38,6 +38,7 @@
 * [UI Customization](#ui-customization)
 * [Extensions](#extensions)
 * [Mobile Devices](#mobile-devices)
+* [Keyboard Shortcuts](#keyboard-shortcut)
 * [More Documentation](#more-documentation)
 
 ### <a id="install"></a>Install
@@ -62,8 +63,8 @@
     fepper-cli</a>, which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
     because it is from an unidentified  developer.
-      * In that case, ctrl+click `fepper.command` and click Open.
-      * In the following prompt, click Open to confirm that you're sure you 
+      * In that case, ctrl+click `fepper.command` and click "Open".
+      * In the following prompt, click "Open" to confirm that you're sure you 
         want to open it.
   * Enter your password to allow installation.
   * After installation, Fepper should automatically open in a browser.
@@ -78,7 +79,7 @@
 * To restart Fepper:
   * Double-click `fepper.command` again.
   * Or enter `fp` on the command line.
-* Consult the <a href="http://patternlab.io/docs/index.html" target="_blank">
+* Consult the <a href="https://patternlab.io/docs/index.html" target="_blank">
   Pattern Lab docs</a> for instructions on using Pattern Lab.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
@@ -356,9 +357,14 @@ to `source/_ui/index/html`, respective to your implementation. Modifications to
 modules in that directory will override the corresponding modules in core. 
 Additions (so long as they are correctly nested) will also be recognized.
 
-It is mandatory to componentize style modifications to the UI this way. While it 
-is a better practice to componentize scripts this way, generic modifications to 
-UI JavaScript can also be added to `source/_scripts/ui-extender.js`.
+While it is a better practice to componentize scripts this way, generic 
+modifications to UI JavaScript can be added to `source/_scripts/ui-extender.js`.
+
+Similarly, generic modifications to UI CSS can be added to 
+`source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
+to <a href="https://patternlab.io/docs/pattern-states.html" target="_blank"> 
+the Pattern Lab documentation on pattern states</a>. It should not be relied on 
+for pattern scaffolding.)
 
 View All markup can also be overridden by copying the `.mustache` files in 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall" target="_blank">
@@ -375,10 +381,6 @@ fp ui:compile
 ```
 
 New UI customizations will not be picked up simply by restarting Fepper.
-
-You can compile the UI on every build by setting `compileUiOnEveryBuild` to 
-`true` in `patternlab-config.json`. However, this is not recommended since it 
-would be a drain on performance and simply isn't necessary on every build.
 
 ### <a id="extensions"></a>Extensions
 
@@ -445,11 +447,30 @@ If your Mac is connected to the Internet through a wire:
 * Browse http:&#x2F;&#x2F;[IP address]:3000
 * Change the port number if Fepper is listening on a different port
 
+### <a id="keyboard-shortcuts"></a>Keyboard Shortcuts
+
+* **ctrl+alt+0**: Set the viewport to "extra extra small"
+* **ctrl+shift+x**: set the viewport to "extra small"
+* **ctrl+shift+s**: set the viewport to "small"
+* **ctrl+shift+m**: set the viewport to "medium"
+* **ctrl+shift+l**: set the viewport to "large"
+* **ctrl+alt+w**: set the viewport to "whole"
+* **ctrl+alt+r**: set the viewport to a random width
+* **ctrl+alt+g**: start/stop "grow" animation
+* **ctrl+shift+a**: open/close annotations panel
+* **ctrl+shift+c**: open/close code panel
+* **cmd+a/ctrl+a**: select the content of the current open tab in code panel
+* **ctrl+alt+m**: make the Mustache tab active in code panel
+* **ctrl+alt+h**: make the HTML tab active in code panel
+* **ctrl+shift+f**: open/close the pattern search
+
+As a reminder, the viewport sizes can be customized in `source/_scripts/src/variables.styl`.
+
 ### <a id="more-documentation"></a>More Documentation
 
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
-* <a href="http://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
+* <a href="https://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
 * <a href="https://github.com/electric-eloquence/feplet" target="_blank">Feplet</a>
 * <a href="https://mustache.github.io/mustache.5.html" target="_blank">
   Mustache</a>
