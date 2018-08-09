@@ -449,7 +449,7 @@ If your Mac is connected to the Internet through a wire:
 
 ### <a id="keyboard-shortcuts"></a>Keyboard Shortcuts
 
-* **ctrl+alt+0**: Set the viewport to "extra extra small"
+* **ctrl+alt+0**: set the viewport to "extra extra small"
 * **ctrl+shift+x**: set the viewport to "extra small"
 * **ctrl+shift+s**: set the viewport to "small"
 * **ctrl+shift+m**: set the viewport to "medium"
