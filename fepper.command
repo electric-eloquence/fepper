@@ -27,7 +27,7 @@ if [[ $has_fp != *bin/fp ]]; then
 
   if [[ $? != 0 ]]; then
     echo
-    echo Running this command as root/Administrator.
+    echo Rerunning this command as root/Administrator.
     sudo npm install -g fepper-cli
   fi
 fi
