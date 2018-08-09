@@ -40,9 +40,7 @@
     "node": ">=8.5.0"
   },
   "devDependencies": {
-    "chai": "4.x",
-    "eslint": "3.x",
-    "fepper": "^0.25.5",
+    "fepper": "0.26.0-rc.12",
     "fs-extra": "^7.0.0",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.5.0",
