@@ -28,7 +28,7 @@ if [[ $has_fp != *bin/fp ]]; then
   if [[ $? != 0 ]]; then
     echo
     echo Running this command as root/Administrator.
-    sudo install -g fepper-cli
+    sudo npm install -g fepper-cli
   fi
 fi
 
