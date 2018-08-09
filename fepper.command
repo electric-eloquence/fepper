@@ -24,6 +24,12 @@ fi
 has_fp=`which fp`
 if [[ $has_fp != *bin/fp ]]; then
   npm install -g fepper-cli
+
+  if [[ $? != 0 ]]; then
+    echo
+    echo Running this command as root/Administrator.
+    sudo install -g fepper-cli
+  fi
 fi
 
 # Check for mandatory files and dirs. Run installer if missing.
