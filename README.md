@@ -37,6 +37,7 @@
 * [variables.styl](#variables.styl)
 * [UI Customization](#ui-customization)
 * [Extensions](#extensions)
+* [Express App](#express-app)
 * [Mobile Devices](#mobile-devices)
 * [Keyboard Shortcuts](#keyboard-shortcut)
 * [More Documentation](#more-documentation)
@@ -62,8 +63,8 @@
     <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
     fepper-cli</a>, which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
-    because it is from an unidentified  developer.
-      * In that case, ctrl+click `fepper.command` and click "Open".
+    because it is from an unidentified developer.
+      * In this case, ctrl+click `fepper.command` and click "Open".
       * In the following prompt, click "Open" to confirm that you're sure you 
         want to open it.
   * Enter your password to allow installation.
@@ -403,6 +404,13 @@ Custom extensions:
   directory deep, but no deeper.
 * Add the tasks to `extend/custom.js` (and `extend/auxiliary/auxiliary_custom.js` 
   if necessary) in order for Fepper to run them.
+
+### <a id="express-app"></a>Express App
+
+Fepper exposes its Express application through the `global.express` object. This 
+object can be overridden with custom routes and middleware via the `custom:tcp-ip` 
+(or `contrib:tcp-ip`) extension task. Initialization of `global.express` occurs 
+before this task, and listening occurs afterward.
 
 ### <a id="mobile-devices"></a>Mobile Devices
 
