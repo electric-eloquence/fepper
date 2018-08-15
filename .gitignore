@@ -1,4 +1,3 @@
-!/public/package-lock.json
 !/public/package.json
 !/source/_static/node_modules/
 .*.swp
@@ -10,6 +9,7 @@
 /extend/
 /install.log
 /npm-debug.log
+/package-lock.json
 /patternlab-config.json
 /pref.yml
 /public/*
