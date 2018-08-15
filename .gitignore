@@ -7,7 +7,6 @@
 /conf.yml
 /install.log
 /npm-debug.log
-/package-lock.json
 /public/*
 ignore/
 node_modules/
