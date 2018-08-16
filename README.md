@@ -36,6 +36,7 @@
 * [HTML Scraper](#html-scraper)
 * [variables.styl](#variables.styl)
 * [UI Customization](#ui-customization)
+* [I18N](#i18n)
 * [Extensions](#extensions)
 * [Express App](#express-app)
 * [Mobile Devices](#mobile-devices)
@@ -383,6 +384,18 @@ fp ui:compile
 
 New UI customizations will not be picked up simply by restarting Fepper.
 
+### <a id="i18n"></a>I18N
+
+The Elements, Compounds, and Components directories are optional and can be 
+renamed to anything your charset and file system allow without further 
+configuration. The Templates, Pages, and Scrape directories can be renamed, but 
+must also be reconfigured in `patternlab-config.json`. Just about all the text 
+in the UI can be changed via UI customization.
+
+If a need for documentation in another language arises, you are strongly 
+encouraged to translate and use the options that Open Source offers to 
+distribute the translations to the world's community of developers.
+
 ### <a id="extensions"></a>Extensions
 
 The `extend` directory is purposed for extending Fepper's functionality. 
@@ -407,10 +420,10 @@ Custom extensions:
 
 ### <a id="express-app"></a>Express App
 
-Fepper exposes its Express application through the `global.express` object. This 
-object can be overridden with custom routes and middleware via the `custom:tcp-ip` 
-(or `contrib:tcp-ip`) extension task. Initialization of `global.express` occurs 
-before this task, and listening occurs afterward.
+Fepper exposes its Express application through the `global.expressApp` object. 
+This object can be overridden with custom routes and middleware via the 
+`custom:tcp-ip` (or `contrib:tcp-ip`) extension task. Initialization of 
+`global.expressApp` occurs before this task, and listening occurs afterward.
 
 ### <a id="mobile-devices"></a>Mobile Devices
 
