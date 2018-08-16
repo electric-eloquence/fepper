@@ -418,7 +418,9 @@ Custom extensions:
 * Add the tasks to `extend/custom.js` (and `extend/auxiliary/auxiliary_custom.js` 
   if necessary) in order for Fepper to run them.
 * Fepper runs a self-contained instance of gulp to manage tasks. This gulp 
-  instance will be independent of any other gulp instance on your system. 
+  instance will be independent of any other gulp instance on your system.
+* `fp` is an alias for `gulp` (among other things). Any `fp` task can be 
+  included in a custom task.
 * Use gulp 3 syntax for writing custom tasks.
 
 ### <a id="express-app"></a>Express App
