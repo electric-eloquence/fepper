@@ -387,14 +387,14 @@ New UI customizations will not be picked up simply by restarting Fepper.
 ### <a id="i18n"></a>I18N
 
 The Elements, Compounds, and Components directories are optional and can be 
-renamed to anything your charset and file system allow without further 
+renamed to anything your charset and file system allow, without further 
 configuration. The Templates, Pages, and Scrape directories can be renamed, but 
 must also be reconfigured in `patternlab-config.json`. Just about all the text 
 in the UI can be changed via UI customization.
 
 If a need for documentation in another language arises, you are strongly 
-encouraged to translate and use the options that Open Source offers to 
-distribute the translations to the world's community of developers.
+encouraged to translate them, and use the options that Open Source offers to 
+distribute the translations to the developers of the world.
 
 ### <a id="extensions"></a>Extensions
 
