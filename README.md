@@ -384,17 +384,32 @@ fp ui:compile
 
 New UI customizations will not be picked up simply by restarting Fepper.
 
+The UI exposes these tasks for extension purposes:
+
+* `fp ui:build` - build the patterns and frontend, outputting to the public 
+  directory.
+* `fp ui:clean` - delete all patterns in the public directory.
+* `fp ui:compile` - compile the UI frontend and build the patterns.
+* `fp ui:compileui` - compile the UI frontend only.
+* `fp ui:copy` - copy frontend files (\_assets, \_scripts, \_styles) to the 
+  public directory.
+* `fp ui:copy-styles` - copy \_styles to the public directory (for injection 
+  into browser without refresh.
+* `fp ui:help` - get more information about Fepper UI CLI commands.
+* `fp ui:patternsonly` - build the patterns only, outputting to the public 
+  directory.
+
 ### <a id="i18n"></a>I18N
 
 The Elements, Compounds, and Components directories are optional and can be 
-renamed to anything your charset and file system allow, without further 
+renamed to anything your charset and file system allow without further 
 configuration. The Templates, Pages, and Scrape directories can be renamed, but 
 must also be reconfigured in `patternlab-config.json`. Just about all the text 
 in the UI can be changed via UI customization.
 
-If a need for documentation in another language arises, you are strongly 
-encouraged to translate them, and use the options that Open Source offers to 
-distribute the translations to the developers of the world.
+If a need for documentation in other languages arises, you are strongly 
+encouraged to make the translations, and use the options that Open Source offers 
+to distribute them to the rest of the world.
 
 ### <a id="extensions"></a>Extensions
 
@@ -419,9 +434,9 @@ Custom extensions:
   if necessary) in order for Fepper to run them.
 * Fepper runs a self-contained instance of gulp to manage tasks. This gulp 
   instance will be independent of any other gulp instance on your system.
-* `fp` is an alias for `gulp` (among other things). Any `fp` task can be 
-  included in a custom task.
-* Use gulp 3 syntax for writing custom tasks.
+* The `fp` command is an alias for `gulp` (among other things). Any `fp` task 
+  can be included in a custom task.
+* Fepper only supports gulp 3 syntax.
 
 ### <a id="express-app"></a>Express App
 
