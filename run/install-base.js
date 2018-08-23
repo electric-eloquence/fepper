@@ -51,11 +51,14 @@ else {
 }
 
 // Create empty extend and source dirs so the postinstall script doesn't write the main profile there.
-if (!fs.existsSync(extendDir)) {
+const existsAlreadyExtendDir = fs.existsSync(extendDir);
+const existsAlreadySourceDir = fs.existsSync(sourceDir);
+
+if (!existsAlreadyExtendDir) {
   fs.mkdirSync(extendDir);
 }
 
-if (!fs.existsSync(sourceDir)) {
+if (!existsAlreadySourceDir) {
   fs.mkdirSync(sourceDir);
   fs.mkdirSync(`${sourceDir}/_data`);
   fs.mkdirSync(`${sourceDir}/_patterns`);
@@ -98,15 +101,19 @@ if (!fs.existsSync(prefFile)) {
   fs.copyFileSync(path.resolve(fepperPath, 'excludes', 'pref.yml'), prefFile);
 }
 
-// Delete the source and extend dirs so new ones can be copied over.
-// fs.rmdirSync will throw an error if directory is already populated.
-fs.unlinkSync(`${sourceDir}/_data/listitems.json`);
-fs.unlinkSync(`${sourceDir}/_data/data.json`);
-fs.rmdirSync(`${sourceDir}/_styles`);
-fs.rmdirSync(`${sourceDir}/_patterns`);
-fs.rmdirSync(`${sourceDir}/_data`);
-fs.rmdirSync(sourceDir);
-fs.rmdirSync(extendDir);
+// Delete placeholder source and extend dirs so new ones can be copied over.
+if (!existsAlreadySourceDir) {
+  fs.unlinkSync(`${sourceDir}/_data/listitems.json`);
+  fs.unlinkSync(`${sourceDir}/_data/data.json`);
+  fs.rmdirSync(`${sourceDir}/_styles`);
+  fs.rmdirSync(`${sourceDir}/_patterns`);
+  fs.rmdirSync(`${sourceDir}/_data`);
+  fs.rmdirSync(sourceDir);
+}
+
+if (!existsAlreadyExtendDir) {
+  fs.rmdirSync(extendDir);
+}
 
 const binPath = path.resolve('node_modules', '.bin');
 const winGulp = path.resolve(binPath, 'gulp.cmd');
