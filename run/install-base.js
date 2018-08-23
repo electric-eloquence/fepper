@@ -62,6 +62,12 @@ if (!fs.existsSync(sourceDir)) {
   fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '{}');
 }
 
+// Output to install.log.
+const installLog = 'install.log';
+let spawnedObj;
+
+fs.writeFileSync(installLog, '');
+
 // Only run npm install if not already installed.
 if (!fs.existsSync('node_modules')) {
   let binNpm = 'npm';
@@ -71,7 +77,11 @@ if (!fs.existsSync('node_modules')) {
     binNpm = 'npm.cmd';
   }
 
-  spawnSync(binNpm, ['install'], {stdio: 'inherit'});
+  spawnedObj = spawnSync(binNpm, ['install', '--ignore-scripts'], {stdio: 'inherit'});
+}
+
+if (spawnedObj && spawnedObj.stderr) {
+  fs.appendFileSync(installLog, `${spawnedObj.stderr}\n`);
 }
 
 // Check if patterns dir is already populated.
@@ -79,8 +89,11 @@ const patternsDirContent = fs.readdirSync(`${sourceDir}/_patterns`);
 
 // Return if already populated.
 if (patternsDirContent.length) {
+  const warning = `The ${sourceDir} directory already has content! Aborting base install!`;
+
   // eslint-disable-next-line no-console
-  console.warn(`The ${sourceDir} directory already has content! Aborting base install!`);
+  console.warn(warning);
+  fs.appendFileSync(installLog, `${warning}\n`);
 
   return;
 }
@@ -106,19 +119,18 @@ if (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\s
 }
 
 // Copy over the base profile source dir.
-const spawnedObj =
+const spawnedObj1 =
   spawnSync(binGulp, ['--gulpfile', path.resolve(fepperPath, 'tasker.js'), 'install:copy-base'], {stdio: 'inherit'});
 
-// Output to install.log.
-const installLog = 'install.log';
-
-fs.writeFileSync(installLog, '');
-
-if (spawnedObj.stderr) {
-  fs.appendFileSync(installLog, `${spawnedObj.stderr}\n`);
+if (spawnedObj1.stderr) {
+  fs.appendFileSync(installLog, `${spawnedObj1.stderr}\n`);
 }
 
-fs.appendFileSync(installLog, `Process exited with status ${spawnedObj.status}.\n`);
+// Complete installation.
+const spawnedObj2 = spawnSync('node', [path.resolve(fepperPath, 'run', 'install.js')], {stdio: 'inherit'});
 
-// Compile UI.
-spawnSync('node', [path.resolve(fepperPath, 'index.js'), 'ui:compileui'], {stdio: 'inherit'});
+if (spawnedObj2.stderr) {
+  fs.appendFileSync(installLog, `${spawnedObj2.stderr}\n`);
+}
+
+fs.appendFileSync(installLog, `Process exited with status ${spawnedObj2.status}.\n`);
