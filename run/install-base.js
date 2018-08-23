@@ -126,11 +126,5 @@ if (spawnedObj1.stderr) {
   fs.appendFileSync(installLog, `${spawnedObj1.stderr}\n`);
 }
 
-// Complete installation.
-const spawnedObj2 = spawnSync('node', [path.resolve('run', 'install.js')], {stdio: 'inherit'});
-
-if (spawnedObj2.stderr) {
-  fs.appendFileSync(installLog, `${spawnedObj2.stderr}\n`);
-}
-
-fs.appendFileSync(installLog, `Process exited with status ${spawnedObj2.status}.\n`);
+// Complete installation. run/install.js handles its own logging so no need to log here.
+spawnSync('node', [path.resolve('run', 'install.js')], {stdio: 'inherit'});
