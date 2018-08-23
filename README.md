@@ -10,7 +10,7 @@
 ### Downstream projects
 
 * [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no 
-  unnecessary assets, styles, or Pattern Lab demo.
+  unnecessary assets, styles, Pattern Lab demo, or `fp-stylus` extension.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - 
   templates configured for Drupal 8, along with a Drupal theme built to 
   accommodate those templates.
@@ -323,15 +323,13 @@ bp_xx_min = 0
 It cannot contain comments, semi-colons, curly braces, etc. It is 
 straightforward to import and use these variables in Stylus and JavaScript. PHP 
 must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS 
-processors and tries to keep the amount of NPMs to download to a minimum, so it 
-does not ship with Stylus (or any other CSS pre/post-processor) configured. 
-However, since Stylus allows for this easy sharing of variables, Fepper does 
-ship with a `source/_styles/src/stylus` directory. In order to compile it to 
-CSS in the `source/_styles/bld` directory, run `npm install` in the `extend` 
-directory. Then, uncomment the `stylus:`-prefixed tasks in `extend/contrib.js`. 
-The Stylus files are written in the terse, Python-like, indentation-based 
-syntax. However, the more verbose, CSS-like syntax (with curly braces, colons, 
-and semi-colons) is perfectly valid as well.
+processors and tries to keep the amount of NPMs to download to a minimum. 
+However, since Stylus allows for this easy sharing of variables, most Fepper 
+distros ship with the `fp-stylus` extension and a fully-populated 
+`source/_styles/src/stylus` directory. The Stylus files are written in the 
+terse, Python-like, indentation-based syntax. However, the more verbose, 
+CSS-like syntax (with curly braces, colons, and semi-colons) is perfectly valid 
+as well.
 
 The UI's viewport resizer buttons are dependent on the values in this file. The 
 default values will configure the XX, XS, SM, and MD buttons to resize the 
@@ -422,6 +420,8 @@ Contributed extensions:
 * Install and update contributed extensions with NPM in the `extend` directory.
 * Add the tasks to `extend/contrib.js` (and `extend/auxiliary/auxiliary_contrib.js` 
   if necessary) in order for Fepper to run them.
+* Contributed Fepper extensions can be found at https://www.npmjs.com/ by 
+  searching for "Fepper extension".
 
 Custom extensions:
 
@@ -437,6 +437,27 @@ Custom extensions:
 * The `fp` command is an alias for `gulp` (among other things). Any `fp` task 
   can be included in a custom task.
 * Fepper only supports gulp 3 syntax.
+
+Confs and prefs:
+
+You might need to access the values in `conf.yml` and `pref.yml` in order to 
+write custom tasks. They are exposed through `global.conf` and `global.pref` 
+respectively.
+
+The values in `patternlab-config.json` are exposed through `global.conf.ui`. One 
+thing to note is that all paths in `patternlab-config.json` will be converted to 
+absolute paths in `global.conf.ui`.
+
+`gulp.watch` will not work correctly with absolute paths. There are two 
+workarounds for this:
+
+* Hard-code a relative path as the first `gulp.watch` parameter. Pass an 
+  absolute path (from `global.conf.ui.paths` or otherwise) as the `options.cwd` 
+  value for the second parameter.
+* Pass a value from `global.conf.ui.pathsRelative` as the first parameter.
+  * `global.conf.ui.pathsRelative` stores relative versions of the values in 
+    `global.conf.ui.paths`.
+  * This will still probably require `options.cwd` in the second parameter.
 
 ### <a id="express-app"></a>Express App
 
