@@ -6,8 +6,8 @@
     "postinstall": "node run/install.js",
     "prepush": "npm test",
     "test": "npm run test-eslint && npm run test-mocha",
-    "test-eslint": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test",
-    "test-mocha": "./node_modules/.bin/mocha test/install-tests.js",
+    "test-eslint": "npx eslint run && npx eslint test",
+    "test-mocha": "npx mocha test/install-tests.js && npx mocha test/install-extension-tests.js",
     "update": "node run/update.js"
   },
   "repository": {

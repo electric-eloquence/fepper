@@ -24,10 +24,6 @@ describe('Installer', function () {
     expect(fs.existsSync('extend')).to.equal(true);
   });
 
-  it('should install npms in /extend', function () {
-    expect(fs.existsSync('extend/node_modules')).to.equal(true);
-  });
-
   it('should install npms in /public', function () {
     expect(fs.existsSync('public/node_modules')).to.equal(true);
   });
