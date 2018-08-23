@@ -8,6 +8,8 @@ const conf = {};
 const confFile = './conf.yml';
 const confUiFile = './patternlab-config.json';
 const enc = 'utf8';
+const fepperPath = path.resolve('node_modules', 'fepper');
+const prefFile = './pref.yml';
 
 let extendDir;
 let sourceDir;
@@ -84,21 +86,20 @@ if (spawnedObj && spawnedObj.stderr) {
   fs.appendFileSync(installLog, `${spawnedObj.stderr}\n`);
 }
 
-// Check if patterns dir is already populated.
-const patternsDirContent = fs.readdirSync(`${sourceDir}/_patterns`);
+if (!fs.existsSync(confFile)) {
+  fs.copyFileSync(path.resolve(fepperPath, 'excludes', 'conf.yml'), confFile);
+}
 
-// Return if already populated.
-if (patternsDirContent.length) {
-  const warning = `The ${sourceDir} directory already has content! Aborting base install!`;
+if (!fs.existsSync(confUiFile)) {
+  fs.copyFileSync(path.resolve(fepperPath, 'excludes', 'patternlab-config.json'), confUiFile);
+}
 
-  // eslint-disable-next-line no-console
-  console.warn(warning);
-  fs.appendFileSync(installLog, `${warning}\n`);
-
-  return;
+if (!fs.existsSync(prefFile)) {
+  fs.copyFileSync(path.resolve(fepperPath, 'excludes', 'pref.yml'), prefFile);
 }
 
 // Delete the source and extend dirs so new ones can be copied over.
+// fs.rmdirSync will throw an error if directory is already populated.
 fs.unlinkSync(`${sourceDir}/_data/listitems.json`);
 fs.unlinkSync(`${sourceDir}/_data/data.json`);
 fs.rmdirSync(`${sourceDir}/_styles`);
@@ -108,7 +109,6 @@ fs.rmdirSync(sourceDir);
 fs.rmdirSync(extendDir);
 
 const binPath = path.resolve('node_modules', '.bin');
-const fepperPath = path.resolve('node_modules', 'fepper');
 const winGulp = path.resolve(binPath, 'gulp.cmd');
 
 let binGulp = path.resolve(binPath, 'gulp');
@@ -127,7 +127,7 @@ if (spawnedObj1.stderr) {
 }
 
 // Complete installation.
-const spawnedObj2 = spawnSync('node', [path.resolve(fepperPath, 'run', 'install.js')], {stdio: 'inherit'});
+const spawnedObj2 = spawnSync('node', [path.resolve('run', 'install.js')], {stdio: 'inherit'});
 
 if (spawnedObj2.stderr) {
   fs.appendFileSync(installLog, `${spawnedObj2.stderr}\n`);
