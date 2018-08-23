@@ -5,12 +5,32 @@ const fs = require('fs');
 const path = require('path');
 
 const conf = {};
+const confFile = './conf.yml';
 const confUiFile = './patternlab-config.json';
+const enc = 'utf8';
 
+let extendDir;
 let sourceDir;
 
+if (fs.existsSync(confFile)) {
+  const confStr = fs.readFileSync(confFile, enc);
+  const confLines = confStr.split('\n');
+
+  for (let confLine of confLines) {
+    const keyVal = confLine.split(':');
+
+    if (keyVal[0].trim() === 'extend_dir' && keyVal[1]) {
+      extendDir = keyVal[1].trim();
+    }
+  }
+}
+// confFile may not exists at this point of installation. Hard-code in that case.
+else {
+  extendDir = 'extend';
+}
+
 if (fs.existsSync(confUiFile)) {
-  const confUiStr = fs.readFileSync(confUiFile, 'utf8');
+  const confUiStr = fs.readFileSync(confUiFile, enc);
 
   try {
     conf.ui = JSON.parse(confUiStr);
@@ -23,13 +43,16 @@ if (fs.existsSync(confUiFile)) {
     sourceDir = conf.ui.paths.source.root;
   }
 }
-
-// Conf file may not exists at this point of installation. Hard-code in that case.
+// confUiFile may not exists at this point of installation. Hard-code in that case.
 else {
   sourceDir = 'source';
 }
 
-// First, create empty source dir so the postinstall script doesn't write the main profile there.
+// Create empty extend and source dirs so the postinstall script doesn't write the main profile there.
+if (!fs.existsSync(extendDir)) {
+  fs.mkdirSync(extendDir);
+}
+
 if (!fs.existsSync(sourceDir)) {
   fs.mkdirSync(sourceDir);
   fs.mkdirSync(`${sourceDir}/_data`);
@@ -62,13 +85,14 @@ if (patternsDirContent.length) {
   return;
 }
 
-// Delete the source dir so a new one can be copied over.
+// Delete the source and extend dirs so new ones can be copied over.
 fs.unlinkSync(`${sourceDir}/_data/listitems.json`);
 fs.unlinkSync(`${sourceDir}/_data/data.json`);
 fs.rmdirSync(`${sourceDir}/_styles`);
 fs.rmdirSync(`${sourceDir}/_patterns`);
 fs.rmdirSync(`${sourceDir}/_data`);
 fs.rmdirSync(sourceDir);
+fs.rmdirSync(extendDir);
 
 const binPath = path.resolve('node_modules', '.bin');
 const fepperPath = path.resolve('node_modules', 'fepper');
