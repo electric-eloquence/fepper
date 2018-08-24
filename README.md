@@ -327,11 +327,12 @@ straightforward to import and use these variables in Stylus and JavaScript. PHP
 must import them with `parse_ini_file()`. Fepper tries to be agnostic about CSS 
 processors and tries to keep the amount of NPMs to download to a minimum. 
 However, since Stylus allows for this easy sharing of variables, most Fepper 
-distros ship with the `fp-stylus` extension and a fully-populated 
-`source/_styles/src/stylus` directory. The Stylus files are written in the 
-terse, Python-like, indentation-based syntax. However, the more verbose, 
-CSS-like syntax (with curly braces, colons, and semi-colons) is perfectly valid 
-as well.
+distros ship with the 
+<a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
+extension and a fully-populated `source/_styles/src/stylus` directory. The 
+Stylus files are written in the terse, Python-like, indentation-based syntax. 
+However, the more verbose, CSS-like syntax (with curly braces, colons, and 
+semi-colons) is perfectly valid as well.
 
 The UI's viewport resizer buttons are dependent on the values in this file. The 
 default values will configure the XX, XS, SM, and MD buttons to resize the 
