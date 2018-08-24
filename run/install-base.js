@@ -71,8 +71,6 @@ if (!existsAlreadySourceDir) {
 const installLog = 'install.log';
 let spawnedObj;
 
-fs.writeFileSync(installLog, '');
-
 // Only run npm install if not already installed.
 if (!fs.existsSync('node_modules')) {
   let binNpm = 'npm';
