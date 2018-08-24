@@ -110,10 +110,11 @@
 
 ### <a id="configure"></a>Configure
 
-Edit `pref.yml` to customize preferences and to view further documentation in 
-the comments. If you wish to use the `syncback`, `frontend-copy`, or `template` 
-tasks, you must supply values for the `backend.synced_dirs` preferences in order 
-for those directories to get processed and copied to the backend.
+Edit the `pref.yml` file to customize preferences and to view further 
+documentation in the comments. If you wish to use the `syncback`, 
+`frontend-copy`, or `template` tasks, you must supply values for the 
+`backend.synced_dirs` preferences in order for those directories to get 
+processed and copied to the backend.
 
 ### <a id="use"></a>Use
 
@@ -443,9 +444,9 @@ Custom extensions:
 
 Confs and prefs:
 
-You might need to access the values in `conf.yml` and `pref.yml` in order to 
-write custom tasks. They are exposed through `global.conf` and `global.pref` 
-respectively.
+You might need to access the values in the `conf.yml` and `pref.yml` files in 
+order to write custom tasks. They are exposed through `global.conf` and 
+`global.pref` (on the `global` Node object).
 
 The values in `patternlab-config.json` are exposed through `global.conf.ui`. One 
 thing to note is that all paths in `patternlab-config.json` will be converted to 
