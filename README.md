@@ -190,12 +190,14 @@ backend web application.
   set in `pref.yml`. 
 * The above values set in `pref.yml` can be overridden on a per-file basis by 
   similarly named YAML files with similarly named settings. 
-* These YAML files must match the source file's name with exception of the 
-  extension. 
-* The extension must be `.yml`
-* The overriding property must only contain the lowest level key-value, not the 
-  entire hierarchy, i.e. only `assets_dir`, `scripts_dir`, or `styles_dir` 
-* Files prefixed by "\_\_" will be ignored as will files in the `_nosync` 
+  * These YAML files must match the source file's name with the exception of the 
+    extension. 
+  * The extension must be `.yml`
+  * The overriding property must only contain the lowest level key-value, not 
+    the entire hierarchy, i.e., only `assets_dir`, not 
+    `backend.synced_dirs.assets_dir`. 
+* Asset, script, and style files prefixed by "\_\_" will be ignored by 
+  `fp syncback` and `fp frontend-copy` as will files in the `_nosync` 
   directory at the root of the source directories. 
 
 ### <a id="templater"></a>Templater
@@ -211,12 +213,15 @@ Follow these rules for setting up keys and values:
 
 * Delete the Mustache curly braces for keys.
 * Trim any exterior whitespace.
-* Leave other control structures within the key, i.e., !#/>^
+* Leave other control structures within the key, e.g., !#/>^
 * Escape parentheses, carets, and question marks with a backslash.
 * Wrap the key in single quotes.
 * Follow the closing quote with a colon, space, pipe, the numeral 2, and a 
   newline `: |2`
 * Indent each line of the value by at least two spaces.
+* When translating to a language with double-curly braces for tags (as per the 
+  example), the double-curly braces must be escaped with a backslash per curly 
+  brace.
 
 Run `fp syncback` or `fp template` to execute the Templater. 
 
@@ -227,7 +232,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in 
   the `_nosync` directory. 
 * The Templater will recurse through nested Mustache templates if the tags are 
-  written in the verbose syntax and have the `.mustache` extension, i.e. 
+  written in the verbose syntax and have the `.mustache` extension, e.g., 
   `{{> 02-components/00-global/00-header.mustache }}` 
 * However, the more common inclusion use-case is to leave off the extension, and 
   not recurse. 
@@ -289,17 +294,17 @@ parameterized tags.
 
 ### <a id="html-scraper"></a>HTML Scraper
 
-Fepper can scrape and import Mustache templates and JSON data files from actual 
-web pages. A common use-case is to scrape pages from a backend populated with 
-CMS content in order to auto-generate data, and to replicate the HTML structure. 
-To open the Scraper, click Scrape in the Fepper UI, and then click HTML 
-Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
+Fepper can scrape and import Mustache and JSON from the HTML of any valid web 
+page. A common use-case is to scrape pages from a backend populated with CMS 
+content in order to auto-generate data, and to replicate the CMS's HTML 
+structure. To open the Scraper, click Scrape in the Fepper UI, and then click 
+HTML Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
 selector you wish to target (prepended with "#" for IDs and "." for classes). 
 Classnames and tagnames may be appended with array index notation ([n]). 
 Otherwise, the Scraper will scrape all elements of that class or tag 
 sequentially. Such a loosely targeted scrape will save many of the targeted 
-fields to a JSON file, but will only save the first instance of the target to 
-a Mustache template.
+fields to a JSON file, but will only save the first instance of the target to a 
+Mustache file.
 
 Upon submission, you should be able to review the scraped output on the 
 subsequent page. If the output looks correct, enter a filename and submit again. 
@@ -332,8 +337,8 @@ distros ship with the
 <a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
 extension and a fully-populated `source/_styles/src/stylus` directory. The 
 Stylus files are written in the terse, Python-like, indentation-based syntax. 
-However, the more verbose, CSS-like syntax (with curly braces, colons, and 
-semi-colons) is perfectly valid as well.
+However, the more verbose, CSS-like syntax (with curly braces and semi-colons) 
+is perfectly valid as well.
 
 The UI's viewport resizer buttons are dependent on the values in this file. The 
 default values will configure the XX, XS, SM, and MD buttons to resize the 
@@ -409,7 +414,7 @@ configuration. The Templates, Pages, and Scrape directories can be renamed, but
 must also be reconfigured in `patternlab-config.json`. Just about all the text 
 in the UI can be changed via UI customization.
 
-If a need for documentation in other languages arises, you are strongly 
+If a need arises for documentation in other languages, you are strongly 
 encouraged to make the translations, and use the options that Open Source offers 
 to distribute them to the rest of the world.
 
@@ -448,8 +453,8 @@ You might need to access the values in the `conf.yml` and `pref.yml` files in
 order to write custom tasks. They are exposed through `global.conf` and 
 `global.pref` (on the `global` Node object).
 
-The values in `patternlab-config.json` are exposed through `global.conf.ui`. One 
-thing to note is that all paths in `patternlab-config.json` will be converted to 
+The values in `patternlab-config.json` are exposed through `global.conf.ui`. 
+Please note that all paths in `patternlab-config.json` will be converted to 
 absolute paths in `global.conf.ui`.
 
 `gulp.watch` will not work correctly with absolute paths. There are two 
