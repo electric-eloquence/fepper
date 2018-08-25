@@ -90,7 +90,9 @@
 
 #### Base install
 
-* Comes with no unnecessary assets, styles, or Pattern Lab demo.
+* Comes with no unnecessary assets, styles, Pattern Lab demo, or 
+  <a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
+  extension.
 * Node.js must be installed beforehand.
 * `npm install -g fepper-cli`
 * `npm run install-base`
