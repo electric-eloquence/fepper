@@ -143,9 +143,10 @@ Run `fp update` to download and install the latest updates.
 
 ### <a id="global-data"></a>Global Data
 
-Edit `source/_data/_data.json` to globally populate Mustache templates with 
-data. Manual edits to `source/_data/data.json` will get overwritten on 
-compilation.
+Edit `source/_data/_data.json` to globally populate 
+<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+(.mustache) templates with data. Manual edits to `source/_data/data.json` will 
+get overwritten on compilation.
 
 ### <a id="partial-data"></a>Partial Data
 
@@ -204,16 +205,17 @@ backend web application.
 
 ### <a id="templater"></a>Templater
 
-Fepper's Mustache templates can be translated into templates compatible with 
-your backend. Mustache tags just need to be replaced with tags the backend can 
-use. Put these translations into YAML files named similarly to the Mustache 
-files in `source/_patterns/03-templates`. Follow 
+Fepper's <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+(.mustache) templates can be translated into templates compatible with your 
+backend. Feplet tags just need to be replaced with tags the backend can use. 
+Put these translations into YAML files named similarly to the .mustache files in 
+`source/_patterns/03-templates`. Follow 
 <a href="https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/_patterns/03-templates/page.yml" target="_blank">
 this example</a> for the correct YAML syntax. 
 
 Follow these rules for setting up keys and values:
 
-* Delete the Mustache curly braces for keys.
+* Delete the Feplet curly braces for keys.
 * Trim any exterior whitespace.
 * Leave other control structures within the key, e.g., !#/>^
 * Escape parentheses, carets, and question marks with a backslash.
@@ -233,7 +235,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
   overridden by similarly named settings in the template-specific YAML files. 
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in 
   the `_nosync` directory. 
-* The Templater will recurse through nested Mustache templates if the tags are 
+* The Templater will recurse through nested Feplet templates if the tags are 
   written in the verbose syntax and have the `.mustache` extension, e.g., 
   `{{> 02-components/00-global/00-header.mustache }}` 
 * However, the more common inclusion use-case is to leave off the extension, and 
@@ -261,23 +263,24 @@ INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 
 ### <a id="mustache-browser"></a>Mustache Browser
 
-Mustache code can be viewed in the Fepper UI by clicking the eyeball icon in the 
-upper right, then clicking Code, and then clicking the Mustache tab in the 
-bottom pane. The Mustache tags are hot-linked, and if they are written in the 
-verbose syntax, clicking on them will open that Mustache file and display its 
-code in the Fepper UI, with its Mustache tags hot-linked as well.
+<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+(.mustache) code can be viewed in the Fepper UI by clicking the eyeball icon in 
+the upper right, then clicking Code, and then clicking the Mustache tab in the 
+bottom pane. The partial tags are hot-linked, and if they are written in the 
+verbose syntax, clicking on them will open that .mustache file and display its 
+code in the Fepper UI, with its partial tags hot-linked as well.
 
-The Mustache tags must be coded in the verbose-pathed manner: 
+The partial tags must be coded in the verbose-pathed manner: 
 
 ```
 {{> 02-components/00-global/00-header }}
 ```
 
 The path must be correct; however, the `.mustache` extension is optional. The 
-default homepage contains working examples of browsable Mustache links.
+default homepage contains working examples of browsable partial tags.
 
 Fepper's implementation of Mustache is powered by the 
-<a href="https://github.com/electric-eloquence/feplet" target="_blank">Feplet</a> 
+<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 template engine. It extends Mustache functionality by allowing the passing of 
 data parameters as follows:
 
@@ -296,9 +299,9 @@ parameterized tags.
 
 ### <a id="html-scraper"></a>HTML Scraper
 
-Fepper can scrape and import Mustache and JSON from the HTML of any valid web 
-page. A common use-case is to scrape pages from a backend populated with CMS 
-content in order to auto-generate data, and to replicate the CMS's HTML 
+Fepper can scrape and import the HTML of any valid web page into a reusable 
+pattern. A common use-case is to scrape pages from a backend populated with CMS 
+content in order to auto-generate data files, and to replicate the CMS's HTML 
 structure. To open the Scraper, click Scrape in the Fepper UI, and then click 
 HTML Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
 selector you wish to target (prepended with "#" for IDs and "." for classes). 
@@ -306,13 +309,13 @@ Classnames and tagnames may be appended with array index notation ([n]).
 Otherwise, the Scraper will scrape all elements of that class or tag 
 sequentially. Such a loosely targeted scrape will save many of the targeted 
 fields to a JSON file, but will only save the first instance of the target to a 
-Mustache file.
+Feplet (.mustache) file.
 
 Upon submission, you should be able to review the scraped output on the 
 subsequent page. If the output looks correct, enter a filename and submit again. 
-The Scraper will save Mustache and JSON files by that name in the 98-scrape 
+The Scraper will save .mustache and .json files by that name in the 98-scrape 
 directory, also viewable under the Scrape menu of the toolbar. The Scraper will 
-also correctly indent the Mustache code.
+also correctly indent the Feplet code.
 
 ### <a id="variables.styl"></a>variables.styl
 
@@ -470,6 +473,10 @@ workarounds for this:
     `global.conf.ui.paths`.
   * This will still probably require `options.cwd` in the second parameter.
 
+Common utilty functions for custom extensions are available from the
+<a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
+NPM. Its API documentation can be viewed by following the link.
+
 ### <a id="express-app"></a>Express App
 
 Fepper exposes its Express application through the `global.expressApp` object. 
@@ -544,6 +551,7 @@ As a reminder, the viewport sizes can be customized in `source/_scripts/src/vari
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
 * <a href="https://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
-* <a href="https://github.com/electric-eloquence/feplet" target="_blank">Feplet</a>
+* <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 * <a href="https://mustache.github.io/mustache.5.html" target="_blank">
   Mustache</a>
+* <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
