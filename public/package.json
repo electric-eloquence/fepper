@@ -3,16 +3,14 @@
   "repository": {},
   "license": "MIT",
   "devDependencies": {
+    "feplet": "^0.1.4",
     "fepper-ui": "^0.3.2",
     "he": "1.1.0",
-    "hogan.js": "3.0.2",
     "jquery": "3.3.1",
     "jquery.cookie": "1.4.1",
     "js-beautify": "1.6.4",
     "mousetrap": "1.6.2",
     "prismjs": "1.5.1",
-    "react": "15.6.2",
-    "react-dom": "15.6.2",
     "typeahead.js": "0.10.5",
     "wolfy87-eventemitter": "4.2.11"
   }
