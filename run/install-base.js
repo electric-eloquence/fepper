@@ -63,8 +63,8 @@ if (!existsAlreadySourceDir) {
   fs.mkdirSync(`${sourceDir}/_data`);
   fs.mkdirSync(`${sourceDir}/_patterns`);
   fs.mkdirSync(`${sourceDir}/_styles`);
-  fs.writeFile(`${sourceDir}/_data/data.json`, '{}');
-  fs.writeFile(`${sourceDir}/_data/listitems.json`, '{}');
+  fs.writeFileSync(`${sourceDir}/_data/data.json`, '{}');
+  fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '{}');
 }
 
 // Output to install.log.
@@ -88,15 +88,15 @@ if (spawnedObj && spawnedObj.stderr) {
 }
 
 if (!fs.existsSync(confFile)) {
-  fs.copyFile(path.resolve(fepperPath, 'excludes', 'conf.yml'), confFile);
+  fs.copyFileSync(path.resolve(fepperPath, 'excludes', 'conf.yml'), confFile);
 }
 
 if (!fs.existsSync(confUiFile)) {
-  fs.copyFile(path.resolve(fepperPath, 'excludes', 'patternlab-config.json'), confUiFile);
+  fs.copyFileSync(path.resolve(fepperPath, 'excludes', 'patternlab-config.json'), confUiFile);
 }
 
 if (!fs.existsSync(prefFile)) {
-  fs.copyFile(path.resolve(fepperPath, 'excludes', 'pref.yml'), prefFile);
+  fs.copyFileSync(path.resolve(fepperPath, 'excludes', 'pref.yml'), prefFile);
 }
 
 // Delete placeholder source and extend dirs so new ones can be copied over.
