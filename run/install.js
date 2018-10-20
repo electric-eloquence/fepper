@@ -13,21 +13,21 @@ const confFile = 'conf.yml';
 const confFileSrc = path.resolve(excludesDir, confFile);
 
 if (!fs.existsSync(confFile)) {
-  fs.copySync(confFileSrc, confFile);
+  fs.copy(confFileSrc, confFile);
 }
 
 const confUiFile = 'patternlab-config.json';
 const confUiFileSrc = path.resolve(excludesDir, confUiFile);
 
 if (!fs.existsSync(confUiFile)) {
-  fs.copySync(confUiFileSrc, confUiFile);
+  fs.copy(confUiFileSrc, confUiFile);
 }
 
 const prefFile = 'pref.yml';
 const prefFileSrc = path.resolve(excludesDir, prefFile);
 
 if (!fs.existsSync(prefFile)) {
-  fs.copySync(prefFileSrc, prefFile);
+  fs.copy(prefFileSrc, prefFile);
 }
 
 let conf = {};
