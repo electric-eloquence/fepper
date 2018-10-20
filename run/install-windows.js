@@ -25,5 +25,5 @@ const windowsFiles = [
 const srcDir = path.resolve('node_modules', 'fepper', 'excludes', 'profiles', 'windows');
 
 windowsFiles.forEach(function (windowsFile) {
-  fs.copyFile(path.resolve(srcDir, windowsFile), windowsFile);
+  fs.copyFileSync(path.resolve(srcDir, windowsFile), windowsFile);
 });
