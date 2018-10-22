@@ -25,9 +25,9 @@
 ### Table of contents
 
 * [Install](#install)
-* [Update](#update)
 * [Configure](#configure)
 * [Use](#use)
+* [Update](#update)
 * [Global Data](#global-data)
 * [Partial Data](#partial-data)
 * [Static Site Generation](#static-site-generation)
@@ -38,11 +38,11 @@
 * [HTML Scraper](#html-scraper)
 * [variables.styl](#variables.styl)
 * [UI Customization](#ui-customization)
-* [I18N](#i18n)
 * [Extensions](#extensions)
 * [Express App](#express-app)
 * [Mobile Devices](#mobile-devices)
-* [Keyboard Shortcuts](#keyboard-shortcut)
+* [I18N](#i18n)
+* [Keyboard Shortcuts](#keyboard-shortcuts)
 * [More Documentation](#more-documentation)
 
 ### <a id="install"></a>Install
@@ -125,7 +125,7 @@ processed and copied to the backend.
 * To launch from the command line:
   * `fp`
 * These other utility tasks are runnable on the command line:
-  * `fp data` - compile data.json from underscore-prefixed .json files.
+  * `fp data` - build data.json from underscore-prefixed .json files.
   * `fp frontend-copy` - copy assets, scripts, and styles to the backend.
   * `fp help` - print documentation of Fepper tasks.
   * `fp once` - do a one-off Fepper build to the public directory.
@@ -148,13 +148,13 @@ Run `fp update` to download and install the latest updates.
 Edit `source/_data/_data.json` to globally populate 
 <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 (.mustache) templates with data. Manual edits to `source/_data/data.json` will 
-get overwritten on compilation.
+get overwritten on each build.
 
 ### <a id="partial-data"></a>Partial Data
 
 Underscore-prefixed .json files within 
 `source/_patterns` will be concatenated to the output of `_data.json`, the 
-whole in turn getting compiled into `data.json`, the final source of globally 
+whole in turn getting built into `data.json`, the final source of globally 
 scoped data. 
 
 _Partial data_ is distinct from _pattern data_. For example, `00-homepage.json` 
@@ -413,18 +413,6 @@ The UI exposes these tasks for extension purposes:
 * `fp ui:patternsonly` - build the patterns only, outputting to the public 
   directory.
 
-### <a id="i18n"></a>I18N
-
-The Elements, Compounds, and Components directories are optional and can be 
-renamed to anything your charset and file system allow without further 
-configuration. The Templates, Pages, and Scrape directories can be renamed, but 
-must also be reconfigured in `patternlab-config.json`. Just about all the text 
-in the UI can be changed via UI customization.
-
-If a need arises for documentation in other languages, you are strongly 
-encouraged to make the translations, and use the options that Open Source offers 
-to distribute them to the rest of the world.
-
 ### <a id="extensions"></a>Extensions
 
 The `extend` directory is purposed for extending Fepper's functionality. 
@@ -528,6 +516,18 @@ If your Mac is connected to the Internet through a wire:
   as your Mac
 * Browse http:&#x2F;&#x2F;[IP address]:3000
 * Change the port number if Fepper is listening on a different port
+
+### <a id="i18n"></a>I18N
+
+The Elements, Compounds, and Components directories are optional and can be 
+renamed to anything your charset and file system allow without further 
+configuration. The Templates, Pages, and Scrape directories can be renamed, but 
+must also be reconfigured in `patternlab-config.json`. Just about all the text 
+in the UI can be changed via UI customization.
+
+If a need arises for documentation in other languages, you are strongly 
+encouraged to make the translations, and use the options that Open Source offers 
+to distribute them to the rest of the world.
 
 ### <a id="keyboard-shortcuts"></a>Keyboard Shortcuts
 
