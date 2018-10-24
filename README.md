@@ -173,12 +173,10 @@ will be picked up by all patterns.
 Running `fp static` will generate a complete static site based on the files in 
 `source/_patterns/04-pages`. The site will be viewable at 
 http://localhost:3000/static/. An `index.html` will be generated based on 
-`04-pages-00-homepage` or whatever is defined as the homepage in `_data.json`. 
-If the links are relative and they work correctly in the Fepper UI, they will 
-work correctly in the static site even if the `public/static` directory is 
-copied and renamed. Just be sure that hard-coded links to other pages in the 
-`patterns` directory start with `../04-pages-` and not `../../patterns/04-pages-`. 
-Also, `href` and `src` attributes _must_ be wrapped in _double-quotes_.
+`04-pages-00-homepage`, or whatever is defined as the homepage in `_data.json`. 
+If links to other pages in the `04-pages` directory work correctly in the Fepper 
+UI, they will work correctly in the static site, even if the `public/static` 
+directory is copied and renamed.
 
 ### <a id="the-backend"></a>The Backend
 
