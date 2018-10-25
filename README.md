@@ -266,18 +266,8 @@ INFORMATION CONTAINED WITHIN THE SOURCE CODE!
 <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 (.mustache) code can be viewed in the Fepper UI by clicking the eyeball icon in 
 the upper right, then clicking Code, and then clicking the Mustache tab in the 
-bottom pane. The partial tags are hot-linked, and if they are written in the 
-verbose syntax, clicking on them will open that .mustache file and display its 
-code in the Fepper UI, with its partial tags hot-linked as well.
-
-The partial tags must be coded in the verbose-pathed manner: 
-
-```
-{{> 02-components/00-global/00-header }}
-```
-
-The path must be correct; however, the `.mustache` extension is optional. The 
-default homepage contains working examples of browsable partial tags.
+bottom pane. Clicking the hot-linked area will open the pattern's .mustache file 
+and display its code in the Fepper UI, with its partial tags hot-linked as well.
 
 Fepper's implementation of Mustache is powered by the 
 <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
