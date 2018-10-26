@@ -389,7 +389,7 @@ this type of componentization comes when elements are renamed or deleted. When
 you rename or delete the element, are you _absolutely_ sure you'll rename or 
 delete accordingly in some far-flung, monolithic script or style file?
 
-Alas, no one should _force_ you to componentize this way. Generic modifications 
+Alas, no one should be _forced_ to componentize this way. Generic modifications 
 to UI scripts can be added to `source/_scripts/ui-extender.js`.
 
 Similarly, generic modifications to UI styles can be added to 
