@@ -372,23 +372,26 @@ similarly their corresponding elements. `.component.js` indicates that the file
 is a module to be rendered by React. 
 <a href="https://reactjs.org/docs/dom-elements.html" target="_blank">
 It must export properties that `React.createElement()` understands</a>. 
-The numeric prefix to `00-head` orders it to precede `01-foot` even though 
+The numeric prefix to `00-head` orders it to precede `01-foot`, even though 
 "foot" precedes "head" alphabetically.
 
-By allowing customizations in this directory separate from the core components, 
-core updates will be respected for all components except for the HTML head, and 
-wherever else customizations were made.
+In this example, by allowing customizations in the `00-head` directory separate 
+from the core components, core updates will be respected for all components 
+except for the HTML head.
 
-Browser JS and CSS customizations can (and should) be componentized this way as 
-well. While it's unlikely to have browser JS and CSS for a head element, the 
-main element does have its browser JS and CSS componentized as 
+Browser scripting and style customizations can (and should) be componentized 
+this way as well. While a head element is unlikely to have pertinent scripts or 
+styles, the UI's main element does have its scripts and styles componentized as 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html/01-body/40-main" target="_blank">
-main.js and main.css in index/html/01-body/40-main</a>.
+main.js and main.css in index/html/01-body/40-main</a>. A big advantage for 
+this type of componentization comes when elements are renamed or deleted. When 
+you rename or delete the element, are you _absolutely_ sure you'll rename or 
+delete for that element in some far-flung script or style file?
 
-Alas, no one should _force_ you to componentize browser JavaScripts this way. 
-Generic modifications to UI JS can be added to `source/_scripts/ui-extender.js`.
+Alas, no one should _force_ you to componentize this way. Generic modifications 
+to UI scripts can be added to `source/_scripts/ui-extender.js`.
 
-Similarly, generic modifications to UI CSS can be added to 
+Similarly, generic modifications to UI styles can be added to 
 `source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
 to <a href="https://patternlab.io/docs/pattern-states.html" target="_blank"> 
 the Pattern Lab documentation on pattern states</a>. It should not be relied on 
