@@ -137,7 +137,7 @@ processed and copied to the backend.
   * `fp ui:help` - print documentation of Fepper UI tasks. Any one of those 
     tasks is also runnable.
   * `fp version` - print versions of Fepper NPM, Fepper CLI, and Fepper UI.
-* Submitting a `-d` or `--debug` switch will run the command in `debug` mode.
+* Entering a `-d` or `--debug` switch will run the command in `debug` mode.
 * If using Git for version control, directories named "ignore" will be ignored.
 
 ### <a id="update"></a>Update
