@@ -100,8 +100,8 @@
 
 #### Windows install
 
-* Assumes you haven't checked out the Fepper-Windows project and just need to 
-  add the Windows scripts to your project.
+* Assumes you haven't checked out the Fepper for Windows project and just need 
+  to add the Windows scripts to your project.
 * Also assumes you have Node.js installed.
 * PowerShell >= 3.0 required.
 * Open PowerShell and enter `npm run install-windows`
@@ -351,7 +351,7 @@ means infinity.
 
 All aspects of the UI are available for customization. For example, the toolbar 
 can accept additions, modifications, and deletions per the needs of end users. 
-The UI is built by recursive, functional React calls. The recursion tree is 
+The UI is compiled by recursive, functional React calls. The recursion tree is 
 reflected by the directory structure containing the modules which compose the 
 UI. To override any given module, copy the directory structure leading to the 
 module from 
@@ -361,8 +361,32 @@ to `source/_ui/index/html`, respective to your implementation. Modifications to
 modules in that directory will override the corresponding modules in core. 
 Additions (so long as they are correctly nested) will also be recognized.
 
-While it is a better practice to componentize scripts this way, generic 
-modifications to UI JavaScript can be added to `source/_scripts/ui-extender.js`.
+A working example of UI customization can be found at 
+<a href="https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/_ui/index/html/00-head/head.component.js" target="_blank">
+https&colon;//github.com/electric-eloquence/fepper-drupal/blob/dev/source/_ui/index/html/00-head/head.component.js</a>. 
+The Fepper for Drupal project overrides its HTML title to read "Fepper D8" 
+instead of "Fepper". In order to do so, it has the `head.component.js` module 
+nested in directories that correspond to the tags that nest the `head` HTML 
+element. Both `head.component.js` and its nesting directories must be named 
+similarly their corresponding elements. `.component.js` indicates that the file 
+is a module to be rendered by React. 
+<a href="https://reactjs.org/docs/dom-elements.html" target="_blank">
+It must export properties that `React.createElement()` understands</a>. 
+The numeric prefix to `00-head` orders it to precede `01-foot` even though 
+"foot" precedes "head" alphabetically.
+
+By allowing customizations in this directory separate from the core components, 
+core updates will be respected for all components except for the HTML head, and 
+wherever else customizations were made.
+
+Browser JS and CSS customizations can (and should) be componentized this way as 
+well. While it's unlikely to have browser JS and CSS for a head element, the 
+main element does have its browser JS and CSS componentized as 
+<a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html/01-body/40-main" target="_blank">
+main.js and main.css in index/html/01-body/40-main</a>.
+
+Alas, no one should _force_ you to componentize browser JavaScripts this way. 
+Generic modifications to UI JS can be added to `source/_scripts/ui-extender.js`.
 
 Similarly, generic modifications to UI CSS can be added to 
 `source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
