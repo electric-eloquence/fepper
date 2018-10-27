@@ -86,10 +86,6 @@
     "no-unused-expressions": 1,
     "no-use-before-define": 1,
     "valid-jsdoc": [1, {
-      "prefer": {
-        "returns": "return",
-        "property": "prop"
-      },
       "requireReturn": false
     }]
   }
