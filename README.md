@@ -384,10 +384,10 @@ Browser JavaScript and CSS customizations can (and should) be componentized
 this way as well. While a head element is unlikely to have associated scripts or 
 styles, the UI's main element does have its scripts and styles componentized as 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/index/html/01-body/40-main" target="_blank">
-main.js and main.css in index/html/01-body/40-main</a>. A big advantage for 
-this type of componentization comes when elements are renamed or deleted. When 
-you rename or delete the element, are you _absolutely_ sure you'll rename or 
-delete accordingly in some far-flung, monolithic script or style file?
+`main.js` and `main.css` in `index/html/01-body/40-main`</a>. A big advantage 
+for this type of componentization comes when elements are renamed or deleted. 
+When you rename or delete the element, are you _absolutely_ sure you'll rename 
+or delete accordingly in some far-flung, monolithic script or style file?
 
 Alas, no one should be _forced_ to componentize this way. Generic modifications 
 to UI scripts can be added to `source/_scripts/ui-extender.js`.
@@ -408,7 +408,7 @@ View All styles can be added to regular pattern styles in `source/_styles`.
 You will need to compile the UI in order for the browser to pick up custom 
 changes to the UI:
 
-```
+```shell
 fp ui:compile
 ```
 
