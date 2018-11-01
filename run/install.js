@@ -61,7 +61,7 @@ if (spawnedObj.stderr) {
 
 fs.appendFileSync(installLog, `Process exited with status ${spawnedObj.status}.\n`);
 
-// Only run ui:compileui if source dir is populated. (A base install will have it be empty at this point.)
+// Only run ui:compile if source dir is populated. (A base install will have it be empty at this point.)
 const confUiStr = fs.readFileSync(confUiFile, 'utf8');
 
 try {
@@ -74,5 +74,5 @@ catch (err) {
 const sourceDirContent = fs.readdirSync(conf.ui.paths.source.root);
 
 if (sourceDirContent.length) {
-  spawnSync('node', [indexJs, 'ui:compileui'], {stdio: 'inherit'});
+  spawnSync('node', [indexJs, 'ui:compile'], {stdio: 'inherit'});
 }
