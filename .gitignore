@@ -9,5 +9,6 @@
 /npm-debug.log
 /package-lock.json
 /public/*
+/source/_styles/src/**/*.css
 ignore/
 node_modules/
