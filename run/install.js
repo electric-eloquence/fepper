@@ -3,7 +3,6 @@
 const spawnSync = require('child_process').spawnSync;
 const fs = require('fs-extra');
 const path = require('path');
-const yaml = require('js-yaml');
 
 const fepperNpmPath = path.resolve('node_modules', 'fepper');
 const excludesDir = path.resolve(fepperNpmPath, 'excludes');
