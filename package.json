@@ -7,8 +7,7 @@
     "prepush": "npm test",
     "test": "npm run test-eslint && npm run test-mocha",
     "test-eslint": "npx eslint run && npx eslint test",
-    "test-mocha": "npx mocha test/install-tests.js && npx mocha test/install-extension-tests.js",
-    "update": "node run/update.js"
+    "test-mocha": "npx mocha test/install-tests.js && npx mocha test/install-extension-tests.js"
   },
   "repository": {
     "type": "git",
