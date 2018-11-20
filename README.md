@@ -16,8 +16,6 @@
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - 
   templates configured for Drupal, along with a Drupal theme built to 
   accommodate those templates.
-* [Fepper for Windows](https://github.com/electric-eloquence/fepper-windows) - 
-  scripted to run on Windows.
 * [Fepper for Wordpress](https://github.com/electric-eloquence/fepper-wordpress) 
   \- templates configured for WordPress, along with a WordPress theme built to 
   accommodate those templates.
@@ -25,9 +23,9 @@
 ### Table of contents
 
 * [Install](#install)
-* [Configure](#configure)
-* [Use](#use)
 * [Update](#update)
+* [Use](#use)
+* [Configure](#configure)
 * [Global Data](#global-data)
 * [Partial Data](#partial-data)
 * [Static Site Generation](#static-site-generation)
@@ -58,35 +56,40 @@
   <a href="https://github.com/electric-eloquence/fepper/releases/latest" target="_blank">
   latest release</a>.
 
-#### Main install
+#### Mac install
 
 * In macOS Finder:
   * Double-click `fepper.command`.
-  * Among other things, this will install the 
-    <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
-    fepper-cli</a>, which will give you the `fp` command.
+  * If not already installed, this will install:
+    * Node.js.
+    * <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
+      fepper-cli</a>, which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
     because it is from an unidentified developer.
-      * In this case, ctrl+click `fepper.command` and click "Open".
-      * In the following prompt, click "Open" to confirm that you're sure you 
-        want to open it.
+    * In this case, ctrl+click `fepper.command` and click "Open".
+    * In the following prompt, click "Open" to confirm that you're sure you 
+      want to open it.
   * Enter your password to allow installation.
   * After installation, Fepper should automatically open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
+
+#### BASH install
+
 * On other Unix-like OSs (or if you prefer working on a BASH-like command line):
   * Install Node.js if it isn't installed already.
   * `npm install -g fepper-cli`
   * `npm install`
   * `fp`
-* To stop Fepper, go to the command line where Fepper is running and press 
-  ctrl+c.
-* To restart Fepper:
-  * Double-click `fepper.command` again.
-  * Or enter `fp` on the command line.
-* Consult the <a href="https://patternlab.io/docs/index.html" target="_blank">
-  Pattern Lab docs</a> for instructions on using Pattern Lab.
-* Start editing files in `source`. Changes should automatically appear in the 
-  browser.
+
+#### Windows install
+
+* PowerShell >= 3.0 required.
+* In File Explorer, double-click `fepper.vbs`.
+  * If Node.js is not installed, this will install it.
+  * After Node.js installation, double-click `fepper.vbs` again.
+    * This will install <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
+      fepper-cli</a>, which will give you the `fp` command.
+    * This will then install and launch Fepper.
 
 #### Base install
 
@@ -98,32 +101,27 @@
 * `npm run install-base`
 * `fp`
 
-#### Windows install
+#### Post-install
 
-* Assumes you haven't checked out the Fepper for Windows project and just need 
-  to add the Windows scripts to your project.
-* Also assumes you have Node.js installed.
-* PowerShell >= 3.0 required.
-* Open PowerShell and enter `npm run install-windows`
-* In File Explorer, double-click `fepper.vbs` to launch the UI.
-* In PowerShell, enter `cscript .\fepper.vbs [task]` to run Fepper tasks.
-  * If you Set-ExecutionPolicy to allow ps1 scripts, you may also enter 
-    `.\fepper.ps1 [task]`
+* To stop Fepper, go to the command line where Fepper is running and press 
+  ctrl+c.
 
-### <a id="configure"></a>Configure
+### <a id="update"></a>Update
 
-Edit the `pref.yml` file to customize preferences and to view further 
-documentation in the comments. If you wish to use the `syncback`, 
-`frontend-copy`, or `template` tasks, you must supply values for the 
-`backend.synced_dirs` preferences in order for those directories to get 
-processed and copied to the backend.
+Run `fp update` to download and install the latest updates.
 
 ### <a id="use"></a>Use
 
-* To launch from the macOS Finder:
+* To launch from macOS Finder:
   * Double-click `fepper.command`.
+* To launch from Windows File Explorer:
+  * Double-click `fepper.vbs`.
 * To launch from the command line:
   * `fp`
+* Consult the <a href="https://patternlab.io/docs/index.html" target="_blank">
+  Pattern Lab docs</a> for instructions on using Pattern Lab.
+* Start editing files in `source`. Changes should automatically appear in the 
+  browser.
 * These other utility tasks are runnable on the command line:
   * `fp data` - build data.json from underscore-prefixed .json files.
   * `fp frontend-copy` - copy assets, scripts, and styles to the backend.
@@ -136,13 +134,17 @@ processed and copied to the backend.
     them there.
   * `fp ui:help` - print documentation of Fepper UI tasks. Any one of those 
     tasks is also runnable.
-  * `fp version` - print versions of Fepper NPM, Fepper CLI, and Fepper UI.
+  * `fp version` - print versions of Fepper CLI, Fepper NPM, and Fepper UI.
 * Enter a `-d` or `--debug` switch to run the command in `debug` mode.
 * If using Git for version control, directories named "ignore" will be ignored.
 
-### <a id="update"></a>Update
+### <a id="configure"></a>Configure
 
-Run `fp update` to download and install the latest updates.
+Edit the `pref.yml` file to customize preferences and to view further 
+documentation in the comments. If you wish to use the `syncback`, 
+`frontend-copy`, or `template` tasks, you must supply values for the 
+`backend.synced_dirs` preferences in order for those directories to get 
+processed and copied to the backend.
 
 ### <a id="global-data"></a>Global Data
 
