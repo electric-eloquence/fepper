@@ -73,10 +73,10 @@
   * After installation, Fepper should automatically open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
 
-#### BASH install
+#### CLI install
 
-* On other Unix-like OSs (or if you prefer working on a BASH-like command line):
-  * Install Node.js if it isn't installed already.
+* On other Unix-like OSs (or if you prefer working on the command line):
+  * Install Node.js if it isn't already installed.
   * `npm install -g fepper-cli`
   * `npm install`
   * `fp`
