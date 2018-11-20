@@ -2,7 +2,6 @@
   "description": "Fepper: a Front End Prototyper tool for rapid prototyping of web sites",
   "scripts": {
     "install-base": "node run/install-base.js",
-    "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
     "prepush": "npm test",
     "test": "npm run test-eslint && npm run test-mocha",
