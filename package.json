@@ -39,7 +39,7 @@
   "devDependencies": {
     "chai": "4.x",
     "eslint": "3.x",
-    "fepper": "0.29.0-rc.1",
+    "fepper": "0.29.0-rc.2",
     "fepper-utils": "^1.1.2",
     "fs-extra": "^7.0.0",
     "gulp": "3.9.1",
