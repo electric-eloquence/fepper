@@ -1,7 +1,7 @@
 # Fepper Changelog
 
 ### v0.8.0
-* `fp update` updating Windows scripts universally
+* `fp update` updates Windows scripts
 * Deprecating index.js
 * Using global.conf.is\_windows
 * Better image rendering in MS Edge
