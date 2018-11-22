@@ -89,7 +89,7 @@
   * After Node.js installation, double-click `fepper.vbs` again.
     * This will install <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
       fepper-cli</a>, which will give you the `fp` command.
-    * This will then install and launch Fepper.
+    * It will then install and launch Fepper.
 
 #### Base install
 
