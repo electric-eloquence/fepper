@@ -67,7 +67,7 @@ if (!existsAlreadySourceDir) {
   fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '{}');
 }
 
-// Output to install.log.
+const isWindows = (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\system32\\cmd.exe');
 const installLog = 'install.log';
 let spawnedObj;
 
@@ -76,7 +76,7 @@ if (!fs.existsSync('node_modules')) {
   let binNpm = 'npm';
 
   // Spawn npm.cmd if Windows and not BASH.
-  if (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\system32\\cmd.exe') {
+  if (isWindows) {
     binNpm = 'npm.cmd';
   }
 
@@ -119,7 +119,7 @@ const winGulp = path.resolve(binPath, 'gulp.cmd');
 let binGulp = path.resolve(binPath, 'gulp');
 
 // Spawn gulp.cmd if Windows and not BASH.
-if (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\system32\\cmd.exe') {
+if (isWindows) {
   binGulp = winGulp;
 }
 
