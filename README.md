@@ -405,7 +405,7 @@ View All markup can also be overridden by copying the `.mustache` files in
 https&colon;//github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall</a> 
 and pasting them to `source/_ui/viewall` (nested correctly). Modifications will 
 then be recognized and displayed in the UI. (No additions are allowed.) Custom 
-View All styles can be added to regular pattern styles in `source/_styles`.
+View All styles can be added to `source/_styles/pattern-scaffolding.css`.
 
 You will need to compile the UI in order for the browser to pick up custom 
 changes to the UI:
