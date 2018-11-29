@@ -2,6 +2,7 @@
   "description": "Fepper: a Front End Prototyper tool for rapid prototyping of web sites",
   "scripts": {
     "install-base": "node run/install-base.js",
+    "postinstall": "node run/install.js",
     "start": "gulp --gulpfile node_modules/fepper/tasker.js",
     "test": "npm run test-eslint && npm run test-mocha",
     "test-eslint": "eslint run && eslint test",
@@ -9,7 +10,6 @@
   },
   "husky": {
     "hooks": {
-      "post-install": "node run/install.js",
       "pre-push": "npm test"
     }
   },
