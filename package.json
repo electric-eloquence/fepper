@@ -2,12 +2,16 @@
   "description": "Fepper: a Front End Prototyper tool for rapid prototyping of web sites",
   "scripts": {
     "install-base": "node run/install-base.js",
-    "postinstall": "node run/install.js",
-    "prepush": "npm test",
     "start": "gulp --gulpfile node_modules/fepper/tasker.js",
     "test": "npm run test-eslint && npm run test-mocha",
     "test-eslint": "eslint run && eslint test",
     "test-mocha": "mocha test/install-tests.js && mocha test/install-extension-tests.js"
+  },
+  "husky": {
+    "hooks": {
+      "post-install": "node run/install.js",
+      "pre-push": "npm test"
+    }
   },
   "repository": {
     "type": "git",
@@ -45,7 +49,7 @@
     "fs-extra": "^7.0.0",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.5.0",
-    "husky": "^0.14.3",
+    "husky": "^1.2.0",
     "js-yaml": "^3.12.0",
     "mocha": "5.x",
     "require-dir": "^0.3.0",
