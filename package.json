@@ -4,9 +4,10 @@
     "install-base": "node run/install-base.js",
     "postinstall": "node run/install.js",
     "prepush": "npm test",
+    "start": "gulp --gulpfile node_modules/fepper/tasker.js",
     "test": "npm run test-eslint && npm run test-mocha",
-    "test-eslint": "npx eslint run && npx eslint test",
-    "test-mocha": "npx mocha test/install-tests.js && npx mocha test/install-extension-tests.js"
+    "test-eslint": "eslint run && eslint test",
+    "test-mocha": "mocha test/install-tests.js && mocha test/install-extension-tests.js"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,7 @@
     "chai": "4.x",
     "eslint": "3.x",
     "fepper": "^0.29.0",
-    "fepper-utils": "^1.1.4",
+    "fepper-utils": "^1.1.5",
     "fs-extra": "^7.0.0",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.5.0",
