@@ -1,10 +1,7 @@
 # Fepper Changelog
 
-### v0.8.0
-* `fp update` updates Windows scripts
-* Deprecating index.js
-* Using global.conf.is\_windows
-* Better image rendering in MS Edge
-* `fp update` will attempt to run `npm update -g` as root if denied permission
-* Removing css vendor prefixes where unnecessary
-* Reenabling animation of pattern window resize
+### v0.9.0
+* `fp update` updates fepper-cli even when behind a major version
+* 404 page
+* Better hiding of excluded patterns
+* Fepper Express app using Feplet instead of string replace
