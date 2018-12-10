@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.9.1
+* Updating to more secure dependencies
+
 ### v0.9.0
 * `fp update` updates fepper-cli even when behind a major version
 * 404 page
