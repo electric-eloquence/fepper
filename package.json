@@ -3,7 +3,7 @@
   "scripts": {
     "install-base": "node run/install-base.js",
     "postinstall": "node run/install.js",
-    "start": "gulp --gulpfile node_modules/fepper/tasker.js",
+    "start": "node node_modules/fepper/index.js",
     "test": "npm run test-eslint && npm run test-mocha",
     "test-eslint": "eslint run && eslint test",
     "test-mocha": "mocha test/install-tests.js && mocha test/install-extension-tests.js"
@@ -39,7 +39,7 @@
     "url": "https://github.com/electric-eloquence/fepper/issues"
   },
   "engines": {
-    "node": ">=8.5.0"
+    "node": ">=8.10.0"
   },
   "devDependencies": {
     "chai": "4.x",
