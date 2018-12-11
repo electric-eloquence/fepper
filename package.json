@@ -48,7 +48,6 @@
     "fepper-utils": "^1.1.5",
     "fs-extra": "^7.0.0",
     "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts",
-    "gulp-load-plugins": "^1.5.0",
     "husky": "^1.2.0",
     "js-yaml": "^3.12.0",
     "mocha": "5.x",
