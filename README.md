@@ -456,7 +456,9 @@ Custom extensions:
   instance will be independent of any other gulp instance on your system.
 * The `fp` command is an alias for `gulp` (among other things). Any `fp` task 
   can be included in a custom task.
-* Fepper only supports gulp 3 syntax.
+* Fepper only supports 
+  <a href="https://github.com/electric-eloquence/gulp" target="_blank">gulp 3</a> 
+  syntax.
 
 Confs and prefs:
 
