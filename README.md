@@ -221,7 +221,7 @@ Follow these rules for setting up keys and values:
 * Delete the Feplet curly braces for keys.
 * Trim any exterior whitespace.
 * Leave other control structures within the key, e.g., !#/>^
-* Escape parentheses, carets, and question marks with a backslash.
+* Escape parentheses, carets, and question marks with backslashes.
 * Wrap the key in single quotes.
 * Follow the closing quote with a colon, space, pipe, the numeral 2, and a 
   newline `: |2`
