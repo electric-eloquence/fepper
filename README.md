@@ -7,11 +7,13 @@
 
 <h2 align="center">A frontend prototyper tool for rapid prototyping of websites</h2>
 
+<div align="center">
 [![Known Vulnerabilities](https://snyk.io/test/github/electric-eloquence/fepper/badge.svg)](https://snyk.io/test/github/electric-eloquence/fepper)
 [![Mac/Linux Build Status](https://img.shields.io/travis/electric-eloquence/fepper.svg)](https://travis-ci.org/electric-eloquence/fepper)
 [![Windows Build Status](https://img.shields.io/appveyor/ci/e2tha-e/fepper.svg?label=appveyor)](https://ci.appveyor.com/project/e2tha-e/fepper)
 ![Node Version](https://img.shields.io/node/v/fepper.svg)
 [![License](https://img.shields.io/github/license/electric-eloquence/fepper.svg)](https://raw.githubusercontent.com/electric-eloquence/fepper/release/LICENSE)
+</div>
 
 ### Downstream projects
 
