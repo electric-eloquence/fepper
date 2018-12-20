@@ -1,5 +1,9 @@
 # Fepper Changelog
 
+### v0.9.2
+* Updates to readme
+* More vigorous continuous integration testing
+
 ### v0.9.1
 * Updating to more secure dependencies
 
