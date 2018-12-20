@@ -310,8 +310,6 @@ sequentially. Such a loosely targeted scrape will save many of the targeted
 fields to a JSON file, but will only save the first instance of the target to a 
 Feplet (.mustache) file.
 
-You will probably need to allow pop-ups in order to submit.
-
 Upon submission, you should be able to review the scraped output on the 
 subsequent page. If the output looks correct, enter a filename and submit again. 
 The Scraper will save .mustache and .json files by that name in the 98-scrape 
