@@ -3,6 +3,12 @@
 ### v0.9.2
 * Updates to readme
 * More vigorous continuous integration testing
+* Better font support across platforms for Express-served pages
+* Fixed curly braces in html output for readme and success pages
+* `fp update` gets direct downloads from distro repo
+* In `fp update`, outputting directory separators specific to os
+* Removed target="\_blank" from html scraper
+* More helpful missing pattern error message
 
 ### v0.9.1
 * Updating to more secure dependencies
