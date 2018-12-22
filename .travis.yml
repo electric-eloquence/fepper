@@ -8,4 +8,5 @@ node_js:
   - "stable"
 branches:
   only:
+  - dev
   - master

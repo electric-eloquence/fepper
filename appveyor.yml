@@ -28,4 +28,7 @@ version: "{build}"
 
 branches:
   only:
+    - dev
     - master
+
+skip_tags: true
