@@ -4,9 +4,9 @@
     "install-base": "node run/install-base.js",
     "postinstall": "node run/install.js",
     "start": "node node_modules/fepper/index.js",
-    "test": "npm run test-eslint && npm run test-mocha",
-    "test-eslint": "eslint run && eslint test",
-    "test-mocha": "mocha test/install-tests.js && mocha test/install-extension-tests.js"
+    "test": "npm run test:eslint && npm run test:mocha",
+    "test:eslint": "eslint run && eslint test",
+    "test:mocha": "mocha test/install-tests.js && mocha test/install-extension-tests.js"
   },
   "husky": {
     "hooks": {
