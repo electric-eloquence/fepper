@@ -1,12 +1,12 @@
-!/public/package.json
-!/source/_static/node_modules/
 *.log
 .*.swp
 .DS_Store
+.tmp
 /.timestamp
 /conf.yml
 /public/*
-/source/_styles/src/tmp/
+!/public/package.json
 ignore/
 node_modules/
+!/source/_static/node_modules/
 package-lock.json
