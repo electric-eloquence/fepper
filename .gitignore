@@ -1,8 +1,7 @@
-!/public/package.json
-!/source/_static/node_modules/
 *.log
 .*.swp
 .DS_Store
+.tmp
 /.timestamp
 /backend/*
 /conf.yml
@@ -10,8 +9,9 @@
 /patternlab-config.json
 /pref.yml
 /public/*
+!/public/package.json
 /source/
-/source/_styles/src/tmp/
 ignore/
 node_modules/
+!/source/_static/node_modules/
 package-lock.json
