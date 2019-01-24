@@ -46,7 +46,7 @@
     "chai": "4.x",
     "eslint": "3.x",
     "fepper": "*",
-    "fepper-utils": "^1.1.6",
+    "fepper-utils": "*",
     "fs-extra": "^7.0.0",
     "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts@3.9.5",
     "js-yaml": "^3.12.0",
