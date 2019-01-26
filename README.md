@@ -71,7 +71,8 @@
     * <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
       fepper-cli</a>, which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
-    because it is from an unidentified developer.
+    because it is from an unidentified 
+    developer.&nbsp;<a href="https://gist.github.com/e2tha-e/72364ca766cf5d2d1a732b6af4f3b7a8" target="_blank">*</a>
     * In this case, ctrl+click `fepper.command` and click "Open".
     * In the following prompt, click "Open" to confirm that you're sure you 
       want to open it.
@@ -90,7 +91,8 @@
 #### Windows install
 
 * PowerShell >= 3.0 required.
-* In File Explorer, double-click `fepper.vbs`.
+* In File Explorer, double-click 
+  `fepper.vbs`.&nbsp;<a href="https://gist.github.com/e2tha-e/72364ca766cf5d2d1a732b6af4f3b7a8" target="_blank">*</a>
   * If Node.js is not installed, this will install it.
   * After Node.js installation, double-click `fepper.vbs` again.
     * This will install <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
