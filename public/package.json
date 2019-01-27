@@ -3,8 +3,8 @@
   "repository": {},
   "license": "MIT",
   "devDependencies": {
-    "feplet": "*",
-    "fepper-ui": "*",
+    "feplet": "^0.2.3",
+    "fepper-ui": "^0.5.3",
     "he": "1.1.0",
     "jquery": "3.3.1",
     "jquery.cookie": "1.4.1",
