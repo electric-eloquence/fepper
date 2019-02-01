@@ -1,5 +1,13 @@
 # Fepper Changelog
 
+### v0.10.1
+* Moving dependencies from distro to fepper-npm
+* Improved HTML beautification
+* Improved Windows scripting
+
+### v0.10.0
+* Readme links to gist explaining gpg verification
+
 ### v0.9.2
 * More vigorous continuous integration testing
 * Better font support across platforms for Express-served pages
