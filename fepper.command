@@ -41,7 +41,7 @@ if [[
   npm install
 fi
 
-fp
+node node_modules/fepper/index.js
 
 # Open a shell for this script's process.
 $SHELL
