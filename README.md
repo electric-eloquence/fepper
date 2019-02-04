@@ -346,15 +346,15 @@ Stylus files are written in the terse, Python-like, indentation-based syntax.
 However, the more verbose, CSS-like syntax (with curly braces and semi-colons) 
 is perfectly valid as well.
 
-The UI's viewport resizer buttons are dependent on the values in this file. The 
-default values will configure the XX, XS, SM, and MD buttons to resize the 
-viewport to each breakpoint's assigned maximum width. The LG button will resize 
-the viewport to a width that is greater than `bp_md_max` by the distance between 
-`bp_sm_max` and `bp_md_max`.
+The UI's viewport resizer buttons are dependent on the values in 
+`variables.styl`. The default values will configure the XX, XS, SM, and MD 
+buttons to resize the viewport to each breakpoint's assigned maximum width. The 
+LG button will resize the viewport to a width that is greater than `bp_md_max` 
+by the distance between `bp_sm_max` and `bp_md_max`.
 
-Users have the ability to add, modify, or delete values in this file. The UI 
-will respect these changes; but keep in mind that additions must be prefixed by 
-`bp_` and suffixed by `_max` in order for them to appear as viewport resizer 
+Users have the ability to add, modify, or delete values in `variables.styl`. The 
+UI will respect these changes; but keep in mind that additions must be prefixed 
+by `bp_` and suffixed by `_max` in order for them to appear as viewport resizer 
 buttons. A `-1` value translates to `Number.MAX_SAFE_INTEGER`, and effectively 
 means infinity.
 
@@ -446,8 +446,9 @@ Contributed extensions:
 * Install and update contributed extensions with npm in the `extend` directory.
 * Add the tasks to `extend/contrib.js` (and `extend/auxiliary/auxiliary_contrib.js` 
   if necessary) in order for Fepper to run them.
-* Contributed Fepper extensions can be found at https://www.npmjs.com/ by 
-  searching for "Fepper extension".
+* Contributed Fepper extensions can be found at 
+  <a href="https://www.npmjs.com/search?q=fepper%20extension" target="_blank">
+  https://www.npmjs.com/search?q=fepper%20extension</a>
 
 Custom extensions:
 
@@ -475,17 +476,6 @@ order to write custom tasks. They are exposed through `global.conf` and
 The values in `patternlab-config.json` are exposed through `global.conf.ui`. 
 Please note that all paths in `patternlab-config.json` will be converted to 
 absolute paths in `global.conf.ui`.
-
-`gulp.watch` will not work correctly with absolute paths. There are two 
-workarounds for this:
-
-* Hard-code a relative path as the first `gulp.watch` parameter. Pass an 
-  absolute path (from `global.conf.ui.paths` or otherwise) as the `options.cwd` 
-  value for the second parameter.
-* Pass a value from `global.conf.ui.pathsRelative` as the first parameter.
-  * `global.conf.ui.pathsRelative` stores relative versions of the values in 
-    `global.conf.ui.paths`.
-  * This will still probably require `options.cwd` in the second parameter.
 
 Common utilty functions for custom extensions are available from the
 <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
