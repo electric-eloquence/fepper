@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.10.2
+* Bumped some dependencies to new minor versions
+
 ### v0.10.1
 * Moving dependencies from distro to fepper-npm
 * Improved HTML beautification
