@@ -68,8 +68,8 @@
   * Double-click `fepper.command`.
   * If not already installed, this will install:
     * Node.js.
-    * <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">
-      fepper-cli</a>, which will give you the `fp` command.
+    * <a href="https://www.npmjs.com/package/fepper-cli" target="_blank">fepper-cli</a>, 
+      which will give you the `fp` command.
   * If opening for the first time, macOS may warn that it can't be opened 
     because it is from an unidentified 
     developer.&nbsp;<a href="https://gist.github.com/e2tha-e/72364ca766cf5d2d1a732b6af4f3b7a8" target="_blank">*</a>
