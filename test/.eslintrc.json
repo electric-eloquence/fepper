@@ -5,6 +5,7 @@
   },
   "rules": {
     "max-len": 0,
+    "no-multi-str": 0,
     "no-unused-expressions": 0
   }
 }
