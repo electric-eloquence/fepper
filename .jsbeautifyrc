@@ -1,6 +1,7 @@
 {
   "end_with_newline": true,
   "extra_liners": [],
+  "indent_handlebars": true,
   "indent_inner_html": true,
   "indent_size": 2,
   "wrap_line_length": 0
