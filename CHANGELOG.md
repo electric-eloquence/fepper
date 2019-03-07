@@ -1,5 +1,9 @@
 # Fepper Changelog
 
+### v0.10.3
+* Dependency updates
+* Added text color highlights to console log messages
+
 ### v0.10.2
 * Bumped some dependencies to new minor versions
 * Better frontend-copier logic for non-existent backend directory
