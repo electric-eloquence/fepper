@@ -475,11 +475,33 @@ order to write custom tasks. They are exposed through `global.conf` and
 
 The values in `patternlab-config.json` are exposed through `global.conf.ui`. 
 Please note that all paths in `patternlab-config.json` will be converted to 
-absolute paths in `global.conf.ui`.
+absolute paths in `global.conf.ui`. Relative paths can be accessed through 
+`global.conf.ui.pathsRelative`.
 
 Common utilty functions for custom extensions are available from the
 <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
-npm. Its API documentation can be viewed by following the link.
+npm. Its API documentation can be viewed by following 
+<a href="https://www.npmjs.com/package/fepper-utils" target="_blank">this link</a>.
+
+Beneath the gulp tasking system lies object-oriented Fepper. Running any `fp` 
+task instantiates the `Fepper` class. This instance is exposed through the 
+`global.fepper` object. By directly accessing the `Fepper` instance, you can run 
+any Fepper operation without gulp. Deeper within `Fepper`, lies the `Patternlab` 
+class. By directly accessing `Patternlab`, you can run any Pattern Lab 
+operation without Fepper. The `global.fepper` object can, of course, be easily 
+inspected in a console. The `Patternlab` instance is attached as 
+`global.fepper.ui.patternlab`.
+
+Hackers wishing to view the code for any of these classes will find that the ES6 
+syntax and object-orientation makes the code mostly self-documenting. The entry 
+point to the `Fepper` class is in the 
+<a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/core/fepper.js" target="_blank">
+Fepper NPM at `core/fepper.js`</a>.
+
+There is currently no public API for object-oriented Fepper. To express demand 
+for one, 
+<a href="https://github.com/electric-eloquence/fepper/issues" target="_blank">
+please open an issue</a>.
 
 ### <a id="express-app"></a>Express App
 
