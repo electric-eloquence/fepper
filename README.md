@@ -496,7 +496,8 @@ Hackers wishing to view the code for any of these classes will find that the ES6
 syntax and object-orientation makes the code mostly self-documenting. The entry 
 point to the `Fepper` class is in 
 <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/core/fepper.js" target="_blank">
-Fepper NPM at `core/fepper.js`</a>.
+Fepper NPM at `core/fepper.js`</a>. You are free to require it and intantiate it 
+as you please.
 
 There is currently no public API for object-oriented Fepper. To express demand 
 for one, 
@@ -509,6 +510,8 @@ Fepper exposes its Express application through the `global.expressApp` object.
 This object can be overridden with custom routes and middleware via the 
 `custom:tcp-ip` (or `contrib:tcp-ip`) extension task. Initialization of 
 `global.expressApp` occurs before this task, and listening occurs afterward.
+
+`global.expressApp` is a direct reference to `global.fepper.tcpIp.fpExpress.app`.
 
 ### <a id="mobile-devices"></a>Mobile Devices
 
