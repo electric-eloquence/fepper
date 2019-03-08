@@ -496,8 +496,8 @@ Hackers wishing to view the code for any of these classes will find that the ES6
 syntax and object-orientation makes the code mostly self-documenting. The entry 
 point to the `Fepper` class is in 
 <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/core/fepper.js" target="_blank">
-Fepper NPM at `core/fepper.js`</a>. You are free to require it and intantiate it 
-as you please.
+Fepper NPM at `core/fepper.js`</a>. You are free to require it and instantiate 
+it as you please.
 
 There is currently no public API for object-oriented Fepper. To express demand 
 for one, 
