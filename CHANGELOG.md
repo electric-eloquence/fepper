@@ -1,5 +1,10 @@
 # Fepper Changelog
 
+### v0.11.0
+* Exposing instance\_file preference for subclassing Fepper class
+* Fixed HTML for viewalls
+* Build performance improvements
+
 ### v0.10.3
 * Dependency updates
 * Added text color highlights to console log messages
