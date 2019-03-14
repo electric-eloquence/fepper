@@ -540,8 +540,8 @@ instance_file: extend/custom/hack-help.js
 ```
 
 3. Run `fp help` on the command line. It should log 
-<a href="https://www.npmjs.com/package/gulp4-run-sequence#why-the-culinary-task-names" target="_blank">
-"ASYNC ALL THE THINGS!"</a>
+   <a href="https://www.npmjs.com/package/gulp4-run-sequence#why-the-culinary-task-names" target="_blank">
+   "ASYNC ALL THE THINGS!"</a>
 
 Hackers wishing to view the code for any of these classes will find that the ES6 
 syntax and object-orientation makes the code mostly self-documenting. The entry 
