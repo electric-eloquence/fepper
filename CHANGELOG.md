@@ -3,7 +3,6 @@
 ### v0.11.0
 * Exposing instance\_file preference for subclassing Fepper class
 * Fixed HTML for viewalls
-* Build performance improvements
 * Added default gulpfile.js for running `gulp` command instead of `fp`
 
 ### v0.10.3
