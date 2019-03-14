@@ -483,21 +483,71 @@ Common utilty functions for custom extensions are available from the
 npm. Its API documentation can be viewed by following 
 <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">this link</a>.
 
-Beneath the gulp tasking system, lies object-oriented Fepper. Running any `fp` 
+Beneath the gulp tasking system lies object-oriented Fepper. Running any `fp` 
 task instantiates the `Fepper` class. This instance is exposed through the 
 `global.fepper` object. By directly accessing the `Fepper` instance, you can run 
-any Fepper operation without gulp. Deeper within `Fepper`, lies the `Patternlab` 
+any Fepper operation without gulp. Deeper within `Fepper` lies the `Patternlab` 
 class. By directly accessing `Patternlab`, you can run any Pattern Lab 
-operation without Fepper. The `global.fepper` object can, of course, be easily 
-inspected in a console. The `Patternlab` instance is attached as 
-`global.fepper.ui.patternlab`.
+operation without Fepper. The `Patternlab` instance is attached as 
+`global.fepper.ui.patternlab`. The `global.fepper` object can, of course, be 
+easily inspected in a console.
+
+If there is something you wish were different about the `Fepper` class, or any 
+of its member classes, you can inherit from the class, and make whatever changes 
+you wish, without worry that your changes will be wiped out by the next update.
+
+Here is an example of overriding the `fp help` command:
+
+1. Create an `instance_file`. For this example, let's write it at 
+   `extend/custom/hack-help.js`.
+
+```javascript
+'use strict';
+
+const FepperSuper = require('fepper');
+const HelperSuper = require('fepper/core/tasks/helper');
+const TasksSuper = require('fepper/core/tasks/tasks');
+
+class Helper extends HelperSuper {
+  constructor(options) {
+    super(options);
+  }
+
+  main() {
+    console.log('ASYNC ALL THE THINGS!');
+  }
+}
+
+class Tasks extends TasksSuper {
+  constructor(options) {
+    super(options);
+    this.helper = new Helper(this.options);
+  }
+}
+
+module.exports = class Fepper extends FepperSuper {
+  constructor(cwd) {
+    super(cwd);
+    this.tasks = new Tasks(this.options);
+  }
+}
+```
+
+2. Declare `instance_file` in `pref.yml`.
+
+```yaml
+instance_file: extend/custom/hack-help.js
+```
+
+3. Run `fp help` on the command line. It should log 
+<a href="https://www.npmjs.com/package/gulp4-run-sequence#why-the-culinary-task-names" target="_blank">
+"ASYNC ALL THE THINGS!"</a>
 
 Hackers wishing to view the code for any of these classes will find that the ES6 
 syntax and object-orientation makes the code mostly self-documenting. The entry 
 point to the `Fepper` class is in 
 <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/core/fepper.js" target="_blank">
-Fepper NPM at `core/fepper.js`</a>. You are free to require it and instantiate 
-it as you please.
+Fepper NPM at `core/fepper.js`</a>.
 
 There is currently no public API for object-oriented Fepper. To express demand 
 for one, 
