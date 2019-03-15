@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.11.1
+* Bumped Node version in Node installer to v8.15.1
+
 ### v0.11.0
 * Exposing instance\_file preference for subclassing Fepper class
 * Fixed HTML for viewalls
