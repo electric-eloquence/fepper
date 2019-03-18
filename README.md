@@ -342,7 +342,7 @@ However, since Stylus allows for this easy sharing of variables, most Fepper
 distros ship with the 
 <a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
 extension and a fully-populated `source/_styles/src/stylus` directory. The 
-Stylus files are written in the terse, Python-like, indentation-based syntax. 
+Stylus files are written in the terse, YAML-like, indentation-based syntax. 
 However, the more verbose, CSS-like syntax (with curly braces and semi-colons) 
 is perfectly valid as well.
 
