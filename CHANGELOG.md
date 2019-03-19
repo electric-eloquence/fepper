@@ -2,6 +2,7 @@
 
 ### v0.11.1
 * Bumped Node version in Node installer to v8.15.1
+* .eslintrc.json in current working directory set to lint client-side js
 
 ### v0.11.0
 * Exposing instance\_file preference for subclassing Fepper class
