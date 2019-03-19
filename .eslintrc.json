@@ -1,11 +1,14 @@
 {
   "extends": "eslint:recommended",
   "env": {
-    "es6": true,
-    "node": true
+    "browser": true,
+    "es6": true
   },
   "parserOptions": {
     "ecmaVersion": 8
+  },
+  "globals": {
+    "$": true
   },
   "rules": {
     // error
@@ -102,7 +105,7 @@
       "words": true
     }],
     "spaced-comment": [2, "always"],
-    "strict": 2,
+    "strict": [2, "function"],
     "yoda": [2, "never"],
     // warn
     "max-len": [1, 120, 4, {
