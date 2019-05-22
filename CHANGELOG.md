@@ -1,5 +1,10 @@
 # Fepper Changelog
 
+### v0.11.2
+* Ready for Node 12
+* Bumped Node version in Node installer to v10.15.3
+* Dependency updates
+
 ### v0.11.1
 * Bumped Node version in Node installer to v8.15.1
 * .eslintrc.json in current working directory set to lint client-side js
