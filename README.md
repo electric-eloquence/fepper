@@ -140,9 +140,11 @@ Run `fp update` to download and install the latest updates.
   * `fp syncback` - combine frontend-copy and template tasks.
   * `fp template` - translate templates in 03-templates for the backend and copy 
     them there.
-  * `fp ui:help` - print documentation of Fepper UI tasks. Any one of those 
-    tasks is also runnable.
+  * `fp ui:help` - print Fepper UI tasks and descriptions. Any one of these 
+    tasks is runnable on the command line.
   * `fp version` - print versions of Fepper CLI, Fepper NPM, and Fepper UI.
+  * `fp extend:help` - print Fepper extension tasks and descriptions. Any one of 
+    these tasks is runnable on the command line.
 * Enter a `-d` or `--debug` switch to run the command in `debug` mode.
 * If using Git for version control, directories named "ignore" will be ignored.
 
