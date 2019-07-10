@@ -3,7 +3,7 @@
   "repository": {},
   "license": "MIT",
   "devDependencies": {
-    "feplet": "^0.2.6",
+    "feplet": "^0.2.7",
     "fepper-ui": "^0.5.6",
     "he": "1.1.0",
     "jquery": "3.4.1",
