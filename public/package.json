@@ -3,15 +3,6 @@
   "repository": {},
   "license": "MIT",
   "devDependencies": {
-    "feplet": "*",
-    "fepper-ui": "*",
-    "he": "1.1.0",
-    "jquery": "3.4.1",
-    "jquery.cookie": "1.4.1",
-    "js-beautify": "1.9.0",
-    "mousetrap": "1.6.2",
-    "prismjs": "1.5.1",
-    "typeahead.js": "0.10.5",
-    "wolfy87-eventemitter": "4.2.11"
+    "fepper-ui": "*"
   }
 }
