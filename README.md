@@ -209,8 +209,8 @@ backend web application.
   * These YAML files must match the source file's name with the exception of the 
     extension. 
   * The extension must be `.yml`
-  * The overriding property must only contain the lowest level key-value, not 
-    the entire hierarchy, i.e., only `assets_dir`, not 
+  * The overriding property must only contain the lowest level key:value, not 
+    the entire hierarchy, e.g., only `assets_dir`, not 
     `backend.synced_dirs.assets_dir`. 
 * Asset, script, and style files prefixed by "\_\_" will be ignored by 
   `fp syncback` and `fp frontend-copy` as will files in the `_nosync` 
