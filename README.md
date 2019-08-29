@@ -54,7 +54,7 @@
 #### System requirements
 
 * Unix-like or Windows OS.
-* Minimum supported Node.js version 8.16.0.
+* Minimum supported Node.js version 12.0.0.
 
 #### Simplest way to get started
 
