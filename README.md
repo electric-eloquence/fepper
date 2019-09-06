@@ -7,11 +7,11 @@
 
 <h2 align="center">A frontend prototyper tool for rapid prototyping of websites</h2>
 
-[![Known Vulnerabilities](https://snyk.io/test/github/electric-eloquence/fepper/badge.svg)](https://snyk.io/test/github/electric-eloquence/fepper)
-[![Mac/Linux Build Status](https://img.shields.io/travis/electric-eloquence/fepper.svg?label=mac%20%26%20linux)](https://travis-ci.org/electric-eloquence/fepper)
-[![Windows Build Status](https://img.shields.io/appveyor/ci/e2tha-e/fepper.svg?label=windows)](https://ci.appveyor.com/project/e2tha-e/fepper)
+[![Known Vulnerabilities][snyk-image]][snyk-url]
+[![Mac/Linux Build Status][travis-image]][travis-url]
+[![Windows Build Status][appveyor-image]][appveyor-url]
 ![Node Version](https://img.shields.io/node/v/fepper.svg)
-[![License](https://img.shields.io/github/license/electric-eloquence/fepper.svg)](https://raw.githubusercontent.com/electric-eloquence/fepper/release/LICENSE)
+[![License][license-image]][license-url]
 
 ### Downstream projects
 
@@ -654,3 +654,15 @@ As a reminder, the viewport sizes can be customized in `source/_scripts/src/vari
 * <a href="https://mustache.github.io/mustache.5.html" target="_blank">
   Mustache</a>
 * <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
+
+[snyk-image]: https://snyk.io//test/github/electric-eloquence/fepper/master/badge.svg
+[snyk-url]: https://snyk.io//test/github/electric-eloquence/fepper/master
+
+[travis-image]: https://img.shields.io/travis/electric-eloquence/fepper.svg?label=mac%20%26%20linux
+[travis-url]: https://travis-ci.org/electric-eloquence/fepper
+
+[appveyor-image]: https://img.shields.io/appveyor/ci/e2tha-e/fepper.svg?label=windows
+[appveyor-url]: https://ci.appveyor.com/project/e2tha-e/fepper
+
+[license-image]: https://img.shields.io/github/license/electric-eloquence/fepper.svg
+[license-url]: https://raw.githubusercontent.com/electric-eloquence/fepper/master/LICENSE
