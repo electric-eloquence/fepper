@@ -44,8 +44,8 @@
   "devDependencies": {
     "chai": "4.x",
     "eslint": "6.x",
-    "fepper": "0.33.0-rc.0",
-    "fepper-utils": "1.3.1-rc.0",
+    "fepper": "0.33.0-rc.3",
+    "fepper-utils": "1.3.1-rc.1",
     "fs-extra": "^7.0.1",
     "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts",
     "husky": "1.x",
