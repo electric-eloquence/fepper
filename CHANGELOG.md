@@ -1,5 +1,10 @@
 # Fepper Changelog
 
+### v0.12.0
+* Limiting support to Node 12
+* Node infrastructure set up for Fepper UI with ES6 modules, state management, and more modernization
+* More complete help tasks
+
 ### v0.11.2
 * Ready for Node 12
 * Bumped Node version in Node installer to v10.15.3
