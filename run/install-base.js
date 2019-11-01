@@ -4,7 +4,6 @@ const spawnSync = require('child_process').spawnSync;
 const fs = require('fs');
 const path = require('path');
 
-const conf = {};
 const confFile = './conf.yml';
 const confUiFile = './patternlab-config.json';
 const enc = 'utf8';
@@ -33,20 +32,12 @@ else {
 
 if (fs.existsSync(confUiFile)) {
   const confUiStr = fs.readFileSync(confUiFile, enc);
-
-  try {
-    conf.ui = JSON.parse(confUiStr);
-  }
-  catch (err) {
-    throw err;
-  }
-
-  if (conf.ui) {
-    sourceDir = conf.ui.paths.source.root;
-  }
+  const conf = {ui: JSON.parse(confUiStr)}; // Will throw on error.
+  sourceDir = conf.ui && conf.ui.paths && conf.ui.paths.source && conf.ui.paths.source.root;
 }
+
 // confUiFile may not exists at this point of installation. Hard-code in that case.
-else {
+if (!sourceDir) {
   sourceDir = 'source';
 }
 
