@@ -121,8 +121,6 @@
     }],
     // off
     "no-duplicate-case": 0,
-    "no-fallthrough": 0,
-    "no-useless-catch": 0,
-    "radix": 0
+    "no-fallthrough": 0
   }
 }
