@@ -1,6 +1,6 @@
 # Fepper Changelog
 
-### v0.12.2
+### v0.13.0
 * Major performance improvements
 * Switched viewall rendering from server to client
 * Hashing pattern bodies so they don't need to get rewritten if unchanged
