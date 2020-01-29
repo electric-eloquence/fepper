@@ -1,19 +1,28 @@
 Dim argsList
 Dim cwd
 Dim fso
+Dim nodeModulesPath
 Dim objArgs
 Dim objShell
-Dim pathFull
+Dim ps1Path
+Dim verb
 
 Set fso = CreateObject("Scripting.FileSystemObject")
 Set objArgs = Wscript.Arguments
-Set objShell = CreateObject("Wscript.shell")
+Set objShell = CreateObject("Shell.Application")
 cwd = fso.GetAbsolutePathName(".")
-pathFull = fso.BuildPath(cwd, "fepper.ps1")
+nodeModulesPath = fso.BuildPath(cwd, "node_modules")
+ps1Path = fso.BuildPath(cwd, "fepper.ps1")
 
 argsList = ""
 For Each strArg in objArgs
   argsList = argsList & " " & strArg
 Next
 
-objShell.run("powershell -executionpolicy bypass -file " & pathFull & argsList)
+If fso.FolderExists(nodeModulesPath) Then
+  verb = ""
+Else
+  verb = "runas"
+End If
+
+objShell.ShellExecute "powershell", "-ExecutionPolicy Bypass -File " & ps1Path & argsList, cwd, verb, 1
