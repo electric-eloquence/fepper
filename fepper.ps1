@@ -26,6 +26,7 @@ if ($whereNode -Like "*\node.exe")
   if (-Not (Test-Path node_modules))
   {
     echo "npm installing..."
+    npm install -g --production windows-build-tools --vs2015
     npm install -g fepper-cli
     npm install
   }
