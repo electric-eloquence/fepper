@@ -222,7 +222,7 @@ backend web application.
     extension. 
   * The extension must be `.yml`
   * The overriding property must only contain the lowest level key:value, not 
-    the entire hierarchy, e.g., only `assets_dir`, not 
+    the entire hierarchy, e.g. only `assets_dir`, not 
     `backend.synced_dirs.assets_dir`. 
 * Asset, script, and style files prefixed by "\_\_" will be ignored by 
   `fp syncback` and `fp frontend-copy` as will files in the `_nosync` 
@@ -242,7 +242,7 @@ Follow these rules for setting up keys and values:
 
 * Delete the Feplet curly braces for keys.
 * Trim any exterior whitespace.
-* Leave other control structures and spaces within the key, e.g., !#/>^
+* Leave other control structures and spaces within the key, e.g. !#/>^
 * Escape parentheses, carets, and question marks with backslashes.
 * Wrap the key in single quotes.
 * Follow the closing quote with a colon, space, pipe, the numeral 2, and a 
@@ -261,7 +261,7 @@ Run `fp syncback` or `fp template` to execute the Templater.
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in 
   the `_nosync` directory. 
 * The Templater will recurse through nested Feplet templates if the tags are 
-  written in the verbose syntax and have the `.mustache` extension, e.g., 
+  written in the verbose syntax and have the `.mustache` extension, e.g. 
   `{{> 02-components/00-global/00-header.mustache }}` 
 * However, the more common inclusion use-case is to leave off the extension, and 
   not recurse. 
