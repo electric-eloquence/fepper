@@ -1,6 +1,7 @@
 # Fepper Changelog
 
 ### v0.13.1
+* Keeping original template whitespacing for output to .mustache file
 * Better z-indexing of UI
 * Fixed writing of patterns if cleanPublic true
 * Fixed livereloading of .mustache updates
