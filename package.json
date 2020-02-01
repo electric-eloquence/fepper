@@ -49,6 +49,7 @@
     "fs-extra": "^8.1.0",
     "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts",
     "husky": "4.x",
-    "mocha": "7.x"
+    "mocha": "7.x",
+    "xxhash": "^0.3.0"
   }
 }
