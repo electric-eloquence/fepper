@@ -1,5 +1,11 @@
 # Fepper Changelog
 
+### v0.13.1
+* Better z-indexing of UI
+* Fixed writing of patterns if cleanPublic true
+* Fixed livereloading of .mustache updates
+* Moved xxhash from dependencies to devDependencies, making it optional
+
 ### v0.13.0
 * Major performance improvements
 * Switched viewall rendering from server to client
