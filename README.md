@@ -86,10 +86,7 @@ or as experimental as you wish to make them.
     * In the following prompt, click "Open" to confirm that you're sure you 
       want to open it.
   * Enter your password to allow installation.
-  * If you are prompted that the "xcodebuild" command requires the command line 
-    developer tools, click "Install".
-    * After xcodebuild installation, double-click `fepper.command` again.
-  * After complete installation, Fepper should automatically open in a browser.
+  * After installation, Fepper should automatically open in a browser.
   * Open http://localhost:3000 if it doesn't open automatically.
 
 #### CLI install
