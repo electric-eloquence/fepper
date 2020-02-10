@@ -5,7 +5,7 @@
 * Better z-indexing of UI
 * Fixed writing of patterns if cleanPublic true
 * Fixed livereloading of .mustache updates
-* Moved xxhash from dependencies to devDependencies, making it optional
+* Switched from xxhash to md4 for non-cryptographic hashing
 
 ### v0.13.0
 * Major performance improvements
