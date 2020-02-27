@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.13.2
+* Bumped gulp version
+
 ### v0.13.1
 * Keeping original template whitespacing for output to .mustache file
 * Better z-indexing of UI
