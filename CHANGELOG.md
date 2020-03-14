@@ -1,7 +1,7 @@
 # Fepper Changelog
 
 ### v0.13.3
-* Bumped gulp version
+* Bumped gulp and fepper dependency versions
 
 ### v0.13.2
 * Bumped gulp version
