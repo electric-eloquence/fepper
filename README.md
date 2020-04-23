@@ -629,8 +629,15 @@ If your Mac is connected to the Internet through a wire:
 The Elements, Compounds, and Components directories are optional and can be 
 renamed to anything your charset and file system allow without further 
 configuration. The Templates, Pages, and Scrape directories can be renamed, but 
-must also be reconfigured in `patternlab-config.json`. Just about all the text 
-in the UI can be changed via UI customization.
+must also be reconfigured in `patternlab-config.json`.
+
+The text in the UI, as well as console messages, can be changed by editing 
+`source/_ui/i18n/en.json`. Replace the blank values with alternate English 
+values if you wish. If you want translation to another language, create a new 
+file named by the abbreviation for the language. For example: 
+`source/_ui/i18n/es.json` for Spanish. Then, assign that abbreviation to the 
+`lang` key in `pref.yml`. In the .json file, assign the translated values to the 
+English keys.
 
 If a need arises for documentation in other languages, you are strongly 
 encouraged to make the translations, and use the options that Open Source offers 
