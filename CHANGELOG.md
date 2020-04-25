@@ -1,5 +1,9 @@
 # Fepper Changelog
 
+### v0.13.4
+* Livereloading of images and other assets
+* Added i18n for all user-facing text
+
 ### v0.13.3
 * Bumped gulp and fepper dependency versions
 
