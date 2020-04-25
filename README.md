@@ -639,6 +639,11 @@ file named by the abbreviation for the language. For example:
 `lang` key in `pref.yml`. In the .json file, assign the translated values to the 
 English keys.
 
+Fepper follows a popular convention of naming the translation function `t`. (See 
+<a href="https://github.com/i18next/i18next" target="_blank">i18next</a> and 
+<a href="https://github.com/i18next/react-i18next" target="_blank">react-i18next</a> 
+as other examples.) Be sure never to redefine the `global.t` variable.
+
 If a need arises for documentation in other languages, you are strongly 
 encouraged to make the translations, and use the options that Open Source offers 
 to distribute them to the rest of the world.
