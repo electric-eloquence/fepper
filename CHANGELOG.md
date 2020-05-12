@@ -1,5 +1,10 @@
 # Fepper Changelog
 
+### v0.14.0
+* Loading pref before conf to define the i18n lang earlier
+* More and better i18n
+* Removed deprecated conf.backend\_dir
+
 ### v0.13.5
 * Removed livereloading of images and other assets from Windows
 * Updated icon fonts
