@@ -1,5 +1,9 @@
 # Fepper Changelog
 
+### v0.13.5
+* Removed livereloading of images and other assets from Windows
+* Updated icon fonts
+
 ### v0.13.4
 * Livereloading of images and other assets
 * Added i18n for all user-facing text
