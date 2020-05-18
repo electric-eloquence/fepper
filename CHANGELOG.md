@@ -4,6 +4,7 @@
 * Loading pref before conf to define the i18n lang earlier
 * More and better i18n
 * Removed deprecated conf.backend\_dir
+* Allowing empty object in \_data/\_data.json
 
 ### v0.13.5
 * Removed livereloading of images and other assets from Windows
