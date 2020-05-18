@@ -420,7 +420,7 @@ to <a href="https://patternlab.io/docs/pattern-states.html" target="_blank">
 the Pattern Lab documentation on pattern states</a>. It should not be relied on 
 for pattern scaffolding.)
 
-View All markup can also be overridden by copying the `.mustache` files in 
+View All markup can also be overridden by copying the .mustache files in 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall" target="_blank">
 https&colon;//github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall</a> 
 and pasting them to `source/_ui/viewall` (nested correctly). Modifications will 
