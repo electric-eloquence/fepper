@@ -3,6 +3,6 @@
   "repository": {},
   "license": "MIT",
   "devDependencies": {
-    "fepper-ui": "^0.7.6-rc.1"
+    "fepper-ui": "^0.7.6"
   }
 }
