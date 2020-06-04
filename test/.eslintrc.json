@@ -1,10 +1,6 @@
 {
   "env": {
-    "browser": false,
-    "mocha": true,
-    "node": true
-  },
-  "globals": {
+    "mocha": true
   },
   "rules": {
     "max-len": 0,
