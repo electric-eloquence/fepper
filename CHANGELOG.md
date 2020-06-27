@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.14.1
+* Patterns opened in new tab outside iframe do not call iframe JavaScript
+
 ### v0.14.0
 * Loading pref before conf to define the i18n lang earlier
 * More and better i18n
