@@ -5,7 +5,7 @@
     "node": true
   },
   "parserOptions": {
-    "ecmaVersion": 8
+    "ecmaVersion": 9
   },
   "rules": {
     // error
@@ -113,7 +113,7 @@
       "ignoreComments": false,
       "ignoreUrls": true
     }],
-    "max-nested-callbacks": [1, 4],
+    "max-nested-callbacks": [1, 5],
     "no-unused-expressions": 1,
     "no-use-before-define": 1,
     "valid-jsdoc": [1, {
