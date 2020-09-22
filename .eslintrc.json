@@ -113,7 +113,7 @@
       "ignoreComments": false,
       "ignoreUrls": true
     }],
-    "max-nested-callbacks": [1, 5],
+    "max-nested-callbacks": [1, 7],
     "no-unused-expressions": 1,
     "no-use-before-define": 1,
     "valid-jsdoc": [1, {
