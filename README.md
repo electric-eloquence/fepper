@@ -429,14 +429,14 @@ New UI customizations will not be picked up simply by restarting Fepper.
 
 The UI exposes these tasks for extension purposes:
 
-* `fp ui:build` - build the patterns, outputting to the public directory.
-* `fp ui:clean` - delete all patterns in the public directory.
-* `fp ui:compile` - compile the user interface from its component parts.
-* `fp ui:copy` - copy frontend files (\_assets, \_scripts, \_styles) to the 
-  public directory.
-* `fp ui:copy-styles` - copy \_styles to the public directory (for injection 
-  into browser without refresh.
-* `fp ui:help` - get more information about Fepper UI CLI commands.
+* `fp ui:build` - Build the patterns and output them to the public directory
+* `fp ui:clean` - Delete all patterns in the public directory
+* `fp ui:compile` - Compile the User Interface from its component parts
+* `fp ui:copy` - Copy frontend files (\_assets, \_scripts, \_styles) to the 
+  public directory
+* `fp ui:copy-styles` - Copy \_styles to the public directory (for injection 
+  into the browser without a refresh)
+* `fp ui:help` - Get more information about Fepper UI CLI commands
 
 ### <a id="extensions"></a>Extensions
 
