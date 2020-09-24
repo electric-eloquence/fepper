@@ -1,7 +1,7 @@
 # Fepper Changelog
 
 ### v0.14.1
-* Patterns opened in new tab outside iframe do not call iframe JavaScript
+* Patterns opened in new tab outside Fepper UI do not call Fepper UI JavaScript
 * Updated appendixer to account for variables.styl strings wrapped in quotes
 
 ### v0.14.0
