@@ -14,15 +14,6 @@
 ![Node Version][node-version-image]
 [![License][license-image]][license-url]
 
-### BROWSER SUPPORT NOTICE!
-
-As of v0.12.0, the Fepper UI will require browser support for 
-<a href="https://github.com/tc39/proposal-class-fields#implementations" target="_blank">
-JavaScript class fields</a>. Please click the link to see which browsers are 
-compatible. (Support for just public instance fields is good enough.) This only 
-pertains to the UI. Patterns and their destinations can be as backward-compatible 
-or as experimental as you wish to make them.
-
 ### Downstream projects
 
 * [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no 
