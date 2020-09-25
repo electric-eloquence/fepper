@@ -431,7 +431,7 @@ The UI exposes these tasks for extension purposes:
 
 * `fp ui:build` - Build the patterns and output them to the public directory
 * `fp ui:clean` - Delete all patterns in the public directory
-* `fp ui:compile` - Compile the Fepper User Interface from its component parts
+* `fp ui:compile` - Compile the Fepper User Interface from its components
 * `fp ui:copy` - Copy frontend files (\_assets, \_scripts, \_styles) to the 
   public directory
 * `fp ui:copy-styles` - Copy \_styles to the public directory (for injection 
