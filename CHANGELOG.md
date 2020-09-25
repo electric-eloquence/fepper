@@ -3,6 +3,7 @@
 ### v0.14.1
 * Patterns opened in new tab outside Fepper UI do not call Fepper UI JavaScript
 * Updated appendixer to account for variables.styl strings wrapped in quotes
+* Improvements to mobile nav toggles in demo site
 
 ### v0.14.0
 * Loading pref before conf to define the i18n lang earlier
