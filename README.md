@@ -91,7 +91,6 @@
 
 #### Windows install
 
-* PowerShell >= 3.0 required.
 * In File Explorer, double-click 
   `fepper.vbs`.&nbsp;<a href="https://gist.github.com/e2tha-e/72364ca766cf5d2d1a732b6af4f3b7a8" target="_blank">*</a>
   * If Node.js is not installed, this will install it.
