@@ -131,20 +131,20 @@ Run `fp update` to download and install the latest updates.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
 * These other utility tasks are runnable on the command line:
-  * `fp data` - build data.json from underscore-prefixed .json files.
-  * `fp frontend-copy` - copy assets, scripts, and styles to the backend.
-  * `fp help` - print documentation of Fepper tasks.
-  * `fp once` - do a one-off Fepper build to the public directory.
-  * `fp restart` - restart after shutdown, but without opening the browser.
-  * `fp static` - generate a static site from the 04-pages directory.
-  * `fp syncback` - combine frontend-copy and template tasks.
-  * `fp template` - translate templates in 03-templates for the backend and copy 
-    them there.
-  * `fp ui:help` - print Fepper UI tasks and descriptions. Any one of these 
-    tasks is runnable on the command line.
-  * `fp version` - print versions of Fepper CLI, Fepper NPM, and Fepper UI.
-  * `fp extend:help` - print Fepper extension tasks and descriptions. Any one of 
-    these tasks is runnable on the command line.
+  * `fp data` - Build data.json from underscore-prefixed .json files
+  * `fp frontend-copy` - Copy assets, scripts, and styles to the backend
+  * `fp help` - Print documentation of Fepper tasks
+  * `fp once` - Output a new build to the public directory
+  * `fp restart` - Restart after shutdown, but without opening the browser
+  * `fp static` - Generate a static site from the 04-pages directory
+  * `fp syncback` - Combine frontend-copy and template tasks
+  * `fp template` - Translate templates in 03-templates for the backend, and 
+    output them there
+  * `fp ui:help` - Print UI tasks and their descriptions
+  * `fp update` - Update Fepper distro, Fepper CLI, Fepper NPM, Fepper UI, and 
+    Fepper extensions
+  * `fp version` - Print the versions of Fepper CLI, Fepper NPM, and Fepper UI
+  * `fp extend:help` - Print extension tasks and their descriptions
 * Enter a `-d` or `--debug` switch to run the command in `debug` mode.
 * If using Git for version control, directories named "ignore" will be ignored.
 
