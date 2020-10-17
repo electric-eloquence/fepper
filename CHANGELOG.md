@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.15.0
+* Improved UI JavaScript
+
 ### v0.14.1
 * Patterns opened in new tab outside Fepper UI do not call Fepper UI JavaScript
 * Updated appendixer to account for variables.styl strings wrapped in quotes
