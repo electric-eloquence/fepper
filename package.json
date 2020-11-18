@@ -4,15 +4,7 @@
   "scripts": {
     "install-base": "node run/install-base.js",
     "postinstall": "node run/install.js",
-    "start": "fepper",
-    "test": "npm run test:eslint && npm run test:mocha",
-    "test:eslint": "eslint run && eslint test",
-    "test:mocha": "mocha test/install-tests.js && mocha test/install-extension-tests.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "npm test"
-    }
+    "start": "fepper"
   },
   "repository": {
     "type": "git",
@@ -43,15 +35,11 @@
     "node": ">=8.10.0"
   },
   "devDependencies": {
-    "chai": "4.x",
-    "eslint": "3.x",
-    "fepper": "*",
-    "fepper-utils": "*",
+    "fepper": "^0.30.4",
+    "fepper-utils": "^1.1.6",
     "fs-extra": "^7.0.0",
-    "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts",
-    "husky": "^1.3.1",
+    "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts@3.9.5",
     "js-yaml": "^3.12.1",
-    "mocha": "5.x",
     "require-dir": "^0.3.0",
     "run-sequence": "^2.2.1"
   }
