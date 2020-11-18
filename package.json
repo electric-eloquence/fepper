@@ -5,7 +5,6 @@
     "install-base": "node run/install-base.js",
     "install-windows": "node run/install-windows.js",
     "postinstall": "node run/install.js",
-    "prepush": "npm test",
     "test": "npm run test-eslint && npm run test-mocha",
     "test-eslint": "./node_modules/.bin/eslint run && ./node_modules/.bin/eslint test",
     "test-mocha": "./node_modules/.bin/mocha test/install-tests.js",
@@ -40,17 +39,12 @@
     "node": ">=8.5.0"
   },
   "devDependencies": {
-    "chai": "4.x",
-    "eslint": "3.x",
     "fepper": "^0.25.5",
     "fs-extra": "^0.22.1",
     "gulp": "3.9.1",
     "gulp-load-plugins": "^1.5.0",
     "gulp-refresh": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "husky": "^0.14.3",
-    "js-yaml": "^3.2.7",
-    "mocha": "3.x",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2"
   }
