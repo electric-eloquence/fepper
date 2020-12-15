@@ -30,9 +30,9 @@
 ### Table of contents
 
 * [Install](#install)
-* [Update](#update)
-* [Use](#use)
 * [Configure](#configure)
+* [Run](#run)
+* [Update](#update)
 * [Global Data](#global-data)
 * [Partial Data](#partial-data)
 * [Static Site Generation](#static-site-generation)
@@ -114,11 +114,15 @@
 * To stop Fepper, go to the command line where Fepper is running and press 
   ctrl+c.
 
-### <a id="update"></a>Update
+### <a id="configure"></a>Configure
 
-Run `fp update` to download and install the latest updates.
+Edit the `pref.yml` file to customize preferences and to view further 
+documentation in the comments. If you wish to use the `syncback`, 
+`frontend-copy`, or `template` tasks, you must supply values for the 
+`backend.synced_dirs` preferences in order for those directories to get 
+processed and copied to the backend.
 
-### <a id="use"></a>Use
+### <a id="run"></a>Run
 
 * To launch from macOS Finder:
   * Double-click `fepper.command`.
@@ -148,13 +152,9 @@ Run `fp update` to download and install the latest updates.
 * Enter a `-d` or `--debug` switch to run the command in `debug` mode.
 * If using Git for version control, directories named "ignore" will be ignored.
 
-### <a id="configure"></a>Configure
+### <a id="update"></a>Update
 
-Edit the `pref.yml` file to customize preferences and to view further 
-documentation in the comments. If you wish to use the `syncback`, 
-`frontend-copy`, or `template` tasks, you must supply values for the 
-`backend.synced_dirs` preferences in order for those directories to get 
-processed and copied to the backend.
+Run `fp update` to download and install the latest updates.
 
 ### <a id="global-data"></a>Global Data
 
