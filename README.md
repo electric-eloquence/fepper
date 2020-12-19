@@ -17,7 +17,7 @@
 ### Downstream projects
 
 * [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no 
-  unnecessary assets, styles, Pattern Lab demo, or 
+  unnecessary assets, styles, demo website, or 
   <a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
   extension.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - 
@@ -116,11 +116,22 @@
 
 ### <a id="configure"></a>Configure
 
-Edit the `pref.yml` file to customize preferences and to view further 
-documentation in the comments. If you wish to use the `fp syncback`, 
-`fp frontend-copy`, or `fp template` tasks, you must supply values for the 
-`backend.synced_dirs` preferences in order for those directories to get 
-processed and copied to the backend.
+Fepper will run out-of-the-box perfectly well with default configurations. 
+For further customization, power-users can edit these files:
+
+* conf.yml
+* pref.yml
+* patternlab-config.json
+
+Edit `conf.yml` to suit the needs of your development environment.
+
+Edit `pref.yml` to customize Fepper preferences. If you wish to use the 
+`fp syncback`, `fp frontend-copy`, or `fp template` tasks, you must supply 
+values for the `backend.synced_dirs` preferences in order for those directories 
+to get processed and copied to the backend.
+
+Edit `patternlab-config.json` to configure Pattern Lab, the design system behind 
+the Fepper UI.
 
 ### <a id="run"></a>Run
 
