@@ -101,7 +101,7 @@
 
 #### Base install
 
-* Comes with no unnecessary assets, styles, Pattern Lab demo, or 
+* Comes with no unnecessary assets, styles, demo website, or 
   <a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
   extension.
 * Node.js must be installed beforehand.
@@ -117,8 +117,8 @@
 ### <a id="configure"></a>Configure
 
 Edit the `pref.yml` file to customize preferences and to view further 
-documentation in the comments. If you wish to use the `syncback`, 
-`frontend-copy`, or `template` tasks, you must supply values for the 
+documentation in the comments. If you wish to use the `fp syncback`, 
+`fp frontend-copy`, or `fp template` tasks, you must supply values for the 
 `backend.synced_dirs` preferences in order for those directories to get 
 processed and copied to the backend.
 
