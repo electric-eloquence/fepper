@@ -123,7 +123,8 @@ For further customization, power-users can edit these files:
 * pref.yml
 * patternlab-config.json
 
-Edit `conf.yml` to suit the needs of your development environment.
+Edit `conf.yml` to suit the needs of your development environment. If using Git, 
+`conf.yml` will not be version controlled by default.
 
 Edit `pref.yml` to customize Fepper preferences. If you wish to use the 
 `fp syncback`, `fp frontend-copy`, or `fp template` tasks, you must supply 
