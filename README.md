@@ -83,7 +83,7 @@
 
 #### CLI install
 
-* On other Unix-like OSs (or if you prefer working on the command line):
+* In other Unix-like OSs (or if you prefer working on the command line):
   * Install Node.js if it isn't already installed.
   * `npm install -g fepper-cli`
   * `npm install`
@@ -142,10 +142,11 @@ the Fepper UI.
   * Double-click `fepper.vbs`.
 * To launch from the command line:
   * `fp`
-* Consult the <a href="https://patternlab.io/docs/index.html" target="_blank">
-  Pattern Lab docs</a> for instructions on using Pattern Lab.
+* Consult the <a href="https://fepper.io/docpage" target="_blank">
+  Fepper website</a> for documentation.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
+* To stop Fepper, press ctrl+c.
 * These other utility tasks are runnable on the command line:
   * `fp data` - Build data.json from underscore-prefixed .json files
   * `fp frontend-copy` - Copy assets, scripts, and styles to the backend
@@ -170,10 +171,10 @@ Run `fp update` to download and install the latest updates.
 
 ### <a id="global-data"></a>Global Data
 
-Edit `source/_data/_data.json` to globally populate 
-<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
-(.mustache) templates with data. Manual edits to `source/_data/data.json` will 
-get overwritten on each build.
+Edit `source/_data/_data.json` to globally populate .mustache 
+<a href="https://www.npmjs.com/package/feplet" target="_blank">(Feplet)</a> 
+templates with data. _Never_ edit `source/_data/data.json` as it will get 
+overwritten on each build.
 
 ### <a id="partial-data"></a>Partial Data
 
@@ -198,7 +199,7 @@ will be picked up by all patterns.
 Running `fp static` will generate a complete static site based on the files in 
 `source/_patterns/04-pages`. The site will be viewable at 
 http://localhost:3000/static/. An `index.html` will be generated based on 
-`04-pages-00-homepage`, or whatever is defined as the homepage in `_data.json`. 
+`04-pages-00-homepage`, or whatever is declared as the homepage in `_data.json`. 
 If links to other pages in the `04-pages` directory work correctly in the Fepper 
 UI, they will work correctly in the static site, even if the `public/static` 
 directory is copied and renamed.
@@ -671,13 +672,13 @@ As a reminder, the viewport sizes can be customized in `source/_scripts/src/vari
 
 ### <a id="more-documentation"></a>More Documentation
 
+* <a href="https://fepper.io/docpage" target="_blank">Fepper website</a>
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
-* <a href="https://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
 * <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+* <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
 * <a href="https://mustache.github.io/mustache.5.html" target="_blank">
   Mustache</a>
-* <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
 
 [snyk-image]: https://snyk.io//test/github/electric-eloquence/fepper/master/badge.svg
 [snyk-url]: https://snyk.io//test/github/electric-eloquence/fepper/master
