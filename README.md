@@ -253,7 +253,7 @@ Follow these rules for setting up keys and values:
   example), the double-curly braces must be escaped with a backslash per curly 
   brace.
 
-Run `fp syncback` or `fp template` to execute the Templater. 
+Run `fp syncback` or `fp template`. 
 
 * Be sure that `backend.synced_dirs.templates_dir` and 
   `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
@@ -262,16 +262,16 @@ Run `fp syncback` or `fp template` to execute the Templater.
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in 
   the `_nosync` directory. 
 * The Templater will recurse through nested Feplet templates if the tags are 
-  written in the verbose syntax and have the `.mustache` extension, e.g. 
-  `{{> 02-components/00-global/00-header.mustache }}` 
+  written in the full relative path syntax and have the `.mustache` extension, 
+  e.g. `{{> 02-components/00-global/00-header.mustache }}` 
 * However, the more common inclusion use-case is to leave off the extension, and 
   not recurse. 
 
-<a href="https://github.com/electric-eloquence/fepper-drupal" target="_blank">
+<p><a href="https://github.com/electric-eloquence/fepper-drupal" target="_blank">
 Fepper for Drupal</a> and 
 <a href="https://github.com/electric-eloquence/fepper-wordpress" target="_blank">
 Fepper for WordPress</a> have working examples of templates compatible with the 
-Templater.
+Templater.</p>
 
 ### <a id="webserved-directories"></a>Webserved Directories
 
@@ -289,29 +289,12 @@ formatted as YAML array elements.
 
 ### <a id="mustache-browser"></a>Mustache Browser
 
-<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+<p><a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 (.mustache) code can be viewed in the Fepper UI by clicking the eyeball icon in 
-the upper right, then clicking Code, and then clicking the Mustache tab in the 
-bottom pane. Clicking the hot-linked area will open the pattern's .mustache file 
-and display its code in the Fepper UI, with its partial tags hot-linked as well.
-
-Fepper's implementation of Mustache is powered by the 
-<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
-template engine. It extends Mustache functionality by allowing the passing of 
-data parameters as follows:
-
-```
-{{> 02-components/00-global/99-example(greeting: 'Hello', place: 'World') }}
-```
-
-##### 02-components/00-global/99-example.mustache:
-
-```
-{{ greeting }} {{ place }}
-```
-
-So long as the path is navigable, the Mustache Browser will link such 
-parameterized tags.
+the upper right and then clicking Code. By default, the Mustache tab will be 
+open and the code within will be hot-linked to open in the Fepper UI. From there, 
+partial tags will be hot-linked as well, such that users can easily browse 
+through the included partials.</p>
 
 ### <a id="html-scraper"></a>HTML Scraper
 
