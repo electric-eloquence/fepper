@@ -202,8 +202,35 @@ http://localhost:3000/static/. An `index.html` will be generated based on
 `04-pages-00-homepage`, or whatever is declared as the homepage in `_data.json`. 
 If links to other pages in the `04-pages` directory work correctly in the Fepper 
 UI, they will work correctly in the static site, even if the `public/static` 
-directory is copied and renamed. Additional files can be put in `source/_static` 
-so long as they do not get overwritten by static site generation.
+directory is copied and renamed.
+
+For example, assume an article is at 
+`source/_patterns/04-pages/articles-/00-top-story.mustache`. Create the link as 
+follows:
+
+```
+<a href="{{ link.pages-top-story }}">Article Headline</a>
+```
+
+This would built to the public directory as:
+
+```
+<a href="../04-pages-articles--00-top-story/04-pages-articles--00-top-story.html">Article Headline</a>
+```
+
+The Static Site Generator would output this as:
+
+```
+<a href="articles--top-story.html">Article Headline</a>
+```
+
+Numeric prefixes to filenames and sub-directories would be dropped. Nested 
+source directories would be flattened and all static HTML files would be 
+siblings. The pathing of nested folders would be retained in the filenames, so 
+the organizational benefits of nesting folders would be retained.
+
+Additional files can be put in `source/_static` 
+so long as they do not get overwritten by the Static Site Generator.
 
 ### <a id="the-backend"></a>The Backend
 
