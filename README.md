@@ -171,10 +171,10 @@ Run `fp update` to download and install the latest updates.
 
 ### <a id="global-data"></a>Global Data
 
-Edit `source/_data/_data.json` to globally populate .mustache 
-<a href="https://www.npmjs.com/package/feplet" target="_blank">(Feplet)</a> 
-templates with data. _Never_ edit `source/_data/data.json` as it will get 
-overwritten on each build.
+Edit `source/_data/_data.json` to globally populate 
+<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+(.mustache) templates with data. _Never_ edit `source/_data/data.json` as it 
+will get overwritten on each build.
 
 ### <a id="partial-data"></a>Partial Data
 
@@ -202,7 +202,8 @@ http://localhost:3000/static/. An `index.html` will be generated based on
 `04-pages-00-homepage`, or whatever is declared as the homepage in `_data.json`. 
 If links to other pages in the `04-pages` directory work correctly in the Fepper 
 UI, they will work correctly in the static site, even if the `public/static` 
-directory is copied and renamed.
+directory is copied and renamed. Additional files can be put in `source/_static` 
+so long as they do not get overwritten by static site generation.
 
 ### <a id="the-backend"></a>The Backend
 
