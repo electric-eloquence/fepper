@@ -291,10 +291,10 @@ formatted as YAML array elements.
 
 <p><a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 (.mustache) code can be viewed in the Fepper UI by clicking the eyeball icon in 
-the upper right and then clicking Code. By default, the Mustache tab will be 
-open and the code within will be hot-linked to open in the Fepper UI. From there, 
-partial tags will be hot-linked as well, such that users can easily browse 
-through the included partials.</p>
+the upper right and then clicking Code. The Mustache tab of the Code Viewer will 
+then be opened, and the code within will be hot-linked to open in the main panel 
+of the Fepper UI. From there, partial tags will be hot-linked as well, such that 
+users can easily browse through the included partials.</p>
 
 ### <a id="html-scraper"></a>HTML Scraper
 
@@ -377,8 +377,8 @@ The Fepper for Drupal project overrides its HTML title to read "Fepper D8"
 instead of "Fepper". In order to do so, it has the `head.component.js` module 
 nested in directories that correspond to the tags that nest the `head` HTML 
 element. Both `head.component.js` and its nesting directories must be named 
-similarly their corresponding elements. `.component.js` indicates that the file 
-is a module to be rendered by React. 
+similarly to their corresponding elements. `.component.js` indicates that the 
+file is a module to be rendered by React. 
 <a href="https://reactjs.org/docs/dom-elements.html" target="_blank">
 It must export properties that `React.createElement()` understands</a>. 
 The numeric prefix to `00-head` orders it to precede `01-foot`, even though 
@@ -402,7 +402,7 @@ to UI scripts can be added to `source/_scripts/ui-extender.js`.
 
 Similarly, generic modifications to UI styles can be added to 
 `source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
-to <a href="https://patternlab.io/docs/pattern-states.html" target="_blank"> 
+to <a href="https://patternlab.io/docs/using-pattern-states/" target="_blank"> 
 the Pattern Lab documentation on pattern states</a>. It should not be relied on 
 for pattern scaffolding.)
 
@@ -422,7 +422,7 @@ fp ui:compile
 
 New UI customizations will not be picked up simply by restarting Fepper.
 
-The UI exposes these tasks for extension purposes:
+The UI exposes these additional tasks:
 
 * `fp ui:build` - Build the patterns and output them to the public directory
 * `fp ui:clean` - Delete all patterns in the public directory
@@ -644,11 +644,10 @@ to distribute them to the rest of the world.
 * **ctrl+alt+w**: set the viewport to "whole"
 * **ctrl+alt+r**: set the viewport to a random width
 * **ctrl+alt+g**: start/stop "grow" animation
-* **ctrl+shift+a**: open/close annotations panel
-* **ctrl+shift+c**: open/close code panel
-* **cmd+a/ctrl+a**: select the content of the current open tab in code panel
-* **ctrl+alt+m**: make the Mustache tab active in code panel
-* **ctrl+alt+h**: make the HTML tab active in code panel
+* **ctrl+shift+a**: open/close Annotations Viewer
+* **ctrl+shift+c**: open/close Code Viewer
+* **ctrl+alt+m**: make the Mustache tab active in Code Viewer
+* **ctrl+alt+h**: make the HTML tab active in Code Viewer
 * **ctrl+shift+f**: open/close the pattern search
 
 As a reminder, the viewport sizes can be customized in `source/_scripts/src/variables.styl`.
