@@ -17,7 +17,7 @@ if (fs.existsSync(confFile)) {
   const confStr = fs.readFileSync(confFile, enc);
   const confLines = confStr.split('\n');
 
-  for (let confLine of confLines) {
+  for (const confLine of confLines) {
     const keyVal = confLine.split(':');
 
     if (keyVal[0].trim() === 'extend_dir' && keyVal[1]) {
