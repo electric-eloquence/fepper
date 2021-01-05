@@ -83,7 +83,8 @@
 
 #### CLI install
 
-* In other Unix-like OSs (or if you prefer working on the command line):
+* In Linux and other Unix-like OSs (or if you prefer working on the command 
+  line):
   * Install Node.js if it isn't already installed.
   * `npm install -g fepper-cli`
   * `npm install`
