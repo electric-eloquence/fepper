@@ -17,7 +17,7 @@
 ### Downstream projects
 
 * [Fepper Base](https://github.com/electric-eloquence/fepper-base) - no 
-  unnecessary assets, styles, Pattern Lab demo, or 
+  unnecessary assets, styles, demo website, or 
   <a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
   extension.
 * [Fepper for Drupal](https://github.com/electric-eloquence/fepper-drupal) - 
@@ -30,9 +30,9 @@
 ### Table of contents
 
 * [Install](#install)
-* [Update](#update)
-* [Use](#use)
 * [Configure](#configure)
+* [Run](#run)
+* [Update](#update)
 * [Global Data](#global-data)
 * [Partial Data](#partial-data)
 * [Static Site Generation](#static-site-generation)
@@ -83,7 +83,8 @@
 
 #### CLI install
 
-* On other Unix-like OSs (or if you prefer working on the command line):
+* In Linux and other Unix-like OSs (or if you prefer working on the command 
+  line):
   * Install Node.js if it isn't already installed.
   * `npm install -g fepper-cli`
   * `npm install`
@@ -101,7 +102,7 @@
 
 #### Base install
 
-* Comes with no unnecessary assets, styles, Pattern Lab demo, or 
+* Comes with no unnecessary assets, styles, demo website, or 
   <a href="https://www.npmjs.com/package/fp-stylus" target="_blank">fp-stylus</a> 
   extension.
 * Node.js must be installed beforehand.
@@ -114,11 +115,27 @@
 * To stop Fepper, go to the command line where Fepper is running and press 
   ctrl+c.
 
-### <a id="update"></a>Update
+### <a id="configure"></a>Configure
 
-Run `fp update` to download and install the latest updates.
+Fepper will run out-of-the-box perfectly well with default configurations. 
+For further customization, power-users can edit these files:
 
-### <a id="use"></a>Use
+* conf.yml
+* pref.yml
+* patternlab-config.json
+
+Edit `conf.yml` to suit the needs of your development environment. If using Git, 
+`conf.yml` will not be version controlled by default.
+
+Edit `pref.yml` to customize Fepper preferences. If you wish to use the 
+`fp syncback`, `fp frontend-copy`, or `fp template` tasks, you must supply 
+values for the `backend.synced_dirs` preferences in order for those directories 
+to get processed and copied to the backend.
+
+Edit `patternlab-config.json` to configure Pattern Lab, the design system behind 
+the Fepper UI.
+
+### <a id="run"></a>Run
 
 * To launch from macOS Finder:
   * Double-click `fepper.command`.
@@ -126,10 +143,11 @@ Run `fp update` to download and install the latest updates.
   * Double-click `fepper.vbs`.
 * To launch from the command line:
   * `fp`
-* Consult the <a href="https://patternlab.io/docs/index.html" target="_blank">
-  Pattern Lab docs</a> for instructions on using Pattern Lab.
+* Consult the <a href="https://fepper.io/docpage" target="_blank">
+  Fepper website</a> for documentation.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
+* To stop Fepper, press ctrl+c.
 * These other utility tasks are runnable on the command line:
   * `fp data` - Build data.json from underscore-prefixed .json files
   * `fp frontend-copy` - Copy assets, scripts, and styles to the backend
@@ -148,20 +166,16 @@ Run `fp update` to download and install the latest updates.
 * Enter a `-d` or `--debug` switch to run the command in `debug` mode.
 * If using Git for version control, directories named "ignore" will be ignored.
 
-### <a id="configure"></a>Configure
+### <a id="update"></a>Update
 
-Edit the `pref.yml` file to customize preferences and to view further 
-documentation in the comments. If you wish to use the `syncback`, 
-`frontend-copy`, or `template` tasks, you must supply values for the 
-`backend.synced_dirs` preferences in order for those directories to get 
-processed and copied to the backend.
+Run `fp update` to download and install the latest updates.
 
 ### <a id="global-data"></a>Global Data
 
 Edit `source/_data/_data.json` to globally populate 
 <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
-(.mustache) templates with data. Manual edits to `source/_data/data.json` will 
-get overwritten on each build.
+(.mustache) templates with data. _Never_ edit `source/_data/data.json` as it 
+will get overwritten on each build.
 
 ### <a id="partial-data"></a>Partial Data
 
@@ -186,10 +200,42 @@ will be picked up by all patterns.
 Running `fp static` will generate a complete static site based on the files in 
 `source/_patterns/04-pages`. The site will be viewable at 
 http://localhost:3000/static/. An `index.html` will be generated based on 
-`04-pages-00-homepage`, or whatever is defined as the homepage in `_data.json`. 
+`04-pages-00-homepage`, or whatever is declared as the homepage in `_data.json`. 
 If links to other pages in the `04-pages` directory work correctly in the Fepper 
 UI, they will work correctly in the static site, even if the `public/static` 
 directory is copied and renamed.
+
+For example, assume an article is at 
+`source/_patterns/04-pages/articles-/00-top-story.mustache`. Create the link as 
+follows:
+
+```
+<a href="{{ link.pages-top-story }}">Article Headline</a>
+```
+
+This would built to the public directory as:
+
+```
+<a href="../04-pages-articles--00-top-story/04-pages-articles--00-top-story.html">Article Headline</a>
+```
+
+The Static Site Generator would output this as:
+
+```
+<a href="articles--top-story.html">Article Headline</a>
+```
+
+Numeric prefixes to filenames and sub-directories would be dropped. Nested 
+source directories would be flattened and all static HTML files would be 
+siblings. The pathing of nested folders would be retained in the filenames, so 
+the organizational benefits of nesting folders would be retained.
+
+Appending a hyphen (`-`) to the "articles" directory is just a suggestion. While 
+the Static Site Generator flattens nested source directories, the additional 
+hyphen suggests that "articles" categorizes the more specific parts that follow.
+
+Additional files can be put in `source/_static` so long as they do not get 
+overwritten by the Static Site Generator.
 
 ### <a id="the-backend"></a>The Backend
 
@@ -213,7 +259,7 @@ backend web application.
     the entire hierarchy, e.g. only `assets_dir`, not 
     `backend.synced_dirs.assets_dir`. 
 * Asset, script, and style files prefixed by "\_\_" will be ignored by 
-  `fp syncback` and `fp frontend-copy` as will files in the `_nosync` 
+  `fp syncback` and `fp frontend-copy`, as will files in the `_nosync` 
   directory at the root of the source directories. 
 
 ### <a id="templater"></a>Templater
@@ -240,7 +286,7 @@ Follow these rules for setting up keys and values:
   example), the double-curly braces must be escaped with a backslash per curly 
   brace.
 
-Run `fp syncback` or `fp template` to execute the Templater. 
+Run `fp syncback` or `fp template`. 
 
 * Be sure that `backend.synced_dirs.templates_dir` and 
   `backend.synced_dirs.templates_ext` are set in `pref.yml`. 
@@ -249,16 +295,16 @@ Run `fp syncback` or `fp template` to execute the Templater.
 * Templates prefixed by "\_\_" will be ignored by the Templater as will files in 
   the `_nosync` directory. 
 * The Templater will recurse through nested Feplet templates if the tags are 
-  written in the verbose syntax and have the `.mustache` extension, e.g. 
-  `{{> 02-components/00-global/00-header.mustache }}` 
+  written in the full relative path syntax and have the `.mustache` extension, 
+  e.g. `{{> 02-components/00-global/00-header.mustache }}` 
 * However, the more common inclusion use-case is to leave off the extension, and 
   not recurse. 
 
-<a href="https://github.com/electric-eloquence/fepper-drupal" target="_blank">
+<p><a href="https://github.com/electric-eloquence/fepper-drupal" target="_blank">
 Fepper for Drupal</a> and 
 <a href="https://github.com/electric-eloquence/fepper-wordpress" target="_blank">
 Fepper for WordPress</a> have working examples of templates compatible with the 
-Templater.
+Templater.</p>
 
 ### <a id="webserved-directories"></a>Webserved Directories
 
@@ -276,29 +322,12 @@ formatted as YAML array elements.
 
 ### <a id="mustache-browser"></a>Mustache Browser
 
-<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+<p><a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 (.mustache) code can be viewed in the Fepper UI by clicking the eyeball icon in 
-the upper right, then clicking Code, and then clicking the Mustache tab in the 
-bottom pane. Clicking the hot-linked area will open the pattern's .mustache file 
-and display its code in the Fepper UI, with its partial tags hot-linked as well.
-
-Fepper's implementation of Mustache is powered by the 
-<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
-template engine. It extends Mustache functionality by allowing the passing of 
-data parameters as follows:
-
-```
-{{> 02-components/00-global/99-example(greeting: 'Hello', place: 'World') }}
-```
-
-##### 02-components/00-global/99-example.mustache:
-
-```
-{{ greeting }} {{ place }}
-```
-
-So long as the path is navigable, the Mustache Browser will link such 
-parameterized tags.
+the upper right and then clicking Code. The Mustache tab of the Code Viewer will 
+then be opened, and the code within will be hot-linked to open in the main panel 
+of the Fepper UI. From there, partial tags will be hot-linked as well, such that 
+users can easily browse through the included partials.</p>
 
 ### <a id="html-scraper"></a>HTML Scraper
 
@@ -381,8 +410,8 @@ The Fepper for Drupal project overrides its HTML title to read "Fepper D8"
 instead of "Fepper". In order to do so, it has the `head.component.js` module 
 nested in directories that correspond to the tags that nest the `head` HTML 
 element. Both `head.component.js` and its nesting directories must be named 
-similarly their corresponding elements. `.component.js` indicates that the file 
-is a module to be rendered by React. 
+similarly to their corresponding elements. `.component.js` indicates that the 
+file is a module to be rendered by React. 
 <a href="https://reactjs.org/docs/dom-elements.html" target="_blank">
 It must export properties that `React.createElement()` understands</a>. 
 The numeric prefix to `00-head` orders it to precede `01-foot`, even though 
@@ -406,7 +435,7 @@ to UI scripts can be added to `source/_scripts/ui-extender.js`.
 
 Similarly, generic modifications to UI styles can be added to 
 `source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
-to <a href="https://patternlab.io/docs/pattern-states.html" target="_blank"> 
+to <a href="https://patternlab.io/docs/using-pattern-states/" target="_blank"> 
 the Pattern Lab documentation on pattern states</a>. It should not be relied on 
 for pattern scaffolding.)
 
@@ -426,7 +455,7 @@ fp ui:compile
 
 New UI customizations will not be picked up simply by restarting Fepper.
 
-The UI exposes these tasks for extension purposes:
+The UI exposes these additional tasks:
 
 * `fp ui:build` - Build the patterns and output them to the public directory
 * `fp ui:clean` - Delete all patterns in the public directory
@@ -564,7 +593,7 @@ please open an issue</a>.
 
 ### <a id="express-app"></a>Express App
 
-Fepper exposes its Express application through the `global.expressApp` object. 
+Fepper exposes its <a href="https://expressjs.com/" target="_blank">Express</a> application through the `global.expressApp` object. 
 This object can be overridden with custom routes and middleware via the 
 `custom:tcp-ip` (or `contrib:tcp-ip`) extension task. Initialization of 
 `global.expressApp` occurs before this task, and listening occurs afterward.
@@ -648,24 +677,23 @@ to distribute them to the rest of the world.
 * **ctrl+alt+w**: set the viewport to "whole"
 * **ctrl+alt+r**: set the viewport to a random width
 * **ctrl+alt+g**: start/stop "grow" animation
-* **ctrl+shift+a**: open/close annotations panel
-* **ctrl+shift+c**: open/close code panel
-* **cmd+a/ctrl+a**: select the content of the current open tab in code panel
-* **ctrl+alt+m**: make the Mustache tab active in code panel
-* **ctrl+alt+h**: make the HTML tab active in code panel
+* **ctrl+shift+a**: open/close Annotations Viewer
+* **ctrl+shift+c**: open/close Code Viewer
+* **ctrl+alt+m**: make the Mustache tab active in Code Viewer
+* **ctrl+alt+h**: make the HTML tab active in Code Viewer
 * **ctrl+shift+f**: open/close the pattern search
 
 As a reminder, the viewport sizes can be customized in `source/_scripts/src/variables.styl`.
 
 ### <a id="more-documentation"></a>More Documentation
 
+* <a href="https://fepper.io/docpage" target="_blank">Fepper website</a>
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
-* <a href="https://patternlab.io/docs/index.html" target="_blank">Pattern Lab</a>
 * <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+* <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
 * <a href="https://mustache.github.io/mustache.5.html" target="_blank">
   Mustache</a>
-* <a href="https://www.npmjs.com/package/fepper-utils" target="_blank">Fepper Utils</a>
 
 [snyk-image]: https://snyk.io//test/github/electric-eloquence/fepper/master/badge.svg
 [snyk-url]: https://snyk.io//test/github/electric-eloquence/fepper/master
