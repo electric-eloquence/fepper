@@ -259,7 +259,7 @@ backend web application.
     the entire hierarchy, e.g. only `assets_dir`, not 
     `backend.synced_dirs.assets_dir`. 
 * Asset, script, and style files prefixed by "\_\_" will be ignored by 
-  `fp syncback` and `fp frontend-copy` as will files in the `_nosync` 
+  `fp syncback` and `fp frontend-copy`, as will files in the `_nosync` 
   directory at the root of the source directories. 
 
 ### <a id="templater"></a>Templater
@@ -593,7 +593,7 @@ please open an issue</a>.
 
 ### <a id="express-app"></a>Express App
 
-Fepper exposes its Express application through the `global.expressApp` object. 
+Fepper exposes its <a href="https://expressjs.com/" target="_blank">Express</a> application through the `global.expressApp` object. 
 This object can be overridden with custom routes and middleware via the 
 `custom:tcp-ip` (or `contrib:tcp-ip`) extension task. Initialization of 
 `global.expressApp` occurs before this task, and listening occurs afterward.
