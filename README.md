@@ -35,7 +35,7 @@
 * [Update](#update)
 * [Global Data](#global-data)
 * [Partial Data](#partial-data)
-* [Static Site Generation](#static-site-generation)
+* [Static Site Generator](#static-site-generator)
 * [The Backend](#the-backend)
 * [Templater](#templater)
 * [Webserved Directories](#webserved-directories)
@@ -195,7 +195,7 @@ will be picked up by all patterns.
 * **DO PUT GLOBAL DATA IN source/_data/_data.json**
 * **DO LIBERALLY USE PARTIAL DATA IN source/_patterns FOR ORGANIZATIONAL SANITY**
 
-### <a id="static-site-generation"></a>Static Site Generation
+### <a id="static-site-generator"></a>Static Site Generator
 
 Running `fp static` will generate a complete static site based on the files in 
 `source/_patterns/04-pages`. The site will be viewable at 
