@@ -337,7 +337,7 @@ content in order to auto-generate data files, and to replicate the CMS's HTML
 structure. To open the Scraper, click Scrape in the Fepper UI, and then click 
 HTML Scraper. Enter the URL of the page you wish to scrape. Then, enter the CSS 
 selector you wish to target (prepended with "#" for IDs and "." for classes). 
-Classnames and tagnames may be appended with array index notation ([n]). 
+Classnames and tagnames may be appended with array index notation (`[n]`). 
 Otherwise, the Scraper will scrape all elements of that class or tag 
 sequentially. Such a loosely targeted scrape will save many of the targeted 
 fields to a JSON file, but will only save the first instance of the target to a 
@@ -687,7 +687,7 @@ As a reminder, the viewport sizes can be customized in `source/_scripts/src/vari
 
 ### <a id="more-documentation"></a>More Documentation
 
-* <a href="https://fepper.io/docpage" target="_blank">Fepper website</a>
+* <a href="https://fepper.io/docpage.html" target="_blank">Fepper website</a>
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
 * <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
