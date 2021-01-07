@@ -143,7 +143,7 @@ the Fepper UI.
   * Double-click `fepper.vbs`.
 * To launch from the command line:
   * `fp`
-* Consult the <a href="https://fepper.io/docpage.html" target="_blank">
+* Consult the <a href="https://fepper.io/docpage" target="_blank">
   Fepper website</a> for documentation.
 * Start editing files in `source`. Changes should automatically appear in the 
   browser.
@@ -687,7 +687,7 @@ As a reminder, the viewport sizes can be customized in `source/_scripts/src/vari
 
 ### <a id="more-documentation"></a>More Documentation
 
-* <a href="https://fepper.io/docpage.html" target="_blank">Fepper website</a>
+* <a href="https://fepper.io/docpage" target="_blank">Fepper website</a>
 * <a href="https://github.com/electric-eloquence/fepper-npm/blob/dev/excludes/pref.yml" target="_blank">
   Default pref.yml</a>
 * <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
