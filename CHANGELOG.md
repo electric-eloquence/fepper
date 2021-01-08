@@ -1,7 +1,13 @@
 # Fepper Changelog
 
 ### v0.15.0
-* Improved UI JavaScript
+* Improved UI javascript
+* Improved simple success page
+* Showing pattern states for pseudo-patterns
+* Showing pattern states in more places
+* Code viewer and mustache browser have widgets for copying path
+* HTML scraper scrapes pages after running their javascript
+* Removing file and directory numeric prefixes when generating static site html files
 
 ### v0.14.1
 * Patterns opened in new tab outside Fepper UI do not call Fepper UI JavaScript
