@@ -277,14 +277,10 @@ Follow these rules for setting up keys and values:
 * Delete the Feplet curly braces for keys.
 * Trim any exterior whitespace.
 * Leave other control structures and spaces within the key, e.g. !#/>^
-* Escape parentheses, carets, and question marks with backslashes.
 * Wrap the key in single quotes.
 * Follow the closing quote with a colon, space, pipe, the numeral 2, and a 
   newline `: |2`
 * Indent each line of the value by at least two spaces.
-* When translating to a language with double-curly braces for tags (as per the 
-  example), the double-curly braces must be escaped with a backslash per curly 
-  brace.
 
 Run `fp syncback` or `fp template`. 
 
