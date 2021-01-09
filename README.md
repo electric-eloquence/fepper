@@ -267,8 +267,8 @@ backend web application.
 Fepper's <a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 (.mustache) templates can be translated into templates compatible with your 
 backend. Feplet tags just need to be replaced with tags the backend can use. 
-Put these translations into YAML files named similarly to the .mustache files in 
-`source/_patterns/03-templates`. Follow 
+Put these translations into YAML (.yml) files named similarly to the .mustache 
+files in `source/_patterns/03-templates`. Follow 
 <a href="https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/_patterns/03-templates/page.yml" target="_blank">
 this example</a> for the correct YAML syntax. 
 
