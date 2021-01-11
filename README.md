@@ -225,10 +225,10 @@ The Static Site Generator would output this as:
 <a href="articles--top-story.html">Article Headline</a>
 ```
 
-Numeric prefixes to filenames and sub-directories would be dropped. Nested 
-source directories would be flattened and all static HTML files would be 
+Numeric prefixes to filenames and sub-directories will be dropped. Nested 
+source directories will be flattened and all static HTML files would become 
 siblings. The pathing of nested folders would be retained in the filenames, so 
-the organizational benefits of nesting folders would be retained.
+the organizational benefits of nesting folders will be retained.
 
 Appending a hyphen (`-`) to the "articles" directory is just a suggestion. While 
 the Static Site Generator flattens nested source directories, the additional 
