@@ -184,11 +184,11 @@ Underscore-prefixed .json files within
 whole in turn getting built into `data.json`, the final source of globally 
 scoped data. 
 
-_Partial data_ is distinct from _pattern data_. For example, `00-homepage.json` 
-is _pattern data_ and specific to the `00-homepage` pattern. No other pattern 
-will pick up `00-homepage.json`, even if `00-homepage.mustache` is included in 
-another pattern. However, `_00-homepage.json` is _partial data_ and will get 
-concatenated to the _global data_ outputted to `data.json`. `_00-homepage.json` 
+_Partial data_ is distinct from _pattern data_. For example, `01-blog.json` 
+is _pattern data_ and specific to the `01-blog` pattern. No other pattern 
+will pick up `01-blog.json`, even if `01-blog.mustache` is included in 
+another pattern. However, `_01-blog.json` is _partial data_ and will get 
+concatenated to the _global data_ outputted to `data.json`. `_01-blog.json` 
 will be picked up by all patterns.
 
 * **DO NOT EDIT source/_data/data.json**
