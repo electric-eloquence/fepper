@@ -117,8 +117,8 @@
 
 ### <a id="configure"></a>Configure
 
-Fepper will run out-of-the-box perfectly well with default configurations. 
-For further customization, power-users can edit these files:
+Fepper will run perfectly well out-of-the-box with default configurations. For 
+further customization, power-users can edit these files:
 
 * conf.yml
 * pref.yml
