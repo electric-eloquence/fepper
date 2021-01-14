@@ -432,8 +432,7 @@ to UI scripts can be added to `source/_scripts/ui-extender.js`.
 
 Similarly, generic modifications to UI styles can be added to 
 `source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
-to <a href="https://patternlab.io/docs/using-pattern-states/" target="_blank"> 
-the Pattern Lab documentation on pattern states</a>. It should not be relied on 
+to the Pattern Lab documentation on pattern states. It should not be relied on 
 for pattern scaffolding.)
 
 View All markup can also be overridden by copying the .mustache files in 
