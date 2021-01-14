@@ -432,8 +432,8 @@ to UI scripts can be added to `source/_scripts/ui-extender.js`.
 
 Similarly, generic modifications to UI styles can be added to 
 `source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
-to the Pattern Lab documentation on pattern states. It should not be relied on 
-for pattern scaffolding.)
+to the Pattern Lab convention on defining pattern states. It should not be 
+relied on for pattern scaffolding.)
 
 View All markup can also be overridden by copying the .mustache files in 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall" target="_blank">
