@@ -230,9 +230,10 @@ source directories will be flattened and all static HTML files would become
 siblings. The pathing of nested folders would be retained in the filenames, so 
 the organizational benefits of nesting folders will be retained.
 
-Appending a hyphen (`-`) to the "articles" directory is just a suggestion. While 
-the Static Site Generator flattens nested source directories, the additional 
-hyphen suggests that "articles" categorizes the more specific parts that follow.
+Appending a hyphen (`-`) to the "articles" directory is just a recommended 
+convention for static sites. While the Static Site Generator flattens nested 
+source directories, the double-hyphen suggests that "articles" categorizes the 
+more specific parts that follow.
 
 Additional files can be put in `source/_static` so long as they do not get 
 overwritten by the Static Site Generator.
