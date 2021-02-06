@@ -678,7 +678,7 @@ to distribute them to the rest of the world.
 * **ctrl+shift+c**: open/close Code Viewer
 * **ctrl+alt+m**: make the Mustache tab active in Code Viewer
 * **ctrl+alt+h**: make the HTML tab active in Code Viewer
-* **ctrl+shift+f**: open/close the pattern search
+* **ctrl+shift+f**: open/close the Pattern Search
 
 As a reminder, the viewport sizes can be customized in `source/_scripts/src/variables.styl`.
 
