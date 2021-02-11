@@ -236,8 +236,8 @@ similarly.
 Running `fp static` will generate a complete static site based on the files in 
 `source/_patterns/04-pages`. The site will be viewable at 
 http://localhost:3000/static/. An `index.html` will be generated based on 
-`04-pages-00-homepage`, or whatever is declared as the homepage in `_data.json`. 
-If links to other pages in the `04-pages` directory work correctly in the Fepper 
+whatever is declared as the `defaultPattern` in `patternlab-config.json`. If 
+links to other pages in the `04-pages` directory work correctly in the Fepper 
 UI, they will work correctly in the static site, even if the `public/static` 
 directory is copied and renamed.
 
