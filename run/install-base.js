@@ -55,7 +55,6 @@ if (!existsAlreadySourceDir) {
   fs.mkdirSync(`${sourceDir}/_patterns`);
   fs.mkdirSync(`${sourceDir}/_styles`);
   fs.writeFileSync(`${sourceDir}/_data/data.json`, '{}');
-  fs.writeFileSync(`${sourceDir}/_data/listitems.json`, '{}');
 }
 
 const isWindows = (process.env.ComSpec && process.env.ComSpec.toLowerCase() === 'c:\\windows\\system32\\cmd.exe');
@@ -92,7 +91,6 @@ if (!fs.existsSync(prefFile)) {
 
 // Delete placeholder source and extend dirs so new ones can be copied over.
 if (!existsAlreadySourceDir) {
-  fs.unlinkSync(`${sourceDir}/_data/listitems.json`);
   fs.unlinkSync(`${sourceDir}/_data/data.json`);
   fs.rmdirSync(`${sourceDir}/_styles`);
   fs.rmdirSync(`${sourceDir}/_patterns`);

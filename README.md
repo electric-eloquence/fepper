@@ -117,8 +117,8 @@
 
 ### <a id="configure"></a>Configure
 
-Fepper will run out-of-the-box perfectly well with default configurations. 
-For further customization, power-users can edit these files:
+Fepper will run perfectly well out-of-the-box with default configurations. For 
+further customization, power-users can edit these files:
 
 * conf.yml
 * pref.yml
@@ -184,11 +184,11 @@ Underscore-prefixed .json files within
 whole in turn getting built into `data.json`, the final source of globally 
 scoped data. 
 
-_Partial data_ is distinct from _pattern data_. For example, `00-homepage.json` 
-is _pattern data_ and specific to the `00-homepage` pattern. No other pattern 
-will pick up `00-homepage.json`, even if `00-homepage.mustache` is included in 
-another pattern. However, `_00-homepage.json` is _partial data_ and will get 
-concatenated to the _global data_ outputted to `data.json`. `_00-homepage.json` 
+_Partial data_ is distinct from _pattern data_. For example, `01-blog.json` 
+is _pattern data_ and specific to the `01-blog` pattern. No other pattern 
+will pick up `01-blog.json`, even if `01-blog.mustache` is included in 
+another pattern. However, `_01-blog.json` is _partial data_ and will get 
+concatenated to the _global data_ outputted to `data.json`. `_01-blog.json` 
 will be picked up by all patterns.
 
 * **DO NOT EDIT source/_data/data.json**
@@ -225,14 +225,15 @@ The Static Site Generator would output this as:
 <a href="articles--top-story.html">Article Headline</a>
 ```
 
-Numeric prefixes to filenames and sub-directories would be dropped. Nested 
-source directories would be flattened and all static HTML files would be 
+Numeric prefixes to filenames and sub-directories will be dropped. Nested 
+source directories will be flattened and all static HTML files would become 
 siblings. The pathing of nested folders would be retained in the filenames, so 
-the organizational benefits of nesting folders would be retained.
+the organizational benefits of nesting folders will be retained.
 
-Appending a hyphen (`-`) to the "articles" directory is just a suggestion. While 
-the Static Site Generator flattens nested source directories, the additional 
-hyphen suggests that "articles" categorizes the more specific parts that follow.
+Appending a hyphen (`-`) to the "articles" directory is just a recommended 
+convention for static sites. While the Static Site Generator flattens nested 
+source directories, the double-hyphen suggests that "articles" categorizes the 
+more specific parts that follow.
 
 Additional files can be put in `source/_static` so long as they do not get 
 overwritten by the Static Site Generator.
@@ -311,10 +312,11 @@ reverse direction, Fepper serves backend files if their directories are entered
 into the `webserved_dirs` block in `pref.yml`. Be sure these values are 
 formatted as YAML array elements.
 
-> DO NOT INCLUDE DIRECTORIES WITH SOURCE CODE! MANY PUBLIC HOSTS DO NOT 
-  PREPROCESS PHP AND OTHER PROGRAMMING LANGUAGES OUT OF THE BOX, SO ANY 
-  PUBLISHED SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC 
-  ANY SENSITIVE INFORMATION CONTAINED WITHIN THE SOURCE CODE!
+> WEBSERVED DIRECTORIES ARE FOR STATIC ASSETS ONLY! DO NOT WEBSERVE DIRECTORIES 
+  WITH BACKEND SOURCE CODE! NO BACKEND PROGRAMMING LANGUAGE WILL GET 
+  PREPROCESSED! IF A STATIC SITE IS GENERATED, OR THE EXPRESS APP PUBLICLY 
+  SERVED, SOURCE CODE WILL BE RENDERED AS PLAIN TEXT! THIS WILL MAKE PUBLIC ANY 
+  SENSITIVE INFORMATION CONTAINED WITHIN!
 
 ### <a id="mustache-browser"></a>Mustache Browser
 
@@ -431,9 +433,8 @@ to UI scripts can be added to `source/_scripts/ui-extender.js`.
 
 Similarly, generic modifications to UI styles can be added to 
 `source/_styles/pattern-scaffolding.css`. (The file is named this way to adhere 
-to <a href="https://patternlab.io/docs/using-pattern-states/" target="_blank"> 
-the Pattern Lab documentation on pattern states</a>. It should not be relied on 
-for pattern scaffolding.)
+to the Pattern Lab convention on defining pattern states. It should not be 
+relied on for pattern scaffolding.)
 
 View All markup can also be overridden by copying the .mustache files in 
 <a href="https://github.com/electric-eloquence/fepper-npm/tree/dev/ui/core/styleguide/viewall" target="_blank">
@@ -677,7 +678,7 @@ to distribute them to the rest of the world.
 * **ctrl+shift+c**: open/close Code Viewer
 * **ctrl+alt+m**: make the Mustache tab active in Code Viewer
 * **ctrl+alt+h**: make the HTML tab active in Code Viewer
-* **ctrl+shift+f**: open/close the pattern search
+* **ctrl+shift+f**: open/close the Pattern Search
 
 As a reminder, the viewport sizes can be customized in `source/_scripts/src/variables.styl`.
 

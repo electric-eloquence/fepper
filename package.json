@@ -1,4 +1,5 @@
 {
+  "distro": "main",
   "description": "Fepper: a Front End Prototyper tool for rapid prototyping of web sites",
   "scripts": {
     "install-base": "node run/install-base.js",
