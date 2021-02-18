@@ -35,6 +35,7 @@
 * [Update](#update)
 * [Global Data](#global-data)
 * [Partial Data](#partial-data)
+* [Markdown Content](#markdown-content)
 * [Static Site Generator](#static-site-generator)
 * [The Backend](#the-backend)
 * [Templater](#templater)
@@ -195,13 +196,48 @@ will be picked up by all patterns.
 * **DO PUT GLOBAL DATA IN source/_data/_data.json**
 * **DO LIBERALLY USE PARTIAL DATA IN source/_patterns FOR ORGANIZATIONAL SANITY**
 
+### <a id="markdown-content"></a>Markdown Content
+
+Fepper provides the convenience of managing content in 
+<a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">
+Markdown</a>. To do so, create an `.md` file of the same name as the pattern. 
+Edit this file in Front Matter syntax like so:
+
+##### example.md:
+
+```
+---
+content_key: content
+---
+# Heading
+
+Body
+```
+
+Front Matter comprises YAML between the `---` lines and Markdown below. It 
+doesn't appear to have a unified spec, so searches for documentation will 
+probably just list various implementations. In any case, `content_key` can be 
+any valid whitespace-free string. Use it to identify its corresponding tag in 
+the `.mustache` file like so:
+
+##### example.mustache:
+
+```
+<main id="content">
+  {{{ content }}}
+</main>
+```
+
+When creating `.md` files for pseudo-patterns, replace the `.json` extension 
+similarly.
+
 ### <a id="static-site-generator"></a>Static Site Generator
 
 Running `fp static` will generate a complete static site based on the files in 
 `source/_patterns/04-pages`. The site will be viewable at 
 http://localhost:3000/static/. An `index.html` will be generated based on 
-`04-pages-00-homepage`, or whatever is declared as the homepage in `_data.json`. 
-If links to other pages in the `04-pages` directory work correctly in the Fepper 
+whatever is declared as the `defaultPattern` in `patternlab-config.json`. If 
+links to other pages in the `04-pages` directory work correctly in the Fepper 
 UI, they will work correctly in the static site, even if the `public/static` 
 directory is copied and renamed.
 
@@ -446,7 +482,7 @@ View All styles can be added to `source/_styles/pattern-scaffolding.css`.
 You will need to compile the UI in order for the browser to pick up custom 
 changes to the UI:
 
-```shell
+```
 fp ui:compile
 ```
 
@@ -535,7 +571,7 @@ Here is an example of overriding the `fp help` command:
 1. Create an `instance_file`. For this example, let's write it at 
    `extend/custom/hack-help.js`.
 
-```javascript
+```
 'use strict';
 
 const FepperSuper = require('fepper');
@@ -569,7 +605,7 @@ module.exports = class Fepper extends FepperSuper {
 
 2. Declare `instance_file` in `pref.yml`.
 
-```yaml
+```
 instance_file: extend/custom/hack-help.js
 ```
 
