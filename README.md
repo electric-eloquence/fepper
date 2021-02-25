@@ -229,7 +229,7 @@ the `.mustache` file like so:
 ```
 
 When creating `.md` files for pseudo-patterns, replace the `.json` extension 
-similarly.
+while leaving the rest of the filename intact.
 
 ### <a id="static-site-generator"></a>Static Site Generator
 
