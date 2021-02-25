@@ -200,7 +200,7 @@ will be picked up by all patterns.
 
 Fepper provides the convenience of managing content in 
 <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">
-Markdown</a>. To do so, create an `.md` file of the same name as the pattern. 
+Markdown</a>. To do so, create a `.md` file of the same name as the pattern. 
 Edit this file in Front Matter syntax like so:
 
 ##### example.md:
