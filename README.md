@@ -356,12 +356,11 @@ formatted as YAML array elements.
 
 ### <a id="mustache-browser"></a>Mustache Browser
 
-<p><a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
+<a href="https://www.npmjs.com/package/feplet" target="_blank">Feplet</a> 
 (.mustache) code can be viewed in the Fepper UI by clicking the eyeball icon in 
-the upper right and then clicking Code. The Mustache tab of the Code Viewer will 
-then be opened, and the code within will be hot-linked to open in the main panel 
-of the Fepper UI. From there, partial tags will be hot-linked as well, such that 
-users can easily browse through the included partials.</p>
+the upper right and then clicking Code. The Code Viewer will then be opened, 
+displaying the Feplet code of the pattern, and the partials tags within will be 
+hot-linked to open their respective patterns in the main panel of the Fepper UI.
 
 ### <a id="html-scraper"></a>HTML Scraper
 
