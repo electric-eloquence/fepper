@@ -630,10 +630,11 @@ please open an issue</a>.
 
 ### <a id="express-app"></a>Express App
 
-Fepper exposes its <a href="https://expressjs.com/" target="_blank">Express</a> application through the `global.expressApp` object. 
-This object can be overridden with custom routes and middleware via the 
-`custom:tcp-ip` (or `contrib:tcp-ip`) extension task. Initialization of 
-`global.expressApp` occurs before this task, and listening occurs afterward.
+Fepper exposes its <a href="https://expressjs.com/" target="_blank">Express</a> 
+application through the `global.expressApp` object. This object can be 
+overridden with custom routes and middleware via the `custom:tcp-ip` (or 
+`contrib:tcp-ip`) extension task. Initialization of `global.expressApp` occurs 
+before this task, and listening occurs afterward.
 
 `global.expressApp` is a direct reference to `global.fepper.tcpIp.fpExpress.app`.
 
