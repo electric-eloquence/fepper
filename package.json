@@ -47,7 +47,7 @@
     "eslint": "8.x",
     "fepper": "*",
     "fepper-utils": "*",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^10.0.0",
     "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts",
     "husky": "4.x",
     "mocha": "8.x"
