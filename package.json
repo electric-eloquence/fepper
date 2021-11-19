@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "chai": "4.x",
-    "eslint": "7.x",
+    "eslint": "8.x",
     "fepper": "*",
     "fepper-utils": "*",
     "fs-extra": "^8.1.0",
