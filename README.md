@@ -244,6 +244,32 @@ clicking the "Markdown" tab. The Markdown can even be edited in the Code Viewer.
 If the project was set up with Git, the Markdown edits can be version controlled 
 within the Code Viewer as well.
 
+Most Developers should be familiar with setting up projects with Git. It is
+beyond the scope of this document to provide much further instruction on Git. 
+However, Editors are encouraged to version-control their edits with Git if 
+collaborating with others. In order to authenticate over HTTPS, run the 
+following on the command line:
+
+```
+git config --global user.email "name@email.address"
+git config --global user.name "User Name"
+```
+
+##### In macOS:
+
+```
+git config --global credential.helper osxkeychain
+```
+
+##### In Windows:
+
+```
+git config --global credential.helper wincred
+```
+
+##### In Linux and other Unix-like OSs:
+Do not use HTTPS. Instead authenticate over SSH with a public/private key pair.
+
 ### <a id="static-site-generator"></a>Static Site Generator
 
 Running `fp static` will generate a complete static site based on the files in 

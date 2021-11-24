@@ -3,7 +3,7 @@
 *~
 .*.swp
 .DS_Store
-/.timestamp
+/.timestamp*
 /conf.yml
 /public/*
 !/public/package.json
