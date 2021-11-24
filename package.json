@@ -39,9 +39,6 @@
   "bugs": {
     "url": "https://github.com/electric-eloquence/fepper/issues"
   },
-  "engines": {
-    "node": ">=12.0.0"
-  },
   "devDependencies": {
     "chai": "4.x",
     "eslint": "8.x",
