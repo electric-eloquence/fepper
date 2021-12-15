@@ -6,7 +6,7 @@
 * Mustache Browser reloads pattern in main panel of UI when following linked partials
 * Markdown can be viewed in Code Viewer
 * Markdown can be edited in Code Viewer
-* Code Viewer can integrate with Git when editing Markdown
+* Code Viewer can interface with Git when editing Markdown
 
 ### v0.16.0
 * Copying data.json to public directory
