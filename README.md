@@ -249,17 +249,17 @@ beyond the scope of this document to provide much further instruction on Git.
 However, Editors are encouraged to version-control their edits with Git if 
 collaborating with others.
 
-In order to get Editors set up with Git, it is recommended that 
-<a href="https://github.com/cli/cli#readme" target="_blank">GitHub CLI</a> be 
-installed on their machines (macOS and Windows). A CLI requires a Terminal app, 
-but Editors will generally only need this for setup and background operations. 
-In fact, much of the setup can be automated within clickable scripts.
+In order to get Editors set up with Git, first make sure Git is installed. Then, 
+install <a href="https://github.com/cli/cli#readme" target="_blank">GitHub CLI
+</a> (macOS and Windows only). A CLI requires a Terminal app, but Editors will 
+generally only need this for setup and background operations. In fact, much of 
+the setup can be automated within clickable scripts.
 
 To proceed, an account must be registered at GitHub&#46;com, and GitHub CLI 
 installed as per the instructions in the link. Then, run the following in the 
 Terminal:
 
-##### In macOS and Windows:
+##### macOS and Windows:
 
 ```
 git config --global user.email name@email.address
@@ -277,7 +277,7 @@ Press Enter to continue..."
 After pressing Enter to exit the prompt, Editors should be able to use the Git 
 Interface with no more prompts for authentication.
 
-##### In Linux and other Unix-like OSs:
+##### Linux and other Unix-like OSs:
 
 It is not recommended to use Fepper's graphical Git Interface with Linux and 
 other, more obscure Unix-like OSs. It is not straightforward to authenticate 
