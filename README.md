@@ -244,31 +244,45 @@ clicking the "Markdown" tab. The Markdown can even be edited in the Code Viewer.
 If the project was set up with Git, the Markdown edits can be version controlled 
 within the Code Viewer as well.
 
-Most Developers should be familiar with setting up projects with Git. It is
+Most Developers should be familiar with setting up projects with Git. It is 
 beyond the scope of this document to provide much further instruction on Git. 
 However, Editors are encouraged to version-control their edits with Git if 
-collaborating with others. In order to authenticate over HTTPS, run the 
-following on the command line:
+collaborating with others.
+
+In order to get Editors set up with Git, it is recommended that 
+<a href="https://github.com/cli/cli#readme" target="_blank">GitHub CLI</a> be 
+installed on their machines (macOS and Windows). A CLI requires a Terminal app, 
+but Editors will generally only need this for setup and background operations. 
+In fact, much of the setup can be automated within clickable scripts.
+
+To proceed, an account must be registered at GitHub&#46;com, and GitHub CLI 
+installed as per the instructions in the link. Then, run the following in the 
+Terminal:
+
+##### In macOS and Windows:
 
 ```
-git config --global user.email "name@email.address"
-git config --global user.name "User Name"
+git config --global user.email name@email.address
+git config --global user.name 'User Name'
+gh auth login
 ```
 
-##### In macOS:
+After issuing the `gh auth login` command, press Enter to accept each default. 
+After accepting to login with a web browser, press Enter to open the GitHub.com 
+authentication webpage. Sign in to GitHub if necessary. Then, enter the 
+8-character code from the Terminal. Click to Authorize github. If the webpage 
+shows success, return to the Terminal. It should say, "Authentication complete. 
+Press Enter to continue..."
 
-```
-git config --global credential.helper osxkeychain
-```
-
-##### In Windows:
-
-```
-git config --global credential.helper wincred
-```
+After pressing Enter to exit the prompt, Editors should be able to use the Git 
+Interface with no more prompts for authentication.
 
 ##### In Linux and other Unix-like OSs:
-Do not use HTTPS. Instead authenticate over SSH with a public/private key pair.
+
+It is not recommended to use Fepper's graphical Git Interface with Linux and 
+other, more obscure Unix-like OSs. It is not straightforward to authenticate 
+with GitHub CLI in such OSs. The technical knowledge required to authenticate 
+would be better applied using Git as intended for Developers.
 
 ### <a id="static-site-generator"></a>Static Site Generator
 
