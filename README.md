@@ -279,7 +279,7 @@ Interface with no more prompts for authentication.
 
 ##### Linux and other Unix-like OSs:
 
-It is not recommended to use Fepper's graphical Git Interface with Linux and 
+It is not recommended to use Fepper's graphical Git Interface in Linux and 
 other, more obscure Unix-like OSs. It is not straightforward to authenticate 
 with GitHub CLI in such OSs. The technical knowledge required to authenticate 
 would be better applied using Git as intended for Developers.
