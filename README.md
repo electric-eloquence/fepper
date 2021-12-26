@@ -256,8 +256,8 @@ generally only need this for setup and background operations. In fact, much of
 the setup can be automated within clickable scripts.
 
 To proceed, an account must be registered at GitHub&#46;com, and GitHub CLI 
-installed as per the instructions in the link. Then, run the following in the 
-Terminal:
+installed as per the instructions in the previous link. Then, run the following 
+in the Terminal:
 
 ##### macOS and Windows:
 
