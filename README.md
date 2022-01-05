@@ -268,11 +268,11 @@ gh auth login
 ```
 
 After issuing the `gh auth login` command, press Enter to accept each default. 
-After accepting to login with a web browser, press Enter to open the GitHub.com 
-authentication webpage. Sign in to GitHub if necessary. Then, enter the 
-8-character code from the Terminal. Click to Authorize github. If the webpage 
-shows success, return to the Terminal. It should say, "Authentication complete. 
-Press Enter to continue..."
+After accepting to login with a web browser, press Enter to open the 
+GitHub&#46;com authentication webpage. Sign in to GitHub if necessary. Then, 
+enter the 8-character code from the Terminal. Click to Authorize github. If the 
+webpage shows success, return to the Terminal. It should say, "Authentication 
+complete. Press Enter to continue..."
 
 After pressing Enter to exit the prompt, Editors should be able to use the Git 
 Interface with no more prompts for authentication.
