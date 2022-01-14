@@ -241,6 +241,9 @@ hot-linked to open their respective patterns in the main panel of the Fepper UI.
 
 If the pattern has an associated `.md` file, its Markdown code can be viewed by 
 clicking the "Markdown" tab. The Markdown can even be edited in the Code Viewer. 
+The Markdown Editor requires that Fepper be LiveReloading correctly. In most 
+cases, LiveReload should just work out-of-the-box.
+
 If the project was set up with Git, the Markdown edits can be version controlled 
 within the Code Viewer as well.
 
