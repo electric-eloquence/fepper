@@ -11,7 +11,7 @@ else
   $archMsi = "x64.msi"
 }
 
-$nodeVersion = "v12.22.3"
+$nodeVersion = "v16.13.0"
 $nodeMsi = "node-" + $nodeVersion + "-" + $archMsi
 $nodeMsiFull = $PSScriptRoot + "\" + $nodeMsi
 $whereNode = where.exe node
