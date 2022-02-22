@@ -487,10 +487,10 @@ Additions (so long as they are correctly nested) will also be recognized.
 A working example of UI customization can be found at 
 <a href="https://github.com/electric-eloquence/fepper-drupal/blob/dev/source/_ui/index/html/00-head/head.component.js" target="_blank">
 https&colon;//github.com/electric-eloquence/fepper-drupal/blob/dev/source/_ui/index/html/00-head/head.component.js</a>. 
-The Fepper for Drupal project overrides its HTML title to read "Fepper D8" 
-instead of "Fepper". In order to do so, it has the `head.component.js` module 
-nested in directories that correspond to the tags that nest the `head` HTML 
-element. Both `head.component.js` and its nesting directories must be named 
+The Fepper for Drupal project overrides its HTML title to read "Fepper for 
+Drupal" instead of "Fepper". In order to do so, it has the `head.component.js` 
+module nested in directories that correspond to the tags that nest the `head` 
+HTML element. Both `head.component.js` and its nesting directories must be named 
 similarly to their corresponding elements. `.component.js` indicates that the 
 file is a module to be rendered by React. 
 <a href="https://reactjs.org/docs/dom-elements.html" target="_blank">
