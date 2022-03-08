@@ -211,7 +211,7 @@ content_key: content
 ---
 # Heading
 
-Body
+Sample body content
 ```
 
 Front Matter comprises YAML between the `---` lines and Markdown below. It 
