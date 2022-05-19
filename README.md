@@ -760,8 +760,11 @@ to distribute them to the rest of the world.
 * **ctrl+alt+g**: start/stop "grow" animation
 * **ctrl+shift+a**: open/close Annotations Viewer
 * **ctrl+shift+c**: open/close Code Viewer
-* **ctrl+alt+m**: make the Mustache tab active in Code Viewer
-* **ctrl+alt+h**: make the HTML tab active in Code Viewer
+* **ctrl+shift+]**: select next tab/panel in Code Viewer
+* **ctrl+shift+[**: select previous tab/panel in Code Viewer
+* **ctrl+alt+h**: dock Code Viewer to the left
+* **ctrl+alt+j**: dock Code Viewer to the bottom
+* **ctrl+alt+l**: dock Code Viewer to the right
 * **ctrl+shift+f**: open/close the Pattern Search
 
 As a reminder, the viewport sizes can be customized in `source/_scripts/src/variables.styl`.
