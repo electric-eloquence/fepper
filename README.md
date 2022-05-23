@@ -728,8 +728,9 @@ If your Mac is connected to the Internet through a wire:
 
 The Elements, Compounds, and Components directories are optional and can be 
 renamed to anything your charset and file system allow without further 
-configuration. The Templates, Pages, and Scrape directories can be renamed, but 
-must also be reconfigured in `patternlab-config.json`.
+configuration, so long as there are no collisions with other names. The 
+Templates, Pages, and Scrape directories allow for similar renaming but they 
+must be configured in `patternlab-config.json`.
 
 The text in the UI, as well as console messages, can be changed by editing 
 `source/_ui/i18n/en.json`. Replace the blank values with alternate English 
