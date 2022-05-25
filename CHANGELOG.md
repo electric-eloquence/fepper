@@ -1,5 +1,7 @@
 # Fepper Changelog
 
+### v0.17.1
+
 ### v0.17.0
 * Code Viewer added dock-left and dock-right options
 * Mustache Browser no longer opens in main panel of UI
