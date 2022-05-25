@@ -1,6 +1,9 @@
 # Fepper Changelog
 
 ### v0.17.1
+* Added keyboard shortcuts to dock the code/annotations viewer
+* Added keyboard shortcuts to switch between tabs/panels in code viewer
+* Annotations viewer persists when viewed in halfMode
 
 ### v0.17.0
 * Code Viewer added dock-left and dock-right options
