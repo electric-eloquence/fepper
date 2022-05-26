@@ -211,7 +211,7 @@ content_key: content
 ---
 # Heading
 
-Body
+Sample body content
 ```
 
 Front Matter comprises YAML between the `---` lines and Markdown below. It 
@@ -728,8 +728,9 @@ If your Mac is connected to the Internet through a wire:
 
 The Elements, Compounds, and Components directories are optional and can be 
 renamed to anything your charset and file system allow without further 
-configuration. The Templates, Pages, and Scrape directories can be renamed, but 
-must also be reconfigured in `patternlab-config.json`.
+configuration, so long as there are no collisions with other names. The 
+Templates, Pages, and Scrape directories allow for similar renaming but they 
+must be configured in `patternlab-config.json`.
 
 The text in the UI, as well as console messages, can be changed by editing 
 `source/_ui/i18n/en.json`. Replace the blank values with alternate English 
@@ -760,8 +761,11 @@ to distribute them to the rest of the world.
 * **ctrl+alt+g**: start/stop "grow" animation
 * **ctrl+shift+a**: open/close Annotations Viewer
 * **ctrl+shift+c**: open/close Code Viewer
-* **ctrl+alt+m**: make the Mustache tab active in Code Viewer
-* **ctrl+alt+h**: make the HTML tab active in Code Viewer
+* **ctrl+shift+]**: select next tab/panel in Code Viewer
+* **ctrl+shift+[**: select previous tab/panel in Code Viewer
+* **ctrl+alt+h**: dock Code Viewer to the left
+* **ctrl+alt+j**: dock Code Viewer to the bottom
+* **ctrl+alt+l**: dock Code Viewer to the right
 * **ctrl+shift+f**: open/close the Pattern Search
 
 As a reminder, the viewport sizes can be customized in `source/_scripts/src/variables.styl`.
