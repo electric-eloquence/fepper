@@ -6,7 +6,7 @@ cd $root_dir
 
 # Check if Node.js is installed. Install if it isn't.
 has_node=`which node`
-node_version="v16.15.1"
+node_version="v16.15.0"
 node_pkg="node-${node_version}.pkg"
 
 if [[ $has_node != *bin/node ]]; then
