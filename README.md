@@ -11,7 +11,6 @@
 [![Linux Build Status][linux-image]][linux-url]
 [![Mac Build Status][mac-image]][mac-url]
 [![Windows Build Status][windows-image]][windows-url]
-![Node Version][node-version-image]
 [![License][license-image]][license-url]
 
 ### Downstream projects
@@ -791,8 +790,6 @@ As a reminder, the viewport sizes can be customized in `source/_scripts/src/vari
 
 [windows-image]: https://github.com/electric-eloquence/fepper/workflows/Windows%20build/badge.svg?branch=master
 [windows-url]: https://github.com/electric-eloquence/fepper/actions?query=workflow%3A"Windows+build"
-
-[node-version-image]: https://img.shields.io/node/v/fepper.svg
 
 [license-image]: https://img.shields.io/github/license/electric-eloquence/fepper.svg
 [license-url]: https://raw.githubusercontent.com/electric-eloquence/fepper/master/LICENSE
