@@ -579,6 +579,32 @@ modified when updating Fepper.
   <a href="https://github.com/electric-eloquence/gulp#readme" target="_blank">gulp 3</a> 
   syntax.
 
+It may be helpful to write help text for custom extensions, especially when a 
+person other than the author uses it. To do this, create a custom task appended 
+by ":help".  Declare and log the help text as follows, and it will be output by 
+running `fp extend:help`.
+
+```
+'use strict';
+
+const gulp = global.gulp;
+
+gulp.task('custom-task:help', function (cb) {
+  let helpText = `
+Fepper Custom Task Extension
+
+Usage:
+    <task> [<additional args>...]
+
+Task and description:
+    fp custom-task:help    Print usage and description of custom task.
+`;
+
+  console.log(helpText);
+  cb();
+});
+```
+
 ##### Confs and prefs:
 
 You might need to access the values in the `conf.yml` and `pref.yml` files in 
