@@ -227,6 +227,9 @@ the `.mustache` file like so:
 </main>
 ```
 
+Once properly set up, the Markdown can be edited in the 
+[Code Viewer](https://fepper.io/docpage--code-viewer.html?bot=no").
+
 When creating `.md` files for pseudo-patterns, replace the `.json` extension 
 while leaving the rest of the filename intact.
 
@@ -239,12 +242,12 @@ displaying the Feplet code of the pattern, and the partials tags within will be
 hot-linked to open their respective patterns in the main panel of the Fepper UI. 
 
 If the pattern has an associated `.md` file, its Markdown code can be viewed by 
-clicking the "Markdown" tab. The Markdown can even be edited in the Code Viewer. 
-The Markdown Editor requires that Fepper be LiveReloading correctly. In most 
-cases, LiveReload should just work out-of-the-box.
+clicking the "Markdown" tab. In order for the Code Viewer to allow edits to the 
+Markdown, Fepper must be LiveReloading correctly. In most cases, LiveReload 
+will just work out-of-the-box.
 
 If the project was set up with Git, the Markdown edits can be version controlled 
-within the Code Viewer as well.
+with the Code Viewer's Git Interface as well.
 
 Most Developers should be familiar with setting up projects with Git. It is 
 beyond the scope of this document to provide much further instruction on Git. 
