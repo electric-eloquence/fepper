@@ -213,7 +213,7 @@ content_key: content
 Sample body content
 ```
 
-Front Matter comprises YAML between the `---` lines and Markdown below. It 
+Front Matter comprises YAML between the `---` lines and Markdown below them. It 
 doesn't appear to have a unified spec, so searches for documentation will 
 probably just list various implementations. In any case, `content_key` can be 
 any valid whitespace-free string. Use it to identify its corresponding tag in 
