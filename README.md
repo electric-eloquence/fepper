@@ -228,7 +228,7 @@ the `.mustache` file like so:
 ```
 
 Once properly set up, the Markdown can be edited in the 
-[Code Viewer](https://fepper.io/docpage--code-viewer.html?bot=no").
+[Code Viewer](https://fepper.io/docpage--code-viewer.html?bot=no).
 
 When creating `.md` files for pseudo-patterns, replace the `.json` extension 
 while leaving the rest of the filename intact.
