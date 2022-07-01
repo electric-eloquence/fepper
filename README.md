@@ -316,9 +316,9 @@ browser's Developer Tools:
 * This should open the Inspector or Elements tab of the Developer Tools.
 * Click the adjacent tab to open the Console of the Developer Tools.
 * Enter the following example in the Console:
-* requerio.$orgs["#nav"].dispatchAction("css", {backgroundColor: "green"})
+* requerio.$orgs['#nav'].dispatchAction('css', {backgroundColor: 'green'})
 * If not on the default demo site, or if the #nav element doesn't exist, replace 
-  "#nav" with your own selector, and the arguments with your own arguments.
+  '#nav' with your own selector, and the arguments with your own arguments.
 * The state change should show up in the Requerio Inspector.
 * <a href="https://github.com/electric-eloquence/requerio/blob/dev/docs/methods.md" target="_blank">
   Action methods and their arguments</a>.
