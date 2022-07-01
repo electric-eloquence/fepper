@@ -36,6 +36,7 @@
 * [Partial Data](#partial-data)
 * [Markdown Content](#markdown-content)
 * [Code Viewer](#code-viewer)
+* [Requerio Inspector](#requerio-inspector)
 * [Static Site Generator](#static-site-generator)
 * [The Backend](#the-backend)
 * [Templater](#templater)
@@ -288,6 +289,39 @@ It is not recommended to use Fepper's graphical Git Interface in Linux and
 other, more obscure Unix-like OSs. It is not straightforward to authenticate 
 with GitHub CLI in such OSs. The technical knowledge required to authenticate 
 would be better applied using Git as intended for Developers.
+
+### <a id="requerio-inspector"></a>Requerio Inspector
+
+The Code Viewer also has a Requerio Inspector. 
+<a href="https://github.com/electric-eloquence/requerio#readme" target="_blank">
+Requerio</a> is tool you can use to manage state of your web application. HTML 
+elements given state are refered to as "organisms". In order to view their 
+states, Requerio and its organisms need to be initialized as per the 
+<a href="https://github.com/electric-eloquence/requerio#readme" target="_blank">
+Requerio docs</a>. It is necessary to define `window.requerio` in order for the 
+Requerio Inspector to work, as per the following code example:
+
+```
+const requerio = window.requerio = new Requerio($, Redux, $organisms);
+```
+
+A properly working Requerio app will then have its organisms and their states 
+show up in the Requerio Inspector like an expandable menu. The display of the 
+states will update in real-time, should there be any changes to the organisms. 
+You can even dispatch such changes ("actions") on the organisms via your 
+browser's Developer Tools:
+
+* Use your cursor to inspect the Requerio organism you wish to dispatch actions 
+  on.
+* This should open the Inspector or Elements tab of the Developer Tools.
+* Click the adjacent tab to open the Console of the Developer Tools.
+* Enter the following example in the Console:
+* requerio.$orgs["#nav"].dispatchAction("css", {backgroundColor: "green"})
+* If not on the default demo site, or if the #nav element doesn't exist, replace 
+  "#nav" with your own selector, and the arguments with your own arguments.
+* The state change should show up in the Requerio Inspector.
+* <a href="https://github.com/electric-eloquence/requerio/blob/dev/docs/methods.md" target="_blank">
+  Action methods and their arguments</a>.
 
 ### <a id="static-site-generator"></a>Static Site Generator
 
