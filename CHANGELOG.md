@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.18.0
+* Added Requerio Inspector to UI to inspect JavaScript state of patterns
+
 ### v0.17.1
 * Added keyboard shortcuts to dock the code/annotations viewer
 * Added keyboard shortcuts to switch between tabs/panels in code viewer
