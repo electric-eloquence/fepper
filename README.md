@@ -294,8 +294,8 @@ would be better applied using Git as intended for Developers.
 
 The Code Viewer also has a Requerio Inspector. 
 <a href="https://github.com/electric-eloquence/requerio#readme" target="_blank">
-Requerio</a> is tool you can use to manage state of your web application. HTML 
-elements given state are refered to as "organisms". In order to view their 
+Requerio</a> is a tool you can use to manage the state of your web application. 
+HTML elements given state are referred to as "organisms". In order to view their 
 states, Requerio and its organisms need to be initialized as per the 
 <a href="https://github.com/electric-eloquence/requerio#readme" target="_blank">
 Requerio docs</a>. It is necessary to define `window.requerio` in order for the 
@@ -306,19 +306,21 @@ const requerio = window.requerio = new Requerio($, Redux, $organisms);
 ```
 
 A properly working Requerio app will then have its organisms and their states 
-show up in the Requerio Inspector like an expandable menu. The display of the 
-states will update in real-time, should there be any changes to the organisms. 
-You can even dispatch such changes ("actions") on the organisms via your 
-browser's Developer Tools:
+show up in the Requerio Inspector like an expandable menu, the state tree. 
+Hovering over the state tree should highlight the organism being inspected. (It 
+may be necessary to give the organisms a CSS background-color in order for the 
+highlighting to work.) The display of the states will update in real-time, 
+should there be any changes to the organisms. You can even dispatch changes 
+("actions") to the organisms via your browser's Developer Tools:
 
 * Use your cursor to inspect the Requerio organism you wish to dispatch actions 
   on.
 * This should open the Inspector or Elements tab of the Developer Tools.
 * Click the adjacent tab to open the Console of the Developer Tools.
 * Enter the following example in the Console:
-* requerio.$orgs['#nav'].dispatchAction('css', {backgroundColor: 'green'})
-* If not on the default demo site, or if the #nav element doesn't exist, replace 
-  '#nav' with your own selector, and the arguments with your own arguments.
+* `requerio.$orgs['#nav'].dispatchAction('css', {backgroundColor: 'green'})`
+* If not on the default demo site, or if the `#nav` element doesn't exist, replace 
+  `#nav` with your own selector, and the arguments with your own arguments.
 * The state change should show up in the Requerio Inspector.
 * <a href="https://github.com/electric-eloquence/requerio/blob/dev/docs/methods.md" target="_blank">
   Action methods and their arguments</a>.
