@@ -1,7 +1,11 @@
 {
   "description": "Fepper public directory",
+  "scripts": {
+    "test": "node test/node-tests.mjs"
+  },
   "repository": {},
   "license": "MIT",
+  "type": "module",
   "devDependencies": {
     "fepper-ui": "^0.9.3"
   }
