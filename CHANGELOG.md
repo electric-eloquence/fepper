@@ -2,6 +2,7 @@
 
 ### v0.18.0
 * Added Requerio Inspector to UI to inspect JavaScript state of patterns
+* Totally new demo site on main distro
 
 ### v0.17.1
 * Added keyboard shortcuts to dock the code/annotations viewer
