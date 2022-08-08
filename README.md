@@ -11,7 +11,6 @@
 [![Linux Build Status][linux-image]][linux-url]
 [![Mac Build Status][mac-image]][mac-url]
 [![Windows Build Status][windows-image]][windows-url]
-![Node Version][node-version-image]
 [![License][license-image]][license-url]
 
 ### Downstream projects
@@ -37,6 +36,7 @@
 * [Partial Data](#partial-data)
 * [Markdown Content](#markdown-content)
 * [Code Viewer](#code-viewer)
+* [Requerio Inspector](#requerio-inspector)
 * [Static Site Generator](#static-site-generator)
 * [The Backend](#the-backend)
 * [Templater](#templater)
@@ -214,7 +214,7 @@ content_key: content
 Sample body content
 ```
 
-Front Matter comprises YAML between the `---` lines and Markdown below. It 
+Front Matter comprises YAML between the `---` lines and Markdown below them. It 
 doesn't appear to have a unified spec, so searches for documentation will 
 probably just list various implementations. In any case, `content_key` can be 
 any valid whitespace-free string. Use it to identify its corresponding tag in 
@@ -228,6 +228,9 @@ the `.mustache` file like so:
 </main>
 ```
 
+Once properly set up, the Markdown can be edited in the 
+[Code Viewer](https://fepper.io/docpage--code-viewer.html).
+
 When creating `.md` files for pseudo-patterns, replace the `.json` extension 
 while leaving the rest of the filename intact.
 
@@ -240,12 +243,12 @@ displaying the Feplet code of the pattern, and the partials tags within will be
 hot-linked to open their respective patterns in the main panel of the Fepper UI. 
 
 If the pattern has an associated `.md` file, its Markdown code can be viewed by 
-clicking the "Markdown" tab. The Markdown can even be edited in the Code Viewer. 
-The Markdown Editor requires that Fepper be LiveReloading correctly. In most 
-cases, LiveReload should just work out-of-the-box.
+clicking the "Markdown" tab. In order for the Code Viewer to allow edits to the 
+Markdown, Fepper must be LiveReloading correctly. In most cases, LiveReload 
+will just work out-of-the-box.
 
 If the project was set up with Git, the Markdown edits can be version controlled 
-within the Code Viewer as well.
+with the Code Viewer's Git Interface as well.
 
 Most Developers should be familiar with setting up projects with Git. It is 
 beyond the scope of this document to provide much further instruction on Git. 
@@ -286,6 +289,41 @@ It is not recommended to use Fepper's graphical Git Interface in Linux and
 other, more obscure Unix-like OSs. It is not straightforward to authenticate 
 with GitHub CLI in such OSs. The technical knowledge required to authenticate 
 would be better applied using Git as intended for Developers.
+
+### <a id="requerio-inspector"></a>Requerio Inspector
+
+The Code Viewer also has a Requerio Inspector. 
+<a href="https://github.com/electric-eloquence/requerio#readme" target="_blank">
+Requerio</a> is a tool you can use to manage the state of your web application. 
+HTML elements given state are referred to as "organisms". In order to view their 
+states, Requerio and its organisms need to be initialized as per the 
+<a href="https://github.com/electric-eloquence/requerio#readme" target="_blank">
+Requerio docs</a>. It is necessary to define `window.requerio` in order for the 
+Requerio Inspector to work, as per the following code example:
+
+```
+const requerio = window.requerio = new Requerio($, Redux, $organisms);
+```
+
+A properly working Requerio app will then have its organisms and their states 
+show up in the Requerio Inspector like an expandable menu, the state tree. 
+Hovering over the state tree should highlight the organism being inspected. (It 
+may be necessary to give the organisms a CSS background-color in order for the 
+highlighting to work.) The display of the states will update in real-time, 
+should there be any changes to the organisms. You can even dispatch changes 
+("actions") to the organisms via your browser's Developer Tools:
+
+* Use your cursor to inspect the Requerio organism you wish to dispatch actions 
+  on.
+* This should open the Inspector or Elements tab of the Developer Tools.
+* Click the adjacent tab to open the Console of the Developer Tools.
+* Enter the following example in the Console:
+* `requerio.$orgs['#nav'].dispatchAction('css', {backgroundColor: 'green'})`
+* If not on the default demo site, or if the `#nav` element doesn't exist, replace 
+  `#nav` with your own selector, and the arguments with your own arguments.
+* The state change should show up in the Requerio Inspector.
+* <a href="https://github.com/electric-eloquence/requerio/blob/dev/docs/methods.md" target="_blank">
+  Action methods and their arguments</a>.
 
 ### <a id="static-site-generator"></a>Static Site Generator
 
@@ -580,6 +618,32 @@ modified when updating Fepper.
   <a href="https://github.com/electric-eloquence/gulp#readme" target="_blank">gulp 3</a> 
   syntax.
 
+It may be helpful to write help text for a custom extension, especially when a 
+person other than the author uses it. To do this, create a custom task appended 
+by ":help".  Declare and log the help text as follows, and it will be output by 
+running `fp extend:help`.
+
+```
+'use strict';
+
+const gulp = global.gulp;
+
+gulp.task('custom-task:help', function (cb) {
+  let helpText = `
+Fepper Custom Task Extension
+
+Usage:
+    <task> [<additional args>...]
+
+Task and description:
+    fp custom-task:help    Print usage and description of custom task.
+`;
+
+  console.log(helpText);
+  cb();
+});
+```
+
 ##### Confs and prefs:
 
 You might need to access the values in the `conf.yml` and `pref.yml` files in 
@@ -791,8 +855,6 @@ As a reminder, the viewport sizes can be customized in `source/_scripts/src/vari
 
 [windows-image]: https://github.com/electric-eloquence/fepper/workflows/Windows%20build/badge.svg?branch=master
 [windows-url]: https://github.com/electric-eloquence/fepper/actions?query=workflow%3A"Windows+build"
-
-[node-version-image]: https://img.shields.io/node/v/fepper.svg
 
 [license-image]: https://img.shields.io/github/license/electric-eloquence/fepper.svg
 [license-url]: https://raw.githubusercontent.com/electric-eloquence/fepper/master/LICENSE
