@@ -41,7 +41,7 @@ requerio.$orgs['#nav__submenu-toggle'].click();
 
 const navSubmenuContainerClassArray2 = requerio.$orgs['#nav__submenu-container'].getState().classArray;
 
-assert.deepStrictEqual(navSubmenuContainerClassArray0, ['nav__menu__item', 'nav__submenu-container', '']);
+assert.deepStrictEqual(navSubmenuContainerClassArray0, ['nav__menu__item', 'nav__submenu-container']);
 assert.deepStrictEqual(navSubmenuContainerClassArray1, ['nav__menu__item', 'nav__submenu-container', 'active']);
 assert.deepStrictEqual(navSubmenuContainerClassArray2, ['nav__menu__item', 'nav__submenu-container']);
 
@@ -64,7 +64,7 @@ requerio.$orgs['#sidebar-toggle-for-small-vp'].click();
 const navClassArray2 = requerio.$orgs['#nav'].getState().classArray;
 const sidebarToggleClassArray2 = requerio.$orgs['#sidebar-toggle-for-small-vp'].getState().classArray;
 
-assert.deepStrictEqual(navClassArray0, ['nav', '']);
+assert.deepStrictEqual(navClassArray0, ['nav']);
 assert.deepStrictEqual(navClassArray1, ['nav', 'active']);
 assert.deepStrictEqual(navClassArray2, ['nav']);
 
