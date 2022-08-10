@@ -33,7 +33,7 @@
     "url": "https://github.com/electric-eloquence/fepper/issues"
   },
   "devDependencies": {
-    "fepper": "^0.41.0-rc.3",
+    "fepper": "^0.41.0-rc.4",
     "fepper-utils": "^1.4.5",
     "fs-extra": "^8.1.0",
     "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts@3.9.18"
