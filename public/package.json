@@ -7,6 +7,6 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "fepper-ui": "^0.10.0-rc.2"
+    "fepper-ui": "^0.10.0-rc.3"
   }
 }
