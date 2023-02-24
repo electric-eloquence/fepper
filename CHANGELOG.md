@@ -1,5 +1,8 @@
 # Fepper Changelog
 
+### v0.18.1
+* Updated dependencies as per general maintenance
+
 ### v0.18.0
 * Added Requerio Inspector to UI to inspect JavaScript state of patterns
 * Totally new demo site on main distro
