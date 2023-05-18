@@ -11,6 +11,7 @@
 /pref.yml
 /public/*
 !/public/package.json
+!/public/static/
 !/public/test/
 /source
 ignore/
