@@ -38,7 +38,7 @@
   "devDependencies": {
     "fepper": "^0.41.1",
     "fepper-utils": "^1.4.6",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^10.0.0",
     "gulp": "https://github.com/electric-eloquence/gulp/tarball/v3-lts@3.9.19"
   }
 }
