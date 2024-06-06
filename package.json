@@ -1,5 +1,5 @@
 {
-  "version": "0.18.1",
+  "version": "0.18.2",
   "distro": "main",
   "description": "Fepper: a Front End Prototyper tool for rapid prototyping of web sites",
   "scripts": {
