@@ -70,7 +70,7 @@ if (!fs.existsSync('node_modules')) {
     binNpm = 'npm.cmd';
   }
 
-  spawnedObj = spawnSync(binNpm, ['install', '--ignore-scripts'], {stdio: 'inherit'});
+  spawnedObj = spawnSync(binNpm, ['install', '--ignore-scripts'], {shell: true, stdio: 'inherit'});
 }
 
 if (spawnedObj && spawnedObj.stderr) {
@@ -113,12 +113,15 @@ if (isWindows) {
 }
 
 // Copy over the base profile source dir.
-const spawnedObj1 =
-  spawnSync(binGulp, ['--gulpfile', path.resolve(fepperPath, 'tasker.js'), 'install:copy-base'], {stdio: 'inherit'});
+const spawnedObj1 = spawnSync(
+  binGulp,
+  ['--gulpfile', path.resolve(fepperPath, 'tasker.js'), 'install:copy-base'],
+  {shell: true, stdio: 'inherit'}
+);
 
 if (spawnedObj1.stderr) {
   fs.appendFileSync(installLog, `${spawnedObj1.stderr}\n`);
 }
 
 // Complete installation. run/install.js handles its own logging so no need to log here.
-spawnSync('node', [path.resolve('run', 'install.js')], {stdio: 'inherit'});
+spawnSync('node', [path.resolve('run', 'install.js')], {shell: true, stdio: 'inherit'});

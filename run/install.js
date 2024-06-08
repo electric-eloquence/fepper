@@ -37,7 +37,7 @@ if (!fs.existsSync(prefFile)) {
 }
 
 const argv = ['--gulpfile', taskerPath];
-const spawnedObj = spawnSync(binGulp, argv.concat(['install']), {stdio: 'inherit'});
+const spawnedObj = spawnSync(binGulp, argv.concat(['install']), {shell: true, stdio: 'inherit'});
 
 // Output to install.log.
 const installLog = 'install.log';
@@ -58,5 +58,5 @@ if (conf.ui && conf.ui.paths && conf.ui.paths.source && conf.ui.paths.source.roo
 }
 
 if (sourceDirContent.length) {
-  spawnSync(binGulp, argv.concat(['ui:compile']), {stdio: 'inherit'});
+  spawnSync(binGulp, argv.concat(['ui:compile']), {shell: true, stdio: 'inherit'});
 }
