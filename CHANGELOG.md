@@ -1,6 +1,7 @@
 # Fepper Changelog
 
 ### v0.18.2
+* Changed standard Node.js procedure to accommodate Windows
 * Not gitignoring public/static
 * Updated dependencies as per general maintenance
 
